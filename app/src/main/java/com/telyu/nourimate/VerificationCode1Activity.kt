@@ -1,6 +1,8 @@
 package com.telyu.nourimate
 
+
 import android.os.Bundle
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import com.telyu.nourimate.databinding.ActivityVerificationCode1Binding
 
@@ -13,6 +15,23 @@ class VerificationCode1Activity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        // Lakukan inisialisasi atau logika verifikasi kode di sini
+        // Tambahkan logika sign-up jika diperlukan
+        initVerificationCode1()
+    }
+
+    private fun initVerificationCode1() {
+        binding.buttonEmail.setOnClickListener {
+            openVerification2Page()
+        }
+        binding.buttonPhoneNumber.setOnClickListener {
+            openVerification2Page()
+        }
+    }
+
+
+    private fun openVerification2Page() {
+        // Buat Intent untuk membuka VerificationActivity
+        val intent = Intent(this, VerificationCode2Activity::class.java)
+        startActivity(intent)
     }
 }
