@@ -1,19 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <!-- Background Layer (For Fallback) -->
-    <item android:drawable="@android:color/white" />
-
-    <!-- Gradient Layer -->
-    <item>
+    <item
+        android:top="0dp"
+        android:bottom="438dp">
         <shape>
             <gradient
                 android:type="linear"
-                android:angle="90"
-                android:startColor="#FF0000"
-                android:endColor="#0000FF"
-                />
+                android:angle="270"
+                android:startColor="@color/color0"
+                android:centerColor="@color/color1"
+                android:endColor="@color/color2"
+                android:useLevel="false" />
         </shape>
     </item>
-
+    <item
+        android:top="61dp"
+        android:bottom="377dp">
+        <shape>
+            <gradient
+                android:type="linear"
+                android:angle="270"
+                android:startColor="@color/color2"
+                android:centerColor="@color/color3"
+                android:endColor="@color/color4"
+                android:useLevel="false" />
+        </shape>
+    </item>
+    <item
+        android:top="123dp"
+        android:bottom="315dp">
+        <shape>
+            <gradient
+                android:type="linear"
+                android:angle="270"
+                android:startColor="@color/color4"
+                android:centerColor="@color/color5"
+                android:endColor="@color/color6"
+                android:useLevel="false" />
+        </shape>
+    </item>
+    <item
+        android:top="185dp"
+        android:bottom="252dp">
+        <shape>
+            <gradient
+                android:type="linear"
+                android:angle="270"
+                android:startColor="@color/color6"
+                android:centerColor="@color/color7"
+                android:endColor="@color/color8"
+                android:useLevel="false" />
+        </shape>
+    </item>
+    <item
+        android:top="248dp"
+        android:bottom="188dp">
+        <shape>
+            <gradient
+                android:type="linear"
+                android:angle="270"
+                android:startColor="@color/color8"
+                android:centerColor="@color/color9"
+                android:endColor="@color/color10"
+                android:useLevel="false" />
+        </shape>
+    </item>
+    <item
+        android:top="311dp"
+        android:bottom="125dp">
+        <shape>
+            <gradient
+                android:type="linear"
+                android:angle="270"
+                android:startColor="@color/color10"
+                android:centerColor="@color/color11"
+                android:endColor="@color/color12"
+                android:useLevel="false" />
+        </shape>
+    </item>
+    <item
+        android:top="374dp"
+        android:bottom="63dp">
+        <shape>
+            <gradient
+                android:type="linear"
+                android:angle="270"
+                android:startColor="@color/color12"
+                android:centerColor="@color/color13"
+                android:endColor="@color/color14"
+                android:useLevel="false" />
+        </shape>
+    </item>
+    <item
+        android:top="437dp"
+        android:bottom="0dp">
+        <shape>
+            <gradient
+                android:type="linear"
+                android:angle="270"
+                android:startColor="@color/color14"
+                android:endColor="@color/color15"
+                android:useLevel="false" />
+        </shape>
+    </item>
 </layer-list>
+
+
+
+

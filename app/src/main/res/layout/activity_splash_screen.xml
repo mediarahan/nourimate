@@ -4,6 +4,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_background">
 
-    <!-- Your layout components go here -->
+    <!-- Tambahkan elemen-elemen lainnya yang mungkin Anda butuhkan di splash screen -->
 
 </RelativeLayout>

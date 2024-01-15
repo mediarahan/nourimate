@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingTop="16dp"
+    android:paddingRight="16dp"
+    android:paddingBottom="16dp"
+    tools:context=".EditProfileActivity">
+
+    <TextView
+        android:id="@+id/textViewDateOfBirth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date of Birth" />
+
+    <EditText
+        android:id="@+id/editTextDateOfBirth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewDateOfBirth"
+        android:layout_marginTop="8dp"
+        android:hint="Select Date"
+        android:inputType="none"
+        android:focusable="false" />
+
+    <TextView
+        android:id="@+id/textViewHeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextDateOfBirth"
+        android:layout_marginTop="16dp"
+        android:text="Height" />
+
+    <EditText
+        android:id="@+id/editTextHeight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewHeight"
+        android:layout_marginTop="8dp"
+        android:hint="Enter Height"
+        android:inputType="number" />
+
+    <TextView
+        android:id="@+id/textViewWeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextHeight"
+        android:layout_marginTop="16dp"
+        android:text="Weight" />
+
+    <EditText
+        android:id="@+id/editTextWeight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewWeight"
+        android:layout_marginTop="8dp"
+        android:hint="Enter Weight"
+        android:inputType="number" />
+
+    <TextView
+        android:id="@+id/textViewWaistSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextWeight"
+        android:layout_marginTop="16dp"
+        android:text="Waist Size" />
+
+    <EditText
+        android:id="@+id/editTextWaistSize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewWaistSize"
+        android:layout_marginTop="8dp"
+        android:hint="Enter Waist Size"
+        android:inputType="number" />
+
+    <TextView
+        android:id="@+id/textViewGender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextWaistSize"
+        android:layout_marginTop="16dp"
+        android:text="Gender" />
+
+    <Spinner
+        android:id="@+id/spinnerGender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewGender"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/textViewAllergies"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spinnerGender"
+        android:layout_marginTop="16dp"
+        android:text="Allergies" />
+
+    <Spinner
+        android:id="@+id/spinnerAllergies"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewAllergies"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/textViewPersonalDisease"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spinnerAllergies"
+        android:layout_marginTop="16dp"
+        android:text="Personal Disease" />
+
+    <Spinner
+        android:id="@+id/spinnerPersonalDisease"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewPersonalDisease"
+        android:layout_marginTop="8dp" />
+
+    <Button
+        android:id="@+id/buttonNext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spinnerPersonalDisease"
+        android:layout_marginTop="16dp"
+        android:text="Next" />
+
+</RelativeLayout>
+
+

@@ -28,7 +28,7 @@ class LoginActivity : AppCompatActivity() {
             openHomePage()
         }
         binding.buttonSignInWithGoogle.setOnClickListener {
-            openHomePage()
+            openVerificationPage()
         }
         binding.buttonForgotPassword.setOnClickListener {
             openVerificationPage()
