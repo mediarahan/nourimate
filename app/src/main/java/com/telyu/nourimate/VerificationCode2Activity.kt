@@ -26,7 +26,7 @@ class VerificationCode2Activity : AppCompatActivity() {
 
             when (verificationCode) {
                 "1" -> navigateToProfile()
-                "2" -> navigateToHome()
+                "2" -> navigateToNavBar()
                 "3" -> navigateToPasswordPopupPage()
                 else -> setResult(Activity.RESULT_OK)
             }
@@ -38,15 +38,11 @@ class VerificationCode2Activity : AppCompatActivity() {
         finish() // Optional, to finish the current activity if going to a different screen
     }
 
-    private fun navigateToHome() {
-        startActivity(Intent(this, HomeActivity::class.java))
+    private fun navigateToNavBar() {
+        startActivity(Intent(this, NavigationBarActivity::class.java))
         finish() // Optional, to finish the current activity if going to a different screen
     }
 
-    private fun navigateToVerficationCode1() {
-        startActivity(Intent(this, VerificationCode1Activity::class.java))
-        finish() // Optional, to finish the current activity if going to a different screen
-    }
 
     private fun openVerification1Page() {
         // Buat Intent untuk membuka VerificationActivity

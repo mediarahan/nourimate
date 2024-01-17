@@ -20,7 +20,7 @@ class LoginActivity : AppCompatActivity() {
             openSignUpPage()
         }
         binding.buttonLogin.setOnClickListener {
-            openHomePage()
+            openNavBarPage()
         }
         binding.buttonSignInWithGoogle.setOnClickListener {
             openVerificationPage()
@@ -43,9 +43,8 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(this, SignUpActivity::class.java)
         startActivity(intent)
     }
-    private fun openHomePage() {
-        // Buat Intent untuk membuka SignUpActivity
-        val intent = Intent(this, HomeActivity::class.java)
+    private fun openNavBarPage() {
+        val intent = Intent(this, NavigationBarActivity::class.java)
         startActivity(intent)
     }
     private fun openVerificationPage() {

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- res/drawable/shape_menu.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:id="@+id/shape_menu"
+            android:shape="rectangle">
+            <solid android:color="#D2EACE" />
+            <size
+                android:width="300dp"
+                android:height="250dp" />
+            <corners android:radius="30dp" /> <!-- Corner radius 15dp -->
+        </shape>
+    </item>
+    <item
+        android:left="150dp"
+        android:top="0dp"
+        android:right="0dp"
+        android:bottom="100dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#C3E1B9" />
+            <corners
+                android:topLeftRadius="75dp"
+                android:topRightRadius="30dp"
+                android:bottomLeftRadius="75dp"
+                android:bottomRightRadius="75dp"
+                />
+        </shape>
+    </item>
+</layer-list>
+
