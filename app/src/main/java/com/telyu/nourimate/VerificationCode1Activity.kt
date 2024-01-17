@@ -20,10 +20,10 @@ class VerificationCode1Activity : AppCompatActivity() {
     }
 
     private fun initVerificationCode1() {
-        binding.buttonEmail.setOnClickListener {
+        binding.buttonVerifEmail.setOnClickListener {
             openVerification2Page()
         }
-        binding.buttonPhoneNumber.setOnClickListener {
+        binding.buttonVerifNumber.setOnClickListener {
             openVerification2Page()
         }
     }

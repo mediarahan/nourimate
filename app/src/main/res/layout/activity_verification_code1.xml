@@ -1,31 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="20dp">
 
-    <Button
-        android:id="@+id/buttonEmail"
+    <TextView
+        android:id="@+id/verificationcode1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/alatsi"
+        android:text="Verification Code"
+        android:textColor="#000000"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/verificationcode2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/abel"
+        android:text="Choose your verification method."
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@+id/verificationcode1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+
+    <Button
+        android:id="@+id/buttonVerifEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onVerifEmailClicked"
         android:text="Email"
-        android:layout_marginTop="200dp"
         android:textStyle="bold"
-        android:padding="8dp"
-        android:clickable="true"
-        android:onClick="onSignUpClicked"/>
+        app:layout_constraintTop_toBottomOf="@+id/verificationcode2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
     <Button
-        android:id="@+id/buttonPhoneNumber"
+        android:id="@+id/buttonVerifNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="onVerifNumberClicked"
         android:text="Phone Number"
-        android:layout_marginTop="300dp"
         android:textStyle="bold"
-        android:padding="8dp"
-        android:clickable="true"
-        android:onClick="onSignUpClicked"/>
-    />
+        app:layout_constraintTop_toBottomOf="@+id/buttonVerifEmail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

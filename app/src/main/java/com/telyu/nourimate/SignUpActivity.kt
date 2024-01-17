@@ -14,23 +14,33 @@ class SignUpActivity : AppCompatActivity() {
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-
-        // Tambahkan logika sign-up jika diperlukan
         initSignUp()
+
+        val fullName = binding.editTextFullName.text.toString()
+        val phoneNumber = binding.editTextPhone.text.toString()
+        val email = binding.editTextEmail.text.toString()
+        val password = binding.editTextPassword.text.toString()
+        val confirmPassword = binding.editTextConfirmPassword.text.toString()
+
+        binding.TextViewSignIn.setOnClickListener {
+            openLoginPage()
+        }
     }
 
     private fun initSignUp() {
         binding.buttonRegister.setOnClickListener {
-            // Handle sign-up logic here
-
-            // Setelah berhasil sign-up, buka halaman verifikasi kode
             openVerificationPage()
         }
     }
 
     private fun openVerificationPage() {
-        // Buat Intent untuk membuka VerificationActivity
         val intent = Intent(this, VerificationCode1Activity::class.java)
+        startActivity(intent)
+    }
+
+    private fun openLoginPage() {
+        // Buat Intent untuk membuka SignUpActivity
+        val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
     }
 }

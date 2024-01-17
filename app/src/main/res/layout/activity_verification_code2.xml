@@ -1,28 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="20dp">
 
-    <EditText
-        android:id="@+id/editTextVerificationCode"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/verificationcode3"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="VerificationCode" />
+        android:fontFamily="@font/alatsi"
+        android:text="Verification Code"
+        android:textColor="#000000"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/verificationcode4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/abel"
+        android:text="Verification code has been sent\nto your email address."
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@+id/verificationcode3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/TextViewReceiveCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onTextViewClick"
+        android:text="Didn’t receive a code?"
+        android:layout_marginTop="3dp"
+        android:textColor="#999792"
+        android:layout_gravity="end"
+        app:layout_constraintEnd_toEndOf="@+id/verifyInputLayout"
+        app:layout_constraintTop_toBottomOf="@+id/verifyInputLayout" />
+
 
     <Button
         android:id="@+id/buttonVerify"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="onVerifyClicked"
         android:text="Verify"
-        android:layout_below="@id/editTextVerificationCode"
-        android:layout_marginTop="400dp"
+        android:layout_marginTop="20dp"
         android:textStyle="bold"
-        android:padding="8dp"
-        android:clickable="true"
-        android:onClick="onSignUpClicked"/>
+        app:layout_constraintTop_toBottomOf="@+id/verifyInputLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/verifyInputLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/verificationcode4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/verifyEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Code"
+            android:inputType="number" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
 
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

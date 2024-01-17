@@ -18,30 +18,23 @@ class EditProfileActivity : AppCompatActivity() {
         binding = ActivityEditProfileBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-
         // Date of Birth
         binding.editTextDateOfBirth.setOnClickListener {
             showDatePicker()
         }
-
-        // Gender Dropdown
+        val height = binding.editTextHeight.text.toString()
+        val weight = binding.editTextWeight.text.toString()
+        val waistSize = binding.editTextWaistSize.text.toString()
         val genderOptions = arrayOf("Laki-laki", "Perempuan")
         val genderAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, genderOptions)
         binding.spinnerGender.adapter = genderAdapter
-
-        // Allergies Dropdown
         val allergiesOptions = arrayOf("Nuts", "Egg", "Seafood")
         val allergiesAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, allergiesOptions)
         binding.spinnerAllergies.adapter = allergiesAdapter
-
-        // Personal Disease Dropdown
         val diseaseOptions = arrayOf("High Blood Pressure", "Diabetes", "Cholesterol")
         val diseaseAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, diseaseOptions)
         binding.spinnerPersonalDisease.adapter = diseaseAdapter
-
-        // Next Button
         binding.buttonNext.setOnClickListener {
-            // Tambahkan logika untuk berpindah ke halaman Home
         openHomePage()}
     }
 
@@ -55,7 +48,6 @@ class EditProfileActivity : AppCompatActivity() {
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
-
         val datePickerDialog = DatePickerDialog(
             this,
             { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
@@ -66,7 +58,6 @@ class EditProfileActivity : AppCompatActivity() {
             month,
             day
         )
-
         datePickerDialog.show()
     }
 }
