@@ -1,9 +1,14 @@
-package com.telyu.nourimate
+package com.telyu.nourimate.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.telyu.nourimate.fragments.ProfileFragment
+import com.telyu.nourimate.fragments.ProgramFragment
+import com.telyu.nourimate.R
+import com.telyu.nourimate.fragments.RecipeFragment
 import com.telyu.nourimate.databinding.ActivityNavigationBarBinding
+import com.telyu.nourimate.fragments.HomeFragment
 
 class NavigationBarActivity : AppCompatActivity() {
 

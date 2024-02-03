@@ -1,6 +1,5 @@
-package com.telyu.nourimate
+package com.telyu.nourimate.viewmodels
 
-import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,10 +15,6 @@ class HomeViewModel : ViewModel() {
     val weightMessage: LiveData<String>
         get() = _weightMessage
 
-    private val _userProfilePhoto = MutableLiveData<Bitmap>()
-    val userProfilePhoto: LiveData<Bitmap>
-        get() = _userProfilePhoto
-
     init {
         updateGreetingMessage()
         // Default weight message
@@ -28,10 +23,6 @@ class HomeViewModel : ViewModel() {
 
     fun setWeightMessage(weightGain: Int) {
         _weightMessage.value = "You've gained $weightGain kg today"
-    }
-
-    fun setUserProfilePhoto(photo: Bitmap) {
-        _userProfilePhoto.value = photo
     }
 
     private fun updateGreetingMessage() {

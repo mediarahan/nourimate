@@ -1,141 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.HomeFragment">
 
-    <data>
-        <variable
-            name="viewModel"
-            type="com.telyu.nourimate.HomeViewModel" />
-    </data>
+    <TextView
+        android:id="@+id/greetingTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Good morning!"
+        android:textSize="18sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <!-- Profile photo can be added here -->
+    <ImageView
+        android:id="@+id/profileImageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintTop_toBottomOf="@+id/greetingTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/weightMessageTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="You've gained 0 kg today"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@+id/profileImageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
 
-            <!-- Your layout content here -->
-
-            <ImageView
-                android:id="@+id/rectanglehomeImageView"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:background="@drawable/rectangle_home"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="0dp"/>
-
-            <TextView
-                android:id="@+id/greetingTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Good morning,"
-                android:textSize="25sp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="16dp"
-                android:layout_marginLeft="16dp"/>
-
-            <ImageView
-                android:id="@+id/profileImageView"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                app:layout_constraintTop_toTopOf="@+id/rectanglehomeImageView"
-                app:layout_constraintBottom_toBottomOf="@+id/rectanglehomeImageView"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="16dp"
-                android:layout_marginRight="16dp"/>
-
-            <TextView
-                android:id="@+id/weightMessageTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="You've gained 0 kg today"
-                android:textSize="15sp"
-                app:layout_constraintTop_toBottomOf="@+id/greetingTextView"
-                app:layout_constraintStart_toStartOf="@+id/greetingTextView"/>
-
-
-            <TextView
-                android:id="@+id/caloriesBurnedTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1739 kcal"
-                app:layout_constraintTop_toTopOf="@+id/halfCircleImageView"
-                app:layout_constraintStart_toStartOf="@+id/halfCircleImageView"
-                app:layout_constraintEnd_toEndOf="@+id/halfCircleImageView"
-                android:layout_marginTop="100dp"/>
-
-            <TextView
-                android:id="@+id/speedTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="8 mph"
-                app:layout_constraintTop_toBottomOf="@+id/caloriesBurnedTextView"
-                app:layout_constraintStart_toStartOf="@+id/halfCircleImageView"
-                app:layout_constraintEnd_toEndOf="@+id/halfCircleImageView"/>
-
-            <ImageView
-                android:id="@+id/halfCircleImageView"
-                android:layout_width="350dp"
-                android:layout_height="200dp"
-                android:background="@drawable/shape_half_rectangle_with_shadow"
-                android:elevation="5dp"
-                app:layout_constraintTop_toBottomOf="@+id/rectanglehomeImageView"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="18dp"/>
-
-            <ImageView
-                android:id="@+id/rectanglehomeingredientsImageView"
-                android:layout_width="350dp"
-                android:layout_height="200dp"
-                android:background="@drawable/rectangle_home2_with_shadow"
-                android:elevation="5dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/halfCircleImageView"
-                android:layout_marginTop="15dp"/>
-
-            <ImageView
-                android:id="@+id/rectanglehomesleepImageView"
-                android:layout_width="350dp"
-                android:layout_height="120dp"
-                android:background="@drawable/rectangle_home2_with_shadow"
-                android:elevation="5dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rectanglehomeingredientsImageView"
-                android:layout_marginTop="15dp"/>
-
-            <ImageView
-                android:id="@+id/rectanglehomewaterImageView"
-                android:layout_width="350dp"
-                android:layout_height="120dp"
-                android:background="@drawable/rectangle_home2_with_shadow"
-                android:elevation="5dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rectanglehomesleepImageView"
-                android:layout_marginTop="15dp"/>
-
-            <ImageView
-                android:id="@+id/rectanglehomemealImageView"
-                android:layout_width="350dp"
-                android:layout_height="120dp"
-                android:background="@drawable/rectangle_home2_with_shadow"
-                android:elevation="5dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rectanglehomewaterImageView"
-                android:layout_marginTop="15dp"/>
-
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
-</layout>
+</androidx.constraintlayout.widget.ConstraintLayout>

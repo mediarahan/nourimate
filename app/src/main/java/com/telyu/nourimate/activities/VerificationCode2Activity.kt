@@ -1,4 +1,4 @@
-package com.telyu.nourimate
+package com.telyu.nourimate.activities
 
 import android.content.Intent
 import android.os.Bundle

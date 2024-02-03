@@ -1,11 +1,14 @@
-package com.telyu.nourimate
+package com.telyu.nourimate.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.telyu.nourimate.activities.NavigationBarActivity
+import com.telyu.nourimate.viewmodels.ProfileViewModel
 import com.telyu.nourimate.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
@@ -25,10 +28,8 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
 
-        // Load user profile photo (replace with your implementation)
-        // val userProfilePhoto = viewModel.getUserProfilePhoto()
-        // binding.profileImageView.setImageBitmap(userProfilePhoto)
-
-        // Implement logic for adding/editing profile photo
+        binding.SignOutButton.setOnClickListener {
+            viewModel.onSignOutButtonClick()
+        }
     }
 }

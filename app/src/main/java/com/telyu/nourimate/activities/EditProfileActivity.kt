@@ -1,4 +1,4 @@
-package com.telyu.nourimate
+package com.telyu.nourimate.activities
 
 import android.app.DatePickerDialog
 import android.content.Intent

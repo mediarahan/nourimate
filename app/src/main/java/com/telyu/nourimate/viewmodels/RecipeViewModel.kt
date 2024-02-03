@@ -1,4 +1,4 @@
-package com.telyu.nourimate
+package com.telyu.nourimate.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

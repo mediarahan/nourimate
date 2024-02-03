@@ -1,6 +1,9 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp")
+    id("kotlin-parcelize")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -35,7 +38,6 @@ android {
     }
     buildFeatures {
         viewBinding = true
-        dataBinding = true
     }
 }
 
@@ -47,12 +49,25 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.navigation:navigation-fragment-ktx:2.3.5")
     implementation("androidx.navigation:navigation-ui-ktx:2.3.5")
-    implementation("androidx.lifecycle:lifecycle-viewmodel:2.4.0")
     implementation("com.github.bumptech.glide:glide:4.12.0")
-    implementation("androidx.databinding:databinding-runtime:7.1.0")
+    implementation("com.google.firebase:firebase-auth:22.3.1")
     annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation ("androidx.fragment:fragment-ktx:1.2.5")
 
+
+    //datastore
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+    //rppm + vm + livedata
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
+    implementation("androidx.room:room-ktx:2.5.2")
+    implementation("androidx.room:room-runtime:2.5.2")
+    ksp("androidx.room:room-compiler:2.5.2")
+
+    //firebase auth
+    implementation("com.google.android.gms:play-services-auth:20.6.0")
 }
