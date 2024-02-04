@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ConstraintLayout_Layout">
+        <attr name="layout_marginBottom" format="dimension" />
+        <attr name="layout_marginEnd" format="dimension" />
+    </declare-styleable>
+</resources>

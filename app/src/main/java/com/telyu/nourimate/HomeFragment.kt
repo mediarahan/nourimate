@@ -12,14 +12,14 @@ import com.telyu.nourimate.databinding.FragmentHomeBinding
 class HomeFragment : Fragment() {
 
     private lateinit var viewModel: HomeViewModel
-    private lateinit var binding: FragmentHomeBinding
+    private var binding: FragmentHomeBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-        return binding.root
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -27,15 +27,20 @@ class HomeFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
         viewModel.greetingMessage.observe(viewLifecycleOwner, Observer {
-            binding.greetingTextView.text = it
+            binding?.greetingTextView?.text = it
         })
 
         viewModel.weightMessage.observe(viewLifecycleOwner, Observer {
-            binding.weightMessageTextView.text = it
+            binding?.weightMessageTextView?.text = it
         })
 
-        // Load user profile photo (replace with your implementation)
-        // val userProfilePhoto = viewModel.getUserProfilePhoto()
-        // binding.profileImageView.setImageBitmap(userProfilePhoto)
+        viewModel.userProfilePhoto.observe(viewLifecycleOwner, Observer { userProfilePhoto ->
+            binding?.profileImageView?.setImageBitmap(userProfilePhoto)
+        })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
     }
 }

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/popupTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Selected Meal"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/breakfastTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Breakfast"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/popupTitle"
+        android:layout_marginTop="8dp"/>
+
+    <ImageView
+        android:id="@+id/breakfastImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:clickable="true"
+        android:importantForAccessibility="no"
+        android:onClick="onImageViewClicked"
+        android:src="@drawable/expand_circle"
+        app:layout_constraintStart_toEndOf="@+id/breakfastTextView"
+        app:layout_constraintTop_toBottomOf="@+id/popupTitle"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <TextView
+        android:id="@+id/lunchTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lunch"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/breakfastTextView"
+        android:layout_marginTop="8dp"/>
+
+    <ImageView
+        android:id="@+id/lunchImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:clickable="true"
+        android:importantForAccessibility="no"
+        android:onClick="onImageViewClicked"
+        android:src="@drawable/expand_circle"
+        app:layout_constraintStart_toEndOf="@+id/lunchTextView"
+        app:layout_constraintTop_toBottomOf="@+id/breakfastTextView"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <TextView
+        android:id="@+id/dinnerTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dinner"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lunchTextView"
+        android:layout_marginTop="8dp"/>
+
+    <ImageView
+        android:id="@+id/dinnerImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:clickable="true"
+        android:importantForAccessibility="no"
+        android:onClick="onImageViewClicked"
+        android:src="@drawable/expand_circle"
+        app:layout_constraintStart_toEndOf="@+id/dinnerTextView"
+        app:layout_constraintTop_toBottomOf="@+id/lunchTextView"
+        tools:ignore="TouchTargetSizeCheck" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
