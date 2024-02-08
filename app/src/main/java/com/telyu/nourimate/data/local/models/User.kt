@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 
 @Entity (tableName = "users")
 @Parcelize
-data class User (
+data class User(
     @PrimaryKey(autoGenerate = false)
     @field:ColumnInfo(name = "name")
     val name: String,
@@ -17,7 +17,7 @@ data class User (
     val email: String,
 
     @field:ColumnInfo(name = "phone_number")
-    val phoneNumber: Int = 0,
+    val phoneNumber: Long = 0,
 
     @field:ColumnInfo(name = "password")
     val password: String,

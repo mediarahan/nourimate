@@ -8,9 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.telyu.nourimate.data.repository.NourimateRepository
 import kotlinx.coroutines.launch
 
-class LoginViewModel (application: Application): ViewModel() {
-
-    private val mNourimateRepository : NourimateRepository = NourimateRepository(application)
+class LoginViewModel (private val repository: NourimateRepository): ViewModel() {
 
     private val _loginResult = MutableLiveData<Boolean>()
     val loginResult: LiveData<Boolean> get() = _loginResult
@@ -18,7 +16,7 @@ class LoginViewModel (application: Application): ViewModel() {
 
     fun login(email: String, password: String) {
         viewModelScope.launch {
-            val result = mNourimateRepository.login(email, password)
+            val result = repository.login(email, password)
             _loginResult.value = result
         }
     }

@@ -7,6 +7,8 @@ import android.os.Bundle
 import com.telyu.nourimate.databinding.ActivityLoginBinding
 import android.widget.Toast
 import android.content.Intent
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts.*
 import androidx.lifecycle.Observer
@@ -21,6 +23,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
 import com.telyu.nourimate.R
+import com.telyu.nourimate.utils.InputValidator
 import com.telyu.nourimate.viewmodels.LoginViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
 
@@ -69,6 +72,9 @@ class LoginActivity : AppCompatActivity() {
         binding.buttonSignInWithGoogle.setOnClickListener {
             signIn()
         }
+
+        //aku butuh validasi
+        validateInputs()
     }
 
     private fun signIn() {
@@ -135,17 +141,25 @@ class LoginActivity : AppCompatActivity() {
         val email = binding.emailEditText.text.toString()
         val password = binding.passwordEditText.text.toString()
 
-        loginViewModel.login(email, password)
+        // Check email and password validations
+        if (InputValidator.isValidEmail(email) && InputValidator.isValidPassword(password)) {
+            loginViewModel.login(email, password)
 
-        loginViewModel.loginResult.observe(this, Observer { result ->
-            if (result) {
-                val intent = Intent(this, NavigationBarActivity::class.java)
-                startActivity(intent)
-            } else {
-                showToast("Login failed. Incorrect email or password.")
-            }
-        })
+            loginViewModel.loginResult.observe(this, Observer { result ->
+                if (result) {
+                    val intent = Intent(this, NavigationBarActivity::class.java)
+                    startActivity(intent)
+                } else {
+                    // Show a Toast message indicating the login error
+                    Toast.makeText(this, "Login failed. Incorrect email or password.", Toast.LENGTH_SHORT).show()
+                }
+            })
+        } else {
+            // Show a Toast message indicating the validation error
+            Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show()
+        }
     }
+
     private fun openVerificationPage() {
         // Buat Intent untuk membuka SignUpActivity
         val intent = Intent(this, VerificationCode1Activity::class.java)
@@ -166,6 +180,49 @@ class LoginActivity : AppCompatActivity() {
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
         updateUI(currentUser)
+    }
+
+    private fun validateInputs() {
+        binding.emailEditText.addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                //gak dipake
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                //gak dipake
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                val email = p0.toString().trim()
+
+                if (InputValidator.isValidEmail(email)) {
+                    binding.emailEditText.error = null
+                } else {
+                    binding.emailEditText.setError("Masukkan email yang valid", null)
+                }
+
+            }
+        })
+
+        binding.passwordEditText.addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                //gak dipake
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                val password = p0.toString().trim()
+
+                if (InputValidator.isValidPassword(password)) {
+                    binding.passwordEditText.error = null
+                } else {
+                    binding.passwordEditText.setError("Password tidak boleh kurang dari 8 karakter", null)
+                }
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                //gak dipake
+            }
+        })
     }
 
     companion object {

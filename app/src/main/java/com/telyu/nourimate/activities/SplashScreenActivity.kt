@@ -55,7 +55,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
         Handler().postDelayed({
             // Start the main activity after the splash duration
-            startActivity(Intent(this, LoginActivity::class.java))
+            startActivity(Intent(this, SignUpActivity::class.java))
             finish()
         }, splashDuration)
     }
