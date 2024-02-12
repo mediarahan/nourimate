@@ -22,8 +22,10 @@ class EditProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Implementasi event click atau operasi lainnya jika diperlukan
-        // ...
+        binding.backButton.setOnClickListener {
+            // Navigasi kembali ke ProfileFragment
+            requireActivity().supportFragmentManager.popBackStack()
+        }
     }
 
     override fun onDestroyView() {

@@ -427,9 +427,6 @@ class RecipeFragment : Fragment() {
     }
 
 
-
-
-
     private fun showToast(message: String) {
         // Implementasi tampilan pesan toast di sini
         // Misalnya, menggunakan Toast.makeText

@@ -1,10 +1,243 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".EditProfileFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/back"
+        android:contentDescription="Back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="30dp"/>
+
+    <TextView
+        android:id="@+id/textViewProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Profile"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/textViewEditProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit Your Profile"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewProfile" />
+
+    <View
+        android:id="@+id/rectanglebmiView"
+        android:layout_width="380dp"
+        android:layout_height="130dp"
+        android:background="@drawable/rectangle_profile_with_shadow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEditProfile"
+        android:elevation="5dp"
+        android:layout_marginTop="20dp"/>
+
+        <SeekBar
+            android:id="@+id/bmiSeekBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:max="40"
+            android:progress="21"
+            app:layout_constraintTop_toTopOf="@+id/rectanglebmiView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:thumb="@null"
+            android:elevation="6dp"/>
+
+        <View
+            android:id="@+id/greenDarkSegment"
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:background="#4CAF50"
+            app:layout_constraintTop_toBottomOf="@id/bmiSeekBar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/greenLightSegment"
+            android:elevation="6dp"/>
+
+        <View
+            android:id="@+id/greenLightSegment"
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:background="#8BC34A"
+            app:layout_constraintTop_toBottomOf="@id/bmiSeekBar"
+            app:layout_constraintStart_toEndOf="@id/greenDarkSegment"
+            app:layout_constraintEnd_toStartOf="@id/yellowSegment"
+            android:elevation="6dp"/>
+
+        <View
+            android:id="@+id/yellowSegment"
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:background="#FFEB3B"
+            app:layout_constraintTop_toBottomOf="@id/bmiSeekBar"
+            app:layout_constraintStart_toEndOf="@id/greenLightSegment"
+            app:layout_constraintEnd_toStartOf="@id/orangeSegment"
+            android:elevation="6dp"/>
+
+        <View
+            android:id="@+id/orangeSegment"
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:background="#FF9800"
+            app:layout_constraintTop_toBottomOf="@id/bmiSeekBar"
+            app:layout_constraintStart_toEndOf="@id/yellowSegment"
+            app:layout_constraintEnd_toStartOf="@id/redSegment"
+            android:elevation="6dp"/>
+
+        <View
+            android:id="@+id/redSegment"
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:background="#F44336"
+            app:layout_constraintTop_toBottomOf="@id/bmiSeekBar"
+            app:layout_constraintStart_toEndOf="@id/orangeSegment"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:elevation="6dp"/>
+
+        <!-- Labels for scale -->
+
+        <TextView
+            android:id="@+id/tv15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15"
+            app:layout_constraintTop_toBottomOf="@id/greenDarkSegment"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="4dp"
+            android:elevation="6dp"/>
+
+        <TextView
+            android:id="@+id/tv17"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="17"
+            app:layout_constraintTop_toBottomOf="@id/greenLightSegment"
+            app:layout_constraintStart_toEndOf="@id/tv15"
+            android:layout_marginStart="4dp"
+            android:elevation="6dp"/>
+
+        <TextView
+            android:id="@+id/tv18"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="18"
+            app:layout_constraintTop_toBottomOf="@id/yellowSegment"
+            app:layout_constraintStart_toEndOf="@id/tv17"
+            android:layout_marginStart="4dp"
+            android:elevation="6dp"/>
+
+        <TextView
+            android:id="@+id/tv24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="24"
+            app:layout_constraintTop_toBottomOf="@id/orangeSegment"
+            app:layout_constraintStart_toEndOf="@id/tv18"
+            android:layout_marginStart="4dp"
+            android:elevation="6dp"/>
+
+        <TextView
+            android:id="@+id/tv25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="25"
+            app:layout_constraintTop_toBottomOf="@id/redSegment"
+            app:layout_constraintStart_toEndOf="@id/tv24"
+            android:layout_marginStart="4dp"
+            android:elevation="6dp"/>
+
+        <TextView
+            android:id="@+id/tv29"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="29"
+            app:layout_constraintTop_toBottomOf="@id/redSegment"
+            app:layout_constraintStart_toEndOf="@id/tv25"
+            android:layout_marginStart="4dp"
+            android:elevation="6dp"/>
+
+        <TextView
+            android:id="@+id/tv30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="30"
+            app:layout_constraintTop_toBottomOf="@id/redSegment"
+            app:layout_constraintStart_toEndOf="@id/tv29"
+            android:layout_marginStart="4dp"
+            android:elevation="6dp"/>
+
+        <TextView
+            android:id="@+id/tv34"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="34"
+            app:layout_constraintTop_toBottomOf="@id/redSegment"
+            app:layout_constraintStart_toEndOf="@id/tv30"
+            android:layout_marginStart="4dp"
+            android:elevation="6dp"/>
+
+        <TextView
+            android:id="@+id/tv35"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="35"
+            app:layout_constraintTop_toBottomOf="@id/redSegment"
+            app:layout_constraintStart_toEndOf="@id/tv34"
+            android:layout_marginStart="4dp"
+            android:elevation="6dp"/>
+
+        <TextView
+            android:id="@+id/tv40"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="40"
+            app:layout_constraintTop_toBottomOf="@id/redSegment"
+            app:layout_constraintStart_toEndOf="@id/tv35"
+            android:layout_marginStart="4dp"
+            android:elevation="6dp"/>
+
+        <ImageView
+            android:id="@+id/arrowImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/arrow"
+            app:layout_constraintStart_toStartOf="@id/bmiSeekBar"
+            app:layout_constraintTop_toTopOf="@id/bmiSeekBar"
+            app:layout_constraintBottom_toTopOf="@id/bmiSeekBar"
+            android:layout_marginTop="-16dp"
+            android:layout_marginBottom="-16dp"
+            android:elevation="6dp"/>
+
+    <TextView
+        android:id="@+id/textViewInformation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your Information"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rectanglebmiView"
+        android:layout_marginTop="20dp"/>
 
     <View
         android:id="@+id/rectanglenameView"
@@ -13,8 +246,8 @@
         android:background="@drawable/rectangle_profile_with_shadow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="250dp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/textViewInformation"
         android:elevation="5dp"/>
 
     <TextView
@@ -58,8 +291,8 @@
         android:background="@drawable/rectangle_profile_with_shadow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="320dp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/rectanglenameView"
         android:elevation="5dp"/>
 
     <TextView
@@ -103,8 +336,8 @@
         android:background="@drawable/rectangle_profile_with_shadow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="390dp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/rectangledatebirthView"
         android:elevation="5dp"/>
 
     <TextView
@@ -147,8 +380,8 @@
         android:layout_height="50dp"
         android:background="@drawable/rectangle_profile_with_shadow"
         app:layout_constraintStart_toStartOf="@+id/rectangleheightView"
-        android:layout_marginTop="460dp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/rectangleheightView"
         android:elevation="5dp"/>
 
     <TextView
@@ -191,8 +424,8 @@
         android:layout_height="50dp"
         android:background="@drawable/rectangle_profile_with_shadow"
         app:layout_constraintEnd_toEndOf="@+id/rectanglegenderView"
-        android:layout_marginTop="460dp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/rectangleheightView"
         android:elevation="5dp"/>
 
     <TextView
@@ -236,8 +469,8 @@
         android:background="@drawable/rectangle_profile_with_shadow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="530dp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/rectangleweightView"
         android:elevation="5dp"/>
 
     <TextView
@@ -281,8 +514,8 @@
         android:background="@drawable/rectangle_profile_with_shadow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="600dp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/rectanglegenderView"
         android:elevation="5dp"/>
 
     <TextView
@@ -326,8 +559,8 @@
         android:background="@drawable/rectangle_profile_with_shadow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="670dp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/rectangleallergyView"
         android:elevation="5dp"/>
 
     <TextView
@@ -364,6 +597,19 @@
         app:layout_constraintBottom_toBottomOf="@+id/rectanglediseaseView"
         android:layout_marginEnd="10dp" />
 
+    <Button
+        android:id="@+id/buttonSaveEditProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onSaveEditProfileClicked"
+        android:text="Save"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/rectanglediseaseView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="50dp"/>
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

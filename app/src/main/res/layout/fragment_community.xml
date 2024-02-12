@@ -38,6 +38,82 @@
         app:layout_constraintTop_toBottomOf="@+id/communityTextView"
         android:layout_marginTop="20dp"/>
 
+    <TextView
+        android:id="@+id/textViewSocialMedia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Follow us in our Social Media"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/rectanglecommunityImageView"
+        app:layout_constraintTop_toTopOf="@+id/rectanglecommunityImageView"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:elevation="6dp"/>
+
+    <ImageView
+        android:id="@+id/LogoFacebook"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/facebook"
+        app:layout_constraintStart_toStartOf="@+id/textViewSocialMedia"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSocialMedia"
+        android:layout_marginTop="10dp"
+        android:elevation="6dp"/>
+
+    <TextView
+        android:id="@+id/textViewFacebook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Facebook"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/LogoFacebook"
+        app:layout_constraintTop_toTopOf="@+id/LogoFacebook"
+        android:layout_marginStart="20dp"
+        android:elevation="6dp"/>
+
+    <TextView
+        android:id="@+id/textViewNameFacebook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NouriMate"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/LogoFacebook"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFacebook"
+        android:layout_marginStart="20dp"
+        android:elevation="6dp"/>
+
+    <ImageView
+        android:id="@+id/LogoInstagram"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/instagram"
+        app:layout_constraintStart_toStartOf="@+id/textViewSocialMedia"
+        app:layout_constraintTop_toBottomOf="@+id/LogoFacebook"
+        android:layout_marginTop="10dp"
+        android:elevation="6dp"/>
+
+    <TextView
+        android:id="@+id/textViewInstagram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Instagram"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/LogoInstagram"
+        app:layout_constraintTop_toTopOf="@+id/LogoInstagram"
+        android:layout_marginStart="20dp"
+        android:elevation="6dp"/>
+
+    <TextView
+        android:id="@+id/textViewNameInstagram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NouriMate"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/LogoInstagram"
+        app:layout_constraintTop_toBottomOf="@+id/textViewInstagram"
+        android:layout_marginStart="20dp"
+        android:elevation="6dp"/>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

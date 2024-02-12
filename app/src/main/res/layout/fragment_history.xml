@@ -30,13 +30,130 @@
     <ImageView
         android:id="@+id/rectanglehistoryImageView"
         android:layout_width="350dp"
-        android:layout_height="300dp"
+        android:layout_height="290dp"
         android:background="@drawable/rectangle_profile_with_shadow"
         android:elevation="5dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/historyTextView"
         android:layout_marginTop="20dp"/>
+
+    <ImageView
+        android:id="@+id/rectangleisihistory1ImageView"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:background="@drawable/rectangle_profile2"
+        android:elevation="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rectanglehistoryImageView"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/history1TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gain Weight"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:elevation="5dp"
+        app:layout_constraintStart_toStartOf="@+id/rectangleisihistory1ImageView"
+        app:layout_constraintTop_toTopOf="@+id/rectangleisihistory1ImageView"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"/>
+
+    <TextView
+        android:id="@+id/isihistory1TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2023/11/24 - 2023/12/27"
+        android:textSize="13sp"
+        android:elevation="5dp"
+        app:layout_constraintStart_toStartOf="@+id/history1TextView"
+        app:layout_constraintTop_toBottomOf="@+id/history1TextView"
+        android:layout_marginTop="5dp" />
+
+    <ImageView
+        android:id="@+id/rectangleisihistory2ImageView"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:background="@drawable/rectangle_profile2"
+        android:elevation="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rectangleisihistory1ImageView"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/history2TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Maintain Weight"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:elevation="5dp"
+        app:layout_constraintStart_toStartOf="@+id/rectangleisihistory2ImageView"
+        app:layout_constraintTop_toTopOf="@+id/rectangleisihistory2ImageView"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"/>
+
+    <TextView
+        android:id="@+id/isihistory2TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2023/10/31 - 2023/11/15"
+        android:textSize="13sp"
+        android:elevation="5dp"
+        app:layout_constraintStart_toStartOf="@+id/history2TextView"
+        app:layout_constraintTop_toBottomOf="@+id/history2TextView"
+        android:layout_marginTop="5dp"/>
+
+    <ImageView
+        android:id="@+id/rectangleisihistory3ImageView"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:background="@drawable/rectangle_profile2"
+        android:elevation="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rectangleisihistory2ImageView"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/history3TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Maintain Health"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:elevation="5dp"
+        app:layout_constraintStart_toStartOf="@+id/rectangleisihistory3ImageView"
+        app:layout_constraintTop_toTopOf="@+id/rectangleisihistory3ImageView"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"/>
+
+    <TextView
+        android:id="@+id/isihistory3TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2023/09/26 - 2023/10/27"
+        android:textSize="13sp"
+        android:elevation="5dp"
+        app:layout_constraintStart_toStartOf="@+id/history3TextView"
+        app:layout_constraintTop_toBottomOf="@+id/history3TextView"
+        android:layout_marginTop="5dp"/>
+
+    <TextView
+        android:id="@+id/noresultfaqTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-- No Results Found --"
+        android:textSize="10sp"
+        android:elevation="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/rectanglehistoryImageView"
+        android:layout_marginBottom="15dp" />
 
 
 
