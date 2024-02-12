@@ -1,6 +1,8 @@
 package com.telyu.nourimate.activities
 
 import android.app.DatePickerDialog
+import android.content.Context
+import android.content.SharedPreferences
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
@@ -12,16 +14,19 @@ import java.util.Calendar
 class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityEditProfileBinding
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditProfileBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-        // Date of Birth
+
+        sharedPreferences = getSharedPreferences("ProfileData", Context.MODE_PRIVATE)
         binding.editTextDateOfBirth.setOnClickListener {
             showDatePicker()
         }
+        val name= binding.editTextName.text.toString()
         val height = binding.editTextHeight.text.toString()
         val weight = binding.editTextWeight.text.toString()
         val waistSize = binding.editTextWaistSize.text.toString()
@@ -35,12 +40,24 @@ class EditProfileActivity : AppCompatActivity() {
         val diseaseAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, diseaseOptions)
         binding.spinnerPersonalDisease.adapter = diseaseAdapter
         binding.buttonNext.setOnClickListener {
-        openHomePage()}
+            // Simpan nilai tinggi dan berat ke SharedPreferences saat pengguna menekan tombol Simpan
+            val height = binding.editTextHeight.text.toString().toFloatOrNull()
+            val weight = binding.editTextWeight.text.toString().toFloatOrNull()
+
+            if (height != null && weight != null) {
+                with(sharedPreferences.edit()) {
+                    putFloat("height", height)
+                    putFloat("weight", weight)
+                    apply()
+                }
+            }
+
+            openHomePage()}
     }
 
     private fun openHomePage() {
         // Buat Intent untuk membuka VerificationActivity
-        val intent = Intent(this, HomeActivity::class.java)
+        val intent = Intent(this, NavigationBarActivity::class.java)
         startActivity(intent)}
 
     private fun showDatePicker() {

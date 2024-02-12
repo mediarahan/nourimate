@@ -33,6 +33,8 @@ class NavigationBarActivity : AppCompatActivity() {
             }
             true
         }
+
+
     }
 
     private fun setCurrentFragment(fragment: Fragment) {
