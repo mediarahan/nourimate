@@ -1,21 +1,21 @@
-package com.telyu.nourimate.activities
+package com.telyu.nourimate
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.telyu.nourimate.databinding.ActivityVerificationCode2Binding
+import com.telyu.nourimate.databinding.ActivityVerificationCode3Binding
 import android.app.Activity
 import android.graphics.drawable.GradientDrawable
 import androidx.core.content.ContextCompat
 
 
-class VerificationCode2Activity : AppCompatActivity() {
+class VerificationCode3Activity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityVerificationCode2Binding
+    private lateinit var binding: ActivityVerificationCode3Binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityVerificationCode2Binding.inflate(layoutInflater)
+        binding = ActivityVerificationCode3Binding.inflate(layoutInflater)
         window.statusBarColor = ContextCompat.getColor(this, R.color.color25)
         val view = binding.root
         setContentView(view)

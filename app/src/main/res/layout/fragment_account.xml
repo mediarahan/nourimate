@@ -106,6 +106,7 @@
         android:id="@+id/buttonSaveEditProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="onSaveEditAccountClicked"
         android:text="Save"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/buttonChangePassword"

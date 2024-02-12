@@ -19,6 +19,38 @@ class HomeViewModel : ViewModel() {
     val userProfilePhoto: LiveData<Bitmap>
         get() = _userProfilePhoto
 
+    val sleepTime = MutableLiveData<String>()
+    val wakeUpTime = MutableLiveData<String>()
+
+    // aktivitas olahraga
+    val runningSpeed = MutableLiveData<String>().apply { value = "8 mph" }
+    val runningGraphData = MutableLiveData<List<Int>>().apply {
+        value = listOf(5, 10, 8, 15, 14, 10, 7, 9) // Contoh data lari
+    }
+
+    // LiveData for total calories
+    val totalCalories = MutableLiveData<Int>().apply { value = 100 }
+    val caloriesProgress = MutableLiveData<Int>().apply { value = 30 }
+
+    // Initialize or update the totalCalories LiveData as needed
+    fun updateTotalCalories(calories: Int, progress: Int) {
+        totalCalories.value = calories
+        caloriesProgress.value = progress
+    }
+
+    // Fungsi untuk update data (dalam aplikasi nyata ini akan lebih kompleks)
+    fun updateRunningData(speed: String, graphData: List<Int>) {
+        runningSpeed.value = speed
+        runningGraphData.value = graphData
+    }
+
+    init {
+        // Contoh untuk mengatur waktu tidur dan bangun
+        // Dalam aplikasi nyata, ini mungkin akan diambil dari database atau API
+        sleepTime.value = "22:00" // Contoh waktu tidur
+        wakeUpTime.value = "06:00" // Contoh waktu bangun
+    }
+
     init {
         updateGreetingMessage()
         // Default weight message

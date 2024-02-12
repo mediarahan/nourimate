@@ -1,11 +1,12 @@
-package com.telyu.nourimate.activities
+package com.telyu.nourimate
 
 import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.os.Looper
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
-import com.telyu.nourimate.R
+import androidx.core.content.ContextCompat
 import com.telyu.nourimate.databinding.ActivitySplashScreenBinding
 
 class SplashScreenActivity : AppCompatActivity() {
@@ -14,6 +15,8 @@ class SplashScreenActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.color0)
+
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
@@ -52,10 +55,9 @@ class SplashScreenActivity : AppCompatActivity() {
 
         // Optional: Customize the duration of the splash screen
         val splashDuration = 2000L // 2 seconds
-
-        Handler().postDelayed({
+        Handler(Looper.getMainLooper()).postDelayed({
             // Start the main activity after the splash duration
-            startActivity(Intent(this, SignUpActivity::class.java))
+            startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }, splashDuration)
     }
