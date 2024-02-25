@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.telyu.nourimate.viewmodels.HomeViewModel
 import com.telyu.nourimate.databinding.FragmentHomeBinding
+import com.telyu.nourimate.viewmodels.HomeViewModel
 
 class HomeFragment : Fragment() {
 
@@ -35,8 +35,12 @@ class HomeFragment : Fragment() {
             binding.weightMessageTextView.text = it
         })
 
-        // Load user profile photo (replace with your implementation)
-        // val userProfilePhoto = viewModel.getUserProfilePhoto()
-        // binding.profileImageView.setImageBitmap(userProfilePhoto)
+        viewModel.userProfilePhoto.observe(viewLifecycleOwner, Observer { userProfilePhoto ->
+            binding.profileImageView.setImageBitmap(userProfilePhoto)
+        })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
     }
 }

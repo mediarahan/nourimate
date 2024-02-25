@@ -1,19 +1,20 @@
 package com.telyu.nourimate.data.repository
 
-import android.app.Application
-import androidx.datastore.dataStore
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
+import com.telyu.nourimate.data.local.dao.FoodDao
 import com.telyu.nourimate.data.local.dao.UserDao
-import com.telyu.nourimate.data.local.db.UserDatabase
+import com.telyu.nourimate.data.local.models.Recipe
 import com.telyu.nourimate.data.local.models.User
+import com.telyu.nourimate.data.local.relations.MealsWithRecommendations
 import com.telyu.nourimate.utils.UserModel
 import com.telyu.nourimate.utils.UserPreference
 import kotlinx.coroutines.flow.map
 
 class NourimateRepository(
     private val userPreference: UserPreference,
-    private val userDao: UserDao
+    private val userDao: UserDao,
+    private val foodDao: FoodDao,
 ) {
 
     fun signup(
@@ -51,13 +52,23 @@ class NourimateRepository(
         userPreference.logout()
     }
 
+    //=== QUERY ===
+
+    fun getRecipeByMealAndDate(mealId: Int, date: String): LiveData<List<Recipe>> {
+        return foodDao.getRecipesForMealAndDate(mealId, date)
+    }
+
+    fun getRecipeByMeal(mealId: Int): LiveData<List<Recipe>> {
+        return foodDao.getRecipeByMeal(mealId)
+    }
+
     companion object {
         @Volatile
         private var instance: NourimateRepository? = null
         fun getInstance(
-            pref: UserPreference, dao: UserDao
+            pref: UserPreference, userDao: UserDao, foodDao: FoodDao
         ): NourimateRepository = instance ?: synchronized(this) {
-            instance ?: NourimateRepository(pref, dao)
+            instance ?: NourimateRepository(pref, userDao, foodDao)
         }.also { instance = it }
     }
 

@@ -24,7 +24,7 @@ abstract class UserDatabase: RoomDatabase() {
                         androidx.room.Room.databaseBuilder(
                             context.applicationContext,
                             UserDatabase::class.java,
-                            "restaurant"
+                            "user"
                         )
                             .build()
                     }

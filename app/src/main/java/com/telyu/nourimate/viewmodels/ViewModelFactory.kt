@@ -28,6 +28,9 @@ class ViewModelFactory private constructor(
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
                 ProfileViewModel(repository) as T
             }
+            modelClass.isAssignableFrom(RecipeViewModel::class.java) -> {
+                RecipeViewModel(repository) as T
+            }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
@@ -50,6 +53,5 @@ class ViewModelFactory private constructor(
             return INSTANCE as ViewModelFactory
         }
     }
-
 
 }

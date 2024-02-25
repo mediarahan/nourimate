@@ -1,0 +1,20 @@
+{
+  "recommendation": [
+    {
+      "recommendationId":"1",
+      "date":1737158400000
+    },
+    {
+      "recommendationId":"2",
+      "date":1737244800000
+    },
+    {
+      "recommendationId":"3",
+      "date":1737331200000
+    },
+    {
+      "recommendationId":"4",
+      "date":1737417600000
+    }
+  ]
+}

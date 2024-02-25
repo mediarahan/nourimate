@@ -1,0 +1,16 @@
+{
+  "meal": [
+    {
+      "mealId": 1,
+      "name": "Breakfast"
+    },
+    {
+      "mealId": 2,
+      "name": "Lunch"
+    },
+    {
+      "mealId": 3,
+      "name": "Dinner"
+    }
+  ]
+}
