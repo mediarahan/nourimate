@@ -10,6 +10,7 @@ import com.telyu.nourimate.data.local.relations.MealsWithRecommendations
 import com.telyu.nourimate.utils.UserModel
 import com.telyu.nourimate.utils.UserPreference
 import kotlinx.coroutines.flow.map
+import java.util.Date
 
 class NourimateRepository(
     private val userPreference: UserPreference,
@@ -54,12 +55,16 @@ class NourimateRepository(
 
     //=== QUERY ===
 
-    fun getRecipeByMealAndDate(mealId: Int, date: String): LiveData<List<Recipe>> {
+    fun getRecipeByMeal(mealId: Int): LiveData<List<Recipe>> {
+        return foodDao.getRecipeByMeal(mealId)
+    }
+
+    fun getRecipeByMealAndDate (mealId: Int, date: Date): LiveData<List<Recipe>> {
         return foodDao.getRecipesForMealAndDate(mealId, date)
     }
 
-    fun getRecipeByMeal(mealId: Int): LiveData<List<Recipe>> {
-        return foodDao.getRecipeByMeal(mealId)
+    suspend fun getRecipeByName (name: String): List<Recipe> {
+        return foodDao.getRecipeByName(name)
     }
 
     companion object {

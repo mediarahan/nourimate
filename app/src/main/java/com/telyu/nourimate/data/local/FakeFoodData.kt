@@ -1,7 +1,10 @@
 package com.telyu.nourimate.data.local
 
 import com.telyu.nourimate.data.local.relations.MealsRecipesCrossRef
+import com.telyu.nourimate.data.local.relations.MealsRecommendationsCrossRef
 import com.telyu.nourimate.data.local.relations.RecipesRecommendationCrossRef
+import com.telyu.nourimate.utils.Converters
+import java.text.SimpleDateFormat
 import java.util.Date
 
 class FakeFoodData {
@@ -79,24 +82,27 @@ class FakeFoodData {
         )
     )
 
+    val converters = Converters()
+
     val recommendations = listOf(
         Recommendation(
             recommendationId = 1,
-            date = Date(1737158400000L)
+            date = Date(System.currentTimeMillis())
         ),
         Recommendation(
             recommendationId = 2,
-            date = Date(1737244800000L)
+            date = Date(System.currentTimeMillis() - 86400000)
         ),
         Recommendation(
             recommendationId = 3,
-            date = Date(1737331200000L)
+            date = Date(System.currentTimeMillis() + 86400000)
         ),
         Recommendation(
             recommendationId = 4,
-            date = Date(1737417600000L)
+            date = Date(System.currentTimeMillis() + 86400000 * 2)
         )
     )
+
 
     val meals = listOf(
         Meal(
@@ -124,7 +130,7 @@ class FakeFoodData {
         ),
         MealsRecipesCrossRef(
             mealId = 3,
-            recipeId = 2
+            recipeId = 5
         ),
         MealsRecipesCrossRef(
             mealId = 1,
@@ -158,4 +164,26 @@ class FakeFoodData {
         ),
     )
 
+    val mealsRecommendationCrossRef = listOf(
+        MealsRecommendationsCrossRef(
+            mealId = 1,
+            recommendationId = 1
+        ),
+        MealsRecommendationsCrossRef(
+            mealId = 2,
+            recommendationId = 2
+        ),
+        MealsRecommendationsCrossRef(
+            mealId = 3,
+            recommendationId = 3
+        ),
+        MealsRecommendationsCrossRef(
+            mealId = 1,
+            recommendationId = 4
+        ),
+        MealsRecommendationsCrossRef(
+            mealId = 1,
+            recommendationId = 5
+        )
+    )
 }
