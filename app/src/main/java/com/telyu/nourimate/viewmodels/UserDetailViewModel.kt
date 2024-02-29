@@ -5,17 +5,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.FirebaseAuth
+import com.telyu.nourimate.data.local.models.Detail
 import com.telyu.nourimate.data.repository.NourimateRepository
+import com.telyu.nourimate.utils.UserPreference
 import kotlinx.coroutines.launch
 
-class ProfileViewModel(private val repository: NourimateRepository) : ViewModel() {
+class UserDetailViewModel(private val repository: NourimateRepository, private val pref: UserPreference): ViewModel() {
 
     private val _userId = MutableLiveData<Int?>()
     val userId: LiveData<Int?> = _userId
 
-    private val _BMI = MutableLiveData<Int?>()
-    val BMI: LiveData<Int?> = _BMI
+    private val _userDetails = MutableLiveData<Detail?>()
+    val userDetails: LiveData<Detail?> = _userDetails
 
     private val _userName = MutableLiveData<String?>()
     val userName: LiveData<String?> = _userName
@@ -29,10 +30,10 @@ class ProfileViewModel(private val repository: NourimateRepository) : ViewModel(
         }
     }
 
-    fun getBMIById (id: Int?) {
+    fun getUserDetailsById (id: Int) {
         viewModelScope.launch {
-            val bmi = repository.getBMIById(id)
-            _BMI.value = bmi
+            val detail = repository.getUserDetailsById(id)
+            _userDetails.value = detail
         }
     }
 
@@ -40,16 +41,6 @@ class ProfileViewModel(private val repository: NourimateRepository) : ViewModel(
         viewModelScope.launch {
             val name = repository.getUserNameByEmail(email)
             _userName.value = name
-        }
-    }
-
-    fun onSignOutButtonClick() {
-        FirebaseAuth.getInstance().signOut()
-    }
-
-    fun logout() {
-        viewModelScope.launch {
-            repository.logout()
         }
     }
 

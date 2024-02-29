@@ -31,6 +31,12 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         }
     }
 
+    fun getUserEmail(): Flow<String> {
+        return dataStore.data.map { preferences ->
+            preferences[EMAIL_KEY] ?: ""
+        }
+    }
+
     suspend fun logout() {
         dataStore.edit { preferences ->
             preferences.clear()

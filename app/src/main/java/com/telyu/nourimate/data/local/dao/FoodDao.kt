@@ -43,6 +43,10 @@ interface FoodDao {
     @Query("SELECT * FROM recipes WHERE recipe_id IN (SELECT recipeId FROM MealsRecipesCrossRef WHERE mealId = :mealId) AND recipe_id IN (SELECT recipe_id FROM MealsRecommendationsCrossRef WHERE mealId = :mealId AND recommendationId = (SELECT recommendationId FROM Recommendations WHERE date = :date))")
     fun getRecipesForMealAndDate(mealId: Int, date: Date): LiveData<List<Recipe>>
 
+    @Query("SELECT * FROM recipes WHERE name LIKE '%' || :name || '%'")
+    suspend fun getRecipeByName(name: String): List<Recipe>
+
+
 
     // Insert methods for Recipe, Recommendation, and Meal entities
     @Insert(onConflict = OnConflictStrategy.REPLACE)

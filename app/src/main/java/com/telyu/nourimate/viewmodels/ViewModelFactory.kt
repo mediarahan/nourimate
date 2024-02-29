@@ -1,6 +1,5 @@
 package com.telyu.nourimate.viewmodels
 
-import android.app.Application
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -30,6 +29,12 @@ class ViewModelFactory private constructor(
             }
             modelClass.isAssignableFrom(RecipeViewModel::class.java) -> {
                 RecipeViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(EditProfileViewModel::class.java) -> {
+                EditProfileViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(UserDetailViewModel::class.java) -> {
+                UserDetailViewModel(repository, pref) as T
             }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)

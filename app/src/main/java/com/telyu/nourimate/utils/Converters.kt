@@ -1,9 +1,12 @@
 package com.telyu.nourimate.utils
 
 import androidx.room.TypeConverter
+import java.text.SimpleDateFormat
 import java.util.Date
 
 class Converters {
+
+    private val dateFormat = SimpleDateFormat("yyyy/MM/dd")
 
     @TypeConverter
     fun fromTimestamp(value: Long?): Date? {
@@ -15,4 +18,7 @@ class Converters {
         return date?.time?.toLong()
     }
 
+    fun formatDateToString(date: Date?): String {
+        return date?.let { dateFormat.format(it) } ?: ""
+    }
 }

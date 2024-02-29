@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.EditProfileFragment">
+    tools:context=".fragments.UserDetailFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -254,7 +254,6 @@
         android:id="@+id/textViewName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Young Flint"
         android:textSize="20sp"
         android:elevation="6dp"
         app:layout_constraintStart_toStartOf="@id/rectanglenameView"
@@ -299,7 +298,6 @@
         android:id="@+id/textViewBirth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="2000/02/13"
         android:textSize="20sp"
         android:elevation="6dp"
         app:layout_constraintStart_toStartOf="@+id/rectangledatebirthView"
@@ -344,7 +342,6 @@
         android:id="@+id/textViewHeight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="175 cm"
         android:textSize="20sp"
         android:elevation="6dp"
         app:layout_constraintStart_toStartOf="@+id/rectangleheightView"
@@ -388,7 +385,6 @@
         android:id="@+id/textViewWeight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="60 kg"
         android:textSize="20sp"
         android:elevation="6dp"
         app:layout_constraintStart_toStartOf="@+id/rectangleweightView"
@@ -432,7 +428,6 @@
         android:id="@+id/textViewWaist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="85 cm"
         android:textSize="20sp"
         android:elevation="6dp"
         app:layout_constraintStart_toStartOf="@+id/rectanglewaistView"
@@ -477,7 +472,6 @@
         android:id="@+id/textViewGender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Male"
         android:textSize="20sp"
         android:elevation="6dp"
         app:layout_constraintStart_toStartOf="@+id/rectanglegenderView"
@@ -522,7 +516,6 @@
         android:id="@+id/textViewAllergy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nuts"
         android:textSize="20sp"
         android:elevation="6dp"
         app:layout_constraintStart_toStartOf="@+id/rectangleallergyView"
@@ -567,7 +560,6 @@
         android:id="@+id/textViewDisease"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Diabetes"
         android:textSize="20sp"
         android:elevation="6dp"
         app:layout_constraintStart_toStartOf="@+id/rectanglediseaseView"
@@ -601,7 +593,6 @@
         android:id="@+id/buttonSaveEditProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="onSaveEditProfileClicked"
         android:text="Save"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/rectanglediseaseView"
@@ -609,6 +600,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="50dp"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_edit_profile"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,25 +11,9 @@
     tools:context=".activities.EditProfileActivity">
 
     <TextView
-        android:id="@+id/textViewName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Name" />
-
-    <EditText
-        android:id="@+id/editTextName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textViewName"
-        android:layout_marginTop="8dp"
-        android:hint="Enter Name"
-        android:inputType="textPersonName" />
-
-    <TextView
         android:id="@+id/textViewDateOfBirth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editTextName"
         android:layout_marginTop="16dp"
         android:text="Date of Birth" />
 
@@ -40,7 +24,6 @@
         android:layout_below="@id/textViewDateOfBirth"
         android:layout_marginTop="8dp"
         android:hint="Select Date"
-        android:inputType="none"
         android:focusable="false" />
 
     <TextView
@@ -140,12 +123,16 @@
         android:layout_marginTop="8dp" />
 
     <Button
-        android:id="@+id/buttonNext"
+        android:id="@+id/button_finish"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/spinnerPersonalDisease"
-        android:layout_marginTop="16dp"
-        android:text="Next" />
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:background="@android:color/holo_orange_light"
+        android:text="Finish" />
 
 </RelativeLayout>
 

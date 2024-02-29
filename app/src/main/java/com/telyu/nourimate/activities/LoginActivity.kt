@@ -1,7 +1,6 @@
 package com.telyu.nourimate.activities
 
 import android.app.Activity
-import android.content.ContentValues.TAG
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.telyu.nourimate.databinding.ActivityLoginBinding
@@ -145,15 +144,19 @@ class LoginActivity : AppCompatActivity() {
         if (InputValidator.isValidEmail(email) && InputValidator.isValidPassword(password)) {
             loginViewModel.login(email, password)
 
-            loginViewModel.loginResult.observe(this, Observer { result ->
+            loginViewModel.loginResult.observe(this) { result ->
                 if (result) {
-                    val intent = Intent(this, NavigationBarActivity::class.java)
+                    val intent = Intent(this, VerificationCode1Activity::class.java)
                     startActivity(intent)
                 } else {
                     // Show a Toast message indicating the login error
-                    Toast.makeText(this, "Login failed. Incorrect email or password.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this,
+                        "Login failed. Incorrect email or password.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-            })
+            }
         } else {
             // Show a Toast message indicating the validation error
             Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show()
