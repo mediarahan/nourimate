@@ -5,13 +5,13 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import com.telyu.nourimate.utils.DateConverter
+import com.telyu.nourimate.utils.Converters
 import kotlinx.parcelize.Parcelize
 import java.util.Date
 
 @Entity(tableName = "recommendations")
 @Parcelize
-@TypeConverters(DateConverter::class)
+@TypeConverters(Converters::class)
 data class Recommendation(
     @PrimaryKey(autoGenerate = false)
     @field:ColumnInfo(name = "recommendation_id")

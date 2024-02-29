@@ -9,6 +9,7 @@ import android.os.Build
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.telyu.nourimate.R
 import com.telyu.nourimate.adapter.RecipeAdapter
 import com.telyu.nourimate.data.local.FakeFoodData
 import com.telyu.nourimate.data.local.db.FoodDatabase
@@ -23,6 +24,8 @@ import com.telyu.nourimate.viewmodels.ViewModelFactory
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Calendar
+import java.util.Date
 
 
 class RecipeFragment : Fragment() {
@@ -47,7 +50,7 @@ class RecipeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Access your database instance
+        // Untuk isi database dengan fake data
         val dao = FoodDatabase.getInstance(requireContext()).foodDao()
         val fakeFoodData = FakeFoodData()
 
@@ -116,11 +119,45 @@ class RecipeFragment : Fragment() {
         binding.recommendationRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recommendationRecyclerView.adapter = recipeAdapter
 
-        viewModel.getRecipeByMeal(2)
-            .observe(viewLifecycleOwner) { recipes ->
-                recipeAdapter.submitList(recipes)
-            }
+        selectMealType { selectedMealType ->
+            viewModel.getRecipeByMeal(selectedMealType)
+                .observe(viewLifecycleOwner) { recipes ->
+                    recipeAdapter.submitList(recipes)
+                }
+        }
+
+//        selectMealTypeAndDate { mealId, date ->
+//            viewModel.getRecipeByMealAndDate(mealId, date)
+//                .observe(viewLifecycleOwner) { recipes ->
+//                    recipeAdapter.submitList(recipes)
+//                }
+//        }
     }
+
+//    private fun selectMealTypeAndDate(onMealTypeAndDateSelected: (Int, Date) -> Unit) {
+//        val today = Calendar.getInstance().time
+//        binding.radioGroupMealtype.setOnCheckedChangeListener { group, checkedId ->
+//            val mealId = when (checkedId) {
+//                R.id.button_breakfast -> 1
+//                R.id.button_lunch -> 2
+//                R.id.button_dinner -> 3
+//                else -> -1
+//            }
+//            onMealTypeAndDateSelected(mealId, today)
+//        }
+//    }
+
+        private fun selectMealType(onMealTypeSelected: (Int) -> Unit) {
+
+        binding.radioGroupMealtype.setOnCheckedChangeListener { group, checkedId ->
+            when (checkedId) {
+                R.id.button_breakfast -> onMealTypeSelected(1)
+                R.id.button_lunch -> onMealTypeSelected(2)
+                R.id.button_dinner -> onMealTypeSelected(3)
+            }
+        }
+    }
+
 }
 
 
