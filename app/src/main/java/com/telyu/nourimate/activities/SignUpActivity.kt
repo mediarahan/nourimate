@@ -38,10 +38,6 @@ class SignUpActivity : AppCompatActivity() {
                 //aku butuh validasi
                 validateInputs()
 
-                binding.ButtonToDebug.setOnClickListener {
-                    val intent = Intent(this, DebugActivity::class.java)
-                    startActivity(intent)
-                }
             }
         }
     }

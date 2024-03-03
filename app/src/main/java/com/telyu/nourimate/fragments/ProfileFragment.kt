@@ -148,16 +148,16 @@ class ProfileFragment : Fragment() {
             }
         }
 
-        // Implementasi event click untuk tombol History
-        binding.historyButton.setOnClickListener {
-            // Kode untuk menuju ke HistoryFragment
-            val historyFragment = HistoryFragment()
-            requireActivity().supportFragmentManager.beginTransaction().apply {
-                replace(R.id.fragmentContainer, historyFragment)
-                addToBackStack(null)
-                commit()
-            }
-        }
+//        // Implementasi event click untuk tombol History
+//        binding.historyButton.setOnClickListener {
+//            // Kode untuk menuju ke HistoryFragment
+//            val historyFragment = HistoryFragment()
+//            requireActivity().supportFragmentManager.beginTransaction().apply {
+//                replace(R.id.fragmentContainer, historyFragment)
+//                addToBackStack(null)
+//                commit()
+//            }
+//        }
 
         // Implementasi event click untuk tombol Community
         binding.communityButton.setOnClickListener {
