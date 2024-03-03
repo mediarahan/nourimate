@@ -49,28 +49,39 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewEditProfile"
-        android:elevation="5dp"
         android:layout_marginTop="20dp"/>
 
         <SeekBar
-            android:id="@+id/bmiSeekBar"
+            android:id="@+id/seekBar"
             android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintStart_toStartOf="@id/greenDarkSegment"
+            app:layout_constraintEnd_toEndOf="@id/redSegment"
+            app:layout_constraintTop_toTopOf="@id/greenDarkSegment"
+            app:layout_constraintBottom_toBottomOf="@id/redSegment"
+            android:progressDrawable="@drawable/seekbar"/>
+        
+        <TextView
+            android:id="@+id/textViewBmi"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:max="40"
-            android:progress="21"
-            app:layout_constraintTop_toTopOf="@+id/rectanglebmiView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:thumb="@null"
-            android:elevation="6dp"/>
+            android:text="21.2"
+            android:textSize="24dp"
+            android:layout_margin="16dp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="@id/rectanglebmiView"
+            app:layout_constraintEnd_toEndOf="@id/rectanglebmiView"/>
 
         <View
             android:id="@+id/greenDarkSegment"
             android:layout_width="0dp"
             android:layout_height="4dp"
             android:background="#4CAF50"
-            app:layout_constraintTop_toBottomOf="@id/bmiSeekBar"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="12dp"
+            app:layout_constraintTop_toTopOf="@id/rectanglebmiView"
+            app:layout_constraintBottom_toBottomOf="@id/rectanglebmiView"
+            app:layout_constraintStart_toStartOf="@id/rectanglebmiView"
             app:layout_constraintEnd_toStartOf="@id/greenLightSegment"
             android:elevation="6dp"/>
 
@@ -79,8 +90,9 @@
             android:layout_width="0dp"
             android:layout_height="4dp"
             android:background="#8BC34A"
-            app:layout_constraintTop_toBottomOf="@id/bmiSeekBar"
-            app:layout_constraintStart_toEndOf="@id/greenDarkSegment"
+            android:layout_marginStart="4dp"
+            app:layout_constraintTop_toTopOf="@id/rectanglebmiView"
+            app:layout_constraintBottom_toBottomOf="@id/rectanglebmiView"            app:layout_constraintStart_toEndOf="@id/greenDarkSegment"
             app:layout_constraintEnd_toStartOf="@id/yellowSegment"
             android:elevation="6dp"/>
 
@@ -89,8 +101,9 @@
             android:layout_width="0dp"
             android:layout_height="4dp"
             android:background="#FFEB3B"
-            app:layout_constraintTop_toBottomOf="@id/bmiSeekBar"
-            app:layout_constraintStart_toEndOf="@id/greenLightSegment"
+            android:layout_marginStart="4dp"
+            app:layout_constraintTop_toTopOf="@id/rectanglebmiView"
+            app:layout_constraintBottom_toBottomOf="@id/rectanglebmiView"            app:layout_constraintStart_toEndOf="@id/greenLightSegment"
             app:layout_constraintEnd_toStartOf="@id/orangeSegment"
             android:elevation="6dp"/>
 
@@ -99,8 +112,9 @@
             android:layout_width="0dp"
             android:layout_height="4dp"
             android:background="#FF9800"
-            app:layout_constraintTop_toBottomOf="@id/bmiSeekBar"
-            app:layout_constraintStart_toEndOf="@id/yellowSegment"
+            android:layout_marginStart="4dp"
+            app:layout_constraintTop_toTopOf="@id/rectanglebmiView"
+            app:layout_constraintBottom_toBottomOf="@id/rectanglebmiView"            app:layout_constraintStart_toEndOf="@id/yellowSegment"
             app:layout_constraintEnd_toStartOf="@id/redSegment"
             android:elevation="6dp"/>
 
@@ -109,9 +123,11 @@
             android:layout_width="0dp"
             android:layout_height="4dp"
             android:background="#F44336"
-            app:layout_constraintTop_toBottomOf="@id/bmiSeekBar"
-            app:layout_constraintStart_toEndOf="@id/orangeSegment"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="12dp"
+            app:layout_constraintTop_toTopOf="@id/rectanglebmiView"
+            app:layout_constraintBottom_toBottomOf="@id/rectanglebmiView"            app:layout_constraintStart_toEndOf="@id/orangeSegment"
+            app:layout_constraintEnd_toEndOf="@id/rectanglebmiView"
             android:elevation="6dp"/>
 
         <!-- Labels for scale -->
@@ -122,18 +138,8 @@
             android:layout_height="wrap_content"
             android:text="15"
             app:layout_constraintTop_toBottomOf="@id/greenDarkSegment"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="4dp"
-            android:elevation="6dp"/>
-
-        <TextView
-            android:id="@+id/tv17"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="17"
-            app:layout_constraintTop_toBottomOf="@id/greenLightSegment"
-            app:layout_constraintStart_toEndOf="@id/tv15"
-            android:layout_marginStart="4dp"
+            app:layout_constraintStart_toStartOf="@id/rectanglebmiView"
+            android:layout_marginStart="12dp"
             android:elevation="6dp"/>
 
         <TextView
@@ -142,17 +148,7 @@
             android:layout_height="wrap_content"
             android:text="18"
             app:layout_constraintTop_toBottomOf="@id/yellowSegment"
-            app:layout_constraintStart_toEndOf="@id/tv17"
-            android:layout_marginStart="4dp"
-            android:elevation="6dp"/>
-
-        <TextView
-            android:id="@+id/tv24"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="24"
-            app:layout_constraintTop_toBottomOf="@id/orangeSegment"
-            app:layout_constraintStart_toEndOf="@id/tv18"
+            app:layout_constraintStart_toStartOf="@id/greenLightSegment"
             android:layout_marginStart="4dp"
             android:elevation="6dp"/>
 
@@ -162,17 +158,7 @@
             android:layout_height="wrap_content"
             android:text="25"
             app:layout_constraintTop_toBottomOf="@id/redSegment"
-            app:layout_constraintStart_toEndOf="@id/tv24"
-            android:layout_marginStart="4dp"
-            android:elevation="6dp"/>
-
-        <TextView
-            android:id="@+id/tv29"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="29"
-            app:layout_constraintTop_toBottomOf="@id/redSegment"
-            app:layout_constraintStart_toEndOf="@id/tv25"
+            app:layout_constraintStart_toStartOf="@id/yellowSegment"
             android:layout_marginStart="4dp"
             android:elevation="6dp"/>
 
@@ -182,17 +168,7 @@
             android:layout_height="wrap_content"
             android:text="30"
             app:layout_constraintTop_toBottomOf="@id/redSegment"
-            app:layout_constraintStart_toEndOf="@id/tv29"
-            android:layout_marginStart="4dp"
-            android:elevation="6dp"/>
-
-        <TextView
-            android:id="@+id/tv34"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="34"
-            app:layout_constraintTop_toBottomOf="@id/redSegment"
-            app:layout_constraintStart_toEndOf="@id/tv30"
+            app:layout_constraintStart_toStartOf="@id/orangeSegment"
             android:layout_marginStart="4dp"
             android:elevation="6dp"/>
 
@@ -202,7 +178,7 @@
             android:layout_height="wrap_content"
             android:text="35"
             app:layout_constraintTop_toBottomOf="@id/redSegment"
-            app:layout_constraintStart_toEndOf="@id/tv34"
+            app:layout_constraintStart_toStartOf="@id/redSegment"
             android:layout_marginStart="4dp"
             android:elevation="6dp"/>
 
@@ -212,21 +188,10 @@
             android:layout_height="wrap_content"
             android:text="40"
             app:layout_constraintTop_toBottomOf="@id/redSegment"
-            app:layout_constraintStart_toEndOf="@id/tv35"
+            app:layout_constraintEnd_toEndOf="@id/redSegment"
             android:layout_marginStart="4dp"
             android:elevation="6dp"/>
 
-        <ImageView
-            android:id="@+id/arrowImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/arrow"
-            app:layout_constraintStart_toStartOf="@id/bmiSeekBar"
-            app:layout_constraintTop_toTopOf="@id/bmiSeekBar"
-            app:layout_constraintBottom_toTopOf="@id/bmiSeekBar"
-            android:layout_marginTop="-16dp"
-            android:layout_marginBottom="-16dp"
-            android:elevation="6dp"/>
 
     <TextView
         android:id="@+id/textViewInformation"
@@ -256,6 +221,7 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:elevation="6dp"
+        android:text="Young Flint"
         app:layout_constraintStart_toStartOf="@id/rectanglenameView"
         app:layout_constraintTop_toTopOf="@id/rectanglenameView"
         app:layout_constraintBottom_toBottomOf="@id/rectanglenameView"
@@ -300,6 +266,7 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:elevation="6dp"
+        android:text="2000/02/13"
         app:layout_constraintStart_toStartOf="@+id/rectangledatebirthView"
         app:layout_constraintTop_toTopOf="@+id/rectangledatebirthView"
         app:layout_constraintBottom_toBottomOf="@+id/rectangledatebirthView"
@@ -344,6 +311,7 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:elevation="6dp"
+        android:text="175 cm"
         app:layout_constraintStart_toStartOf="@+id/rectangleheightView"
         app:layout_constraintTop_toTopOf="@+id/rectangleheightView"
         app:layout_constraintBottom_toBottomOf="@+id/rectangleheightView"
@@ -387,6 +355,7 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:elevation="6dp"
+        android:text="60 kg"
         app:layout_constraintStart_toStartOf="@+id/rectangleweightView"
         app:layout_constraintTop_toTopOf="@+id/rectangleweightView"
         app:layout_constraintBottom_toBottomOf="@+id/rectangleweightView"
@@ -430,6 +399,7 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:elevation="6dp"
+        android:text="85 cm"
         app:layout_constraintStart_toStartOf="@+id/rectanglewaistView"
         app:layout_constraintTop_toTopOf="@+id/rectanglewaistView"
         app:layout_constraintBottom_toBottomOf="@+id/rectanglewaistView"
@@ -474,6 +444,7 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:elevation="6dp"
+        android:text="Male"
         app:layout_constraintStart_toStartOf="@+id/rectanglegenderView"
         app:layout_constraintTop_toTopOf="@+id/rectanglegenderView"
         app:layout_constraintBottom_toBottomOf="@+id/rectanglegenderView"
@@ -518,6 +489,7 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:elevation="6dp"
+        android:text="Nuts"
         app:layout_constraintStart_toStartOf="@+id/rectangleallergyView"
         app:layout_constraintTop_toTopOf="@+id/rectangleallergyView"
         app:layout_constraintBottom_toBottomOf="@+id/rectangleallergyView"
@@ -562,6 +534,7 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:elevation="6dp"
+        android:text="Diabetes"
         app:layout_constraintStart_toStartOf="@+id/rectanglediseaseView"
         app:layout_constraintTop_toTopOf="@+id/rectanglediseaseView"
         app:layout_constraintBottom_toBottomOf="@+id/rectanglediseaseView"

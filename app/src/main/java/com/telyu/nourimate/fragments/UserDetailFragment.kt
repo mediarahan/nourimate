@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.telyu.nourimate.activities.EditProfileActivity
@@ -12,6 +13,8 @@ import com.telyu.nourimate.databinding.FragmentUserDetailBinding
 import com.telyu.nourimate.utils.Converters
 import com.telyu.nourimate.viewmodels.UserDetailViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
+import kotlin.math.max
+import kotlin.math.min
 
 class UserDetailFragment : Fragment() {
     private lateinit var binding: FragmentUserDetailBinding
@@ -39,6 +42,9 @@ class UserDetailFragment : Fragment() {
 
         getAllData()
         mapAllDataToView()
+        setupSeekbar()
+
+
 
     }
 
@@ -80,6 +86,40 @@ class UserDetailFragment : Fragment() {
         viewModel.userName.observe(viewLifecycleOwner) {userName ->
             binding.textViewName.text = userName
         }
+    }
+
+    private fun setupSeekbar() {
+        val seekBar = binding.seekBar
+
+        val minValue = 15
+        val maxValue = 40
+        seekBar.max = maxValue - minValue
+
+        // Observe the BMI attribute of the Detail object
+        viewModel.userDetails.observe(viewLifecycleOwner) { userDetails ->
+            userDetails?.let { detail ->
+                val bmi = detail.bmi ?: 0.0
+                binding.textViewBmi.text = bmi.toString()
+                // Convert BMI to an integer value within the range of the SeekBar
+                val progress = max(0, min((maxValue - minValue), (bmi.toInt() - minValue)))
+                seekBar.progress = progress
+            }
+        }
+        seekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                val currentBmi = minValue + p1
+                binding.textViewBmi.text = currentBmi.toString()
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+
+            }
+
+        })
     }
 
 }
