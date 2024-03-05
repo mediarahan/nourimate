@@ -10,7 +10,7 @@ import com.telyu.nourimate.data.repository.NourimateRepository
 import com.telyu.nourimate.utils.UserPreference
 import kotlinx.coroutines.launch
 
-class UserDetailViewModel(private val repository: NourimateRepository, private val pref: UserPreference): ViewModel() {
+class UserDetailViewModel(private val repository: NourimateRepository): ViewModel() {
 
     private val _userId = MutableLiveData<Int?>()
     val userId: LiveData<Int?> = _userId
@@ -41,6 +41,18 @@ class UserDetailViewModel(private val repository: NourimateRepository, private v
         viewModelScope.launch {
             val name = repository.getUserNameByEmail(email)
             _userName.value = name
+        }
+    }
+
+    fun updateUserProfile(detail: Detail) {
+        viewModelScope.launch {
+            repository.updateUserProfile(detail)
+        }
+    }
+
+    fun updateUserName(id: Int, name: String) {
+        viewModelScope.launch {
+            repository.updateUserName(id, name)
         }
     }
 

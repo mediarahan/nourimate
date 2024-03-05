@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
+import com.telyu.nourimate.data.local.models.Profpic
 import com.telyu.nourimate.data.repository.NourimateRepository
 import kotlinx.coroutines.launch
 
@@ -19,6 +20,9 @@ class ProfileViewModel(private val repository: NourimateRepository) : ViewModel(
 
     private val _userName = MutableLiveData<String?>()
     val userName: LiveData<String?> = _userName
+
+    private val _profilePicture = MutableLiveData<String?>()
+    val profilePicture: LiveData<String?> = _profilePicture
 
     val userEmail: LiveData<String> = repository.getUserEmail().asLiveData()
 
@@ -40,6 +44,13 @@ class ProfileViewModel(private val repository: NourimateRepository) : ViewModel(
         viewModelScope.launch {
             val name = repository.getUserNameByEmail(email)
             _userName.value = name
+        }
+    }
+
+    fun getProfpicById(id: Int) {
+        viewModelScope.launch {
+            val profpic = repository.getProfpicById(id)
+            _profilePicture.value = profpic
         }
     }
 

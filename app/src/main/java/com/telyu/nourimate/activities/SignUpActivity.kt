@@ -91,10 +91,7 @@ class SignUpActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun obtainViewModel(activity: AppCompatActivity): SignUpViewModel {
-        val factory = ViewModelFactory.getInstance(activity.application)
-        return ViewModelProvider(activity, factory)[SignUpViewModel::class.java]
-    }
+
 
     private fun validateInputs() {
         binding.editTextEmail.addTextChangedListener(object: TextWatcher {
@@ -137,6 +134,11 @@ class SignUpActivity : AppCompatActivity() {
                 //gak dipake
             }
         })
+    }
+
+    private fun obtainViewModel(activity: AppCompatActivity): SignUpViewModel {
+        val factory = ViewModelFactory.getInstance(activity.application)
+        return ViewModelProvider(activity, factory)[SignUpViewModel::class.java]
     }
 
 }

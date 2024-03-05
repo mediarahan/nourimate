@@ -4,8 +4,11 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.telyu.nourimate.data.local.models.Detail
+import com.telyu.nourimate.data.local.models.Profpic
 import com.telyu.nourimate.data.local.models.User
+import java.util.Date
 
 @Dao
 interface UserDao {
@@ -32,7 +35,21 @@ interface UserDao {
     suspend fun getUserDetailsById (id: Int): Detail?
 
     @Query("SELECT bmi FROM userDetails WHERE id = :id")
-    suspend fun getBMIById(id: kotlin.Int?): Int?
+    suspend fun getBMIById(id: Int?): Int?
+
+    @Update
+    suspend fun updateUserProfile(detail: Detail)
+
+    @Query("UPDATE users SET name = :name WHERE id = :id")
+    suspend fun updateUserName(id: Int, name: String)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertProfpic(profpic: Profpic)
+
+    @Query("SELECT picture_url FROM profile_pictures WHERE id = :id")
+    suspend fun getProfpicById(id: Int): String?
+
+
 
     @Query("DELETE FROM users")
     suspend fun deleteAllRecords()

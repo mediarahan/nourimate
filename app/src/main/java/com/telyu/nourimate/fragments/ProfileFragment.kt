@@ -1,16 +1,23 @@
 package com.telyu.nourimate.fragments
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.telyu.nourimate.databinding.FragmentProfileBinding
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
 import com.telyu.nourimate.R
+import com.telyu.nourimate.activities.EditProfileActivity
+import com.telyu.nourimate.activities.EditProfpicActivity
 import com.telyu.nourimate.activities.LoginActivity
+import com.telyu.nourimate.data.local.models.Profpic
 import com.telyu.nourimate.viewmodels.ProfileViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
 
@@ -36,9 +43,15 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        displayImage()
         setupButtons()
         getBMIAndName()
         mapBMIAndName()
+
+        binding.cardViewAddAvatar.setOnClickListener {
+            val intent = Intent(requireContext(), EditProfpicActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun showLogoutConfirmationDialog() {
@@ -79,6 +92,21 @@ class ProfileFragment : Fragment() {
 
         viewModel.userName.observe(viewLifecycleOwner) {userName ->
             binding.nameTextView.text = userName
+        }
+    }
+
+    private fun displayImage() {
+        viewModel.userId.observe(viewLifecycleOwner) {userId ->
+            if (userId != null) {
+                viewModel.getProfpicById(userId)
+            }
+        }
+
+        viewModel.profilePicture.observe(viewLifecycleOwner) { uriString ->
+            uriString?.let { uriStr ->
+                val uri = Uri.parse(uriStr)
+                binding.imageViewAvatar.setImageURI(uri)
+            }
         }
     }
 

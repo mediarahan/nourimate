@@ -15,10 +15,16 @@ class Converters {
 
     @TypeConverter
     fun dateToTimestamp(date: Date?): Long? {
-        return date?.time?.toLong()
+        return date?.time
     }
 
     fun formatDateToString(date: Date?): String {
         return date?.let { dateFormat.format(it) } ?: ""
     }
+
+    @TypeConverter
+    fun fromStringToDate(value: String?): Date? {
+        return value?.let { dateFormat.parse(it) }
+    }
+
 }
