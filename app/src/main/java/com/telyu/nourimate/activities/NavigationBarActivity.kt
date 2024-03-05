@@ -2,6 +2,7 @@ package com.telyu.nourimate.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.telyu.nourimate.fragments.ProfileFragment
 import com.telyu.nourimate.fragments.ProgramFragment
@@ -19,6 +20,7 @@ class NavigationBarActivity : AppCompatActivity() {
 
         // Menggunakan View Binding untuk menginflate layout
         binding = ActivityNavigationBarBinding.inflate(layoutInflater)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.color16)
         setContentView(binding.root)
 
         val homeFragment = HomeFragment()
