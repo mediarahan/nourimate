@@ -1,6 +1,7 @@
 package com.telyu.nourimate.fragments
 
 import android.app.Dialog
+import android.net.Uri
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -50,6 +51,118 @@ class RecipeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        fillDatabaseWithFakeData()
+
+        displayRecipes()
+
+        displayUserNameAndProfpic()
+
+        setupSearchBarAndSearchView()
+
+    }
+
+    private fun selectMealType(onMealTypeSelected: (Int) -> Unit) {
+
+        binding.radioGroupMealtype.setOnCheckedChangeListener { group, checkedId ->
+            when (checkedId) {
+                R.id.button_breakfast -> onMealTypeSelected(1)
+                R.id.button_lunch -> onMealTypeSelected(2)
+                R.id.button_dinner -> onMealTypeSelected(3)
+            }
+        }
+    }
+
+    //popup. Mulai untuk profile feature branch
+    private fun showPopupMenu() {
+        val dialog = Dialog(requireContext())
+        dialog.setContentView(R.layout.popup_layout)
+
+        // Adjust dialog properties as needed
+        val layoutParams = dialog.window?.attributes
+        layoutParams?.apply {
+            width = WindowManager.LayoutParams.MATCH_PARENT
+            height = WindowManager.LayoutParams.WRAP_CONTENT
+            gravity = Gravity.CENTER
+        }
+
+        dialog.window?.attributes = layoutParams
+        dialog.show()
+    }
+
+    private fun displayRecipes() {
+        //rv adapter stuff
+        val recipeAdapter = RecipeAdapter()
+        binding.recommendationRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recommendationRecyclerView.adapter = recipeAdapter
+
+        selectMealType { selectedMealType ->
+            viewModel.getRecipeByMeal(selectedMealType)
+                .observe(viewLifecycleOwner) { recipes ->
+                    recipeAdapter.submitList(recipes)
+                }
+        }
+
+        viewModel.searchResult.observe(viewLifecycleOwner) { recipes ->
+            recipeAdapter.submitList(recipes)
+        }
+    }
+
+    private fun setupSearchBarAndSearchView() {
+        with(binding) {
+            searchView.setupWithSearchBar(searchBar)
+
+            searchView.editText.setOnEditorActionListener { _, _, _ ->
+                searchBar.text = searchView.text
+                searchView.hide()
+
+                val query = searchBar.text.toString()
+                viewModel.getRecipeByName(query)
+                true // Return true to indicate that the action has been handled
+            }
+            searchBar.inflateMenu(R.menu.selected_meal_menu)
+            searchBar.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.btn_selected_meal -> {
+                        showPopupMenu()
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+        }
+    }
+
+    private fun displayUserNameAndProfpic() {
+        viewModel.userEmail.observe(viewLifecycleOwner) { userEmail ->
+            userEmail.let {
+                viewModel.getUserIdByEmail(it)
+                viewModel.getUserNameByEmail(it)
+            }
+        }
+
+        viewModel.userName.observe(viewLifecycleOwner) {userName ->
+            binding.usernameTextView.text = userName
+        }
+
+        viewModel.userId.observe(viewLifecycleOwner) {userId ->
+            if (userId != null) {
+                viewModel.getProfpicById(userId)
+            }
+        }
+
+        viewModel.profilePicture.observe(viewLifecycleOwner) {uriString ->
+            uriString?.let { uriStr ->
+                val uri = Uri.parse(uriStr)
+                binding.recipeProfileImageView.setImageURI(uri)
+            }
+
+        }
+
+    }
+
+    private fun fillDatabaseWithFakeData(){
+
         // Untuk isi database dengan fake data
         val dao = FoodDatabase.getInstance(requireContext()).foodDao()
         val fakeFoodData = FakeFoodData()
@@ -63,7 +176,8 @@ class RecipeFragment : Fragment() {
                 fat = recipe.fat,
                 protein = recipe.protein,
                 ingredients = recipe.ingredients,
-                cookingSteps = recipe.cookingSteps
+                cookingSteps = recipe.cookingSteps,
+                recipePictures = recipe.recipePictures
             )
         }
         val mappedMeals = fakeFoodData.meals.map { meal ->
@@ -113,73 +227,5 @@ class RecipeFragment : Fragment() {
                 dao.insertMealRecipeCrossRef(crossRef)
             }
         }
-
-        //rv adapter stuff
-        val recipeAdapter = RecipeAdapter()
-        binding.recommendationRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.recommendationRecyclerView.adapter = recipeAdapter
-
-        selectMealType { selectedMealType ->
-            viewModel.getRecipeByMeal(selectedMealType)
-                .observe(viewLifecycleOwner) { recipes ->
-                    recipeAdapter.submitList(recipes)
-                }
-        }
-
-        viewModel.searchResult.observe(viewLifecycleOwner) { recipes ->
-            recipeAdapter.submitList(recipes)
-        }
-
-        with(binding) {
-            searchView.setupWithSearchBar(searchBar)
-
-            searchView.editText.setOnEditorActionListener { _, _, _ ->
-                searchBar.text = searchView.text
-                searchView.hide()
-
-                val query = searchBar.text.toString()
-                viewModel.getRecipeByName(query)
-                true // Return true to indicate that the action has been handled
-            }
-            searchBar.inflateMenu(R.menu.selected_meal_menu)
-            searchBar.setOnMenuItemClickListener { menuItem ->
-                when (menuItem.itemId) {
-                    R.id.btn_selected_meal -> {
-                        showPopupMenu()
-                        true
-                    }
-
-                    else -> false
-                }
-            }
-        }
-    }
-
-    private fun selectMealType(onMealTypeSelected: (Int) -> Unit) {
-
-        binding.radioGroupMealtype.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.button_breakfast -> onMealTypeSelected(1)
-                R.id.button_lunch -> onMealTypeSelected(2)
-                R.id.button_dinner -> onMealTypeSelected(3)
-            }
-        }
-    }
-
-    //popup. Mulai untuk profile feature branch
-    private fun showPopupMenu() {
-        val dialog = Dialog(requireContext())
-        dialog.setContentView(R.layout.popup_layout)
-
-        // Adjust dialog properties as needed
-        val layoutParams = dialog.window?.attributes
-        layoutParams?.apply {
-            width = WindowManager.LayoutParams.MATCH_PARENT
-            height = WindowManager.LayoutParams.WRAP_CONTENT
-            gravity = Gravity.CENTER
-        }
-
-        dialog.window?.attributes = layoutParams
-        dialog.show()
     }
 }

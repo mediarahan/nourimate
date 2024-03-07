@@ -7,6 +7,7 @@ import com.telyu.nourimate.databinding.ActivityVerificationCode2Binding
 import android.app.Activity
 import android.graphics.drawable.GradientDrawable
 import androidx.core.content.ContextCompat
+import com.telyu.nourimate.R
 
 
 class VerificationCode2Activity : AppCompatActivity() {

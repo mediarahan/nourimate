@@ -3,21 +3,16 @@ package com.telyu.nourimate.fragments
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.telyu.nourimate.databinding.FragmentProfileBinding
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
 import com.telyu.nourimate.R
-import com.telyu.nourimate.activities.EditProfileActivity
 import com.telyu.nourimate.activities.EditProfpicActivity
 import com.telyu.nourimate.activities.LoginActivity
-import com.telyu.nourimate.data.local.models.Profpic
 import com.telyu.nourimate.viewmodels.ProfileViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
 
@@ -143,17 +138,6 @@ class ProfileFragment : Fragment() {
             val accountFragment = AccountFragment()
             requireActivity().supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fragmentContainer, accountFragment)
-                addToBackStack(null)
-                commit()
-            }
-        }
-
-        // Implementasi event click untuk tombol History
-        binding.historyButton.setOnClickListener {
-            // Kode untuk menuju ke HistoryFragment
-            val historyFragment = HistoryFragment()
-            requireActivity().supportFragmentManager.beginTransaction().apply {
-                replace(R.id.fragmentContainer, historyFragment)
                 addToBackStack(null)
                 commit()
             }

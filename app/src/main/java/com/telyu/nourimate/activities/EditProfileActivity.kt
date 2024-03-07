@@ -33,18 +33,18 @@ class EditProfileActivity : AppCompatActivity() {
         val diseaseOptions = arrayOf("High Blood Pressure", "Diabetes", "Cholesterol")
 
         //setup edittext
-        binding.editTextDateOfBirth
+        binding.editTextBirth
         binding.editTextHeight
         binding.editTextWeight
-        binding.editTextWaistSize
+        binding.editTextWaist
 
         //setup date picker
-        binding.editTextDateOfBirth.setOnClickListener {
+        binding.editTextBirth.setOnClickListener {
             showDatePicker { selectedDate ->
                 selectedDate?.let { date ->
                     val formattedDate =
                         SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date)
-                    binding.editTextDateOfBirth.setText(formattedDate)
+                    binding.editTextBirth.setText(formattedDate)
                 }
             }
         }
@@ -60,7 +60,7 @@ class EditProfileActivity : AppCompatActivity() {
         binding.spinnerPersonalDisease.adapter = diseaseAdapter
 
         //setup submit data to database button
-        binding.buttonFinish.setOnClickListener {
+        binding.buttonNext.setOnClickListener {
             insertUserDetails()
         }
 
@@ -70,7 +70,7 @@ class EditProfileActivity : AppCompatActivity() {
         //all input
         val heightString = binding.editTextHeight.text.toString()
         val weightString = binding.editTextWeight.text.toString()
-        val waistSizeString = binding.editTextWaistSize.text.toString()
+        val waistSizeString = binding.editTextWaist.text.toString()
         val height = heightString.toFloatOrNull()
         val weight = weightString.toFloatOrNull()
         val waistSize = waistSizeString.toFloatOrNull()
@@ -80,7 +80,7 @@ class EditProfileActivity : AppCompatActivity() {
         val disease = binding.spinnerPersonalDisease.selectedItem.toString()
 
         // Retrieve dob value from the date picker
-        val dob = binding.editTextDateOfBirth.text.toString()
+        val dob = binding.editTextBirth.text.toString()
         val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val date: Date? = dateFormatter.parse(dob)
 

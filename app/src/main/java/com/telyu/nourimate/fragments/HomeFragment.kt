@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.telyu.nourimate.CustomRunningGraphView
+import com.telyu.nourimate.R
 import com.telyu.nourimate.databinding.FragmentHomeBinding
 import com.telyu.nourimate.viewmodels.HomeViewModel
 

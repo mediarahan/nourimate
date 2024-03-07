@@ -1,4 +1,4 @@
-package com.telyu.nourimate
+package com.telyu.nourimate.activities
 
 import android.content.Intent
 import android.graphics.drawable.GradientDrawable
@@ -7,6 +7,7 @@ import android.os.Looper
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.telyu.nourimate.R
 import com.telyu.nourimate.databinding.ActivitySplashScreenBinding
 
 class SplashScreenActivity : AppCompatActivity() {
