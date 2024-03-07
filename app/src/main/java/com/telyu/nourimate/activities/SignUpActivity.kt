@@ -28,18 +28,6 @@ class SignUpActivity : AppCompatActivity() {
         signUpViewModel = obtainViewModel(this@SignUpActivity)
         //setup all ui
         setupButtons()
-
-        signUpViewModel.isUserLoggedIn.observe(this) { isUserLoggedIn ->
-            Log.d("LiveData", "isUserLoggedIn changed: $isUserLoggedIn")
-            if (isUserLoggedIn == true) {
-                startActivity(Intent(this, NavigationBarActivity::class.java))
-                finish()
-            } else {
-                //aku butuh validasi
-                validateInputs()
-
-            }
-        }
     }
 
     private fun setupButtons() {

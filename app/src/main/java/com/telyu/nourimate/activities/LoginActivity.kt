@@ -36,10 +36,22 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        loginViewModel = obtainViewModel(this@LoginActivity)
+
+        loginViewModel.isUserLoggedIn.observe(this) { isUserLoggedIn ->
+            Log.d("LiveData", "isUserLoggedIn changed: $isUserLoggedIn")
+            if (isUserLoggedIn == true) {
+                // User is logged in
+                startActivity(Intent(this, NavigationBarActivity::class.java))
+                finish()
+            } else {
+                // User is not logged in, continue with login process
+                validateInputs()
+            }
+        }
+
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        loginViewModel = obtainViewModel(this@LoginActivity)
 
         initLogin()
 
@@ -116,7 +128,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun updateUI(currentUser: FirebaseUser?) {
         if (currentUser != null){
-            startActivity(Intent(this@LoginActivity, NavigationBarActivity::class.java))
+            startActivity(Intent(this@LoginActivity, VerificationCode1Activity::class.java))
             finish()
         }
     }

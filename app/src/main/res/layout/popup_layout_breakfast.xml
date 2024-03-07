@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/rectangletitlebreakfast"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/rectangle_selected_meal_with_shadow"
+        android:elevation="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/popupTitleBreakfast"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Breakfast"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:fontFamily="@font/zenkakugothicnewbold"
+        android:elevation="6dp"
+        android:padding="15dp"
+        app:layout_constraintStart_toStartOf="@+id/rectangletitlebreakfast"
+        app:layout_constraintTop_toTopOf="@+id/rectangletitlebreakfast"
+        app:layout_constraintBottom_toBottomOf="@+id/rectangletitlebreakfast"/>
+
+    <TextView
+        android:id="@+id/textViewBasketBreakfast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rectangle_basket"
+        android:text="2"
+        android:textSize="15dp"
+        android:elevation="5dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:fontFamily="@font/zenkakugothicnewbold"
+        android:textColor="@color/white"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintTop_toTopOf="@+id/popupTitleBreakfast"
+        app:layout_constraintBottom_toBottomOf="@+id/popupTitleBreakfast"
+        app:layout_constraintEnd_toEndOf="@+id/popupTitleBreakfast"/>
+
+
+    <ImageView
+        android:id="@+id/rectangleselectedbreakfast"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/rectangle_selected_meal_2_with_shadow"
+        android:elevation="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rectangletitlebreakfast"
+        app:layout_constraintBottom_toBottomOf="@+id/selectMealBreakfastButton" />
+
+    <TextView
+        android:id="@+id/breakfasttextmenuselected"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="..."
+        android:textColor="@color/black"
+        android:elevation="5dp"
+        android:padding="15dp"
+        android:background="@drawable/rectangle_profile"
+        android:fontFamily="@font/zenkakugothicnewbold"
+        android:textSize="16dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/rectangletitlebreakfast"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <ImageView
+        android:id="@+id/cancelbreakfast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:src="@drawable/close"
+        android:elevation="5dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintEnd_toEndOf="@+id/breakfasttextmenuselected"
+        app:layout_constraintTop_toTopOf="@+id/breakfasttextmenuselected"
+        app:layout_constraintBottom_toBottomOf="@+id/breakfasttextmenuselected"
+        app:tint="@android:color/holo_red_dark" />
+
+    <View
+        android:id="@+id/lineselectbreakfast"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#D3D3D3"
+        android:elevation="5dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toStartOf="@+id/breakfasttextmenuselected"
+        app:layout_constraintEnd_toEndOf="@+id/breakfasttextmenuselected"
+        app:layout_constraintTop_toBottomOf="@+id/breakfasttextmenuselected"/>
+
+    <TextView
+        android:id="@+id/selectMealBreakfastButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Select meal"
+        android:textColor="@color/black"
+        android:elevation="5dp"
+        android:padding="15dp"
+        android:background="@drawable/rectangle_signup"
+        android:fontFamily="@font/zenkakugothicnewbold"
+        android:textSize="16dp"
+        android:drawableEnd="@drawable/next"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintTop_toBottomOf="@+id/lineselectbreakfast"
+        app:layout_constraintStart_toStartOf="@+id/lineselectbreakfast"
+        app:layout_constraintEnd_toEndOf="@+id/lineselectbreakfast"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -26,11 +26,16 @@ class RecipeAdapter : ListAdapter<Recipe, RecipeAdapter.RecipeViewHolder>(DIFF_C
             binding.apply {
                 tvName.text = recipe.name
                 tvIngredients.text = recipe.ingredients
-                tvCalories.text = recipe.calories.toString()
-                tvProtein.text = recipe.protein.toString()
-                tvFat.text = recipe.fat.toString()
-                tvCarbs.text = recipe.carbs.toString()
-                ivRecipe.setImageResource(R.drawable.baseline_fastfood_24)
+                tvCalories.text = "Calories: ${recipe.calories}"
+                tvProtein.text = "Protein: ${recipe.protein}"
+                tvFat.text = "Fat: ${recipe.fat}"
+                tvCarbs.text = "Carbs: ${recipe.carbs}"
+                val resourceId = itemView.context.resources.getIdentifier(
+                    recipe.recipePictures,
+                    "drawable",
+                    itemView.context.packageName
+                )
+                ivRecipe.setImageResource(resourceId)
             }
         }
     }

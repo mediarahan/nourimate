@@ -49,8 +49,6 @@ interface UserDao {
     @Query("SELECT picture_url FROM profile_pictures WHERE id = :id")
     suspend fun getProfpicById(id: Int): String?
 
-
-
     @Query("DELETE FROM users")
     suspend fun deleteAllRecords()
 

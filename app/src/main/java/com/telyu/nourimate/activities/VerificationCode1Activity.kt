@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.telyu.nourimate.R
 import com.telyu.nourimate.databinding.ActivityVerificationCode1Binding
 
 class VerificationCode1Activity : AppCompatActivity() {

@@ -1,4 +1,4 @@
-package com.telyu.nourimate
+package com.telyu.nourimate.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,7 @@ import com.telyu.nourimate.databinding.ActivityVerificationCode3Binding
 import android.app.Activity
 import android.graphics.drawable.GradientDrawable
 import androidx.core.content.ContextCompat
+import com.telyu.nourimate.R
 
 
 class VerificationCode3Activity : AppCompatActivity() {

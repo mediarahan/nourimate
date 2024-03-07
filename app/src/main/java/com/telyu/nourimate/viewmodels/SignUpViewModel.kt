@@ -14,8 +14,6 @@ class SignUpViewModel (private val repository: NourimateRepository): ViewModel()
         return repository.signup(password,confirmPassword)
     }
 
-    val isUserLoggedIn: LiveData<Boolean?> = repository.observeUserLoginStatus()
-
     fun insertUser(user: User) {
         viewModelScope.launch {
             repository.insertUser(user)

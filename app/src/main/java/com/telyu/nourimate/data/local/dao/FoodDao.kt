@@ -12,6 +12,7 @@ import com.telyu.nourimate.data.local.models.Recommendation
 import com.telyu.nourimate.data.local.relations.MealsRecipesCrossRef
 import com.telyu.nourimate.data.local.relations.MealsWithRecommendations
 import com.telyu.nourimate.data.local.relations.RecipesRecommendationCrossRef
+import com.telyu.nourimate.data.local.relations.RecipesWithRecommendation
 import java.util.Date
 
 @Dao
@@ -46,7 +47,11 @@ interface FoodDao {
     @Query("SELECT * FROM recipes WHERE name LIKE '%' || :name || '%'")
     suspend fun getRecipeByName(name: String): List<Recipe>
 
+    @Query("SELECT * FROM recommendations WHERE isSelected = :isSelected")
+    suspend fun getSelectedRecommendations(isSelected: Boolean = true): List<Recommendation>
 
+//    @Query("SELECT * FROM recipes WHERE recipe_id IN (SELECT recipe_id FROM recipesrecommendationcrossref WHERE recommendationId IN (SELECT recommendationId FROM recommendations WHERE isSelected = :isSelected))")
+//    suspend fun getRecipesBasedOnSelectedRecommendation(isSelected: Boolean = true): List<RecipesWithRecommendation>
 
     // Insert methods for Recipe, Recommendation, and Meal entities
     @Insert(onConflict = OnConflictStrategy.REPLACE)
