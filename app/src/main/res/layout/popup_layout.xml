@@ -3,80 +3,160 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="16dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/rectangletitle"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/rectangle_selected_meal_with_shadow"
+        android:elevation="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/popupTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Selected Meal"
-        android:textSize="18sp"
-        android:textStyle="bold"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/zenkakugothicnewbold"
+        android:elevation="6dp"
+        android:padding="15dp"
+        app:layout_constraintStart_toStartOf="@+id/rectangletitle"
+        app:layout_constraintTop_toTopOf="@+id/rectangletitle"
+        app:layout_constraintBottom_toBottomOf="@+id/rectangletitle"/>
+
+    <TextView
+        android:id="@+id/textViewBasket"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/rectangle_basket"
+        android:elevation="5dp"
+        android:fontFamily="@font/zenkakugothicnewbold"
+        android:paddingStart="30dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="30dp"
+        android:paddingBottom="5dp"
+        android:text="8"
+        android:textColor="@color/white"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="@+id/popupTitle"
+        app:layout_constraintEnd_toEndOf="@+id/popupTitle"
+        app:layout_constraintTop_toTopOf="@+id/popupTitle"
+        tools:ignore="TextSizeCheck" />
+
+
+    <ImageView
+        android:id="@+id/rectangleselectedmeal"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/rectangle_selected_meal_2_with_shadow"
+        android:elevation="5dp"
+        android:layout_marginBottom="-20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rectangletitle"
+        app:layout_constraintBottom_toBottomOf="@+id/dinnerTextView" />
+
 
     <TextView
         android:id="@+id/breakfastTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Breakfast"
+        android:textColor="@color/black"
+        android:elevation="5dp"
+        android:padding="15dp"
+        android:clickable="true"
+        android:background="@drawable/rectangle_profile"
+        android:fontFamily="@font/zenkakugothicnewbold"
+        android:textSize="15sp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/rectangletitle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/popupTitle"
-        android:layout_marginTop="8dp"/>
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <ImageView
         android:id="@+id/breakfastImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="15dp"
         android:clickable="true"
-        android:importantForAccessibility="no"
+        android:elevation="5dp"
         android:src="@drawable/expand_circle"
-        app:layout_constraintStart_toEndOf="@+id/breakfastTextView"
-        app:layout_constraintTop_toBottomOf="@+id/popupTitle"
-        tools:ignore="TouchTargetSizeCheck" />
+        app:layout_constraintBottom_toBottomOf="@+id/breakfastTextView"
+        app:layout_constraintEnd_toEndOf="@+id/breakfastTextView"
+        app:layout_constraintTop_toTopOf="@+id/breakfastTextView"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
     <TextView
         android:id="@+id/lunchTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Lunch"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/black"
+        android:elevation="5dp"
+        android:clickable="true"
+        android:padding="15dp"
+        android:background="@drawable/rectangle_profile"
+        android:fontFamily="@font/zenkakugothicnewbold"
+        android:textSize="15sp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginTop="15dp"
         app:layout_constraintTop_toBottomOf="@+id/breakfastTextView"
-        android:layout_marginTop="8dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <ImageView
         android:id="@+id/lunchImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="15dp"
         android:clickable="true"
-        android:importantForAccessibility="no"
+        android:elevation="5dp"
         android:src="@drawable/expand_circle"
-        app:layout_constraintStart_toEndOf="@+id/lunchTextView"
-        app:layout_constraintTop_toBottomOf="@+id/breakfastTextView"
-        tools:ignore="TouchTargetSizeCheck" />
+        app:layout_constraintBottom_toBottomOf="@+id/lunchTextView"
+        app:layout_constraintEnd_toEndOf="@+id/lunchTextView"
+        app:layout_constraintTop_toTopOf="@+id/lunchTextView"
+        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/dinnerTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Dinner"
+        android:textColor="@color/black"
+        android:elevation="5dp"
+        android:padding="15dp"
+        android:clickable="true"
+        android:background="@drawable/rectangle_profile"
+        android:fontFamily="@font/zenkakugothicnewbold"
+        android:textSize="15sp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginTop="15dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lunchTextView"
-        android:layout_marginTop="8dp"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lunchTextView"/>
 
     <ImageView
         android:id="@+id/dinnerImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="15dp"
         android:clickable="true"
-        android:importantForAccessibility="no"
+        android:elevation="5dp"
         android:src="@drawable/expand_circle"
-        app:layout_constraintStart_toEndOf="@+id/dinnerTextView"
-        app:layout_constraintTop_toBottomOf="@+id/lunchTextView"
-        tools:ignore="TouchTargetSizeCheck" />
+        app:layout_constraintBottom_toBottomOf="@+id/dinnerTextView"
+        app:layout_constraintEnd_toEndOf="@+id/dinnerTextView"
+        app:layout_constraintTop_toTopOf="@+id/dinnerTextView"
+        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

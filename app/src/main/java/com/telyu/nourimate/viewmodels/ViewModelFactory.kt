@@ -3,11 +3,8 @@ package com.telyu.nourimate.viewmodels
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.telyu.nourimate.activities.EditProfpicActivity
 import com.telyu.nourimate.data.repository.NourimateRepository
 import com.telyu.nourimate.utils.Injection
-import com.telyu.nourimate.utils.UserPreference
-import com.telyu.nourimate.utils.dataStore
 
 class ViewModelFactory private constructor(
     private val repository: NourimateRepository,

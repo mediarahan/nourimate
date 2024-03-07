@@ -22,6 +22,7 @@ import com.telyu.nourimate.data.local.models.Recommendation
 import com.telyu.nourimate.databinding.FragmentRecipeBinding
 import com.telyu.nourimate.viewmodels.RecipeViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
+import com.telyu.nourimate.views.custom.RecipeDialog
 import kotlinx.coroutines.launch
 
 class RecipeFragment : Fragment() {
@@ -95,19 +96,11 @@ class RecipeFragment : Fragment() {
 
     //popup. Mulai untuk profile feature branch
     private fun showPopupMenu() {
-        val dialog = Dialog(requireContext())
-        dialog.setContentView(R.layout.popup_layout)
+        val customDialog = RecipeDialog(requireContext(), R.layout.popup_layout)
+        customDialog.show()
 
-        // Adjust dialog properties as needed
-        val layoutParams = dialog.window?.attributes
-        layoutParams?.apply {
-            width = WindowManager.LayoutParams.MATCH_PARENT
-            height = WindowManager.LayoutParams.WRAP_CONTENT
-            gravity = Gravity.CENTER
-        }
-
-        dialog.window?.attributes = layoutParams
-        dialog.show()
+        // Example: Modify dialog views
+        customDialog.setDialogTitle("Custom Dialog Title")
     }
 
     private fun setupSearchBarAndSearchView() {
