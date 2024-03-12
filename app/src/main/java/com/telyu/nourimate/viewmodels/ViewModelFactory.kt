@@ -1,9 +1,9 @@
 package com.telyu.nourimate.viewmodels
 
-import android.app.Application
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.telyu.nourimate.activities.EditProfpicActivity
 import com.telyu.nourimate.data.repository.NourimateRepository
 import com.telyu.nourimate.utils.Injection
 import com.telyu.nourimate.utils.UserPreference
@@ -11,7 +11,6 @@ import com.telyu.nourimate.utils.dataStore
 
 class ViewModelFactory private constructor(
     private val repository: NourimateRepository,
-    private val pref: UserPreference
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
@@ -28,8 +27,21 @@ class ViewModelFactory private constructor(
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
                 ProfileViewModel(repository) as T
             }
+
             modelClass.isAssignableFrom(RecipeViewModel::class.java) -> {
                 RecipeViewModel(repository) as T
+            }
+
+            modelClass.isAssignableFrom(EditProfileViewModel::class.java) -> {
+                EditProfileViewModel(repository) as T
+            }
+
+            modelClass.isAssignableFrom(UserDetailViewModel::class.java) -> {
+                UserDetailViewModel(repository) as T
+            }
+
+            modelClass.isAssignableFrom(EditProfpicViewModel::class.java) -> {
+                EditProfpicViewModel(repository) as T
             }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
@@ -46,7 +58,6 @@ class ViewModelFactory private constructor(
                 synchronized(ViewModelFactory::class.java) {
                     INSTANCE = ViewModelFactory(
                         Injection.provideRepository(context),
-                        UserPreference.getInstance(context.dataStore)
                     )
                 }
             }

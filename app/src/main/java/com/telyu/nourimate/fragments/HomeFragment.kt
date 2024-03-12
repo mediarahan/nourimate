@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.telyu.nourimate.CustomRunningGraphView
+import com.telyu.nourimate.R
 import com.telyu.nourimate.databinding.FragmentHomeBinding
 import com.telyu.nourimate.viewmodels.HomeViewModel
 
@@ -37,6 +39,33 @@ class HomeFragment : Fragment() {
 
         viewModel.userProfilePhoto.observe(viewLifecycleOwner, Observer { userProfilePhoto ->
             binding.profileImageView.setImageBitmap(userProfilePhoto)
+        })
+
+        // Mengamati perubahan pada waktu tidur
+        viewModel.sleepTime.observe(viewLifecycleOwner, Observer { sleepTime ->
+            binding?.timeInSleep?.text = getString(R.string.sleep_time_format, sleepTime)
+        })
+
+        // Mengamati perubahan pada waktu bangun
+        viewModel.wakeUpTime.observe(viewLifecycleOwner, Observer { wakeUpTime ->
+            binding?.wakeUpTime?.text = getString(R.string.wake_up_time_format, wakeUpTime)
+        })
+
+        viewModel.runningSpeed.observe(viewLifecycleOwner, Observer { speed ->
+            binding?.runningSpeedTextView?.text = speed
+        })
+
+        // Amati data grafik lari dan perbarui CustomRunningGraphView
+        viewModel.runningGraphData.observe(viewLifecycleOwner, Observer { graphData ->
+            val runningGraphView = binding?.runningGraphView as? CustomRunningGraphView
+            runningGraphView?.setData(graphData)
+        })
+
+        // Observe the macronutrient data and update the UI
+        viewModel.totalCalories.observe(viewLifecycleOwner, Observer { calories ->
+            binding?.textViewTotalCalories?.text = getString(R.string.total_calories, calories)
+            // Assuming you have a ProgressBar for calories
+            binding?.progressBarTotalCalories?.progress = viewModel.caloriesProgress.value ?: 0
         })
     }
 

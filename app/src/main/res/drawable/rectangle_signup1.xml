@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Shadow Layer -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#CCCCCC"/> <!-- Semi-transparent orange color for shadow -->
+            <corners android:radius="10dp"/> <!-- Adjust corner radius for rounded corners -->
+            <!-- Adjust shadow size and direction -->
+            <padding
+                android:bottom="2dp"/>
+        </shape>
+    </item>
+    <!-- White Rectangle Layer on top of the shadow -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#FFF0C4"/> <!-- White color -->
+            <corners android:radius="10dp"/> <!-- Match corner radius with the shadow -->
+        </shape>
+    </item>
+</layer-list>

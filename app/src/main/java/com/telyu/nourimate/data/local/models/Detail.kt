@@ -5,20 +5,36 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
+import java.util.Date
 
 @Entity (tableName = "userDetails")
 @Parcelize
-data class Detail (
-    @PrimaryKey(autoGenerate = false)
-    @field:ColumnInfo(name = "name")
-    val name: String,
+data class Detail(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
 
-    @field:ColumnInfo(name = "email")
-    val email: String,
+    @field:ColumnInfo(name = "date")
+    val dob: Date?,
 
-    @field:ColumnInfo(name = "phone_number")
-    val phoneNumber: Int = 0,
+    @field:ColumnInfo(name = "height")
+    val height: Float?,
 
-    @field:ColumnInfo(name = "password")
-    val password: String,
-): Parcelable
+    @field:ColumnInfo(name = "weight")
+    val weight: Float?,
+
+    @field:ColumnInfo(name = "waist_size")
+    val waistSize: Float?,
+
+    @field:ColumnInfo(name = "gender")
+    val gender: String,
+
+    @field:ColumnInfo(name = "allergen")
+    val allergen: String,
+
+    @field:ColumnInfo(name = "disease")
+    val disease: String,
+
+    @field:ColumnInfo(name = "bmi")
+    val bmi: Int?,
+
+    ): Parcelable

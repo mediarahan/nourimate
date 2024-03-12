@@ -6,10 +6,13 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
-@Entity (tableName = "users")
+@Entity(tableName = "users")
 @Parcelize
 data class User(
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey(autoGenerate = true)
+    @field:ColumnInfo(name = "id")
+    val id: Int,
+
     @field:ColumnInfo(name = "name")
     val name: String,
 
@@ -21,5 +24,6 @@ data class User(
 
     @field:ColumnInfo(name = "password")
     val password: String,
-): Parcelable
+
+) : Parcelable
 

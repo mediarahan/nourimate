@@ -33,4 +33,8 @@ data class Recipe (
 
     @field:ColumnInfo(name = "cooking_steps")
     val cookingSteps: String,
+
+    @field:ColumnInfo(name = "recipe_pictures")
+    val recipePictures: String,
+
 ): Parcelable

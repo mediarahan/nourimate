@@ -28,22 +28,6 @@ class SignUpActivity : AppCompatActivity() {
         signUpViewModel = obtainViewModel(this@SignUpActivity)
         //setup all ui
         setupButtons()
-
-        signUpViewModel.isUserLoggedIn.observe(this) { isUserLoggedIn ->
-            Log.d("LiveData", "isUserLoggedIn changed: $isUserLoggedIn")
-            if (isUserLoggedIn == true) {
-                startActivity(Intent(this, NavigationBarActivity::class.java))
-                finish()
-            } else {
-                //aku butuh validasi
-                validateInputs()
-
-                binding.ButtonToDebug.setOnClickListener {
-                    val intent = Intent(this, DebugActivity::class.java)
-                    startActivity(intent)
-                }
-            }
-        }
     }
 
     private fun setupButtons() {
@@ -69,7 +53,7 @@ class SignUpActivity : AppCompatActivity() {
         if (InputValidator.isValidEmail(email) && InputValidator.isValidPassword(password)) {
 
             if (isPasswordMatch) {
-                user = User(fullName, email, phoneNumber, password)
+                user = User(0,fullName, email, phoneNumber, password)
 
                 signUpViewModel.insertUser(user as User)
 
@@ -91,10 +75,7 @@ class SignUpActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun obtainViewModel(activity: AppCompatActivity): SignUpViewModel {
-        val factory = ViewModelFactory.getInstance(activity.application)
-        return ViewModelProvider(activity, factory)[SignUpViewModel::class.java]
-    }
+
 
     private fun validateInputs() {
         binding.editTextEmail.addTextChangedListener(object: TextWatcher {
@@ -137,6 +118,11 @@ class SignUpActivity : AppCompatActivity() {
                 //gak dipake
             }
         })
+    }
+
+    private fun obtainViewModel(activity: AppCompatActivity): SignUpViewModel {
+        val factory = ViewModelFactory.getInstance(activity.application)
+        return ViewModelProvider(activity, factory)[SignUpViewModel::class.java]
     }
 
 }

@@ -13,6 +13,7 @@ class LoginViewModel (private val repository: NourimateRepository): ViewModel() 
     private val _loginResult = MutableLiveData<Boolean>()
     val loginResult: LiveData<Boolean> get() = _loginResult
 
+    val isUserLoggedIn: LiveData<Boolean?> = repository.observeUserLoginStatus()
 
     fun login(email: String, password: String) {
         viewModelScope.launch {

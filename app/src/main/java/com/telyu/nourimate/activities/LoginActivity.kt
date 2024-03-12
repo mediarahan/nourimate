@@ -1,7 +1,6 @@
 package com.telyu.nourimate.activities
 
 import android.app.Activity
-import android.content.ContentValues.TAG
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.telyu.nourimate.databinding.ActivityLoginBinding
@@ -37,10 +36,22 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        loginViewModel = obtainViewModel(this@LoginActivity)
+
+        loginViewModel.isUserLoggedIn.observe(this) { isUserLoggedIn ->
+            Log.d("LiveData", "isUserLoggedIn changed: $isUserLoggedIn")
+            if (isUserLoggedIn == true) {
+                // User is logged in
+                startActivity(Intent(this, NavigationBarActivity::class.java))
+                finish()
+            } else {
+                // User is not logged in, continue with login process
+                validateInputs()
+            }
+        }
+
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        loginViewModel = obtainViewModel(this@LoginActivity)
 
         initLogin()
 
@@ -117,7 +128,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun updateUI(currentUser: FirebaseUser?) {
         if (currentUser != null){
-            startActivity(Intent(this@LoginActivity, NavigationBarActivity::class.java))
+            startActivity(Intent(this@LoginActivity, VerificationCode1Activity::class.java))
             finish()
         }
     }
@@ -145,15 +156,19 @@ class LoginActivity : AppCompatActivity() {
         if (InputValidator.isValidEmail(email) && InputValidator.isValidPassword(password)) {
             loginViewModel.login(email, password)
 
-            loginViewModel.loginResult.observe(this, Observer { result ->
+            loginViewModel.loginResult.observe(this) { result ->
                 if (result) {
-                    val intent = Intent(this, NavigationBarActivity::class.java)
+                    val intent = Intent(this, VerificationCode1Activity::class.java)
                     startActivity(intent)
                 } else {
                     // Show a Toast message indicating the login error
-                    Toast.makeText(this, "Login failed. Incorrect email or password.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this,
+                        "Login failed. Incorrect email or password.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-            })
+            }
         } else {
             // Show a Toast message indicating the validation error
             Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show()

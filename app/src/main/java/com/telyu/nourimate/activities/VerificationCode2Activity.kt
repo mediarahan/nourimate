@@ -5,6 +5,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.telyu.nourimate.databinding.ActivityVerificationCode2Binding
 import android.app.Activity
+import android.graphics.drawable.GradientDrawable
+import androidx.core.content.ContextCompat
+import com.telyu.nourimate.R
 
 
 class VerificationCode2Activity : AppCompatActivity() {
@@ -14,8 +17,29 @@ class VerificationCode2Activity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityVerificationCode2Binding.inflate(layoutInflater)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.color25)
         val view = binding.root
         setContentView(view)
+
+        val gradientColors = intArrayOf(
+            getColor(R.color.color25),
+            getColor(R.color.color20),
+            getColor(R.color.white),
+            getColor(R.color.white),
+            getColor(R.color.white),
+        )
+
+        // Buat objek GradientDrawable
+        val gradientDrawable = GradientDrawable(
+            GradientDrawable.Orientation.TOP_BOTTOM,
+            gradientColors
+        )
+
+        // Set corner radius jika diinginkan
+        gradientDrawable.cornerRadius = 0f
+
+        // Terapkan drawable ke root view
+        binding.root.background = gradientDrawable
 
         binding.TextViewReceiveCode.setOnClickListener {
             openVerification1Page()

@@ -1,136 +1,235 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="16dp"
-    android:paddingTop="16dp"
-    android:paddingRight="16dp"
-    android:paddingBottom="16dp"
-    tools:context=".activities.EditProfileActivity">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textViewDateOfBirth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Date of Birth" />
-
-    <EditText
-        android:id="@+id/editTextDateOfBirth"
+    <ImageView
+        android:id="@+id/wave_editprofile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textViewDateOfBirth"
-        android:layout_marginTop="8dp"
-        android:hint="Select Date"
-        android:inputType="none"
-        android:focusable="false" />
+        android:elevation="4dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/wave_editprofile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="1.2" />
 
-    <TextView
-        android:id="@+id/textViewHeight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/editTextDateOfBirth"
-        android:layout_marginTop="16dp"
-        android:text="Height" />
-
-    <EditText
-        android:id="@+id/editTextHeight"
+    <ImageView
+        android:id="@+id/wave_editprofile_shadow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textViewHeight"
-        android:layout_marginTop="8dp"
-        android:hint="Enter Height"
-        android:inputType="number" />
+        android:layout_marginTop="2dp"
+        android:elevation="3dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/wave_editprofile_with_shadow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="1.2" />
 
     <TextView
-        android:id="@+id/textViewWeight"
+        android:id="@+id/textProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editTextHeight"
-        android:layout_marginTop="16dp"
-        android:text="Weight" />
+        android:elevation="6dp"
+        android:fontFamily="@font/alatsi"
+        android:text="Profile"
+        android:textColor="#000000"
+        android:textSize="33sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wave_editprofile_shadow" />
 
-    <EditText
-        android:id="@+id/editTextWeight"
+    <TextView
+        android:id="@+id/inputaccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="6dp"
+        android:fontFamily="@font/abel"
+        android:text="Input Your Data"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textProfile" />
+
+    <View
+        android:id="@+id/transparentRectangle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textViewWeight"
-        android:layout_marginTop="8dp"
-        android:hint="Enter Weight"
-        android:inputType="number" />
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rectangle_signup_with_shadow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inputaccount" />
 
-    <TextView
-        android:id="@+id/textViewWaistSize"
-        android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/editTextBirthLayout"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editTextWeight"
-        android:layout_marginTop="16dp"
-        android:text="Waist Size" />
+        android:layout_marginTop="40dp"
+        android:background="@drawable/rectangle_signup1"
+        android:elevation="3dp"
+        app:boxCornerRadiusBottomEnd="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusTopStart="10dp"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inputaccount"
+        app:startIconDrawable="@drawable/profile"
+        app:startIconTint="#FFD689">
 
-    <EditText
-        android:id="@+id/editTextWaistSize"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textViewWaistSize"
-        android:layout_marginTop="8dp"
-        android:hint="Enter Waist Size"
-        android:inputType="number" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextBirth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/abel"
+            android:focusable="false"
+            android:hint="Insert birth here..."
+            android:inputType="textPersonName" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/textViewGender"
-        android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/editTextWeightLayout"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editTextWaistSize"
-        android:layout_marginTop="16dp"
-        android:text="Gender" />
+        android:layout_marginTop="24dp"
+        android:background="@drawable/rectangle_signup1"
+        android:elevation="3dp"
+        app:boxCornerRadiusBottomEnd="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusTopStart="10dp"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextBirthLayout"
+        app:startIconDrawable="@drawable/profile"
+        app:startIconTint="#FFD689">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextWeight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/abel"
+            android:hint="Insert weight here..."
+            android:inputType="textPersonName" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/editTextHeightLayout"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/rectangle_signup1"
+        android:elevation="3dp"
+        app:boxCornerRadiusBottomEnd="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusTopStart="10dp"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextWeightLayout"
+        app:startIconDrawable="@drawable/profile"
+        app:startIconTint="#FFD689">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextHeight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/abel"
+            android:hint="Insert height here..."
+            android:inputType="textPersonName" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/editTextWaistLayout"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/rectangle_signup1"
+        android:elevation="3dp"
+        app:boxCornerRadiusBottomEnd="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusTopStart="10dp"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextHeightLayout"
+        app:startIconDrawable="@drawable/profile"
+        app:startIconTint="#FFD689">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextWaist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/abel"
+            android:hint="Insert waist size here..."
+            android:inputType="textPersonName" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Spinner
         android:id="@+id/spinnerGender"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textViewGender"
-        android:layout_marginTop="8dp" />
-
-    <TextView
-        android:id="@+id/textViewAllergies"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/spinnerGender"
-        android:layout_marginTop="16dp"
-        android:text="Allergies" />
+        android:layout_marginTop="24dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextWaistLayout" />
 
     <Spinner
         android:id="@+id/spinnerAllergies"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textViewAllergies"
-        android:layout_marginTop="8dp" />
-
-    <TextView
-        android:id="@+id/textViewPersonalDisease"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/spinnerAllergies"
-        android:layout_marginTop="16dp"
-        android:text="Personal Disease" />
+        android:layout_marginTop="8dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerGender" />
 
     <Spinner
         android:id="@+id/spinnerPersonalDisease"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textViewPersonalDisease"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="8dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerAllergies" />
+
 
     <Button
         android:id="@+id/buttonNext"
-        android:layout_width="match_parent"
+        android:layout_width="240dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/spinnerPersonalDisease"
-        android:layout_marginTop="16dp"
-        android:text="Next" />
-
-</RelativeLayout>
+        android:background="@drawable/buttonlogin_background_with_shadow"
+        android:elevation="6dp"
+        android:fontFamily="@font/alatsi"
+        android:onClick="onSignUpClicked"
+        android:text="Next"
+        android:textColor="@color/color23"
+        android:textSize="23sp"
+        app:backgroundTint="@null"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@id/spinnerPersonalDisease"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
 
 

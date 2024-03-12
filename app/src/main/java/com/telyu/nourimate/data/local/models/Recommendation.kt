@@ -20,4 +20,7 @@ data class Recommendation(
     @field:ColumnInfo(name = "date")
     val date: Date,
 
+    @field:ColumnInfo(name = "isSelected")
+    val isSelected: Boolean = false,
+
 ) : Parcelable
