@@ -44,6 +44,10 @@ class ViewModelFactory private constructor(
                 EditProfpicViewModel(repository) as T
             }
 
+            modelClass.isAssignableFrom(MachineLearningViewModel::class.java) -> {
+                MachineLearningViewModel(repository) as T
+            }
+
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
     }

@@ -8,12 +8,12 @@ import com.telyu.nourimate.data.local.dao.UserDao
 import com.telyu.nourimate.data.local.models.Detail
 import com.telyu.nourimate.data.local.models.Profpic
 import com.telyu.nourimate.data.local.models.Recipe
+import com.telyu.nourimate.data.local.models.Recommendation
 import com.telyu.nourimate.data.local.models.User
 import com.telyu.nourimate.utils.UserModel
 import com.telyu.nourimate.utils.UserPreference
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import java.util.Date
 
 class NourimateRepository(
     private val userPreference: UserPreference,
@@ -108,17 +108,24 @@ class NourimateRepository(
     }
 
     //=== QUERY FOOD ===
-
-    fun getRecipeByMeal(mealId: Int): LiveData<List<Recipe>> {
-        return foodDao.getRecipeByMeal(mealId)
-    }
-
-    fun getRecipeByMealAndDate(mealId: Int, date: Date): LiveData<List<Recipe>> {
-        return foodDao.getRecipesForMealAndDate(mealId, date)
+    suspend fun getRecipesByMealType(mealType: Int): List<Recipe> {
+        return foodDao.getRecipesByMealType(mealType)
     }
 
     suspend fun getRecipeByName(name: String): List<Recipe> {
         return foodDao.getRecipeByName(name)
+    }
+
+    //query untuk mock machine learning activity
+
+    val allRecipeNames: LiveData<List<String>> = foodDao.getAllRecipeNames()
+
+    suspend fun insertRecommendation(recommendation: Recommendation) {
+        foodDao.insertRecommendation(recommendation)
+    }
+
+    fun getRecipeIdByName(recipeName: String): Int? {
+        return foodDao.getRecipeIdByName(recipeName)
     }
 
     companion object {

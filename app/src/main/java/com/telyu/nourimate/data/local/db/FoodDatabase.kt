@@ -8,12 +8,8 @@ import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.telyu.nourimate.R
 import com.telyu.nourimate.data.local.dao.FoodDao
-import com.telyu.nourimate.data.local.models.Meal
 import com.telyu.nourimate.data.local.models.Recipe
 import com.telyu.nourimate.data.local.models.Recommendation
-import com.telyu.nourimate.data.local.relations.MealsRecipesCrossRef
-import com.telyu.nourimate.data.local.relations.MealsRecommendationsCrossRef
-import com.telyu.nourimate.data.local.relations.RecipesRecommendationCrossRef
 import com.telyu.nourimate.utils.Converters
 import org.json.JSONArray
 import org.json.JSONException
@@ -22,9 +18,7 @@ import java.io.IOException
 import java.util.concurrent.Executors
 
 @Database(
-    entities = [Meal::class, Recipe::class,
-        Recommendation::class, MealsRecipesCrossRef::class,
-        RecipesRecommendationCrossRef::class, MealsRecommendationsCrossRef::class],
+    entities = [Recipe::class, Recommendation::class],
     version = 1, exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -35,65 +29,24 @@ abstract class FoodDatabase : RoomDatabase() {
     companion object {
         @Volatile
         private var INSTANCE: FoodDatabase? = null
-
         @JvmStatic
         fun getInstance(context: Context): FoodDatabase {
-            return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    FoodDatabase::class.java,
-                    "food"
-                )
-                    //prepopulate database
-                    .addCallback(object : Callback() {
-                        override fun onCreate(db: SupportSQLiteDatabase) {
-                            super.onCreate(db)
-                            //new thread
-                            Executors.newSingleThreadExecutor().execute {
-                                val dao = getInstance(context).foodDao()
-                                fillWithStartingData(context, dao)
-                            }
-                        }
-                    })
-                    .build()
+            return if (INSTANCE != null) {
+                INSTANCE as FoodDatabase
+            } else {
+                val instance: FoodDatabase =
+                    synchronized(FoodDatabase::class.java) {
+                        Room.databaseBuilder(
+                            context.applicationContext,
+                            FoodDatabase::class.java,
+                            "food"
+                        )
+                            .build()
+                    }
                 INSTANCE = instance
                 instance
             }
         }
-
-        private fun fillWithStartingData(context: Context, dao: FoodDao) {
-            val jsonArray = loadJsonArray(context)
-            try {
-                if (jsonArray != null) {
-                    for (i in 0 until jsonArray.length()) {
-                        val item = jsonArray.getJSONObject(i)
-                        dao.insertAllMeal(
-                            Meal(
-                                mealId = item.getInt("mealId"),
-                                name = item.getString("name")
-                            )
-                        )
-                    }
-                }
-            } catch (exception: JSONException) {
-                exception.printStackTrace()
-            }
-        }
-
-        private fun loadJsonArray(context: Context): JSONArray? {
-            return try {
-                val inputStream = context.resources.openRawResource(R.raw.meal)
-                val jsonString = inputStream.bufferedReader().use { it.readText() }
-                JSONObject(jsonString).getJSONArray("meal")
-            } catch (exception: IOException) {
-                exception.printStackTrace()
-                null
-            } catch (exception: JSONException) {
-                exception.printStackTrace()
-                null
-            }
-        }
-
     }
 }
 

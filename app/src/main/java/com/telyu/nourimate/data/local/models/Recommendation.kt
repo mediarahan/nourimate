@@ -3,6 +3,7 @@ package com.telyu.nourimate.data.local.models
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.telyu.nourimate.utils.Converters
@@ -22,5 +23,8 @@ data class Recommendation(
 
     @field:ColumnInfo(name = "isSelected")
     val isSelected: Boolean = false,
+
+    @field:ColumnInfo(name = "meal_type")
+    val mealType: Int,
 
 ) : Parcelable

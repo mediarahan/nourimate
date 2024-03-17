@@ -9,20 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.observe
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.telyu.nourimate.R
 import com.telyu.nourimate.adapter.RecipeAdapter
 import com.telyu.nourimate.data.local.FakeFoodData
 import com.telyu.nourimate.data.local.db.FoodDatabase
-import com.telyu.nourimate.data.local.models.Meal
 import com.telyu.nourimate.data.local.models.Recipe
 import com.telyu.nourimate.data.local.models.Recommendation
-import com.telyu.nourimate.data.local.relations.MealsRecipesCrossRef
-import com.telyu.nourimate.data.local.relations.RecipesRecommendationCrossRef
 import com.telyu.nourimate.databinding.FragmentRecipeBinding
 import com.telyu.nourimate.viewmodels.RecipeViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
@@ -38,6 +34,8 @@ class RecipeFragment : Fragment() {
         )
     }
 
+    private var isDatabaseFilled = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -51,8 +49,11 @@ class RecipeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fillDatabaseWithFakeData()
-
+        //jank as fuck database insertion check
+        if (!isDatabaseFilled) {
+            fillDatabaseWithFakeData()
+            isDatabaseFilled = true
+        }
         displayRecipes()
 
         displayUserNameAndProfpic()
@@ -72,6 +73,26 @@ class RecipeFragment : Fragment() {
         }
     }
 
+
+    private fun displayRecipes() {
+        //rv adapter stuff
+        val recipeAdapter = RecipeAdapter()
+        binding.recommendationRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recommendationRecyclerView.adapter = recipeAdapter
+
+        selectMealType { mealType ->
+            viewModel.getRecipeByMealType(mealType)
+        }
+
+        viewModel.recipeList.observe(viewLifecycleOwner) { recipes ->
+            recipeAdapter.submitList(recipes)
+        }
+
+        viewModel.searchResult.observe(viewLifecycleOwner) { recipes ->
+            recipeAdapter.submitList(recipes)
+        }
+    }
+
     //popup. Mulai untuk profile feature branch
     private fun showPopupMenu() {
         val dialog = Dialog(requireContext())
@@ -87,24 +108,6 @@ class RecipeFragment : Fragment() {
 
         dialog.window?.attributes = layoutParams
         dialog.show()
-    }
-
-    private fun displayRecipes() {
-        //rv adapter stuff
-        val recipeAdapter = RecipeAdapter()
-        binding.recommendationRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.recommendationRecyclerView.adapter = recipeAdapter
-
-        selectMealType { selectedMealType ->
-            viewModel.getRecipeByMeal(selectedMealType)
-                .observe(viewLifecycleOwner) { recipes ->
-                    recipeAdapter.submitList(recipes)
-                }
-        }
-
-        viewModel.searchResult.observe(viewLifecycleOwner) { recipes ->
-            recipeAdapter.submitList(recipes)
-        }
     }
 
     private fun setupSearchBarAndSearchView() {
@@ -180,31 +183,13 @@ class RecipeFragment : Fragment() {
                 recipePictures = recipe.recipePictures
             )
         }
-        val mappedMeals = fakeFoodData.meals.map { meal ->
-            Meal(
-                mealId = meal.mealId,
-                name = meal.name
-            )
-        }
 
         val mappedRecommendations = fakeFoodData.recommendations.map { recommendation ->
             Recommendation(
                 recommendationId = recommendation.recommendationId,
-                date = recommendation.date
-            )
-        }
-
-        val mappedRelationRR = fakeFoodData.recipeRecommendationCrossRef.map { crossRef ->
-            RecipesRecommendationCrossRef(
-                recipeId = crossRef.recipeId,
-                recommendationId = crossRef.recommendationId,
-            )
-        }
-
-        val mappedRelationMR = fakeFoodData.mealRecipeCrossRef.map { crossRef ->
-            MealsRecipesCrossRef(
-                mealId = crossRef.mealId,
-                recipeId = crossRef.recipeId,
+                date = recommendation.date,
+                isSelected = recommendation.isSelected,
+                mealType = recommendation.mealType,
             )
         }
 
@@ -214,17 +199,8 @@ class RecipeFragment : Fragment() {
             mappedRecipes.forEach { recipe ->
                 dao.insertRecipe(recipe)
             }
-            mappedMeals.forEach { meals ->
-                dao.insertMeal(meals)
-            }
             mappedRecommendations.forEach { recommendation ->
                 dao.insertRecommendation(recommendation)
-            }
-            mappedRelationRR.forEach { crossRef ->
-                dao.insertRecipeRecommendationCrossRef(crossRef)
-            }
-            mappedRelationMR.forEach { crossRef ->
-                dao.insertMealRecipeCrossRef(crossRef)
             }
         }
     }

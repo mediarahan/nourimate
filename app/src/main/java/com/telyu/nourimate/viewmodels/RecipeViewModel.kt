@@ -14,6 +14,9 @@ class RecipeViewModel (private val repository: NourimateRepository) : ViewModel(
     private val _searchResult = MutableLiveData<List<Recipe>>()
     val searchResult: LiveData<List<Recipe>> get() = _searchResult
 
+    private val _recipeList = MutableLiveData<List<Recipe>>()
+    val recipeList: LiveData<List<Recipe>> get() = _recipeList
+
     private val _userId = MutableLiveData<Int?>()
     val userId: LiveData<Int?> = _userId
 
@@ -25,7 +28,6 @@ class RecipeViewModel (private val repository: NourimateRepository) : ViewModel(
 
     val userEmail: LiveData<String> = repository.getUserEmail().asLiveData()
 
-
     fun getRecipeByName(name: String) {
         viewModelScope.launch {
             val searchResult = repository.getRecipeByName(name)
@@ -33,12 +35,11 @@ class RecipeViewModel (private val repository: NourimateRepository) : ViewModel(
         }
     }
 
-    fun getRecipeByMeal(mealId: Int): LiveData<List<Recipe>> {
-        return repository.getRecipeByMeal(mealId)
-    }
-
-    fun getRecipeByMealAndDate(mealId: Int, date: Date): LiveData<List<Recipe>> {
-        return repository.getRecipeByMealAndDate(mealId, date)
+    fun getRecipeByMealType(mealType: Int) {
+        viewModelScope.launch {
+            val recipe = repository.getRecipesByMealType(mealType)
+            _recipeList.value = recipe
+        }
     }
 
     fun getUserIdByEmail(email: String) {

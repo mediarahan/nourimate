@@ -1,10 +1,6 @@
 package com.telyu.nourimate.data.local
 
-import com.telyu.nourimate.data.local.relations.MealsRecipesCrossRef
-import com.telyu.nourimate.data.local.relations.MealsRecommendationsCrossRef
-import com.telyu.nourimate.data.local.relations.RecipesRecommendationCrossRef
 import com.telyu.nourimate.utils.Converters
-import java.text.SimpleDateFormat
 import java.util.Date
 
 class FakeFoodData {
@@ -22,12 +18,9 @@ class FakeFoodData {
 
     data class Recommendation(
         val recommendationId: Int,
-        val date: Date
-    )
-
-    data class Meal(
-        val mealId: Int,
-        val name: String
+        val date: Date,
+        val isSelected: Boolean,
+        val mealType: Int,
     )
 
     val recipes = listOf(
@@ -89,108 +82,37 @@ class FakeFoodData {
         )
     )
 
-    val converters = Converters()
-
     val recommendations = listOf(
         Recommendation(
             recommendationId = 1,
-            date = Date(System.currentTimeMillis())
+            date = Date(System.currentTimeMillis()),
+            isSelected = false,
+            mealType = 2,
         ),
         Recommendation(
             recommendationId = 2,
-            date = Date(System.currentTimeMillis() - 86400000)
+            date = Date(System.currentTimeMillis() - 86400000),
+            isSelected = false,
+            mealType = 1,
         ),
         Recommendation(
             recommendationId = 3,
-            date = Date(System.currentTimeMillis() + 86400000)
-        ),
+            date = Date(System.currentTimeMillis() + 86400000),
+            isSelected = false,
+            mealType = 3,
+
+            ),
         Recommendation(
             recommendationId = 4,
-            date = Date(System.currentTimeMillis() + 86400000 * 2)
-        )
-    )
-
-
-    val meals = listOf(
-        Meal(
-            mealId = 1,
-            name = "Breakfast"
+            date = Date(System.currentTimeMillis() + 86400000 * 2),
+            isSelected = false,
+            mealType = 2,
         ),
-        Meal(
-            mealId = 2,
-            name = "Lunch"
-        ),
-        Meal(
-            mealId = 3,
-            name = "Dinner"
-        )
-    )
-
-    val mealRecipeCrossRef = listOf(
-        MealsRecipesCrossRef(
-            mealId = 1,
-            recipeId = 1
-        ),
-        MealsRecipesCrossRef(
-            mealId = 2,
-            recipeId = 2
-        ),
-        MealsRecipesCrossRef(
-            mealId = 3,
-            recipeId = 5
-        ),
-        MealsRecipesCrossRef(
-            mealId = 1,
-            recipeId = 3
-        ),
-        MealsRecipesCrossRef(
-            mealId = 1,
-            recipeId = 4
-        ),
-    )
-    val recipeRecommendationCrossRef = listOf(
-        RecipesRecommendationCrossRef(
-            recipeId = 1,
-            recommendationId = 1
-        ),
-        RecipesRecommendationCrossRef(
-            recipeId = 2,
-            recommendationId = 2
-        ),
-        RecipesRecommendationCrossRef(
-            recipeId = 2,
-            recommendationId = 3
-        ),
-        RecipesRecommendationCrossRef(
-            recipeId = 3,
-            recommendationId = 4
-        ),
-        RecipesRecommendationCrossRef(
-            recipeId = 4,
-            recommendationId = 5
-        ),
-    )
-
-    val mealsRecommendationCrossRef = listOf(
-        MealsRecommendationsCrossRef(
-            mealId = 1,
-            recommendationId = 1
-        ),
-        MealsRecommendationsCrossRef(
-            mealId = 2,
-            recommendationId = 2
-        ),
-        MealsRecommendationsCrossRef(
-            mealId = 3,
-            recommendationId = 3
-        ),
-        MealsRecommendationsCrossRef(
-            mealId = 1,
-            recommendationId = 4
-        ),
-        MealsRecommendationsCrossRef(
-            mealId = 1,
-            recommendationId = 5
+        Recommendation(
+            recommendationId = 1,
+            date = Date(System.currentTimeMillis() + 86400000 * 2),
+            isSelected = false,
+            mealType = 4,
         )
     )
 }

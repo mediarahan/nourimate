@@ -4,9 +4,10 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.Relation
 import kotlinx.parcelize.Parcelize
 
-@Entity (tableName = "recipes")
+@Entity(tableName = "recipes")
 @Parcelize
 data class Recipe (
     @PrimaryKey(autoGenerate = true)
@@ -37,4 +38,4 @@ data class Recipe (
     @field:ColumnInfo(name = "recipe_pictures")
     val recipePictures: String,
 
-): Parcelable
+) : Parcelable
