@@ -20,7 +20,6 @@ class NavigationBarActivity : AppCompatActivity() {
 
         // Menggunakan View Binding untuk menginflate layout
         binding = ActivityNavigationBarBinding.inflate(layoutInflater)
-        window.statusBarColor = ContextCompat.getColor(this, R.color.color16)
         setContentView(binding.root)
 
         val homeFragment = HomeFragment()

@@ -3,6 +3,7 @@ package com.telyu.nourimate.activities
 import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.graphics.drawable.GradientDrawable
 import com.telyu.nourimate.databinding.ActivityLoginBinding
 import android.widget.Toast
 import android.content.Intent
@@ -10,6 +11,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts.*
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -36,6 +38,9 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        window.statusBarColor = ContextCompat.getColor(this, R.color.color19)
+
         loginViewModel = obtainViewModel(this@LoginActivity)
 
         loginViewModel.isUserLoggedIn.observe(this) { isUserLoggedIn ->
@@ -52,6 +57,29 @@ class LoginActivity : AppCompatActivity() {
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Buat array warna untuk gradien
+        val gradientColors = intArrayOf(
+            getColor(R.color.color19),
+            getColor(R.color.color20),
+            getColor(R.color.color21),
+            getColor(R.color.white),
+            getColor(R.color.white),
+            getColor(R.color.white),
+            getColor(R.color.white),
+        )
+
+        // Buat objek GradientDrawable
+        val gradientDrawable = GradientDrawable(
+            GradientDrawable.Orientation.TOP_BOTTOM,
+            gradientColors
+        )
+
+        // Set corner radius jika diinginkan
+        gradientDrawable.cornerRadius = 0f
+
+        // Terapkan drawable ke root view
+        binding.root.background = gradientDrawable
 
         initLogin()
 
