@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.telyu.nourimate.databinding.FragmentProfileBinding
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.viewModels
 import com.telyu.nourimate.R
 import com.telyu.nourimate.activities.EditProfpicActivity
@@ -37,6 +39,8 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setStatusBarColor(ContextCompat.getColor(requireContext(), R.color.color36))
 
         displayImage()
         setupButtons()
@@ -81,11 +85,24 @@ class ProfileFragment : Fragment() {
     }
 
     private fun mapBMIAndName() {
-        viewModel.BMI.observe(viewLifecycleOwner) {userBMI ->
-            binding.bmiResultTextView.text = "Body Mass Index: ${ userBMI.toString() }"
+        viewModel.BMI.observe(viewLifecycleOwner) { userBMI ->
+            // Safely handle nullable userBMI with a default value if it's null
+            val safeBMI = userBMI ?: return@observe  // Use a default or show an error
+
+            binding.bmiResultTextView.text = "Body Mass Index: $safeBMI"
+
+            val backgroundResource = when {
+                safeBMI < 18.5 -> R.drawable.oval_blue
+                safeBMI < 25 -> R.drawable.oval_green
+                safeBMI < 30 -> R.drawable.oval_yellow
+                safeBMI < 35 -> R.drawable.oval_orange
+                else -> R.drawable.oval_red
+            }
+
+            binding.bmiResultTextView.setBackgroundResource(backgroundResource)
         }
 
-        viewModel.userName.observe(viewLifecycleOwner) {userName ->
+        viewModel.userName.observe(viewLifecycleOwner) { userName ->
             binding.nameTextView.text = userName
         }
     }
@@ -132,6 +149,16 @@ class ProfileFragment : Fragment() {
             }
         }
 
+        binding.profileIcon.setOnClickListener {
+            // Kode untuk menuju ke EditProfileFragment
+            val editProfileFragment = UserDetailFragment()
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fragmentContainer, editProfileFragment)
+                addToBackStack(null)
+                commit()
+            }
+        }
+
         // Implementasi event click untuk tombol Account
         binding.accountButton.setOnClickListener {
             // Kode untuk menuju ke AccountFragment
@@ -143,8 +170,49 @@ class ProfileFragment : Fragment() {
             }
         }
 
+        binding.accountIcon.setOnClickListener {
+            // Kode untuk menuju ke AccountFragment
+            val accountFragment = AccountFragment()
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fragmentContainer, accountFragment)
+                addToBackStack(null)
+                commit()
+            }
+        }
+
+        // Implementasi event click untuk tombol History
+        binding.historyButton.setOnClickListener {
+            // Kode untuk menuju ke HistoryFragment
+            val historyFragment = HistoryFragment()
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fragmentContainer, historyFragment)
+                addToBackStack(null)
+                commit()
+            }
+        }
+
+        binding.historyIcon.setOnClickListener {
+            // Kode untuk menuju ke HistoryFragment
+            val historyFragment = HistoryFragment()
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fragmentContainer, historyFragment)
+                addToBackStack(null)
+                commit()
+            }
+        }
+
         // Implementasi event click untuk tombol Community
         binding.communityButton.setOnClickListener {
+            // Kode untuk menuju ke CommunityFragment
+            val communityFragment = CommunityFragment()
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fragmentContainer, communityFragment)
+                addToBackStack(null)
+                commit()
+            }
+        }
+
+        binding.communityIcon.setOnClickListener {
             // Kode untuk menuju ke CommunityFragment
             val communityFragment = CommunityFragment()
             requireActivity().supportFragmentManager.beginTransaction().apply {
@@ -165,5 +233,25 @@ class ProfileFragment : Fragment() {
             }
         }
 
+        binding.faqIcon.setOnClickListener {
+            // Kode untuk menuju ke FaqFragment
+            val faqFragment = FaqFragment()
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fragmentContainer, faqFragment)
+                addToBackStack(null)
+                commit()
+            }
+        }
+
+    }
+
+    private fun setStatusBarColor(color: Int) {
+        val window = requireActivity().window
+        val insetsController = WindowInsetsControllerCompat(window, window.decorView)
+
+        insetsController.isAppearanceLightStatusBars = true // Set true or false depending on the status bar icons' color
+        insetsController.isAppearanceLightNavigationBars = true // Set true or false depending on the navigation bar icons' color
+
+        window.statusBarColor = color
     }
 }
