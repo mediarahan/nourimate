@@ -10,12 +10,28 @@ import com.telyu.nourimate.data.repository.NourimateRepository
 import kotlinx.coroutines.launch
 import java.util.Date
 
-class RecipeViewModel (private val repository: NourimateRepository) : ViewModel() {
+class RecipeViewModel(private val repository: NourimateRepository) : ViewModel() {
     private val _searchResult = MutableLiveData<List<Recipe>>()
     val searchResult: LiveData<List<Recipe>> get() = _searchResult
 
     private val _recipeList = MutableLiveData<List<Recipe>>()
     val recipeList: LiveData<List<Recipe>> get() = _recipeList
+
+    //PERCOBAAN QUERY
+
+    private val _recommendationIds = MutableLiveData<List<Int>>()
+    val recommendationIds: LiveData<List<Int>> get() = _recommendationIds
+
+    //PERCOBAAN QUERY
+
+    private val _selectedRecipeCount = MutableLiveData<Int?>()
+    val selectedRecipeCount: LiveData<Int?> = _selectedRecipeCount
+
+    private val _selectedRecipeCountByMealType = MutableLiveData<Int?>()
+    val selectedRecipeCountByMealType: LiveData<Int?> = _selectedRecipeCountByMealType
+
+    private val _recipeListSelected = MutableLiveData<List<Recipe>>()
+    val recipeListSelected: LiveData<List<Recipe>> get() = _recipeListSelected
 
     private val _userId = MutableLiveData<Int?>()
     val userId: LiveData<Int?> = _userId
@@ -35,10 +51,48 @@ class RecipeViewModel (private val repository: NourimateRepository) : ViewModel(
         }
     }
 
-    fun getRecipeByMealType(mealType: Int) {
+    //PERCOBAAN QUERY
+
+    fun getRecommendationIdsByMealType(mealType: Int) {
         viewModelScope.launch {
-            val recipe = repository.getRecipesByMealType(mealType)
-            _recipeList.value = recipe
+            val recommendationIds = repository.getRecommendationIdsByMealType(mealType)
+            _recommendationIds.value = recommendationIds
+        }
+    }
+
+    fun getRecipesByRecommendationIds(recommendationIds: List<Int>) {
+        viewModelScope.launch {
+            val recipeList = repository.getRecipesByRecommendationIds(recommendationIds)
+            _recipeList.value = recipeList
+        }
+    }
+
+    //PERCOBAAN QUERY
+
+    fun getRecipeByMealTypeAndSelectedRecommendation(mealType: Int) {
+        viewModelScope.launch {
+            val recipe = repository.getRecipeByMealTypeAndSelectedRecommendation(mealType)
+            _recipeListSelected.value = recipe
+        }
+    }
+
+    fun getSelectedRecipeCount() {
+        viewModelScope.launch {
+            val count = repository.getSelectedRecipeCount()
+            _selectedRecipeCount.value = count
+        }
+    }
+
+    fun getSelectedRecipeCountByMealType(mealType: Int) {
+        viewModelScope.launch {
+            val count = repository.getSelectedRecipeCountByMealType(mealType)
+            _selectedRecipeCountByMealType.value = count
+        }
+    }
+
+    fun updateRecommendationSelection(recommendationId: Int, isSelected: Boolean) {
+        viewModelScope.launch {
+            repository.updateRecommendationSelection(recommendationId, isSelected)
         }
     }
 
@@ -49,7 +103,7 @@ class RecipeViewModel (private val repository: NourimateRepository) : ViewModel(
         }
     }
 
-    fun getUserNameByEmail (email: String) {
+    fun getUserNameByEmail(email: String) {
         viewModelScope.launch {
             val name = repository.getUserNameByEmail(email)
             _userName.value = name

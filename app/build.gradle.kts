@@ -68,6 +68,7 @@ dependencies {
     implementation("androidx.room:room-ktx:2.5.2")
     implementation("androidx.room:room-runtime:2.5.2")
     ksp("androidx.room:room-compiler:2.5.2")
+    implementation("androidx.activity:activity-ktx:1.6.1")
 
     //firebase auth
     implementation("com.google.android.gms:play-services-auth:20.6.0")

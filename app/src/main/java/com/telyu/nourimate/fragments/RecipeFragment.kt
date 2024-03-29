@@ -1,17 +1,15 @@
 package com.telyu.nourimate.fragments
 
-import android.app.Dialog
+import com.telyu.nourimate.views.custom.RecipeDialog
 import android.net.Uri
 import android.os.Bundle
-import android.view.Gravity
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.telyu.nourimate.R
 import com.telyu.nourimate.adapter.RecipeAdapter
@@ -22,8 +20,8 @@ import com.telyu.nourimate.data.local.models.Recommendation
 import com.telyu.nourimate.databinding.FragmentRecipeBinding
 import com.telyu.nourimate.viewmodels.RecipeViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
-import com.telyu.nourimate.views.custom.RecipeDialog
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.selects.select
 
 class RecipeFragment : Fragment() {
 
@@ -82,10 +80,16 @@ class RecipeFragment : Fragment() {
         binding.recommendationRecyclerView.adapter = recipeAdapter
 
         selectMealType { mealType ->
-            viewModel.getRecipeByMealType(mealType)
+            viewModel.getRecommendationIdsByMealType(mealType)
+        }
+
+        viewModel.recommendationIds.observe(viewLifecycleOwner) { recommendationIds ->
+            Log.d("RecommendationIds", recommendationIds.toString())
+            viewModel.getRecipesByRecommendationIds(recommendationIds)
         }
 
         viewModel.recipeList.observe(viewLifecycleOwner) { recipes ->
+            Log.d("RecipeList", recipes.toString())
             recipeAdapter.submitList(recipes)
         }
 
@@ -96,11 +100,8 @@ class RecipeFragment : Fragment() {
 
     //popup. Mulai untuk profile feature branch
     private fun showPopupMenu() {
-        val customDialog = RecipeDialog(requireContext(), R.layout.popup_layout)
-        customDialog.show()
-
-        // Example: Modify dialog views
-        customDialog.setDialogTitle("Custom Dialog Title")
+        val dialogFragment = RecipeDialog()
+        dialogFragment.show(parentFragmentManager, "com.telyu.nourimate.views.custom.RecipeDialog")
     }
 
     private fun setupSearchBarAndSearchView() {
@@ -183,6 +184,7 @@ class RecipeFragment : Fragment() {
                 date = recommendation.date,
                 isSelected = recommendation.isSelected,
                 mealType = recommendation.mealType,
+                recipeId = recommendation.recipeId,
             )
         }
 
@@ -197,4 +199,6 @@ class RecipeFragment : Fragment() {
             }
         }
     }
+
+
 }

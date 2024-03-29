@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/iv_background"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="-8dp"
+        android:src="@drawable/rectangle_profile"
+        app:layout_constraintBottom_toBottomOf="@id/tv_protein"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_recipename"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/zenkakugothicnewbold"
+        android:text="Recipe Name"
+        app:layout_constraintBottom_toTopOf="@id/tv_calories"
+        app:layout_constraintStart_toStartOf="@+id/iv_background"
+        app:layout_constraintTop_toTopOf="@+id/iv_background" />
+
+    <TextView
+        android:id="@+id/tv_calories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/zenkakugothicnewbold"
+        android:text="200 Calories"
+        app:layout_constraintBottom_toTopOf="@id/tv_carbs"
+        app:layout_constraintStart_toStartOf="@+id/iv_background"
+        app:layout_constraintTop_toBottomOf="@id/tv_recipename" />
+
+    <TextView
+        android:id="@+id/tv_carbs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/zenkakugothicnewbold"
+        android:text="8g Carbs"
+        app:layout_constraintBottom_toTopOf="@id/tv_fat"
+        app:layout_constraintStart_toStartOf="@+id/iv_background"
+        app:layout_constraintTop_toBottomOf="@id/tv_calories" />
+
+    <TextView
+        android:id="@+id/tv_fat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/zenkakugothicnewbold"
+        android:text="3g Fat"
+        app:layout_constraintBottom_toTopOf="@id/tv_protein"
+        app:layout_constraintStart_toStartOf="@+id/iv_background"
+        app:layout_constraintTop_toBottomOf="@id/tv_carbs" />
+
+    <TextView
+        android:id="@+id/tv_protein"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="32dp"
+        android:fontFamily="@font/zenkakugothicnewbold"
+        android:text="12g Protein"
+        app:layout_constraintStart_toStartOf="@+id/iv_background"
+        app:layout_constraintTop_toBottomOf="@id/tv_fat" />
+
+    <ImageView
+        android:id="@+id/iv_delete_meal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_cross_24"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="@id/iv_background"
+        app:layout_constraintTop_toTopOf="@id/iv_background"
+        app:layout_constraintBottom_toBottomOf="@id/iv_background" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

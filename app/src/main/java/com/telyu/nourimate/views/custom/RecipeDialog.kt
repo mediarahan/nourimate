@@ -1,7 +1,7 @@
 package com.telyu.nourimate.views.custom
 
-import android.app.Dialog
-import android.content.Context
+import DialogUtils.setWidthPercent
+import RecipeDialogMeal
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -10,55 +10,90 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.TextView
-import androidx.databinding.DataBindingUtil.setContentView
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.telyu.nourimate.R
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
+import com.telyu.nourimate.databinding.PopupLayoutBinding
+import com.telyu.nourimate.viewmodels.RecipeViewModel
+import com.telyu.nourimate.viewmodels.ViewModelFactory
 
-class RecipeDialog(context: Context, layoutResId: Int) : Dialog(context) {
+@Suppress("DEPRECATION")
+class RecipeDialog : DialogFragment() {
 
+    private lateinit var binding: PopupLayoutBinding
 
-    init {
-        setContentView(layoutResId)
+    private val viewModel by viewModels<RecipeViewModel> {
+        ViewModelFactory.getInstance(
+            requireContext().applicationContext
+        )
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = PopupLayoutBinding.inflate(inflater, container, false)
 
         // Adjust dialog properties
-        val layoutParams = window?.attributes
+        val layoutParams = dialog?.window?.attributes
         layoutParams?.apply {
             width = WindowManager.LayoutParams.MATCH_PARENT
-            height = WindowManager.LayoutParams.WRAP_CONTENT
+            height = WindowManager.LayoutParams.MATCH_PARENT
             gravity = Gravity.CENTER
         }
 
-        window?.attributes = layoutParams
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog?.window?.attributes = layoutParams
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        getRecipeCount()
+        setupMealButtons()
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        //set dialog width
+        setWidthPercent(85)
+    }
+
+    private fun getRecipeCount() {
+        viewModel.getSelectedRecipeCount()
+
+        viewModel.selectedRecipeCount.observe(viewLifecycleOwner) { count ->
+            binding.textViewBasket.text = count.toString()
+        }
     }
 
     // Example function to modify dialog views
-    fun setDialogTitle(title: String) {
+    private fun setupMealButtons() {
+        var selectedMeal: Int
+
+        binding.breakfastTextView.setOnClickListener {
+            selectedMeal = 1
+            showSecondDialog(selectedMeal)
+        }
+        binding.lunchTextView.setOnClickListener {
+            selectedMeal = 2
+            showSecondDialog(selectedMeal)
+        }
+        binding.dinnerTextView.setOnClickListener {
+            selectedMeal = 3
+            showSecondDialog(selectedMeal)
+        }
+    }
+
+    private fun showSecondDialog(selectedMeal: Int) {
+        val bundle = Bundle()
+        bundle.putInt("selectedMeal", selectedMeal)
+
+        val recipeDialogMeal = RecipeDialogMeal()
+        recipeDialogMeal.arguments = bundle
+        recipeDialogMeal.show(parentFragmentManager, "RecipeDialogMeal")
     }
 
 }
-
-
-//    init {
-//        setContentView(R.layout.popup_layout)
-//
-//        val breakfastTextView = findViewById<TextView>(R.id.breakfastTextView)
-//        val lunchTextView = findViewById<TextView>(R.id.lunchTextView)
-//        val dinnerTextView = findViewById<TextView>(R.id.dinnerTextView)
-//
-//        breakfastTextView.setOnClickListener {
-//            // Handle breakfast click
-//        }
-//
-//        lunchTextView.setOnClickListener {
-//            // Handle lunch click
-//        }
-//
-//        dinnerTextView.setOnClickListener {
-//
-//        }
-//    }
-//
-//    fun showDialog() {
-//        show()
-//    }

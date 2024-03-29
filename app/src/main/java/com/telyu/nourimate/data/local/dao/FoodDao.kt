@@ -24,17 +24,33 @@ interface FoodDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRecommendation(recommendation: Recommendation)
 
+    //querynya salah cok.
+    @Query("SELECT recommendation_id FROM recommendations WHERE meal_type = :mealType")
+    suspend fun getRecommendationIdsByMealType(mealType: Int): List<Int>
+
+    @Query("SELECT * FROM recipes WHERE recipe_id IN (SELECT recipe_id FROM recommendations WHERE recommendation_id IN (:recommendationIds))")
+    suspend fun getRecipesByRecommendationIds(recommendationIds: List<Int>): List<Recipe>
+
     //=== query untuk tampilin resep di RecipeFragment
+
     @Query(
         """ 
         SELECT * FROM recipes
         INNER JOIN recommendations ON recipes.recipe_id = recommendations.recommendation_id
-        WHERE recommendations.meal_type = :mealType
+        WHERE recommendations.meal_type = :mealType AND isSelected = 1
         """
     )
-    suspend fun getRecipesByMealType(mealType: Int): List<Recipe>
+    suspend fun getRecipeByMealTypeAndSelectedRecommendation(mealType: Int): List<Recipe>
 
 
+    @Query("SELECT COUNT(*) FROM recommendations WHERE isSelected = 1")
+    suspend fun getSelectedRecipeCount(): Int
+
+    @Query("SELECT COUNT(*) FROM recommendations WHERE isSelected = 1 AND meal_type = :mealType")
+    suspend fun getSelectedRecipeCountByMealType(mealType: Int): Int
+
+    @Query("UPDATE recommendations SET isSelected = :isSelected WHERE recommendation_id = :recommendationId")
+    suspend fun updateRecommendationSelection(recommendationId: Int, isSelected: Boolean)
 
     //=== query untuk mock machine learning activity ===
     @Query("SELECT name FROM recipes")

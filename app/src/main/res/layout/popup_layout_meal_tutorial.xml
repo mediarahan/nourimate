@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/rectangletitlebreakfast"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:background="@drawable/rectangle_selected_meal_with_shadow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/recipeTutorialRecyclerView"/>
+
+    <TextView
+        android:id="@+id/popupTitleMealTutorial"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/zenkakugothicnewbold"
+        android:text="Breakfast"
+        android:layout_marginStart="24dp"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/rectangletitlebreakfast"
+        app:layout_constraintStart_toStartOf="@+id/rectangletitlebreakfast"
+        app:layout_constraintTop_toTopOf="@+id/rectangletitlebreakfast" />
+
+    <TextView
+        android:id="@+id/textViewBasketMealTutorial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/rectangle_basket"
+        android:fontFamily="@font/zenkakugothicnewbold"
+        android:paddingStart="30dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="30dp"
+        android:paddingBottom="5dp"
+        android:text="2"
+        android:textColor="@color/white"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="@+id/rectangletitlebreakfast"
+        app:layout_constraintEnd_toEndOf="@id/rectangletitlebreakfast"
+        app:layout_constraintTop_toTopOf="@+id/rectangletitlebreakfast" />
+
+
+    <ImageView
+        android:id="@+id/rectangleselectedbreakfast"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/rectangle_selected_meal_2_with_shadow"
+        app:layout_constraintBottom_toBottomOf="@+id/recipeTutorialRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rectangletitlebreakfast" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recipeTutorialRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rectangletitlebreakfast"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

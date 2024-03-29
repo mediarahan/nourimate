@@ -7,28 +7,25 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.telyu.nourimate.data.local.models.Recipe
 import com.telyu.nourimate.databinding.ItemFoodBinding
+import com.telyu.nourimate.databinding.ItemRecipeDialogTutorialBinding
 
-class RecipeAdapter : ListAdapter<Recipe, RecipeAdapter.RecipeViewHolder>(DIFF_CALLBACK) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
-        val binding = ItemFoodBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return RecipeViewHolder(binding)
+class DialogRecipeTutorialAdapter : ListAdapter<Recipe, DialogRecipeTutorialAdapter.DialogTutorialRecipeViewHolder>(DIFF_CALLBACK) {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DialogTutorialRecipeViewHolder {
+        val binding = ItemRecipeDialogTutorialBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return DialogTutorialRecipeViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: DialogTutorialRecipeViewHolder, position: Int) {
         val recipe = getItem(position)
         holder.bind(recipe)
     }
 
-    inner class RecipeViewHolder(private val binding: ItemFoodBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class DialogTutorialRecipeViewHolder(private val binding: ItemRecipeDialogTutorialBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(recipe: Recipe) {
             binding.apply {
                 tvName.text = recipe.name
                 tvIngredients.text = recipe.ingredients
-                tvCalories.text = "Calories: ${recipe.calories.toInt()}"
-                tvProtein.text = "Protein: ${recipe.protein.toInt()}"
-                tvFat.text = "Fat: ${recipe.fat.toInt()}"
-                tvCarbs.text = "Carbs: ${recipe.carbs.toInt()}"
                 val resourceId = itemView.context.resources.getIdentifier(
                     recipe.recipePictures,
                     "drawable",

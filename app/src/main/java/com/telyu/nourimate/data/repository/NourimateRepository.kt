@@ -107,9 +107,30 @@ class NourimateRepository(
         return userDao.updateUserName(id, name)
     }
 
+    suspend fun updateRecommendationSelection(recommendationId: Int, isSelected: Boolean) {
+        foodDao.updateRecommendationSelection(recommendationId, isSelected)
+    }
+
     //=== QUERY FOOD ===
-    suspend fun getRecipesByMealType(mealType: Int): List<Recipe> {
-        return foodDao.getRecipesByMealType(mealType)
+
+    suspend fun getRecommendationIdsByMealType(mealType: Int): List<Int> {
+        return foodDao.getRecommendationIdsByMealType(mealType)
+    }
+
+    suspend fun getRecipesByRecommendationIds(recommendationIds: List<Int>): List<Recipe> {
+        return foodDao.getRecipesByRecommendationIds(recommendationIds)
+    }
+
+    suspend fun getRecipeByMealTypeAndSelectedRecommendation(mealType: Int): List<Recipe> {
+        return foodDao.getRecipeByMealTypeAndSelectedRecommendation(mealType)
+    }
+
+    suspend fun getSelectedRecipeCount(): Int {
+        return foodDao.getSelectedRecipeCount()
+    }
+
+    suspend fun getSelectedRecipeCountByMealType(mealType: Int): Int {
+        return foodDao.getSelectedRecipeCountByMealType(mealType)
     }
 
     suspend fun getRecipeByName(name: String): List<Recipe> {
