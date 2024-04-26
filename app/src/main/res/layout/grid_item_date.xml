@@ -1,0 +1,14 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="40dp"
+    android:layout_height="40dp"
+    android:gravity="center">
+
+<TextView
+android:id="@+id/dateText"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+    android:textSize="12sp"
+    android:gravity="center"
+    android:textColor="@android:color/black"
+    android:fontFamily="@font/robotomedium"/>
+    </FrameLayout>

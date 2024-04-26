@@ -68,7 +68,7 @@
         app:layout_constraintTop_toBottomOf="@+id/inputaccount" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/editTextBirthLayout"
+        android:id="@+id/DateOfBirth"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
@@ -81,6 +81,8 @@
         app:boxStrokeWidth="0dp"
         app:boxStrokeWidthFocused="3dp"
         app:layout_constraintEnd_toEndOf="parent"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputaccount"
         app:startIconDrawable="@drawable/profile"
@@ -92,8 +94,9 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/abel"
             android:focusable="false"
-            android:hint="Insert birth here..."
-            android:inputType="textPersonName" />
+            android:focusableInTouchMode="false"
+            android:hint="Date of Birth"
+            android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -111,7 +114,7 @@
         app:boxStrokeWidthFocused="3dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextBirthLayout"
+        app:layout_constraintTop_toBottomOf="@+id/DateOfBirth"
         app:startIconDrawable="@drawable/profile"
         app:startIconTint="#FFD689">
 
@@ -231,5 +234,3 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-

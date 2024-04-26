@@ -144,7 +144,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun openSignUpPage() {
         // Buat Intent untuk membuka SignUpActivity
-        val intent = Intent(this, SignUpActivity::class.java)
+        val intent = Intent(this, EditProfileActivity::class.java)
         startActivity(intent)
     }
     private fun openNavBarPage() {

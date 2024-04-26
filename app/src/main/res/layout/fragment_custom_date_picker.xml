@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="400dp"
+    android:background="@drawable/rectangle_popup_editprofile"
+    android:padding="16dp">
+
+    <!-- Header untuk menampilkan bulan dan tahun -->
+    <LinearLayout
+        android:id="@+id/yearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/doubleleftArrow"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/doubleleftarrow" />
+
+        <TextView
+            android:id="@+id/Year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:text="2000"/>
+
+        <ImageView
+            android:id="@+id/doublerightArrow"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/doublerightarrow" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/monthLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/yearLayout"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/leftArrow"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/leftarrow" />
+
+        <TextView
+            android:id="@+id/Month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:text="February"/>
+
+        <ImageView
+            android:id="@+id/rightArrow"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/rightarrow" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_below="@id/monthLayout">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:textColor="@color/color23"
+            android:fontFamily="@font/robotomedium"
+            android:text="S" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:textColor="@color/color23"
+            android:fontFamily="@font/robotomedium"
+            android:text="M" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:textColor="@color/color23"
+            android:fontFamily="@font/robotomedium"
+            android:text="T" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:textColor="@color/color23"
+            android:fontFamily="@font/robotomedium"
+            android:text="W" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:textColor="@color/color23"
+            android:fontFamily="@font/robotomedium"
+            android:text="T" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:textColor="@color/color23"
+            android:fontFamily="@font/robotomedium"
+            android:text="F" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:textColor="@color/color23"
+            android:fontFamily="@font/robotomedium"
+            android:text="S" />
+
+
+    </LinearLayout>
+
+    <GridView
+        android:id="@+id/gvCalendar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:numColumns="7"
+        android:gravity="center"
+        android:layout_below="@id/monthLayout"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="24dp" />
+
+
+    <TextView
+        android:id="@+id/btnCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_below="@id/gvCalendar"
+        android:layout_marginTop="5dp"
+        android:layout_alignParentStart="true"/>
+
+
+    <!-- Tombol Done -->
+    <Button
+        android:id="@+id/btnDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Done"
+        android:theme="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:backgroundTint="@color/color23"
+        android:layout_below="@id/btnCancel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:layout_alignParentEnd="true" />
+
+</RelativeLayout>

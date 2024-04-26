@@ -10,47 +10,47 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/backButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/back"
-        android:contentDescription="Back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:padding="30dp"/>
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/back"
+            android:contentDescription="Back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:padding="30dp"/>
 
-    <TextView
-        android:id="@+id/textViewProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Profile"
-        android:textSize="30sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="20dp"/>
+        <TextView
+            android:id="@+id/textViewProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Profile"
+            android:textSize="30sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="20dp"/>
 
-    <TextView
-        android:id="@+id/textViewEditProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Edit Your Profile"
-        android:textSize="15sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewProfile" />
+        <TextView
+            android:id="@+id/textViewEditProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit Your Profile"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewProfile" />
 
-    <View
-        android:id="@+id/rectanglebmiView"
-        android:layout_width="380dp"
-        android:layout_height="130dp"
-        android:background="@drawable/rectangle_profile_with_shadow"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewEditProfile"
-        android:elevation="5dp"
-        android:layout_marginTop="20dp"/>
+        <View
+            android:id="@+id/rectanglebmiView"
+            android:layout_width="380dp"
+            android:layout_height="130dp"
+            android:background="@drawable/rectangle_profile_with_shadow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewEditProfile"
+            android:elevation="5dp"
+            android:layout_marginTop="20dp"/>
 
         <SeekBar
             android:id="@+id/bmiSeekBar"
@@ -228,387 +228,387 @@
             android:layout_marginBottom="-16dp"
             android:elevation="6dp"/>
 
-    <TextView
-        android:id="@+id/textViewInformation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Your Information"
-        android:textSize="30sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rectanglebmiView"
-        android:layout_marginTop="20dp"/>
+        <TextView
+            android:id="@+id/textViewInformation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your Information"
+            android:textSize="30sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rectanglebmiView"
+            android:layout_marginTop="20dp"/>
 
-    <View
-        android:id="@+id/rectanglenameView"
-        android:layout_width="380dp"
-        android:layout_height="50dp"
-        android:background="@drawable/rectangle_profile_with_shadow"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="15dp"
-        app:layout_constraintTop_toBottomOf="@+id/textViewInformation"
-        android:elevation="5dp"/>
+        <View
+            android:id="@+id/rectanglenameView"
+            android:layout_width="380dp"
+            android:layout_height="50dp"
+            android:background="@drawable/rectangle_profile_with_shadow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="15dp"
+            app:layout_constraintTop_toBottomOf="@+id/textViewInformation"
+            android:elevation="5dp"/>
 
-    <TextView
-        android:id="@+id/textViewName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Young Flint"
-        android:textSize="20sp"
-        android:elevation="6dp"
-        app:layout_constraintStart_toStartOf="@id/rectanglenameView"
-        app:layout_constraintTop_toTopOf="@id/rectanglenameView"
-        app:layout_constraintBottom_toBottomOf="@id/rectanglenameView"
-        android:layout_marginStart="50dp"/>
+        <TextView
+            android:id="@+id/textViewName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Young Flint"
+            android:textSize="20sp"
+            android:elevation="6dp"
+            app:layout_constraintStart_toStartOf="@id/rectanglenameView"
+            app:layout_constraintTop_toTopOf="@id/rectanglenameView"
+            app:layout_constraintBottom_toBottomOf="@id/rectanglenameView"
+            android:layout_marginStart="50dp"/>
 
-    <ImageView
-        android:id="@+id/iconprofileImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/profile"
-        android:elevation="6dp"
-        app:layout_constraintStart_toStartOf="@id/rectanglenameView"
-        app:layout_constraintTop_toTopOf="@id/rectanglenameView"
-        app:layout_constraintBottom_toBottomOf="@id/rectanglenameView"
-        android:layout_marginStart="10dp" />
+        <ImageView
+            android:id="@+id/iconprofileImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/profile"
+            android:elevation="6dp"
+            app:layout_constraintStart_toStartOf="@id/rectanglenameView"
+            app:layout_constraintTop_toTopOf="@id/rectanglenameView"
+            app:layout_constraintBottom_toBottomOf="@id/rectanglenameView"
+            android:layout_marginStart="10dp" />
 
-    <ImageView
-        android:id="@+id/iconeditprofileImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/edit"
-        android:elevation="6dp"
-        app:layout_constraintEnd_toEndOf="@id/rectanglenameView"
-        app:layout_constraintTop_toTopOf="@id/rectanglenameView"
-        app:layout_constraintBottom_toBottomOf="@id/rectanglenameView"
-        android:layout_marginEnd="10dp" />
+        <ImageView
+            android:id="@+id/iconeditprofileImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/edit"
+            android:elevation="6dp"
+            app:layout_constraintEnd_toEndOf="@id/rectanglenameView"
+            app:layout_constraintTop_toTopOf="@id/rectanglenameView"
+            app:layout_constraintBottom_toBottomOf="@id/rectanglenameView"
+            android:layout_marginEnd="10dp" />
 
-    <View
-        android:id="@+id/rectangledatebirthView"
-        android:layout_width="380dp"
-        android:layout_height="50dp"
-        android:background="@drawable/rectangle_profile_with_shadow"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="15dp"
-        app:layout_constraintTop_toBottomOf="@+id/rectanglenameView"
-        android:elevation="5dp"/>
+        <View
+            android:id="@+id/rectangledatebirthView"
+            android:layout_width="380dp"
+            android:layout_height="50dp"
+            android:background="@drawable/rectangle_profile_with_shadow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="15dp"
+            app:layout_constraintTop_toBottomOf="@+id/rectanglenameView"
+            android:elevation="5dp"/>
 
-    <TextView
-        android:id="@+id/textViewBirth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="2000/02/13"
-        android:textSize="20sp"
-        android:elevation="6dp"
-        app:layout_constraintStart_toStartOf="@+id/rectangledatebirthView"
-        app:layout_constraintTop_toTopOf="@+id/rectangledatebirthView"
-        app:layout_constraintBottom_toBottomOf="@+id/rectangledatebirthView"
-        android:layout_marginStart="50dp"/>
+        <TextView
+            android:id="@+id/textViewBirth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2000/02/13"
+            android:textSize="20sp"
+            android:elevation="6dp"
+            app:layout_constraintStart_toStartOf="@+id/rectangledatebirthView"
+            app:layout_constraintTop_toTopOf="@+id/rectangledatebirthView"
+            app:layout_constraintBottom_toBottomOf="@+id/rectangledatebirthView"
+            android:layout_marginStart="50dp"/>
 
-    <ImageView
-        android:id="@+id/iconbirthImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/profile"
-        android:elevation="6dp"
-        app:layout_constraintStart_toStartOf="@+id/rectangledatebirthView"
-        app:layout_constraintTop_toTopOf="@+id/rectangledatebirthView"
-        app:layout_constraintBottom_toBottomOf="@+id/rectangledatebirthView"
-        android:layout_marginStart="10dp" />
+        <ImageView
+            android:id="@+id/iconbirthImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/profile"
+            android:elevation="6dp"
+            app:layout_constraintStart_toStartOf="@+id/rectangledatebirthView"
+            app:layout_constraintTop_toTopOf="@+id/rectangledatebirthView"
+            app:layout_constraintBottom_toBottomOf="@+id/rectangledatebirthView"
+            android:layout_marginStart="10dp" />
 
-    <ImageView
-        android:id="@+id/iconeditbirthImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/edit"
-        android:elevation="6dp"
-        app:layout_constraintEnd_toEndOf="@+id/rectangledatebirthView"
-        app:layout_constraintTop_toTopOf="@+id/rectangledatebirthView"
-        app:layout_constraintBottom_toBottomOf="@+id/rectangledatebirthView"
-        android:layout_marginEnd="10dp" />
+        <ImageView
+            android:id="@+id/iconeditbirthImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/edit"
+            android:elevation="6dp"
+            app:layout_constraintEnd_toEndOf="@+id/rectangledatebirthView"
+            app:layout_constraintTop_toTopOf="@+id/rectangledatebirthView"
+            app:layout_constraintBottom_toBottomOf="@+id/rectangledatebirthView"
+            android:layout_marginEnd="10dp" />
 
-    <View
-        android:id="@+id/rectangleheightView"
-        android:layout_width="380dp"
-        android:layout_height="50dp"
-        android:background="@drawable/rectangle_profile_with_shadow"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="15dp"
-        app:layout_constraintTop_toBottomOf="@+id/rectangledatebirthView"
-        android:elevation="5dp"/>
+        <View
+            android:id="@+id/rectangleheightView"
+            android:layout_width="380dp"
+            android:layout_height="50dp"
+            android:background="@drawable/rectangle_profile_with_shadow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="15dp"
+            app:layout_constraintTop_toBottomOf="@+id/rectangledatebirthView"
+            android:elevation="5dp"/>
 
-    <TextView
-        android:id="@+id/textViewHeight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="175 cm"
-        android:textSize="20sp"
-        android:elevation="6dp"
-        app:layout_constraintStart_toStartOf="@+id/rectangleheightView"
-        app:layout_constraintTop_toTopOf="@+id/rectangleheightView"
-        app:layout_constraintBottom_toBottomOf="@+id/rectangleheightView"
-        android:layout_marginStart="50dp"/>
+        <TextView
+            android:id="@+id/textViewHeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="175 cm"
+            android:textSize="20sp"
+            android:elevation="6dp"
+            app:layout_constraintStart_toStartOf="@+id/rectangleheightView"
+            app:layout_constraintTop_toTopOf="@+id/rectangleheightView"
+            app:layout_constraintBottom_toBottomOf="@+id/rectangleheightView"
+            android:layout_marginStart="50dp"/>
 
-    <ImageView
-        android:id="@+id/iconheightImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/profile"
-        android:elevation="6dp"
-        app:layout_constraintStart_toStartOf="@+id/rectangleheightView"
-        app:layout_constraintTop_toTopOf="@+id/rectangleheightView"
-        app:layout_constraintBottom_toBottomOf="@+id/rectangleheightView"
-        android:layout_marginStart="10dp" />
+        <ImageView
+            android:id="@+id/iconheightImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/profile"
+            android:elevation="6dp"
+            app:layout_constraintStart_toStartOf="@+id/rectangleheightView"
+            app:layout_constraintTop_toTopOf="@+id/rectangleheightView"
+            app:layout_constraintBottom_toBottomOf="@+id/rectangleheightView"
+            android:layout_marginStart="10dp" />
 
-    <ImageView
-        android:id="@+id/iconeditheightImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/edit"
-        android:elevation="6dp"
-        app:layout_constraintEnd_toEndOf="@+id/rectangleheightView"
-        app:layout_constraintTop_toTopOf="@+id/rectangleheightView"
-        app:layout_constraintBottom_toBottomOf="@+id/rectangleheightView"
-        android:layout_marginEnd="10dp" />
+        <ImageView
+            android:id="@+id/iconeditheightImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/edit"
+            android:elevation="6dp"
+            app:layout_constraintEnd_toEndOf="@+id/rectangleheightView"
+            app:layout_constraintTop_toTopOf="@+id/rectangleheightView"
+            app:layout_constraintBottom_toBottomOf="@+id/rectangleheightView"
+            android:layout_marginEnd="10dp" />
 
-    <View
-        android:id="@+id/rectangleweightView"
-        android:layout_width="175dp"
-        android:layout_height="50dp"
-        android:background="@drawable/rectangle_profile_with_shadow"
-        app:layout_constraintStart_toStartOf="@+id/rectangleheightView"
-        android:layout_marginTop="15dp"
-        app:layout_constraintTop_toBottomOf="@+id/rectangleheightView"
-        android:elevation="5dp"/>
+        <View
+            android:id="@+id/rectangleweightView"
+            android:layout_width="175dp"
+            android:layout_height="50dp"
+            android:background="@drawable/rectangle_profile_with_shadow"
+            app:layout_constraintStart_toStartOf="@+id/rectangleheightView"
+            android:layout_marginTop="15dp"
+            app:layout_constraintTop_toBottomOf="@+id/rectangleheightView"
+            android:elevation="5dp"/>
 
-    <TextView
-        android:id="@+id/textViewWeight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="60 kg"
-        android:textSize="20sp"
-        android:elevation="6dp"
-        app:layout_constraintStart_toStartOf="@+id/rectangleweightView"
-        app:layout_constraintTop_toTopOf="@+id/rectangleweightView"
-        app:layout_constraintBottom_toBottomOf="@+id/rectangleweightView"
-        android:layout_marginStart="50dp"/>
+        <TextView
+            android:id="@+id/textViewWeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="60 kg"
+            android:textSize="20sp"
+            android:elevation="6dp"
+            app:layout_constraintStart_toStartOf="@+id/rectangleweightView"
+            app:layout_constraintTop_toTopOf="@+id/rectangleweightView"
+            app:layout_constraintBottom_toBottomOf="@+id/rectangleweightView"
+            android:layout_marginStart="50dp"/>
 
-    <ImageView
-        android:id="@+id/iconweightImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/profile"
-        android:elevation="6dp"
-        app:layout_constraintStart_toStartOf="@+id/rectangleweightView"
-        app:layout_constraintTop_toTopOf="@+id/rectangleweightView"
-        app:layout_constraintBottom_toBottomOf="@+id/rectangleweightView"
-        android:layout_marginStart="10dp" />
+        <ImageView
+            android:id="@+id/iconweightImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/profile"
+            android:elevation="6dp"
+            app:layout_constraintStart_toStartOf="@+id/rectangleweightView"
+            app:layout_constraintTop_toTopOf="@+id/rectangleweightView"
+            app:layout_constraintBottom_toBottomOf="@+id/rectangleweightView"
+            android:layout_marginStart="10dp" />
 
-    <ImageView
-        android:id="@+id/iconeditweightImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/edit"
-        android:elevation="6dp"
-        app:layout_constraintEnd_toEndOf="@+id/rectangleweightView"
-        app:layout_constraintTop_toTopOf="@+id/rectangleweightView"
-        app:layout_constraintBottom_toBottomOf="@+id/rectangleweightView"
-        android:layout_marginEnd="10dp" />
+        <ImageView
+            android:id="@+id/iconeditweightImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/edit"
+            android:elevation="6dp"
+            app:layout_constraintEnd_toEndOf="@+id/rectangleweightView"
+            app:layout_constraintTop_toTopOf="@+id/rectangleweightView"
+            app:layout_constraintBottom_toBottomOf="@+id/rectangleweightView"
+            android:layout_marginEnd="10dp" />
 
-    <View
-        android:id="@+id/rectanglewaistView"
-        android:layout_width="175dp"
-        android:layout_height="50dp"
-        android:background="@drawable/rectangle_profile_with_shadow"
-        app:layout_constraintEnd_toEndOf="@+id/rectanglegenderView"
-        android:layout_marginTop="15dp"
-        app:layout_constraintTop_toBottomOf="@+id/rectangleheightView"
-        android:elevation="5dp"/>
+        <View
+            android:id="@+id/rectanglewaistView"
+            android:layout_width="175dp"
+            android:layout_height="50dp"
+            android:background="@drawable/rectangle_profile_with_shadow"
+            app:layout_constraintEnd_toEndOf="@+id/rectanglegenderView"
+            android:layout_marginTop="15dp"
+            app:layout_constraintTop_toBottomOf="@+id/rectangleheightView"
+            android:elevation="5dp"/>
 
-    <TextView
-        android:id="@+id/textViewWaist"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="85 cm"
-        android:textSize="20sp"
-        android:elevation="6dp"
-        app:layout_constraintStart_toStartOf="@+id/rectanglewaistView"
-        app:layout_constraintTop_toTopOf="@+id/rectanglewaistView"
-        app:layout_constraintBottom_toBottomOf="@+id/rectanglewaistView"
-        android:layout_marginStart="50dp"/>
+        <TextView
+            android:id="@+id/textViewWaist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="85 cm"
+            android:textSize="20sp"
+            android:elevation="6dp"
+            app:layout_constraintStart_toStartOf="@+id/rectanglewaistView"
+            app:layout_constraintTop_toTopOf="@+id/rectanglewaistView"
+            app:layout_constraintBottom_toBottomOf="@+id/rectanglewaistView"
+            android:layout_marginStart="50dp"/>
 
-    <ImageView
-        android:id="@+id/iconwaistImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/profile"
-        android:elevation="6dp"
-        app:layout_constraintStart_toStartOf="@+id/rectanglewaistView"
-        app:layout_constraintTop_toTopOf="@+id/rectanglewaistView"
-        app:layout_constraintBottom_toBottomOf="@+id/rectanglewaistView"
-        android:layout_marginStart="10dp" />
+        <ImageView
+            android:id="@+id/iconwaistImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/profile"
+            android:elevation="6dp"
+            app:layout_constraintStart_toStartOf="@+id/rectanglewaistView"
+            app:layout_constraintTop_toTopOf="@+id/rectanglewaistView"
+            app:layout_constraintBottom_toBottomOf="@+id/rectanglewaistView"
+            android:layout_marginStart="10dp" />
 
-    <ImageView
-        android:id="@+id/iconeditwaistImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/edit"
-        android:elevation="6dp"
-        app:layout_constraintEnd_toEndOf="@+id/rectanglewaistView"
-        app:layout_constraintTop_toTopOf="@+id/rectanglewaistView"
-        app:layout_constraintBottom_toBottomOf="@+id/rectanglewaistView"
-        android:layout_marginEnd="10dp" />
+        <ImageView
+            android:id="@+id/iconeditwaistImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/edit"
+            android:elevation="6dp"
+            app:layout_constraintEnd_toEndOf="@+id/rectanglewaistView"
+            app:layout_constraintTop_toTopOf="@+id/rectanglewaistView"
+            app:layout_constraintBottom_toBottomOf="@+id/rectanglewaistView"
+            android:layout_marginEnd="10dp" />
 
-    <View
-        android:id="@+id/rectanglegenderView"
-        android:layout_width="380dp"
-        android:layout_height="50dp"
-        android:background="@drawable/rectangle_profile_with_shadow"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="15dp"
-        app:layout_constraintTop_toBottomOf="@+id/rectangleweightView"
-        android:elevation="5dp"/>
+        <View
+            android:id="@+id/rectanglegenderView"
+            android:layout_width="380dp"
+            android:layout_height="50dp"
+            android:background="@drawable/rectangle_profile_with_shadow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="15dp"
+            app:layout_constraintTop_toBottomOf="@+id/rectangleweightView"
+            android:elevation="5dp"/>
 
-    <TextView
-        android:id="@+id/textViewGender"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Male"
-        android:textSize="20sp"
-        android:elevation="6dp"
-        app:layout_constraintStart_toStartOf="@+id/rectanglegenderView"
-        app:layout_constraintTop_toTopOf="@+id/rectanglegenderView"
-        app:layout_constraintBottom_toBottomOf="@+id/rectanglegenderView"
-        android:layout_marginStart="50dp"/>
+        <TextView
+            android:id="@+id/textViewGender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Male"
+            android:textSize="20sp"
+            android:elevation="6dp"
+            app:layout_constraintStart_toStartOf="@+id/rectanglegenderView"
+            app:layout_constraintTop_toTopOf="@+id/rectanglegenderView"
+            app:layout_constraintBottom_toBottomOf="@+id/rectanglegenderView"
+            android:layout_marginStart="50dp"/>
 
-    <ImageView
-        android:id="@+id/icongenderImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/profile"
-        android:elevation="6dp"
-        app:layout_constraintStart_toStartOf="@+id/rectanglegenderView"
-        app:layout_constraintTop_toTopOf="@+id/rectanglegenderView"
-        app:layout_constraintBottom_toBottomOf="@+id/rectanglegenderView"
-        android:layout_marginStart="10dp" />
+        <ImageView
+            android:id="@+id/icongenderImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/profile"
+            android:elevation="6dp"
+            app:layout_constraintStart_toStartOf="@+id/rectanglegenderView"
+            app:layout_constraintTop_toTopOf="@+id/rectanglegenderView"
+            app:layout_constraintBottom_toBottomOf="@+id/rectanglegenderView"
+            android:layout_marginStart="10dp" />
 
-    <ImageView
-        android:id="@+id/iconeditgenderImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/edit"
-        android:elevation="6dp"
-        app:layout_constraintEnd_toEndOf="@+id/rectanglegenderView"
-        app:layout_constraintTop_toTopOf="@+id/rectanglegenderView"
-        app:layout_constraintBottom_toBottomOf="@+id/rectanglegenderView"
-        android:layout_marginEnd="10dp" />
+        <ImageView
+            android:id="@+id/iconeditgenderImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/edit"
+            android:elevation="6dp"
+            app:layout_constraintEnd_toEndOf="@+id/rectanglegenderView"
+            app:layout_constraintTop_toTopOf="@+id/rectanglegenderView"
+            app:layout_constraintBottom_toBottomOf="@+id/rectanglegenderView"
+            android:layout_marginEnd="10dp" />
 
-    <View
-        android:id="@+id/rectangleallergyView"
-        android:layout_width="380dp"
-        android:layout_height="50dp"
-        android:background="@drawable/rectangle_profile_with_shadow"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="15dp"
-        app:layout_constraintTop_toBottomOf="@+id/rectanglegenderView"
-        android:elevation="5dp"/>
+        <View
+            android:id="@+id/rectangleallergyView"
+            android:layout_width="380dp"
+            android:layout_height="50dp"
+            android:background="@drawable/rectangle_profile_with_shadow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="15dp"
+            app:layout_constraintTop_toBottomOf="@+id/rectanglegenderView"
+            android:elevation="5dp"/>
 
-    <TextView
-        android:id="@+id/textViewAllergy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nuts"
-        android:textSize="20sp"
-        android:elevation="6dp"
-        app:layout_constraintStart_toStartOf="@+id/rectangleallergyView"
-        app:layout_constraintTop_toTopOf="@+id/rectangleallergyView"
-        app:layout_constraintBottom_toBottomOf="@+id/rectangleallergyView"
-        android:layout_marginStart="50dp"/>
+        <TextView
+            android:id="@+id/textViewAllergy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nuts"
+            android:textSize="20sp"
+            android:elevation="6dp"
+            app:layout_constraintStart_toStartOf="@+id/rectangleallergyView"
+            app:layout_constraintTop_toTopOf="@+id/rectangleallergyView"
+            app:layout_constraintBottom_toBottomOf="@+id/rectangleallergyView"
+            android:layout_marginStart="50dp"/>
 
-    <ImageView
-        android:id="@+id/iconallergyImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/profile"
-        android:elevation="6dp"
-        app:layout_constraintStart_toStartOf="@+id/rectangleallergyView"
-        app:layout_constraintTop_toTopOf="@+id/rectangleallergyView"
-        app:layout_constraintBottom_toBottomOf="@+id/rectangleallergyView"
-        android:layout_marginStart="10dp" />
+        <ImageView
+            android:id="@+id/iconallergyImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/profile"
+            android:elevation="6dp"
+            app:layout_constraintStart_toStartOf="@+id/rectangleallergyView"
+            app:layout_constraintTop_toTopOf="@+id/rectangleallergyView"
+            app:layout_constraintBottom_toBottomOf="@+id/rectangleallergyView"
+            android:layout_marginStart="10dp" />
 
-    <ImageView
-        android:id="@+id/iconeditallergyImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/edit"
-        android:elevation="6dp"
-        app:layout_constraintEnd_toEndOf="@+id/rectangleallergyView"
-        app:layout_constraintTop_toTopOf="@+id/rectangleallergyView"
-        app:layout_constraintBottom_toBottomOf="@+id/rectangleallergyView"
-        android:layout_marginEnd="10dp" />
+        <ImageView
+            android:id="@+id/iconeditallergyImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/edit"
+            android:elevation="6dp"
+            app:layout_constraintEnd_toEndOf="@+id/rectangleallergyView"
+            app:layout_constraintTop_toTopOf="@+id/rectangleallergyView"
+            app:layout_constraintBottom_toBottomOf="@+id/rectangleallergyView"
+            android:layout_marginEnd="10dp" />
 
-    <View
-        android:id="@+id/rectanglediseaseView"
-        android:layout_width="380dp"
-        android:layout_height="50dp"
-        android:background="@drawable/rectangle_profile_with_shadow"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="15dp"
-        app:layout_constraintTop_toBottomOf="@+id/rectangleallergyView"
-        android:elevation="5dp"/>
+        <View
+            android:id="@+id/rectanglediseaseView"
+            android:layout_width="380dp"
+            android:layout_height="50dp"
+            android:background="@drawable/rectangle_profile_with_shadow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="15dp"
+            app:layout_constraintTop_toBottomOf="@+id/rectangleallergyView"
+            android:elevation="5dp"/>
 
-    <TextView
-        android:id="@+id/textViewDisease"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Diabetes"
-        android:textSize="20sp"
-        android:elevation="6dp"
-        app:layout_constraintStart_toStartOf="@+id/rectanglediseaseView"
-        app:layout_constraintTop_toTopOf="@+id/rectanglediseaseView"
-        app:layout_constraintBottom_toBottomOf="@+id/rectanglediseaseView"
-        android:layout_marginStart="50dp"/>
+        <TextView
+            android:id="@+id/textViewDisease"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Diabetes"
+            android:textSize="20sp"
+            android:elevation="6dp"
+            app:layout_constraintStart_toStartOf="@+id/rectanglediseaseView"
+            app:layout_constraintTop_toTopOf="@+id/rectanglediseaseView"
+            app:layout_constraintBottom_toBottomOf="@+id/rectanglediseaseView"
+            android:layout_marginStart="50dp"/>
 
-    <ImageView
-        android:id="@+id/icondiseaseImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/profile"
-        android:elevation="6dp"
-        app:layout_constraintStart_toStartOf="@+id/rectanglediseaseView"
-        app:layout_constraintTop_toTopOf="@+id/rectanglediseaseView"
-        app:layout_constraintBottom_toBottomOf="@+id/rectanglediseaseView"
-        android:layout_marginStart="10dp" />
+        <ImageView
+            android:id="@+id/icondiseaseImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/profile"
+            android:elevation="6dp"
+            app:layout_constraintStart_toStartOf="@+id/rectanglediseaseView"
+            app:layout_constraintTop_toTopOf="@+id/rectanglediseaseView"
+            app:layout_constraintBottom_toBottomOf="@+id/rectanglediseaseView"
+            android:layout_marginStart="10dp" />
 
-    <ImageView
-        android:id="@+id/iconeditdiseaseImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/edit"
-        android:elevation="6dp"
-        app:layout_constraintEnd_toEndOf="@+id/rectanglediseaseView"
-        app:layout_constraintTop_toTopOf="@+id/rectanglediseaseView"
-        app:layout_constraintBottom_toBottomOf="@+id/rectanglediseaseView"
-        android:layout_marginEnd="10dp" />
+        <ImageView
+            android:id="@+id/iconeditdiseaseImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/edit"
+            android:elevation="6dp"
+            app:layout_constraintEnd_toEndOf="@+id/rectanglediseaseView"
+            app:layout_constraintTop_toTopOf="@+id/rectanglediseaseView"
+            app:layout_constraintBottom_toBottomOf="@+id/rectanglediseaseView"
+            android:layout_marginEnd="10dp" />
 
-    <Button
-        android:id="@+id/buttonSaveEditProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onSaveEditProfileClicked"
-        android:text="Save"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/rectanglediseaseView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="50dp"/>
+        <Button
+            android:id="@+id/buttonSaveEditProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onSaveEditProfileClicked"
+            android:text="Save"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/rectanglediseaseView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="50dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

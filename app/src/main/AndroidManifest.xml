@@ -18,7 +18,7 @@
             android:name=".activities.VerificationCode3Activity"
             android:exported="false" />
         <activity
-            android:name=".CustomRunningGraphView"
+            android:name=".custom.CustomRunningGraphView"
             android:exported="false" />
         <activity
             android:name=".activities.NavigationBarActivity"
