@@ -1,23 +1,18 @@
 package com.telyu.nourimate.fragments
 
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModelProvider
 import com.telyu.nourimate.R
+import com.telyu.nourimate.data.local.models.NutritionSum
 import com.telyu.nourimate.databinding.FragmentHomeBinding
-import com.telyu.nourimate.databinding.FragmentRecipeBinding
 import com.telyu.nourimate.viewmodels.HomeViewModel
-import com.telyu.nourimate.viewmodels.RecipeViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
 
 class HomeFragment : Fragment() {
@@ -81,6 +76,8 @@ class HomeFragment : Fragment() {
         observeMealCalories()
         setupMealCalories()
         setupNutritionNeeds()
+        viewModel.getNutritionSums()
+        displayUserNameAndProfpic()
     }
 
     private fun calculatePercentage(consumed: Int, total: Int) = (consumed * 100) / total
@@ -93,11 +90,6 @@ class HomeFragment : Fragment() {
             R.string.calories_percentage,
             binding.linearProgressCaloriesIndicator.progress
         )
-    }
-
-    private fun updateProgressBar(consumedCalories: Int, maxCalories: Int) {
-        binding.linearProgressCaloriesIndicator.max = maxCalories
-        binding.linearProgressCaloriesIndicator.progress = consumedCalories
     }
 
     //Today's Meal Related Functions
@@ -124,12 +116,63 @@ class HomeFragment : Fragment() {
     //Today's Meal Related Functions
     //Part 2
     private fun setupNutritionNeeds() {
+        viewModel.nutritionSums.observe(viewLifecycleOwner) {nutritions ->
+            updateNutritionDisplay(nutritions)
+        }
 
+        viewModel.nutritionPercentage.observe(viewLifecycleOwner) { percentages ->
+            binding.apply {
+                tvCaloriesPercentage.text = percentages[0].toString() + "%"
+                tvProteinPercentage.text = percentages[1].toString() + "%"
+                tvFatPercentage.text = percentages[2].toString() + "%"
+                tvCarbsPercentage.text = percentages[3].toString() + "%"
 
-        viewModel.getNutritionSums()
-        //viewModel.calculateNutritionPercentage()
+                //progress bar
+                linearProgressCaloriesIndicator.progress = percentages[0]
+                linearProgressProteinIndicator.progress = percentages[1]
+                linearProgressFatIndicator.progress = percentages[2]
+                linearProgressCarbsIndicator.progress = percentages[3]
+            }
+
+        }
     }
 
+    private fun updateProgressBar(consumedCalories: Int, maxCalories: Int) {
+        binding.linearProgressCaloriesIndicator.progress = consumedCalories
+    }
+
+    private fun updateNutritionDisplay(nutritionSum: NutritionSum) {
+        binding.apply {
+            textViewTotalCalories.text = nutritionSum.totalCalories.toInt().toString()
+            textViewTotalProtein.text = nutritionSum.totalProtein.toInt().toString()
+            textViewTotalFat.text = nutritionSum.totalFat.toInt().toString()
+            textViewTotalCarbs.text = nutritionSum.totalCarbs.toInt().toString()
+        }
+    }
+
+    //Untuk nampilin nama dan profpic
+    private fun displayUserNameAndProfpic() {
+        viewModel.userEmail.observe(viewLifecycleOwner) { userEmail ->
+            userEmail.let {
+                viewModel.getUserIdByEmail(it)
+            }
+        }
+
+        viewModel.userId.observe(viewLifecycleOwner) { userId ->
+            if (userId != null) {
+                viewModel.getProfpicById(userId)
+            }
+        }
+
+        viewModel.profilePicture.observe(viewLifecycleOwner) { uriString ->
+            uriString?.let { uriStr ->
+                val uri = Uri.parse(uriStr)
+                binding.profileImageView.setImageURI(uri)
+            }
+
+        }
+
+    }
 
     //Water Related Functions
 

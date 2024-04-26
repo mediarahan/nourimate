@@ -48,10 +48,8 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
         binding = FragmentRecipeBinding.inflate(inflater, container, false)
 
         viewModel.isDatabaseFilled.observe(viewLifecycleOwner) {isDatabaseFilled ->
-            Log.d("RecipeFragment", "isDatabaseFilled: $isDatabaseFilled")
             if (!isDatabaseFilled!!) {
                 fillDatabaseWithFakeData()
-                Log.d("RecipeFragment", "Database not filled")
             }
         }
 
@@ -75,7 +73,6 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
         }
 
         viewModel.weeklyRecipes.observe(viewLifecycleOwner) { recipes ->
-            Log.d("RecipeFragment", "weeklyRecipes: $recipes")
             weeklyRecipeAdapter.submitList(recipes)
         }
 
@@ -253,14 +250,14 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
             )
         }
 
-//        val mappedRecommendations = fakeFoodData.recommendations.map { recommendation ->
-//            Recommendation(
-//                recommendationId = recommendation.recommendationId,
-//                date = recommendation.date,
-//                isSelected = recommendation.isSelected,
-//                recipeId = recommendation.recipeId,
-//            )
-//        }
+        val mappedRecommendations = fakeFoodData.recommendations.map { recommendation ->
+            Recommendation(
+                recommendationId = recommendation.recommendationId,
+                date = recommendation.date,
+                isSelected = recommendation.isSelected,
+                recipeId = recommendation.recipeId,
+            )
+        }
 
         // Insert data into database within coroutine scope
         lifecycleScope.launch {
@@ -268,9 +265,9 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
             mappedRecipes.forEach { recipe ->
                 dao.insertRecipe(recipe)
             }
-//            mappedRecommendations.forEach { recommendation ->
-//                dao.insertRecommendation(recommendation)
-//            }
+            mappedRecommendations.forEach { recommendation ->
+                dao.insertRecommendation(recommendation)
+            }
         }
         viewModel.setDatabaseFilled()
     }
