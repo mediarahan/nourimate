@@ -8,21 +8,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.telyu.nourimate.R
 import com.telyu.nourimate.adapter.DialogRecipeAdapter
+import com.telyu.nourimate.adapter.RecipeAdapter
+import com.telyu.nourimate.data.local.models.Recipe
 import com.telyu.nourimate.databinding.PopupLayoutMealBinding
 import com.telyu.nourimate.viewmodels.RecipeViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
 import com.telyu.nourimate.views.custom.RecipeDialogMealTutorial
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Suppress("DEPRECATION")
-class RecipeDialogMeal : DialogFragment() {
+class RecipeDialogMeal : DialogFragment(), DialogRecipeAdapter.DialogOnAddClickListener {
 
     private lateinit var binding: PopupLayoutMealBinding
+    private val recipeAdapter = DialogRecipeAdapter(this)
+    var selectedMeal: Int = -1
 
     private val viewModel by viewModels<RecipeViewModel> {
         ViewModelFactory.getInstance(
@@ -34,7 +42,7 @@ class RecipeDialogMeal : DialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = PopupLayoutMealBinding.inflate(inflater, container, false)
 
         // Adjust dialog properties
@@ -60,47 +68,61 @@ class RecipeDialogMeal : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var selectedMeal: Int? = null
-
         val args = arguments
-        if (args != null) {
-            selectedMeal = args.getInt("selectedMeal")
-            viewModel.getRecipeByMealTypeAndSelectedRecommendation(selectedMeal)
-            Log.d("RecipeDialogMeal", "Selected Meal: $selectedMeal") // Logging selectedMeal
-        }
 
-        if (selectedMeal != null) {
-            setMealType(selectedMeal)
-            getRecipeCountByMealType(selectedMeal)
-        }
-
-        val recipeAdapter = DialogRecipeAdapter()
         val recyclerView = view.findViewById<RecyclerView>(R.id.recipeRecyclerView)
         if (recyclerView != null) {
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
-            recyclerView.adapter = recipeAdapter
 
-            viewModel.recipeListSelected.observe(viewLifecycleOwner) { recipes ->
-                recipeAdapter.submitList(recipes)
-                Log.d(
-                    "RecipeDialogMeal",
-                    "Recipe List Selected: $recipes"
-                )
+            if (args != null) {
+                selectedMeal = args.getInt("selectedMeal")
+                recyclerView.adapter = recipeAdapter
+
+                viewModel.getAllSelectedRecommendationIdsByMealId(selectedMeal)
+                    .observe(viewLifecycleOwner) { recommendationIds ->
+                        viewModel.getSelectedRecipesByRecommendationIds(recommendationIds)
+                            .observe(viewLifecycleOwner) { recipes ->
+                                recipeAdapter.submitList(recipes)
+                            }
+                    }
+
+                setMealType(selectedMeal)
+                getRecipeCountByMealType(selectedMeal)
             }
         }
 
         val mealTutorialButton = view.findViewById<View>(R.id.selectMealBreakfastButton)
         mealTutorialButton?.setOnClickListener {
-            if (selectedMeal != null) {
-                showThirdDialog(selectedMeal)
+            showThirdDialog(selectedMeal)
+        }
+
+        //observeSelectedRecommendation()
+    }
+
+    override fun dialogOnAddClick(recipe: Recipe) {
+        CoroutineScope(Dispatchers.Main).launch {
+            val recommendation =
+                viewModel.getRecommendationByRecipeIdAndMealType(recipe.recipeId, selectedMeal)
+            recommendation?.let { rec ->
+                rec.isSelected = !rec.isSelected
+                viewModel.selectRecommendation(rec)
+                Toast.makeText(requireContext(), "Recommendation updated", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun getRecipeCountByMealType(mealType: Int) {
-        viewModel.getSelectedRecipeCountByMealType(mealType)
+//    private fun observeSelectedRecommendation() {
+//        viewModel.recommendation.observe(viewLifecycleOwner) { recommendation ->
+//            if (recommendation != null) {
+//                recommendation.isSelected = false
+//                viewModel.selectRecommendation(recommendation)
+//                Toast.makeText(requireContext(), "Recommendation Removed", Toast.LENGTH_SHORT).show()
+//            }
+//        }
+//    }
 
-        viewModel.selectedRecipeCountByMealType.observe(viewLifecycleOwner) { count ->
+    private fun getRecipeCountByMealType(mealType: Int) {
+        viewModel.getSelectedRecipeCountByMealType(mealType).observe(viewLifecycleOwner) { count ->
             binding.textViewBasketMeal.text = count.toString()
         }
     }

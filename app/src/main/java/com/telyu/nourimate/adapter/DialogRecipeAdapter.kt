@@ -1,7 +1,6 @@
 package com.telyu.nourimate.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -9,8 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.telyu.nourimate.data.local.models.Recipe
 import com.telyu.nourimate.databinding.ItemRecipeDialogBinding
 
-class DialogRecipeAdapter : ListAdapter<Recipe, DialogRecipeAdapter.DialogRecipeViewHolder>(DIFF_CALLBACK) {
-    //(private val onItemClicked: (Recipe) -> Unit)
+class DialogRecipeAdapter(private val listener: DialogOnAddClickListener) : ListAdapter<Recipe, DialogRecipeAdapter.DialogRecipeViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DialogRecipeViewHolder {
         val binding = ItemRecipeDialogBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -20,20 +18,24 @@ class DialogRecipeAdapter : ListAdapter<Recipe, DialogRecipeAdapter.DialogRecipe
     override fun onBindViewHolder(holder: DialogRecipeViewHolder, position: Int) {
         val recipe = getItem(position)
         holder.bind(recipe)
+    }
 
-//        holder.binding.ivDeleteMeal.setOnClickListener {
-//            val recommendationId = recipe.recommendationId
-//        }
+    interface DialogOnAddClickListener {
+        fun dialogOnAddClick(recipe: Recipe)
     }
 
     inner class DialogRecipeViewHolder(val binding: ItemRecipeDialogBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind (recipe: Recipe) {
             binding.apply {
-                tvRecipename.text = recipe.name
-                tvCalories.text = "${recipe.calories.toInt()}g Calories"
-                tvProtein.text = "${recipe.protein.toInt()}g Protein"
-                tvFat.text = "${recipe.fat.toInt()}g Fat "
-                tvCarbs.text = "${recipe.carbs.toInt()}g Carbs"
+                tvRecipenameDialog.text = recipe.name
+                tvCaloriesDialog.text = "${recipe.calories.toInt()}g Calories"
+                tvProteinDialog.text = "${recipe.protein.toInt()}g Protein"
+                tvFatDialog.text = "${recipe.fat.toInt()}g Fat "
+                tvCarbsDialog.text = "${recipe.carbs.toInt()}g Carbs"
+
+                ivDeleteMeal.setOnClickListener {
+                    listener.dialogOnAddClick(recipe)
+                }
             }
         }
     }

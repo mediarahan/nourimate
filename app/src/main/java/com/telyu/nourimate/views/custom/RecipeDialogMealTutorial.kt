@@ -61,27 +61,29 @@ class RecipeDialogMealTutorial(val layoutResId: Int) : DialogFragment() {
 
         if (args != null) {
             selectedMeal = args.getInt("selectedMeal")
-            viewModel.getRecipeByMealTypeAndSelectedRecommendation(selectedMeal)
-            Log.d("RecipeDialogMeal", "Selected Meal: $selectedMeal") // Logging selectedMeal
+            viewModel.getAllSelectedRecommendationIdsByMealId(selectedMeal)
+            viewModel.selectedRecommendationIds.observe(viewLifecycleOwner) { Ids ->
+                viewModel.getSelectedRecipesByRecommendationIds(Ids)
+            }
         }
 
         if (selectedMeal != null) {
             setMealType(selectedMeal)
             getRecipeCountByMealType(selectedMeal)
-        }
 
-        val recipeAdapter = DialogRecipeTutorialAdapter()
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recipeTutorialRecyclerView)
-        if (recyclerView != null) {
-            recyclerView.layoutManager = LinearLayoutManager(requireContext())
-            recyclerView.adapter = recipeAdapter
+            val recipeAdapter = DialogRecipeTutorialAdapter()
+            val recyclerView = view.findViewById<RecyclerView>(R.id.recipeTutorialRecyclerView)
+            if (recyclerView != null) {
+                recyclerView.layoutManager = LinearLayoutManager(requireContext())
+                recyclerView.adapter = recipeAdapter
 
-            viewModel.recipeListSelected.observe(viewLifecycleOwner) { recipeList ->
-                recipeAdapter.submitList(recipeList)
-                Log.d(
-                    "RecipeDialogMeal",
-                    "Recipe List Selected: $recipeList"
-                )
+                viewModel.getAllSelectedRecommendationIdsByMealId(selectedMeal)
+                    .observe(viewLifecycleOwner) { recommendationIds ->
+                        viewModel.getSelectedRecipesByRecommendationIds(recommendationIds)
+                            .observe(viewLifecycleOwner) { recipes ->
+                                recipeAdapter.submitList(recipes)
+                            }
+                    }
             }
         }
     }
@@ -93,9 +95,7 @@ class RecipeDialogMealTutorial(val layoutResId: Int) : DialogFragment() {
     }
 
     private fun getRecipeCountByMealType(mealType: Int) {
-        viewModel.getSelectedRecipeCountByMealType(mealType)
-
-        viewModel.selectedRecipeCountByMealType.observe(viewLifecycleOwner) { count ->
+        viewModel.getSelectedRecipeCountByMealType(mealType).observe(viewLifecycleOwner) { count ->
             binding.textViewBasketMealTutorial.text = count.toString()
         }
     }

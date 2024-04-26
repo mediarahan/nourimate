@@ -62,9 +62,7 @@ class RecipeDialog : DialogFragment() {
     }
 
     private fun getRecipeCount() {
-        viewModel.getSelectedRecipeCount()
-
-        viewModel.selectedRecipeCount.observe(viewLifecycleOwner) { count ->
+        viewModel.getSelectedRecipeCount().observe(viewLifecycleOwner) { count ->
             binding.textViewBasket.text = count.toString()
         }
     }

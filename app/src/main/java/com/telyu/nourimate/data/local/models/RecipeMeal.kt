@@ -4,13 +4,10 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
-import com.telyu.nourimate.utils.Converters
 import kotlinx.parcelize.Parcelize
-import java.util.Date
 
-@Entity(tableName = "recommendations",
+@Entity(tableName = "recipe_meal",
+    primaryKeys = ["recipe_id", "meal_id"],
     foreignKeys = [
         ForeignKey(
             entity = Recipe::class,
@@ -26,16 +23,11 @@ import java.util.Date
         )
     ]
 )
-
 @Parcelize
-@TypeConverters(Converters::class)
-data class Recommendation(
-    @PrimaryKey(autoGenerate = false)
-    val recommendationId: Int,
-    val date: Date,
-    var isSelected: Boolean = false,
+data class RecipeMeal(
     @field:ColumnInfo(name = "recipe_id")
     val recipeId: Int,
+
     @field:ColumnInfo(name = "meal_id")
     val mealId: Int,
 ) : Parcelable

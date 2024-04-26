@@ -9,11 +9,13 @@ import com.telyu.nourimate.data.local.models.Detail
 import com.telyu.nourimate.data.local.models.Profpic
 import com.telyu.nourimate.data.local.models.Recipe
 import com.telyu.nourimate.data.local.models.Recommendation
+import com.telyu.nourimate.data.local.models.RecommendationRecipe
 import com.telyu.nourimate.data.local.models.User
 import com.telyu.nourimate.utils.UserModel
 import com.telyu.nourimate.utils.UserPreference
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.util.Date
 
 class NourimateRepository(
     private val userPreference: UserPreference,
@@ -107,29 +109,67 @@ class NourimateRepository(
         return userDao.updateUserName(id, name)
     }
 
-    suspend fun updateRecommendationSelection(recommendationId: Int, isSelected: Boolean) {
-        foodDao.updateRecommendationSelection(recommendationId, isSelected)
+    suspend fun updateRecommendation(recommendation: Recommendation) {
+        foodDao.updateRecommendation(recommendation)
     }
 
     //=== QUERY FOOD ===
 
-    suspend fun getRecommendationIdsByMealType(mealType: Int): List<Int> {
-        return foodDao.getRecommendationIdsByMealType(mealType)
+    //query weekly
+    fun getRecipesByDateAndMeal(mealId: Int, startDate: Long, endDate: Long): LiveData<List<Recipe>> {
+        return foodDao.getRecipesByDateAndMealType(mealId, startDate, endDate)
     }
 
-    suspend fun getRecipesByRecommendationIds(recommendationIds: List<Int>): List<Recipe> {
+    fun getRecommendationsByMealIdSortedAscending(mealId: Int): LiveData<List<Recommendation>> {
+        return foodDao.getRecommendationsByMealIdSortedAscending(mealId)
+    }
+
+    suspend fun getRecommendationByRecipeAndMealId(recipeId: Int, mealId: Int): Recommendation? {
+        return foodDao.getRecommendationByRecipeAndMealId(recipeId, mealId)
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //query utama
+
+    fun getRecipeIdsByMealId(mealType: Int): LiveData<List<Int>> {
+        return foodDao.getRecipeIdsByMealId(mealType)
+    }
+
+    fun getRecipesById(recipeIds: List<Int>): LiveData<List<Recipe>> {
+        return foodDao.getRecipesById(recipeIds)
+    }
+
+    fun getRecipesByRecommendationIds(recommendationIds: List<Int>): LiveData<List<Recipe>> {
         return foodDao.getRecipesByRecommendationIds(recommendationIds)
     }
 
-    suspend fun getRecipeByMealTypeAndSelectedRecommendation(mealType: Int): List<Recipe> {
-        return foodDao.getRecipeByMealTypeAndSelectedRecommendation(mealType)
+    fun getAllSelectedRecommendationIdsByMealId(mealType: Int): LiveData<List<Int>> {
+        return foodDao.getAllSelectedRecommendationIdsByMealId(mealType)
     }
 
-    suspend fun getSelectedRecipeCount(): Int {
+    //query utama
+    suspend fun getRecommendationByRecipeIdAndMealType(recipeId: Int, mealType: Int): Recommendation? {
+        return foodDao.getRecommendationByRecipeIdAndMealType(recipeId, mealType)
+    }
+
+    fun getSelectedRecipeCount(): LiveData<Int> {
         return foodDao.getSelectedRecipeCount()
     }
 
-    suspend fun getSelectedRecipeCountByMealType(mealType: Int): Int {
+    fun getSelectedRecipeCountByMealType(mealType: Int): LiveData<Int> {
         return foodDao.getSelectedRecipeCountByMealType(mealType)
     }
 
@@ -143,10 +183,6 @@ class NourimateRepository(
 
     suspend fun insertRecommendation(recommendation: Recommendation) {
         foodDao.insertRecommendation(recommendation)
-    }
-
-    fun getRecipeIdByName(recipeName: String): Int? {
-        return foodDao.getRecipeIdByName(recipeName)
     }
 
     companion object {

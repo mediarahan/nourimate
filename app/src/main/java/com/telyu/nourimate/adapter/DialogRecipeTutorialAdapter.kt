@@ -24,8 +24,8 @@ class DialogRecipeTutorialAdapter : ListAdapter<Recipe, DialogRecipeTutorialAdap
     inner class DialogTutorialRecipeViewHolder(private val binding: ItemRecipeDialogTutorialBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(recipe: Recipe) {
             binding.apply {
-                tvName.text = recipe.name
-                tvIngredients.text = recipe.ingredients
+                tvNameTutorial.text = recipe.name
+                tvIngredientsTutorial.text = recipe.ingredients
                 val resourceId = itemView.context.resources.getIdentifier(
                     recipe.recipePictures,
                     "drawable",

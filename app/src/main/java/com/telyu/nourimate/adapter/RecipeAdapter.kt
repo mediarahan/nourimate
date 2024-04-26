@@ -1,14 +1,18 @@
 package com.telyu.nourimate.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.telyu.nourimate.R
 import com.telyu.nourimate.data.local.models.Recipe
 import com.telyu.nourimate.databinding.ItemFoodBinding
 
-class RecipeAdapter : ListAdapter<Recipe, RecipeAdapter.RecipeViewHolder>(DIFF_CALLBACK) {
+class RecipeAdapter(private val listener: OnAddClickListener) :
+    ListAdapter<Recipe, RecipeAdapter.RecipeViewHolder>(DIFF_CALLBACK) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
         val binding = ItemFoodBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return RecipeViewHolder(binding)
@@ -19,7 +23,12 @@ class RecipeAdapter : ListAdapter<Recipe, RecipeAdapter.RecipeViewHolder>(DIFF_C
         holder.bind(recipe)
     }
 
-    inner class RecipeViewHolder(private val binding: ItemFoodBinding) :
+
+    interface OnAddClickListener {
+        fun onAddClick(recipe: Recipe)
+    }
+
+    inner class RecipeViewHolder(val binding: ItemFoodBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(recipe: Recipe) {
             binding.apply {
@@ -29,12 +38,20 @@ class RecipeAdapter : ListAdapter<Recipe, RecipeAdapter.RecipeViewHolder>(DIFF_C
                 tvProtein.text = "Protein: ${recipe.protein.toInt()}"
                 tvFat.text = "Fat: ${recipe.fat.toInt()}"
                 tvCarbs.text = "Carbs: ${recipe.carbs.toInt()}"
-                val resourceId = itemView.context.resources.getIdentifier(
-                    recipe.recipePictures,
-                    "drawable",
-                    itemView.context.packageName
-                )
-                ivRecipe.setImageResource(resourceId)
+                Glide.with(ivRecipe.context)
+                    .load(
+                        itemView.context.resources.getIdentifier(
+                            recipe.recipePictures,
+                            "drawable",
+                            itemView.context.packageName
+                        )
+                    )
+                    .placeholder(R.drawable.capcay)
+                    .into(ivRecipe)
+
+                fabaddmeal.setOnClickListener {
+                    listener.onAddClick(recipe)
+                }
             }
         }
     }
@@ -42,7 +59,7 @@ class RecipeAdapter : ListAdapter<Recipe, RecipeAdapter.RecipeViewHolder>(DIFF_C
     companion object {
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Recipe>() {
             override fun areItemsTheSame(oldItem: Recipe, newItem: Recipe): Boolean {
-                return oldItem == newItem
+                return oldItem.recipeId == newItem.recipeId
             }
 
             override fun areContentsTheSame(oldItem: Recipe, newItem: Recipe): Boolean {

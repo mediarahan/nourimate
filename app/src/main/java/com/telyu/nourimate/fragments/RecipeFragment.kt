@@ -1,31 +1,41 @@
 package com.telyu.nourimate.fragments
 
-import com.telyu.nourimate.views.custom.RecipeDialog
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.telyu.nourimate.R
 import com.telyu.nourimate.adapter.RecipeAdapter
+import com.telyu.nourimate.adapter.RecommendationRecipeAdapter
 import com.telyu.nourimate.data.local.FakeFoodData
 import com.telyu.nourimate.data.local.db.FoodDatabase
+import com.telyu.nourimate.data.local.models.Meal
 import com.telyu.nourimate.data.local.models.Recipe
+import com.telyu.nourimate.data.local.models.RecipeMeal
 import com.telyu.nourimate.data.local.models.Recommendation
 import com.telyu.nourimate.databinding.FragmentRecipeBinding
 import com.telyu.nourimate.viewmodels.RecipeViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
+import com.telyu.nourimate.views.custom.RecipeDialog
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.selects.select
 
-class RecipeFragment : Fragment() {
+//this code needs lots of fixes, but it'll have to do for now.
+class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, RecommendationRecipeAdapter.OnAddClickListener {
 
     private lateinit var binding: FragmentRecipeBinding
+    private val recipeAdapter = RecipeAdapter(this)
+    private val weeklyRecipeAdapter = RecommendationRecipeAdapter(this)
 
     private val viewModel by viewModels<RecipeViewModel> {
         ViewModelFactory.getInstance(
@@ -38,70 +48,105 @@ class RecipeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentRecipeBinding.inflate(inflater, container, false)
-
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        //jank as fuck database insertion check
         if (!isDatabaseFilled) {
             fillDatabaseWithFakeData()
             isDatabaseFilled = true
         }
-        displayRecipes()
-
+        setupRecyclerView()
         displayUserNameAndProfpic()
-
         setupSearchBarAndSearchView()
+        setupDraggableSelectedItem()
+
+        selectMealType()
+        selectMealTime()
+
+        viewModel.dailyRecipes.observe(viewLifecycleOwner) { recipes ->
+            recipeAdapter.submitList(recipes)
+        }
+
+        viewModel.weeklyRecipes.observe(viewLifecycleOwner) { recipes ->
+            Log.d("RecipeFragment", "weeklyRecipes: $recipes")
+            weeklyRecipeAdapter.submitList(recipes)
+        }
 
     }
 
-    private fun selectMealType(onMealTypeSelected: (Int) -> Unit) {
+    override fun onAddClick(recipe: Recipe) {
+        CoroutineScope(Dispatchers.Main).launch {
+            val mealType = viewModel.mealType.value
+            val recommendation =
+                viewModel.getRecommendationByRecipeAndMealId(recipe.recipeId, mealType!!)
 
-        binding.radioGroupMealtype.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.button_breakfast -> onMealTypeSelected(1)
-                R.id.button_lunch -> onMealTypeSelected(2)
-                R.id.button_dinner -> onMealTypeSelected(3)
+            recommendation?.let { rec ->
+                rec.isSelected = !rec.isSelected
+                viewModel.selectRecommendation(rec)
+                Toast.makeText(requireContext(), "Recommendation updated", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }
 
-
-    private fun displayRecipes() {
-        //rv adapter stuff
-        val recipeAdapter = RecipeAdapter()
+    private fun setupRecyclerView() {
         binding.recommendationRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.weeklyRecommendationRecyclerView.layoutManager =
+            LinearLayoutManager(requireContext())
         binding.recommendationRecyclerView.adapter = recipeAdapter
+        binding.weeklyRecommendationRecyclerView.adapter = weeklyRecipeAdapter
+    }
 
-        selectMealType { mealType ->
-            viewModel.getRecommendationIdsByMealType(mealType)
+    private fun selectMealType() {
+        binding.radioGroupMealtype.setOnCheckedChangeListener { _, checkedId ->
+            val mealId = when (checkedId) {
+                R.id.button_breakfast -> 1
+                R.id.button_lunch -> 2
+                R.id.button_dinner -> 3
+                else -> 0
+            }
+            viewModel.setSelectedMealType(mealId)
         }
+    }
 
-        viewModel.recommendationIds.observe(viewLifecycleOwner) { recommendationIds ->
-            Log.d("RecommendationIds", recommendationIds.toString())
-            viewModel.getRecipesByRecommendationIds(recommendationIds)
-        }
 
-        viewModel.recipeList.observe(viewLifecycleOwner) { recipes ->
-            Log.d("RecipeList", recipes.toString())
-            recipeAdapter.submitList(recipes)
-        }
+    private fun selectMealTime() {
+        binding.radioGroupMealtime.setOnCheckedChangeListener { _, checkedId ->
+            val mealTime = when (checkedId) {
+                R.id.button_daily -> "Daily"
+                R.id.button_weekly -> "Weekly"
+                else -> "Invalid"
+            }
+            viewModel.setSelectedMealTime(mealTime)
 
-        viewModel.searchResult.observe(viewLifecycleOwner) { recipes ->
-            recipeAdapter.submitList(recipes)
+            when (checkedId) {
+                R.id.button_daily -> showDailyRecyclerView()
+                R.id.button_weekly -> showWeeklyRecyclerView()
+            }
         }
+    }
+
+    private fun showDailyRecyclerView() {
+        binding.recommendationRecyclerView.visibility = View.VISIBLE
+        binding.weeklyRecommendationRecyclerView.visibility = View.GONE
+    }
+
+    private fun showWeeklyRecyclerView() {
+        binding.recommendationRecyclerView.visibility = View.GONE
+        binding.weeklyRecommendationRecyclerView.visibility = View.VISIBLE
     }
 
     //popup. Mulai untuk profile feature branch
     private fun showPopupMenu() {
         val dialogFragment = RecipeDialog()
-        dialogFragment.show(parentFragmentManager, "com.telyu.nourimate.views.custom.RecipeDialog")
+        dialogFragment.show(
+            parentFragmentManager,
+            "com.telyu.nourimate.views.custom.RecipeDialog"
+        )
     }
 
     private fun setupSearchBarAndSearchView() {
@@ -117,15 +162,41 @@ class RecipeFragment : Fragment() {
                 true // Return true to indicate that the action has been handled
             }
             searchBar.inflateMenu(R.menu.selected_meal_menu)
-            searchBar.setOnMenuItemClickListener { menuItem ->
-                when (menuItem.itemId) {
-                    R.id.btn_selected_meal -> {
-                        showPopupMenu()
-                        true
-                    }
+        }
+    }
 
-                    else -> false
+    //FAB selected meal
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setupDraggableSelectedItem() {
+        var dX = 0f
+        var dY = 0f
+        var lastAction = 0
+
+        binding.selecteditem.setOnTouchListener { view, event ->
+            when (event.actionMasked) {
+                MotionEvent.ACTION_DOWN -> {
+                    dX = view.x - event.rawX
+                    dY = view.y - event.rawY
+                    lastAction = MotionEvent.ACTION_DOWN
+                    true
                 }
+
+                MotionEvent.ACTION_MOVE -> {
+                    view.y = event.rawY + dY
+                    view.x = event.rawX + dX
+                    lastAction = MotionEvent.ACTION_MOVE
+                    true
+                }
+
+                MotionEvent.ACTION_UP -> {
+                    if (lastAction == MotionEvent.ACTION_DOWN) {
+                        // Logika untuk menampilkan dialog pop-up
+                        showPopupMenu()
+                    }
+                    true
+                }
+
+                else -> false
             }
         }
     }
@@ -138,17 +209,17 @@ class RecipeFragment : Fragment() {
             }
         }
 
-        viewModel.userName.observe(viewLifecycleOwner) {userName ->
+        viewModel.userName.observe(viewLifecycleOwner) { userName ->
             binding.usernameTextView.text = userName
         }
 
-        viewModel.userId.observe(viewLifecycleOwner) {userId ->
+        viewModel.userId.observe(viewLifecycleOwner) { userId ->
             if (userId != null) {
                 viewModel.getProfpicById(userId)
             }
         }
 
-        viewModel.profilePicture.observe(viewLifecycleOwner) {uriString ->
+        viewModel.profilePicture.observe(viewLifecycleOwner) { uriString ->
             uriString?.let { uriStr ->
                 val uri = Uri.parse(uriStr)
                 binding.recipeProfileImageView.setImageURI(uri)
@@ -158,7 +229,7 @@ class RecipeFragment : Fragment() {
 
     }
 
-    private fun fillDatabaseWithFakeData(){
+    private fun fillDatabaseWithFakeData() {
 
         // Untuk isi database dengan fake data
         val dao = FoodDatabase.getInstance(requireContext()).foodDao()
@@ -178,12 +249,23 @@ class RecipeFragment : Fragment() {
             )
         }
 
+        val mappedMeals = fakeFoodData.meals.map { meals ->
+            Meal(mealId = meals.mealId)
+        }
+
+        val mappedRecipeMeals = fakeFoodData.recipeMeal.map { recipeMeals ->
+            RecipeMeal(
+                mealId = recipeMeals.mealId,
+                recipeId = recipeMeals.recipeId
+            )
+        }
+
         val mappedRecommendations = fakeFoodData.recommendations.map { recommendation ->
             Recommendation(
                 recommendationId = recommendation.recommendationId,
                 date = recommendation.date,
                 isSelected = recommendation.isSelected,
-                mealType = recommendation.mealType,
+                mealId = recommendation.mealId,
                 recipeId = recommendation.recipeId,
             )
         }
@@ -194,11 +276,15 @@ class RecipeFragment : Fragment() {
             mappedRecipes.forEach { recipe ->
                 dao.insertRecipe(recipe)
             }
+            mappedMeals.forEach { meal ->
+                dao.insertMeal(meal)
+            }
+            mappedRecipeMeals.forEach { recipeMeal ->
+                dao.insertRecipeMeal(recipeMeal)
+            }
             mappedRecommendations.forEach { recommendation ->
                 dao.insertRecommendation(recommendation)
             }
         }
     }
-
-
 }
