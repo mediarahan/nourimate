@@ -1,4 +1,4 @@
-package com.telyu.nourimate
+package com.telyu.nourimate.custom
 
 import android.content.Context
 import android.graphics.Canvas

@@ -76,7 +76,7 @@ class ProfileFragment : Fragment() {
         }
 
         viewModel.userId.observe(viewLifecycleOwner) {userId ->
-                viewModel.getBMIById(userId)
+            viewModel.getBMIById(userId)
         }
     }
 

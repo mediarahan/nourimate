@@ -1,12 +1,19 @@
 package com.telyu.nourimate.activities
 
-import android.app.DatePickerDialog
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import com.telyu.nourimate.databinding.ActivityEditProfileBinding
+import com.telyu.nourimate.databinding.DialogRulerPickerBinding
+import com.telyu.nourimate.custom.CurvedRulerView
+import com.telyu.nourimate.fragments.CustomDatePickerFragment
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import com.telyu.nourimate.R
 import com.telyu.nourimate.data.local.models.Detail
 import com.telyu.nourimate.viewmodels.EditProfileViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
@@ -22,8 +29,11 @@ class EditProfileActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.color2)
+
         binding = ActivityEditProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         editProfileViewModel = obtainViewModel(this@EditProfileActivity)
 
@@ -32,22 +42,18 @@ class EditProfileActivity : AppCompatActivity() {
         val allergiesOptions = arrayOf("Nuts", "Egg", "Seafood")
         val diseaseOptions = arrayOf("High Blood Pressure", "Diabetes", "Cholesterol")
 
-        //setup edittext
-        binding.editTextBirth
         binding.editTextHeight
-        binding.editTextWeight
+
         binding.editTextWaist
 
-        //setup date picker
         binding.editTextBirth.setOnClickListener {
-            showDatePicker { selectedDate ->
-                selectedDate?.let { date ->
-                    val formattedDate =
-                        SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date)
-                    binding.editTextBirth.setText(formattedDate)
-                }
-            }
+            showDatePickerDialog()
         }
+
+        binding.editTextWeight.setOnClickListener {
+            showRulerPickerDialog()
+        }
+
 
         //setup spinner
         val genderAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, genderOptions)
@@ -64,8 +70,9 @@ class EditProfileActivity : AppCompatActivity() {
             insertUserDetails()
         }
 
-    }
 
+
+    }
     private fun insertUserDetails() {
         //all input
         val heightString = binding.editTextHeight.text.toString()
@@ -95,35 +102,55 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
 
-        private fun openHomePage() {
+    private fun openHomePage() {
         // Buat Intent untuk membuka VerificationActivity
         val intent = Intent(this, NavigationBarActivity::class.java)
         startActivity(intent)
     }
 
-    //retrieve date of birth
-    private fun showDatePicker(callback: (Date?) -> Unit) {
-        val calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-        val datePickerDialog = DatePickerDialog(
-            this,
-            { _, year, month, dayOfMonth ->
-                val selectedDate = Calendar.getInstance()
-                selectedDate.set(year, month, dayOfMonth)
-                // Convert Calendar to Date
-                val date = selectedDate.time
-                // Pass the selected date via callback
-                callback(date)
-            },
-            year,
-            month,
-            day
-        )
-        datePickerDialog.show()
+
+    private fun showDatePickerDialog() {
+        val datePickerFragment = CustomDatePickerFragment().apply {
+            setDatePickerDialogListener(object : CustomDatePickerFragment.DatePickerDialogListener {
+                override fun onDateSet(year: Int, month: Int, dayOfMonth: Int) {
+                    val calendar = Calendar.getInstance().apply {
+                        set(year, month, dayOfMonth)
+                    }
+                    val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    val formattedDate = format.format(calendar.time)
+                    binding.editTextBirth.setText(formattedDate)
+                }
+            })
+        }
+        datePickerFragment.show(supportFragmentManager, "datePicker")
     }
+
+    private fun showRulerPickerDialog() {
+        val dialog = Dialog(this)
+        val dialogBinding = DialogRulerPickerBinding.inflate(layoutInflater)
+        dialog.setContentView(dialogBinding.root)
+
+        // Atur listener untuk perubahan nilai pada CurvedRulerView di dalam dialog
+        dialogBinding.curvedRulerView.listener = object : CurvedRulerView.OnValueChangeListener {
+            override fun onValueChanged(value: Float) {
+                // Sementara simpan nilai yang dipilih di tag
+                dialogBinding.curvedRulerView.tag = value
+            }
+        }
+
+        // Atur tindakan untuk tombol 'Done'
+        dialogBinding.buttonDone.setOnClickListener {
+            // Ketika 'Done' ditekan, update EditTextWeight dengan nilai yang dipilih
+            val selectedValue = dialogBinding.curvedRulerView.tag as Float
+            binding.editTextWeight.setText(selectedValue.toInt().toString())
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+
 
     private fun calculateBMI(height: Float?, weight: Float?): Float? {
         if (height == null || weight == null || height == 0f) {

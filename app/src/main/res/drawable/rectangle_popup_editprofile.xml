@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/drawable/rectangle_home2_with_shadow.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Background rectangle with stroke -->
+    <item android:id="@+id/rectangleShape">
+        <shape android:shape="rectangle">
+            <solid android:color="#FFF6DC" />
+            <corners android:radius="22dp"/>
+            <stroke android:width="2dp" android:color="#FFBA38" />
+        </shape>
+    </item>
+
+</layer-list>
