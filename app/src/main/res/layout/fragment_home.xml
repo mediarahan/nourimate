@@ -235,7 +235,7 @@
                             android:id="@+id/tvCaloriesPercentage"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="28%"
+                            android:text="-99%"
                             android:textSize="12sp"
                             android:textColor="#173430"
                             android:fontFamily="@font/zenkakugothicnewbold" />
@@ -325,7 +325,7 @@
                             android:id="@+id/tvCarbsPercentage"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="28%"
+                            android:text="-99%"
                             android:textSize="12sp"
                             android:textColor="#173430"
                             android:fontFamily="@font/zenkakugothicnewbold" />
@@ -415,7 +415,7 @@
                             android:id="@+id/tvFatPercentage"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="28%"
+                            android:text="-99%"
                             android:textSize="12sp"
                             android:textColor="#173430"
                             android:fontFamily="@font/zenkakugothicnewbold" />
@@ -505,7 +505,7 @@
                             android:id="@+id/tvProteinPercentage"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="28%"
+                            android:text="-99%"
                             android:textSize="12sp"
                             android:textColor="#173430"
                             android:fontFamily="@font/zenkakugothicnewbold" />

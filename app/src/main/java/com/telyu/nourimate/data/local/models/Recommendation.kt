@@ -11,20 +11,14 @@ import kotlinx.parcelize.Parcelize
 import java.util.Date
 
 @Entity(tableName = "recommendations",
-    foreignKeys = [
-        ForeignKey(
-            entity = Recipe::class,
-            parentColumns = ["recipeId"],
-            childColumns = ["recipe_id"],
-            onDelete = ForeignKey.CASCADE
-        ),
-        ForeignKey(
-            entity = Meal::class,
-            parentColumns = ["mealId"],
-            childColumns = ["meal_id"],
-            onDelete = ForeignKey.CASCADE
-        )
-    ]
+//    foreignKeys = [
+//        ForeignKey(
+//            entity = Recipe::class,
+//            parentColumns = ["recipeId"],
+//            childColumns = ["recipe_id"],
+//            onDelete = ForeignKey.CASCADE
+//        ),
+//    ]
 )
 
 @Parcelize
@@ -36,6 +30,4 @@ data class Recommendation(
     var isSelected: Boolean = false,
     @field:ColumnInfo(name = "recipe_id")
     val recipeId: Int,
-    @field:ColumnInfo(name = "meal_id")
-    val mealId: Int,
 ) : Parcelable

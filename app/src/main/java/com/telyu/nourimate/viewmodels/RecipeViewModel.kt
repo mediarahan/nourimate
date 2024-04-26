@@ -1,20 +1,22 @@
 package com.telyu.nourimate.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
+import com.telyu.nourimate.data.local.models.Detail
 import com.telyu.nourimate.data.local.models.Recipe
 import com.telyu.nourimate.data.local.models.Recommendation
 import com.telyu.nourimate.data.local.models.RecommendationRecipe
 import com.telyu.nourimate.data.repository.NourimateRepository
 import com.telyu.nourimate.utils.GeneralUtil
 import kotlinx.coroutines.launch
-
+import com.telyu.nourimate.data.remote.Result
+import java.lang.Exception
 
 class RecipeViewModel(private val repository: NourimateRepository) : ViewModel() {
 
@@ -43,14 +45,6 @@ class RecipeViewModel(private val repository: NourimateRepository) : ViewModel()
     val userName: LiveData<String?> = _userName
 
     val userEmail: LiveData<String> = repository.getUserEmail().asLiveData()
-
-    fun getRecipeIdsByMealId(mealType: Int): LiveData<List<Int>> {
-        return repository.getRecipeIdsByMealId(mealType)
-    }
-
-    fun getRecipesById(recipeIds: List<Int>): LiveData<List<Recipe>> {
-        return repository.getRecipesById(recipeIds)
-    }
 
     //========== Fungsi ==========
 
@@ -144,30 +138,9 @@ class RecipeViewModel(private val repository: NourimateRepository) : ViewModel()
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //======================= FETCHING RECIPES =====================
+
+
 
 
     //Digunakan di Recipe Fragment dan RecipeDialogMeal
@@ -195,18 +168,6 @@ class RecipeViewModel(private val repository: NourimateRepository) : ViewModel()
     fun getSelectedRecipesByRecommendationIds(recommendationIds: List<Int>): LiveData<List<Recipe>> {
         return repository.getRecipesByRecommendationIds(recommendationIds)
     }
-
-    //query utama versi weekly
-    fun getRecipesByDateAndMealType(mealId: Int, startDate: Long, endDate: Long): LiveData<List<Recipe>> {
-        return repository.getRecipesByDateAndMeal(mealId, startDate, endDate)
-    }
-
-
-
-    fun getRecommendationsByMealIdSortedAscending(mealId: Int): LiveData<List<Recommendation>> {
-        return repository.getRecommendationsByMealIdSortedAscending(mealId)
-    }
-
 
     //Digunakan di ketiga DialogFragment di RecipeFragment
     fun getSelectedRecipeCount(): LiveData<Int> {
@@ -240,4 +201,14 @@ class RecipeViewModel(private val repository: NourimateRepository) : ViewModel()
             _profilePicture.value = profpic
         }
     }
+
+    val isDatabaseFilled: LiveData<Boolean?> = repository.observeDatabaseFilledStatus()
+
+    fun setDatabaseFilled() {
+        viewModelScope.launch {
+            repository.setDatabaseFilled()
+        }
+    }
+
+
 }

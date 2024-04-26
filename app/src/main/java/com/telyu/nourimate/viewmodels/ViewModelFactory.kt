@@ -45,6 +45,10 @@ class ViewModelFactory private constructor(
                 MachineLearningViewModel(repository) as T
             }
 
+            modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
+                HomeViewModel(repository) as T
+            }
+
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
     }

@@ -37,6 +37,18 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         }
     }
 
+    suspend fun setDatabaseFilled() {
+        dataStore.edit {preferences ->
+            preferences[DATABASE_KEY] = true
+        }
+    }
+
+    fun getDatabaseFilled(): Flow<Boolean> {
+        return dataStore.data.map { preferences ->
+            preferences[DATABASE_KEY] ?: false
+        }
+    }
+
     suspend fun logout() {
         dataStore.edit { preferences ->
             preferences.clear()
@@ -49,6 +61,7 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
 
         private val EMAIL_KEY = stringPreferencesKey("email")
         private val IS_LOGIN_KEY = booleanPreferencesKey("isLogin")
+        private val DATABASE_KEY = booleanPreferencesKey("isDatabaseFilled")
 
         fun getInstance(dataStore: DataStore<Preferences>): UserPreference {
             return INSTANCE ?: synchronized(this) {

@@ -6,3 +6,4 @@ data class UserModel (
     //val refreshToken: String?,
     val isLogin: Boolean? = false
 )
+

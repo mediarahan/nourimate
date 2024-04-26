@@ -18,9 +18,7 @@ import com.telyu.nourimate.adapter.RecipeAdapter
 import com.telyu.nourimate.adapter.RecommendationRecipeAdapter
 import com.telyu.nourimate.data.local.FakeFoodData
 import com.telyu.nourimate.data.local.db.FoodDatabase
-import com.telyu.nourimate.data.local.models.Meal
 import com.telyu.nourimate.data.local.models.Recipe
-import com.telyu.nourimate.data.local.models.RecipeMeal
 import com.telyu.nourimate.data.local.models.Recommendation
 import com.telyu.nourimate.databinding.FragmentRecipeBinding
 import com.telyu.nourimate.viewmodels.RecipeViewModel
@@ -43,22 +41,27 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
         )
     }
 
-    private var isDatabaseFilled = false
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentRecipeBinding.inflate(inflater, container, false)
+
+        viewModel.isDatabaseFilled.observe(viewLifecycleOwner) {isDatabaseFilled ->
+            Log.d("RecipeFragment", "isDatabaseFilled: $isDatabaseFilled")
+            if (!isDatabaseFilled!!) {
+                fillDatabaseWithFakeData()
+                Log.d("RecipeFragment", "Database not filled")
+            }
+        }
+
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (!isDatabaseFilled) {
-            fillDatabaseWithFakeData()
-            isDatabaseFilled = true
-        }
+
         setupRecyclerView()
         displayUserNameAndProfpic()
         setupSearchBarAndSearchView()
@@ -245,30 +248,19 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
                 protein = recipe.protein,
                 ingredients = recipe.ingredients,
                 cookingSteps = recipe.cookingSteps,
-                recipePictures = recipe.recipePictures
+                recipePictures = recipe.recipePictures,
+                mealType = recipe.mealType
             )
         }
 
-        val mappedMeals = fakeFoodData.meals.map { meals ->
-            Meal(mealId = meals.mealId)
-        }
-
-        val mappedRecipeMeals = fakeFoodData.recipeMeal.map { recipeMeals ->
-            RecipeMeal(
-                mealId = recipeMeals.mealId,
-                recipeId = recipeMeals.recipeId
-            )
-        }
-
-        val mappedRecommendations = fakeFoodData.recommendations.map { recommendation ->
-            Recommendation(
-                recommendationId = recommendation.recommendationId,
-                date = recommendation.date,
-                isSelected = recommendation.isSelected,
-                mealId = recommendation.mealId,
-                recipeId = recommendation.recipeId,
-            )
-        }
+//        val mappedRecommendations = fakeFoodData.recommendations.map { recommendation ->
+//            Recommendation(
+//                recommendationId = recommendation.recommendationId,
+//                date = recommendation.date,
+//                isSelected = recommendation.isSelected,
+//                recipeId = recommendation.recipeId,
+//            )
+//        }
 
         // Insert data into database within coroutine scope
         lifecycleScope.launch {
@@ -276,15 +268,10 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
             mappedRecipes.forEach { recipe ->
                 dao.insertRecipe(recipe)
             }
-            mappedMeals.forEach { meal ->
-                dao.insertMeal(meal)
-            }
-            mappedRecipeMeals.forEach { recipeMeal ->
-                dao.insertRecipeMeal(recipeMeal)
-            }
-            mappedRecommendations.forEach { recommendation ->
-                dao.insertRecommendation(recommendation)
-            }
+//            mappedRecommendations.forEach { recommendation ->
+//                dao.insertRecommendation(recommendation)
+//            }
         }
+        viewModel.setDatabaseFilled()
     }
 }

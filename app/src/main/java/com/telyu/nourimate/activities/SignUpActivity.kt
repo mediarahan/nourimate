@@ -53,7 +53,7 @@ class SignUpActivity : AppCompatActivity() {
         if (InputValidator.isValidEmail(email) && InputValidator.isValidPassword(password)) {
 
             if (isPasswordMatch) {
-                user = User(0,fullName, email, phoneNumber, password)
+                user = User(0,fullName, email, phoneNumber, password,0)
 
                 signUpViewModel.insertUser(user as User)
 

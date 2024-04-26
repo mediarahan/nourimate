@@ -5,22 +5,13 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import androidx.sqlite.db.SupportSQLiteDatabase
-import com.telyu.nourimate.R
 import com.telyu.nourimate.data.local.dao.FoodDao
-import com.telyu.nourimate.data.local.models.Meal
 import com.telyu.nourimate.data.local.models.Recipe
-import com.telyu.nourimate.data.local.models.RecipeMeal
 import com.telyu.nourimate.data.local.models.Recommendation
 import com.telyu.nourimate.utils.Converters
-import org.json.JSONArray
-import org.json.JSONException
-import org.json.JSONObject
-import java.io.IOException
-import java.util.concurrent.Executors
 
 @Database(
-    entities = [Recipe::class, Recommendation::class, Meal::class, RecipeMeal::class],
+    entities = [Recipe::class, Recommendation::class],
     version = 1, exportSchema = false
 )
 @TypeConverters(Converters::class)

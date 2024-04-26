@@ -3,27 +3,34 @@ package com.telyu.nourimate.data.local.models
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
-@Entity(tableName = "users")
+@Entity(tableName = "users",
+//    foreignKeys = [
+//        ForeignKey(
+//            entity = Detail::class,
+//            parentColumns = ["detailId"],
+//            childColumns = ["detailId"],
+//            onDelete = ForeignKey.CASCADE
+//        ),
+//    ]
+)
 @Parcelize
 data class User(
     @PrimaryKey(autoGenerate = true)
-    @field:ColumnInfo(name = "id")
-    val id: Int,
+    val userId: Int,
 
-    @field:ColumnInfo(name = "name")
     val name: String,
 
-    @field:ColumnInfo(name = "email")
     val email: String,
 
-    @field:ColumnInfo(name = "phone_number")
     val phoneNumber: Long = 0,
 
-    @field:ColumnInfo(name = "password")
     val password: String,
 
-) : Parcelable
+    @ColumnInfo(name = "detailId")  // Ensuring correct column naming
+    val detailId: Int? = null,
 
+) : Parcelable

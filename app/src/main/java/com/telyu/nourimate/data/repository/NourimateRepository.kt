@@ -6,11 +6,15 @@ import androidx.lifecycle.asLiveData
 import com.telyu.nourimate.data.local.dao.FoodDao
 import com.telyu.nourimate.data.local.dao.UserDao
 import com.telyu.nourimate.data.local.models.Detail
+import com.telyu.nourimate.data.local.models.NutritionSum
 import com.telyu.nourimate.data.local.models.Profpic
 import com.telyu.nourimate.data.local.models.Recipe
 import com.telyu.nourimate.data.local.models.Recommendation
 import com.telyu.nourimate.data.local.models.RecommendationRecipe
 import com.telyu.nourimate.data.local.models.User
+import com.telyu.nourimate.data.remote.response.RecommendationResponse
+import com.telyu.nourimate.data.remote.retrofit.ApiService
+import com.telyu.nourimate.data.remote.retrofit.RecommendationRequest
 import com.telyu.nourimate.utils.UserModel
 import com.telyu.nourimate.utils.UserPreference
 import kotlinx.coroutines.flow.Flow
@@ -18,6 +22,7 @@ import kotlinx.coroutines.flow.map
 import java.util.Date
 
 class NourimateRepository(
+    private val apiService: ApiService,
     private val userPreference: UserPreference,
     private val userDao: UserDao,
     private val foodDao: FoodDao,
@@ -66,6 +71,16 @@ class NourimateRepository(
         }.asLiveData()
     }
 
+    fun observeDatabaseFilledStatus(): LiveData<Boolean?> {
+        return userPreference.getDatabaseFilled().map { filled ->
+            filled
+        }.asLiveData()
+    }
+
+    suspend fun setDatabaseFilled() {
+        userPreference.setDatabaseFilled()
+    }
+
     suspend fun logout() {
         userPreference.logout()
     }
@@ -99,6 +114,10 @@ class NourimateRepository(
         return userPreference.getUserEmail()
     }
 
+    suspend fun getUserDetailsByEmail(email: String): Detail {
+        return userDao.getUserDetailsByEmail(email)
+    }
+
     //Update Query Functions
 
     suspend fun updateUserProfile(detail: Detail) {
@@ -128,7 +147,15 @@ class NourimateRepository(
         return foodDao.getRecommendationByRecipeAndMealId(recipeId, mealId)
     }
 
+    //Query buat home fragment
 
+    suspend fun getCaloriesByMealType(mealType: Int): Int {
+        return foodDao.getTotalCaloriesByMealType(mealType)
+    }
+
+    suspend fun getNutritionSums(): NutritionSum {
+        return foodDao.getNutritionSums()
+    }
 
 
 
@@ -143,14 +170,6 @@ class NourimateRepository(
 
 
     //query utama
-
-    fun getRecipeIdsByMealId(mealType: Int): LiveData<List<Int>> {
-        return foodDao.getRecipeIdsByMealId(mealType)
-    }
-
-    fun getRecipesById(recipeIds: List<Int>): LiveData<List<Recipe>> {
-        return foodDao.getRecipesById(recipeIds)
-    }
 
     fun getRecipesByRecommendationIds(recommendationIds: List<Int>): LiveData<List<Recipe>> {
         return foodDao.getRecipesByRecommendationIds(recommendationIds)
@@ -185,13 +204,43 @@ class NourimateRepository(
         foodDao.insertRecommendation(recommendation)
     }
 
+    suspend fun insertRecommendations(recommendations: List<Recommendation>) {
+        foodDao.insertRecommendations(recommendations)
+    }
+
+    suspend fun fetchRecommendationData(recommendationRequest: RecommendationRequest): ListOfIds {
+        try {
+            val requestBody = apiService.getRecommendedRecipes(recommendationRequest)
+            Log.d("Recommendation", "Response: $requestBody")
+            val mappedResponse = mapResponseToRecipeIds(requestBody)
+
+            return mappedResponse
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
+    data class ListOfIds(
+        val recipeIdsSarapan: List<Int>,
+        val recipeIdsMakanSiang: List<Int>,
+        val recipeIdsMakanMalam: List<Int>
+    )
+
+    private fun mapResponseToRecipeIds(response: RecommendationResponse): ListOfIds {
+        val idSarapan = response.sarapan.map { it.recipeID }
+        val idMakanSiang = response.makanSiang.map { it.recipeID }
+        val idMakanMalam = response.makanMalam.map {it.recipeID}
+
+        return ListOfIds(idSarapan, idMakanSiang, idMakanMalam)
+    }
+
     companion object {
         @Volatile
         private var instance: NourimateRepository? = null
         fun getInstance(
-            pref: UserPreference, userDao: UserDao, foodDao: FoodDao
+            apiService: ApiService, pref: UserPreference, userDao: UserDao, foodDao: FoodDao
         ): NourimateRepository = instance ?: synchronized(this) {
-            instance ?: NourimateRepository(pref, userDao, foodDao)
+            instance ?: NourimateRepository(apiService, pref, userDao, foodDao)
         }.also { instance = it }
     }
 

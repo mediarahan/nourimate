@@ -25,7 +25,7 @@ import java.util.Locale
 class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityEditProfileBinding
-    private lateinit var editProfileViewModel: EditProfileViewModel
+    private lateinit var viewModel : EditProfileViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,12 +35,12 @@ class EditProfileActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        editProfileViewModel = obtainViewModel(this@EditProfileActivity)
+        viewModel = obtainViewModel(this@EditProfileActivity)
 
         //array opsi
         val genderOptions = arrayOf("Laki-laki", "Perempuan")
-        val allergiesOptions = arrayOf("Nuts", "Egg", "Seafood")
-        val diseaseOptions = arrayOf("High Blood Pressure", "Diabetes", "Cholesterol")
+        val allergiesOptions = arrayOf("Kacang", "Gluten")
+        val diseaseOptions = arrayOf("Hipertensi", "Diabetes", "Kolesterol")
 
         binding.editTextHeight
 
@@ -65,14 +65,13 @@ class EditProfileActivity : AppCompatActivity() {
             ArrayAdapter(this, android.R.layout.simple_spinner_item, diseaseOptions)
         binding.spinnerPersonalDisease.adapter = diseaseAdapter
 
-        //setup submit data to database button
+        //Activity onCreate
         binding.buttonNext.setOnClickListener {
             insertUserDetails()
+            setupObservers()
         }
-
-
-
     }
+
     private fun insertUserDetails() {
         //all input
         val heightString = binding.editTextHeight.text.toString()
@@ -96,19 +95,27 @@ class EditProfileActivity : AppCompatActivity() {
 
         // Insert details into the database inside the callback
         val detail = Detail(0 ,date, height, weight, waistSize, gender, allergies, disease, bmi)
-        editProfileViewModel.insertDetail(detail)
+        viewModel.insertDetail(detail)
 
         openHomePage()
     }
 
+
+
+    //API Related
+    private fun setupObservers() {
+        viewModel.recommendationsLiveData.observe(this) {recommendations ->
+            if (recommendations.isNotEmpty()) {
+                viewModel.insertRecommendations(recommendations)
+            }
+        }
+    }
 
     private fun openHomePage() {
         // Buat Intent untuk membuka VerificationActivity
         val intent = Intent(this, NavigationBarActivity::class.java)
         startActivity(intent)
     }
-
-
 
     private fun showDatePickerDialog() {
         val datePickerFragment = CustomDatePickerFragment().apply {

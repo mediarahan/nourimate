@@ -187,7 +187,7 @@ class UserDetailFragment : Fragment() {
 
         if (id != null) {
             val detail = Detail(
-                id = id,
+                detailId = id,
                 dob = formattedDob,
                 height = height,
                 weight = weight,

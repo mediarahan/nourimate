@@ -73,10 +73,10 @@ class RecommendationRecipeAdapter(private val listener: OnAddClickListener) :
             with(binding) {
                 tvName.text = item.recipe.name
                 tvIngredients.text = item.recipe.ingredients
-                tvCalories.text = item.recipe.calories.toString()
-                tvProtein.text = item.recipe.protein.toString()
-                tvFat.text = item.recipe.fat.toString()
-                tvCarbs.text = item.recipe.carbs.toString()
+                tvCalories.text = "Calories: ${item.recipe.calories.toInt()}"
+                tvProtein.text = "Protein: ${item.recipe.protein.toInt()}"
+                tvFat.text = "Fat: ${item.recipe.fat.toInt()}"
+                tvCarbs.text = "Carbs: ${item.recipe.carbs.toInt()}"
 
                 Glide.with(ivRecipe.context)
                     .load(

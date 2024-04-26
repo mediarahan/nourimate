@@ -28,19 +28,19 @@ interface UserDao {
     @Query("SELECT name FROM users WHERE email = :email")
     suspend fun getUserNameByEmail(email:String): String?
 
-    @Query("SELECT id FROM users WHERE email = :email")
+    @Query("SELECT userId FROM users WHERE email = :email")
     suspend fun getUserIdByEmail(email: String): Int?
 
-    @Query("SELECT * FROM userDetails WHERE id = :id")
+    @Query("SELECT * FROM userDetails WHERE detailId = :id")
     suspend fun getUserDetailsById (id: Int): Detail?
 
-    @Query("SELECT bmi FROM userDetails WHERE id = :id")
+    @Query("SELECT bmi FROM userDetails WHERE detailId = :id")
     suspend fun getBMIById(id: Int?): Int?
 
     @Update
     suspend fun updateUserProfile(detail: Detail)
 
-    @Query("UPDATE users SET name = :name WHERE id = :id")
+    @Query("UPDATE users SET name = :name WHERE userId = :id")
     suspend fun updateUserName(id: Int, name: String)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -51,5 +51,12 @@ interface UserDao {
 
     @Query("DELETE FROM users")
     suspend fun deleteAllRecords()
+
+    @Query("""
+        SELECT * FROM userDetails
+        INNER JOIN users ON userDetails.detailId = users.userId
+        WHERE users.email = :email
+    """)
+    suspend fun getUserDetailsByEmail(email: String): Detail
 
 }

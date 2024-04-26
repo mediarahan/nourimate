@@ -177,7 +177,7 @@ class CustomDatePickerFragment : DialogFragment() {
         binding.Month.text = SimpleDateFormat("MMMM", Locale.getDefault()).format(calendar.time)
 
         dates = generateDatesForMonth(month, year)
-        val adapter = DateAdapter(requireContext(), dates, -1)
+        val adapter = DateAdapter(requireContext(), dates, 99)
         binding.gvCalendar.adapter = adapter
 
         // Set listener for date selection

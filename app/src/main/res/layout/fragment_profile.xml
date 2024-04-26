@@ -7,39 +7,60 @@
     android:layout_height="match_parent"
     tools:context=".fragments.ProfileFragment">
 
-    <!-- Add UI elements for profile photo (e.g., ImageView) -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewAvatar"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+
+    <ImageView
+        android:id="@+id/picturebackground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:src="@drawable/profile_background_curve"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <FrameLayout
+        android:id="@+id/cardAvatar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="48dp"
-        app:cardCornerRadius="150dp">
+        android:layout_marginTop="20dp"
+        android:background="@drawable/background_photo_profile">
 
-        <ImageView
-            android:id="@+id/imageViewAvatar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/saul"
-            android:scaleType="fitXY">
-        </ImageView>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewAvatar"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            app:cardCornerRadius="75dp"
+            app:cardElevation="0dp">
 
-    </androidx.cardview.widget.CardView>
+            <ImageView
+                android:id="@+id/imageViewAvatar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/saul"
+                android:scaleType="centerCrop">
+            </ImageView>
+        </androidx.cardview.widget.CardView>
+    </FrameLayout>
+
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewAddAvatar"
-        android:layout_width="52dp"
-        android:layout_height="52dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="150dp"
-        app:layout_constraintEnd_toEndOf="@id/cardViewAvatar"
-        app:layout_constraintBottom_toBottomOf="@id/cardViewAvatar">
+        app:cardElevation="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/cardAvatar"
+        app:layout_constraintBottom_toBottomOf="@+id/cardAvatar">
 
         <ImageView
-            android:layout_width="52dp"
-            android:layout_height="52dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:scaleX="0.5"
             android:scaleY="0.5"
             android:src="@drawable/baseline_edit_24"/>
@@ -50,115 +71,257 @@
         android:id="@+id/nameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Saul Goodman "
-        android:textSize="18sp"
+        android:text="Saul Goodman"
+        android:textSize="32sp"
+        android:fontFamily="@font/concertone"
         android:textStyle="bold"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardViewAvatar"
-        android:layout_marginTop="10dp"/>
+        app:layout_constraintTop_toBottomOf="@+id/cardAvatar"/>
 
     <TextView
         android:id="@+id/bmiResultTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Body Mass Index: "
-        android:textSize="18sp"
+        android:textSize="16sp"
+        android:fontFamily="@font/alatsi"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
         android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginTop="3dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameTextView"
-        android:layout_marginTop="10dp"/>
+        app:layout_constraintTop_toBottomOf="@+id/nameTextView"/>
 
-    <ImageView
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/settingsIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/settings"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp"
+        app:icon="@drawable/settings"
+        app:iconGravity="textStart"
+        android:clickable="true"
+        app:iconSize="30dp"
+        app:iconTint="@color/black"
+        app:backgroundTint="@null"
+        android:background="@drawable/button_background_profile_with_shadow"
+        style="@style/Widget.MaterialComponents.Button.Circle"
+        app:iconPadding="0dp"
+        android:insetTop="0dp"
+        android:elevation="3dp"
+        android:insetBottom="0dp" />
 
-    <ImageView
-        android:id="@+id/logoutIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/logout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"/>
-
-    <Button
-        android:id="@+id/profileButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Profile"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bmiResultTextView"
-        app:layout_constraintBottom_toTopOf="@id/accountButton"
-        android:layout_marginTop="28dp"
-        android:layout_marginStart="48dp"
-        android:layout_marginEnd="48dp"/>
-
-    <Button
-        android:id="@+id/accountButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Account"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileButton"
-        app:layout_constraintBottom_toTopOf="@id/historyButton"
-        android:layout_marginStart="48dp"
-        android:layout_marginEnd="48dp"/>
-
-    <Button
-        android:id="@+id/historyButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="History"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/accountButton"
-        app:layout_constraintBottom_toTopOf="@id/communityButton"
-        android:layout_marginStart="48dp"
-        android:layout_marginEnd="48dp"/>
-
-    <!-- Community Button -->
-    <Button
-        android:id="@+id/communityButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Community"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/historyButton"
-        app:layout_constraintBottom_toTopOf="@id/faqButton"
-        android:layout_marginStart="48dp"
-        android:layout_marginEnd="48dp"/>
-
-    <!-- FAQ Button -->
-    <Button
-        android:id="@+id/faqButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="FAQ"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/communityButton"
-        app:layout_constraintBottom_toTopOf="@id/SignOutButton"
-        android:layout_marginStart="48dp"
-        android:layout_marginEnd="48dp"/>
-
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/SignOutButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sign Out"
-        android:backgroundTint="@android:color/holo_orange_light"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        app:icon="@drawable/logout"
+        android:clickable="true"
+        app:iconGravity="textStart"
+        app:iconSize="30dp"
+        app:iconTint="@color/black"
+        app:backgroundTint="@null"
+        android:background="@drawable/button_background_profile_with_shadow"
+        style="@style/Widget.MaterialComponents.Button.Circle"
+        app:iconPadding="0dp"
+        android:insetTop="0dp"
+        android:elevation="3dp"
+        android:insetBottom="0dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/profileButton"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:elevation="5dp"
+        android:clickable="true"
+        android:text="Profile"
+        app:cornerRadius="10dp"
+        android:paddingStart="10dp"
+        android:gravity="start|center_vertical"
+        app:iconSize="40dp"
+        android:textSize="16sp"
+        android:fontFamily="@font/alatsi"
+        android:background="@drawable/rectangle_signup1"
+        app:backgroundTint="@null"
+        android:textColor="@color/black"
+        app:icon="@drawable/profile"
+        app:iconTint="@color/color34"
+        app:iconGravity="textStart"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/faqButton"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="48dp"/>
+        app:layout_constraintTop_toBottomOf="@+id/picturebackground"
+        android:layout_marginTop="20dp"/>
+
+    <ImageView
+        android:id="@+id/profileIcon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:clickable="true"
+        android:src="@drawable/expand_circle"
+        android:elevation="5dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/profileButton"
+        app:layout_constraintTop_toTopOf="@+id/profileButton"
+        app:layout_constraintBottom_toBottomOf="@+id/profileButton"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/accountButton"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:elevation="5dp"
+        android:clickable="true"
+        android:text="Account"
+        app:cornerRadius="10dp"
+        android:paddingStart="10dp"
+        android:gravity="start|center_vertical"
+        app:iconSize="40dp"
+        android:textSize="16sp"
+        android:fontFamily="@font/alatsi"
+        android:background="@drawable/rectangle_signup1"
+        app:backgroundTint="@null"
+        android:textColor="@color/black"
+        app:icon="@drawable/accountsecurity"
+        app:iconTint="@color/color34"
+        app:iconGravity="textStart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileButton"
+        android:layout_marginTop="10dp"/>
+
+    <ImageView
+        android:id="@+id/accountIcon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:clickable="true"
+        android:src="@drawable/expand_circle"
+        android:elevation="5dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/accountButton"
+        app:layout_constraintTop_toTopOf="@+id/accountButton"
+        app:layout_constraintBottom_toBottomOf="@+id/accountButton"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/historyButton"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:elevation="5dp"
+        android:clickable="true"
+        android:text="History"
+        app:cornerRadius="10dp"
+        android:paddingStart="12dp"
+        android:gravity="start|center_vertical"
+        app:iconSize="33dp"
+        app:iconPadding="13dp"
+        android:textSize="16sp"
+        android:fontFamily="@font/alatsi"
+        android:background="@drawable/rectangle_signup1"
+        app:backgroundTint="@null"
+        android:textColor="@color/black"
+        app:icon="@drawable/history"
+        app:iconTint="@color/color34"
+        app:iconGravity="textStart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/accountButton"
+        android:layout_marginTop="10dp"/>
+
+    <ImageView
+        android:id="@+id/historyIcon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:clickable="true"
+        android:src="@drawable/expand_circle"
+        android:elevation="5dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/historyButton"
+        app:layout_constraintTop_toTopOf="@+id/historyButton"
+        app:layout_constraintBottom_toBottomOf="@+id/historyButton"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/communityButton"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:elevation="5dp"
+        android:clickable="true"
+        android:text="Community"
+        app:cornerRadius="10dp"
+        android:paddingStart="12dp"
+        android:gravity="start|center_vertical"
+        app:iconSize="35dp"
+        app:iconPadding="11dp"
+        android:textSize="16sp"
+        android:fontFamily="@font/alatsi"
+        android:background="@drawable/rectangle_signup1"
+        app:backgroundTint="@null"
+        android:textColor="@color/black"
+        app:icon="@drawable/community"
+        app:iconTint="@color/color34"
+        app:iconGravity="textStart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/historyButton"
+        android:layout_marginTop="10dp"/>
+
+    <ImageView
+        android:id="@+id/communityIcon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:clickable="true"
+        android:src="@drawable/expand_circle"
+        android:elevation="5dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/communityButton"
+        app:layout_constraintTop_toTopOf="@+id/communityButton"
+        app:layout_constraintBottom_toBottomOf="@+id/communityButton"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/faqButton"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:elevation="5dp"
+        android:clickable="true"
+        android:text="FAQ"
+        app:cornerRadius="10dp"
+        android:paddingStart="12dp"
+        android:gravity="start|center_vertical"
+        app:iconSize="33dp"
+        app:iconPadding="13dp"
+        android:textSize="16sp"
+        android:fontFamily="@font/alatsi"
+        android:background="@drawable/rectangle_signup1"
+        app:backgroundTint="@null"
+        android:textColor="@color/black"
+        app:icon="@drawable/faq"
+        app:iconTint="@color/color34"
+        app:iconGravity="textStart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/communityButton"
+        android:layout_marginTop="10dp"/>
+
+    <ImageView
+        android:id="@+id/faqIcon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:clickable="true"
+        android:src="@drawable/expand_circle"
+        android:elevation="5dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/faqButton"
+        app:layout_constraintTop_toTopOf="@+id/faqButton"
+        app:layout_constraintBottom_toBottomOf="@+id/faqButton"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
