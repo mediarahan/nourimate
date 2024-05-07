@@ -13,8 +13,9 @@ import androidx.lifecycle.viewModelScope
 import com.telyu.nourimate.data.local.models.Detail
 import com.telyu.nourimate.data.local.models.NutritionSum
 import com.telyu.nourimate.data.repository.NourimateRepository
-import com.telyu.nourimate.data.remote.Result
-import com.telyu.nourimate.utils.GeneralUtil
+import com.telyu.nourimate.utils.GeneralUtil.calculateAge
+import com.telyu.nourimate.utils.GeneralUtil.calculateDailyCalorieNeeds
+import com.telyu.nourimate.utils.GeneralUtil.calculateDailyNutritionNeeds
 import kotlinx.coroutines.launch
 import java.util.Calendar
 
@@ -94,7 +95,6 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
         _currentGlass.value = glass
     }
 
-
     //Today's Meal Related Functions
 
     //Part 1 of getting each nutrition percentage Values
@@ -148,7 +148,7 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
     private val maxNuritionsLiveData: LiveData<List<Int>> = userDetails.switchMap { detail ->
         val gender =
             if (detail.gender == "Laki-laki") true else if (detail.gender == "Perempuan") false else null
-        val age = GeneralUtil.calculateAge(detail.dob)
+        val age = calculateAge(detail.dob)
         liveData {
             val dailyCalorieNeeds =
                 calculateDailyCalorieNeeds(detail.height?.toInt() ?: 420, gender!!, age)
@@ -159,6 +159,22 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
             Log.d("MaxNutritionValues", "Calorie: $dailyCalorieNeeds, Protein: $proteinNeeds, Fat: $fatNeeds, Carb: $carbNeeds")
             emit(listOf(dailyCalorieNeeds, proteinNeeds, fatNeeds, carbNeeds))
 
+        }
+    }
+
+    //daftar kalori per meal time untuk di expose ke view
+    val caloriesPerMealtime: LiveData<List<Int>> = userDetails.switchMap { detail ->
+        val gender =
+            if (detail.gender == "Laki-laki") true else if (detail.gender == "Perempuan") false else null
+        val age = calculateAge(detail.dob)
+        liveData {
+            val dailyCalorieNeeds =
+                calculateDailyCalorieNeeds(detail.height?.toInt() ?: 420, gender!!, age)
+
+            val breakfastCalorieNeeds = calculateDailyNutritionNeeds(dailyCalorieNeeds, 0.25)
+            val lunchCalorieNeeds = calculateDailyNutritionNeeds(dailyCalorieNeeds, 0.4)
+            val dinnerCalorieNeeds = calculateDailyNutritionNeeds(dailyCalorieNeeds, 0.35)
+            emit(listOf(breakfastCalorieNeeds, lunchCalorieNeeds, dinnerCalorieNeeds))
         }
     }
 
@@ -197,32 +213,25 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
         addSource(_nutritionSums) { nutritionSum = it; update() }
     }
 
+    //Dapetin hitungan jumlah resep
+    private val _breakfastCount = MutableLiveData<Int>()
+    val breakfastCount: LiveData<Int> = _breakfastCount
 
-    private fun calculateDailyCalorieNeeds(
-        userHeight: Int,
-        userGender: Boolean,
-        userAge: Int
-    ): Int {
-        val idealWeight = (userHeight - 100) - (0.1 * (userHeight - 100))
+    private val _lunchCount = MutableLiveData<Int>()
+    val lunchCount: LiveData<Int> = _lunchCount
 
-        val dailyCalorieNeeds = when {
-            userAge in 20..29 -> if (userGender) ((15.3 * idealWeight + 679) * 1.78).toInt()
-            else ((14.7 * idealWeight + 496) * 1.64).toInt()
+    private val _dinnerCount = MutableLiveData<Int>()
+    val dinnerCount: LiveData<Int> = _dinnerCount
 
-            userAge in 30..59 -> if (userGender) ((11.6 * idealWeight + 879) * 1.78).toInt()
-            else ((8.7 * idealWeight + 829) * 1.64).toInt()
-
-            userAge >= 60 -> if (userGender) ((13.5 * idealWeight + 487) * 1.78).toInt()
-            else ((13.5 * idealWeight + 596) * 1.64).toInt()
-
-            else -> -999
+    fun getSelectedRecipeCountUsingMealType(mealType: Int) {
+        viewModelScope.launch {
+            val selectedRecipeCount = repository.getSelectedRecipeCountUsingMealType(mealType)
+            when (mealType) {
+                1 -> _breakfastCount.value = selectedRecipeCount
+                2 -> _lunchCount.value = selectedRecipeCount
+                3 -> _dinnerCount.value = selectedRecipeCount
+            }
         }
-
-        return (dailyCalorieNeeds * 0.2).toInt()
-    }
-
-    private fun calculateDailyNutritionNeeds(dailyCalories: Int, nutritionMultiplier: Double): Int {
-        return (dailyCalories * nutritionMultiplier).toInt()
     }
 
     //Untuk nampilin nama dan profpic

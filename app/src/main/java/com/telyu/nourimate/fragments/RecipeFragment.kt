@@ -85,7 +85,7 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
                 viewModel.getRecommendationByRecipeAndMealId(recipe.recipeId, mealType!!)
 
             recommendation?.let { rec ->
-                rec.isSelected = !rec.isSelected
+                rec.isSelected = 1
                 viewModel.selectRecommendation(rec)
                 Toast.makeText(requireContext(), "Recommendation updated", Toast.LENGTH_SHORT)
                     .show()

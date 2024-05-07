@@ -76,8 +76,9 @@ class HomeFragment : Fragment() {
         observeMealCalories()
         setupMealCalories()
         setupNutritionNeeds()
+        setupMealCount()
         viewModel.getNutritionSums()
-        displayUserNameAndProfpic()
+        //displayUserNameAndProfpic()
     }
 
     private fun calculatePercentage(consumed: Int, total: Int) = (consumed * 100) / total
@@ -96,6 +97,7 @@ class HomeFragment : Fragment() {
     //Part 1
 
     private fun observeMealCalories() {
+        //bind calories of all confirmed meals (breakfast, lunch, dinner) for each mealtime
         viewModel.breakfastCalories.observe(viewLifecycleOwner) { calories ->
             binding.TextViewKcalbreakfast.text = calories.toString() + " / "
         }
@@ -113,6 +115,12 @@ class HomeFragment : Fragment() {
         viewModel.getCaloriesByMealType(3)  // For dinner
     }
 
+    private fun setupMealCount() {
+        viewModel.getSelectedRecipeCountUsingMealType(1)  // For breakfast
+        viewModel.getSelectedRecipeCountUsingMealType(2)  // For lunch
+        viewModel.getSelectedRecipeCountUsingMealType(3)  // For dinner
+    }
+
     //Today's Meal Related Functions
     //Part 2
     private fun setupNutritionNeeds() {
@@ -120,6 +128,7 @@ class HomeFragment : Fragment() {
             updateNutritionDisplay(nutritions)
         }
 
+        //bind each nutrition percentage
         viewModel.nutritionPercentage.observe(viewLifecycleOwner) { percentages ->
             binding.apply {
                 tvCaloriesPercentage.text = percentages[0].toString() + "%"
@@ -127,7 +136,7 @@ class HomeFragment : Fragment() {
                 tvFatPercentage.text = percentages[2].toString() + "%"
                 tvCarbsPercentage.text = percentages[3].toString() + "%"
 
-                //progress bar
+                //bind each nutrition progress bar
                 linearProgressCaloriesIndicator.progress = percentages[0]
                 linearProgressProteinIndicator.progress = percentages[1]
                 linearProgressFatIndicator.progress = percentages[2]
@@ -137,42 +146,60 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun updateProgressBar(consumedCalories: Int, maxCalories: Int) {
-        binding.linearProgressCaloriesIndicator.progress = consumedCalories
-    }
-
     private fun updateNutritionDisplay(nutritionSum: NutritionSum) {
+
+        //bind calorie needs (max calorie) per mealtime
+        viewModel.caloriesPerMealtime.observe(viewLifecycleOwner) {mealtimeCalories ->
+            binding.apply {
+                TextViewKcalbreakfastNeeds.text = mealtimeCalories[0].toString() + " kcal"
+                TextViewKcallunchNeeds.text = mealtimeCalories[1].toString() + " kcal"
+                TextViewKcaldinnerNeeds.text = mealtimeCalories[2].toString() + " kcal"
+            }
+        }
+
+        //bind nutrition needs
         binding.apply {
             textViewTotalCalories.text = nutritionSum.totalCalories.toInt().toString()
             textViewTotalProtein.text = nutritionSum.totalProtein.toInt().toString()
             textViewTotalFat.text = nutritionSum.totalFat.toInt().toString()
             textViewTotalCarbs.text = nutritionSum.totalCarbs.toInt().toString()
         }
+
+        //display how many recipes is Selected
+        viewModel.breakfastCount.observe(viewLifecycleOwner) {selectedRecipeCount ->
+            binding.TextViewQuantitybreakfast.text = selectedRecipeCount.toString() + " Foods"
+        }
+        viewModel.lunchCount.observe(viewLifecycleOwner) {selectedRecipeCount ->
+            binding.TextViewQuantitylunch.text = selectedRecipeCount.toString() + " Foods"
+        }
+        viewModel.dinnerCount.observe(viewLifecycleOwner) {selectedRecipeCount ->
+            binding.TextViewQuantitydinner.text = selectedRecipeCount.toString() + " Foods"
+        }
     }
 
     //Untuk nampilin nama dan profpic
-    private fun displayUserNameAndProfpic() {
-        viewModel.userEmail.observe(viewLifecycleOwner) { userEmail ->
-            userEmail.let {
-                viewModel.getUserIdByEmail(it)
-            }
-        }
-
-        viewModel.userId.observe(viewLifecycleOwner) { userId ->
-            if (userId != null) {
-                viewModel.getProfpicById(userId)
-            }
-        }
-
-        viewModel.profilePicture.observe(viewLifecycleOwner) { uriString ->
-            uriString?.let { uriStr ->
-                val uri = Uri.parse(uriStr)
-                binding.profileImageView.setImageURI(uri)
-            }
-
-        }
-
-    }
+//    private fun displayUserNameAndProfpic() {
+//        viewModel.userEmail.observe(viewLifecycleOwner) { userEmail ->
+//            userEmail.let {
+//                viewModel.getUserIdByEmail(it)
+//            }
+//        }
+//
+//        viewModel.userId.observe(viewLifecycleOwner) { userId ->
+//            if (userId != null) {
+//                viewModel.getProfpicById(userId)
+//            }
+//        }
+//
+//        viewModel.profilePicture.observe(viewLifecycleOwner) { uriString ->
+//            uriString?.let { uriStr ->
+//                val uri = Uri.parse(uriStr)
+//                binding.profileImageView.setImageURI(uri)
+//            }
+//
+//        }
+//
+//    }
 
     //Water Related Functions
 

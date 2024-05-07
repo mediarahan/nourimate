@@ -27,7 +27,7 @@ data class Recommendation(
     @PrimaryKey(autoGenerate = false)
     val recommendationId: Int,
     val date: Date,
-    var isSelected: Boolean = false,
+    var isSelected: Int = 0,
     @field:ColumnInfo(name = "recipe_id")
     val recipeId: Int,
 ) : Parcelable

@@ -20,7 +20,7 @@ class FakeFoodData {
     data class Recommendation(
         val recommendationId: Int,
         val date: Date,
-        val isSelected: Boolean,
+        val isSelected: Int,
         val recipeId: Int,
     )
 
@@ -7279,49 +7279,49 @@ class FakeFoodData {
         Recommendation(
             recommendationId = 1,
             date = Date(System.currentTimeMillis()), //hari ini / literally sekarang
-            isSelected = false,
+            isSelected = 0,
             recipeId = 3
         ),
         Recommendation(
             recommendationId = 2,
             date = Date(System.currentTimeMillis() - 86400000),
-            isSelected = false,
+            isSelected = 0,
             recipeId = 10
         ),
         Recommendation(
             recommendationId = 3,
             date = Date(System.currentTimeMillis() + 86400000),
-            isSelected = false,
+            isSelected = 0,
             recipeId = 15
         ),
         Recommendation(
             recommendationId = 4,
             date = Date(System.currentTimeMillis() + 86400000 * 2),
-            isSelected = false,
+            isSelected = 0,
             recipeId = 20
         ),
         Recommendation(
             recommendationId = 5,
             date = Date(System.currentTimeMillis() + 86400000 * 2),
-            isSelected = false,
+            isSelected = 0,
             recipeId = 24
         ),
         Recommendation(
             recommendationId = 6,
             date = Date(System.currentTimeMillis() + 86400000 * 2),
-            isSelected = false,
+            isSelected = 0,
             recipeId = 19,
         ),
         Recommendation(
             recommendationId = 7,
             date = Date(System.currentTimeMillis() + 86400000 * 2),
-            isSelected = false,
+            isSelected = 0,
             recipeId = 19
         ),
         Recommendation(
             recommendationId = 8,
             date = Date(System.currentTimeMillis() + 86400000),
-            isSelected = false,
+            isSelected = 0,
             recipeId = 14
         )
     )

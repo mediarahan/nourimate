@@ -1,4 +1,6 @@
 import DialogUtils.setWidthPercent
+import android.app.AlertDialog
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -15,9 +17,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.telyu.nourimate.R
 import com.telyu.nourimate.adapter.DialogRecipeAdapter
-import com.telyu.nourimate.adapter.RecipeAdapter
 import com.telyu.nourimate.data.local.models.Recipe
 import com.telyu.nourimate.databinding.PopupLayoutMealBinding
+import com.telyu.nourimate.utils.GeneralUtil
 import com.telyu.nourimate.viewmodels.RecipeViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
 import com.telyu.nourimate.views.custom.RecipeDialogMealTutorial
@@ -76,6 +78,7 @@ class RecipeDialogMeal : DialogFragment(), DialogRecipeAdapter.DialogOnAddClickL
 
             if (args != null) {
                 selectedMeal = args.getInt("selectedMeal")
+                viewModel.setSelectedMeal(selectedMeal)
                 recyclerView.adapter = recipeAdapter
 
                 viewModel.getAllSelectedRecommendationIdsByMealId(selectedMeal)
@@ -93,10 +96,8 @@ class RecipeDialogMeal : DialogFragment(), DialogRecipeAdapter.DialogOnAddClickL
 
         val mealTutorialButton = view.findViewById<View>(R.id.selectMealBreakfastButton)
         mealTutorialButton?.setOnClickListener {
-            showThirdDialog(selectedMeal)
+            showMealSelectConfirmationDialog()
         }
-
-        //observeSelectedRecommendation()
     }
 
     override fun dialogOnAddClick(recipe: Recipe) {
@@ -104,22 +105,13 @@ class RecipeDialogMeal : DialogFragment(), DialogRecipeAdapter.DialogOnAddClickL
             val recommendation =
                 viewModel.getRecommendationByRecipeIdAndMealType(recipe.recipeId, selectedMeal)
             recommendation?.let { rec ->
-                rec.isSelected = !rec.isSelected
+                rec.isSelected = 0
                 viewModel.selectRecommendation(rec)
-                Toast.makeText(requireContext(), "Recommendation updated", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Recommendation updated", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }
-
-//    private fun observeSelectedRecommendation() {
-//        viewModel.recommendation.observe(viewLifecycleOwner) { recommendation ->
-//            if (recommendation != null) {
-//                recommendation.isSelected = false
-//                viewModel.selectRecommendation(recommendation)
-//                Toast.makeText(requireContext(), "Recommendation Removed", Toast.LENGTH_SHORT).show()
-//            }
-//        }
-//    }
 
     private fun getRecipeCountByMealType(mealType: Int) {
         viewModel.getSelectedRecipeCountByMealType(mealType).observe(viewLifecycleOwner) { count ->
@@ -145,11 +137,47 @@ class RecipeDialogMeal : DialogFragment(), DialogRecipeAdapter.DialogOnAddClickL
         recipeDialogMeal.arguments = bundle
         recipeDialogMeal.show(parentFragmentManager, "RecipeDialogMeal")
     }
-}
-// Example function to modify dialog views
-//    private  fun deleteMeal() {
-//        val recipeDialogAdapter = DialogRecipeAdapter {recipe ->
-//            viewModel.updateRecommendationSelection()
-//        }
-//    }
 
+    //Dialog konfirmasi masukin seluruh meal.
+
+    private fun observeIfNutritionExceeds() {
+        viewModel.getNutritionSumsInBasketAndHomePerMealType(selectedMeal) //trigger nutrition sum
+        viewModel.isNutritionSumWithinNeeds.observe(viewLifecycleOwner) { isWithinNeeds ->
+            if (isWithinNeeds) {
+                viewModel.updateSelectedRecommendationsPerMealType(selectedMeal)
+                GeneralUtil.showConfirmationDialog(requireContext())
+                showThirdDialog(selectedMeal)
+            } else {
+                showNutritionExceededDialog(requireContext())
+            }
+        }
+    }
+
+    private fun showMealSelectConfirmationDialog() {
+        GeneralUtil.showDialog(
+            context = requireContext(),
+            title = "Confirm",
+            message = "Are you sure you want to add these meals to your basket?",
+            onYes = {
+                    observeIfNutritionExceeds()
+            },
+            onNo =  {
+                dialog?.dismiss()
+            }
+        )
+    }
+
+    private fun showNutritionExceededDialog(context: Context) {
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("Information")
+        builder.setMessage("Your selected meals exceeded your daily nutrition needs.")
+
+        builder.setPositiveButton("Ok") { dialog, which ->
+            //huhah
+        }
+
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+    }
+
+}

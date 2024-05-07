@@ -1,5 +1,7 @@
 package com.telyu.nourimate.utils
 
+import android.app.AlertDialog
+import android.content.Context
 import android.util.Log
 import java.util.Calendar
 import java.util.Date
@@ -55,6 +57,65 @@ object GeneralUtil {
 
         Log.d("Calculate Age", "calculateAge: age is $age")
         return age
+    }
+
+    fun showDialog(context: Context, title: String, message: String, onYes: () -> Unit, onNo: () -> Unit) {
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle(title)
+        builder.setMessage(message)
+
+        builder.setPositiveButton("Yes") { dialog, which ->
+            onYes()
+        }
+
+        builder.setNegativeButton("No") { dialog, which ->
+            onNo()
+        }
+
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+    }
+
+    fun showConfirmationDialog(context: Context) {
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("Confirmation")
+        builder.setMessage("Your selected recipes have been added to the database.")
+
+        builder.setPositiveButton("Ok") { dialog, which ->
+            //huhah
+        }
+
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+    }
+
+
+    //Menghitung Nutrisi
+    fun calculateDailyCalorieNeeds(
+        userHeight: Int,
+        userGender: Boolean,
+        userAge: Int
+    ): Int {
+        val idealWeight = (userHeight - 100) - (0.1 * (userHeight - 100))
+
+        val dailyCalorieNeeds = when {
+            userAge in 20..29 -> if (userGender) ((15.3 * idealWeight + 679) * 1.78).toInt()
+            else ((14.7 * idealWeight + 496) * 1.64).toInt()
+
+            userAge in 30..59 -> if (userGender) ((11.6 * idealWeight + 879) * 1.78).toInt()
+            else ((8.7 * idealWeight + 829) * 1.64).toInt()
+
+            userAge >= 60 -> if (userGender) ((13.5 * idealWeight + 487) * 1.78).toInt()
+            else ((13.5 * idealWeight + 596) * 1.64).toInt()
+
+            else -> -999
+        }
+
+        return (dailyCalorieNeeds * 0.2).toInt()
+    }
+
+    fun calculateDailyNutritionNeeds(dailyCalories: Int, nutritionMultiplier: Double): Int {
+        return (dailyCalories * nutritionMultiplier).toInt()
     }
 
 

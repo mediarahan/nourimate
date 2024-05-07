@@ -75,6 +75,13 @@ interface FoodDao {
     """)
     fun getAllSelectedRecommendationIdsByMealId(mealId: Int): LiveData<List<Int>>
 
+    @Query("""
+        SELECT recommendationId FROM recommendations
+        INNER JOIN recipes ON recommendations.recipe_id = recipes.recipeId
+        WHERE mealType = :mealId AND isSelected = 2
+    """)
+    fun getAllConfirmedRecommendationIdsByMealId(mealId: Int): LiveData<List<Int>>
+
     //Query kedua untuk nampilin Resep juga, tapi di DialogFragment
     @Query("SELECT * FROM recipes WHERE recipeId IN (SELECT recipe_id FROM recommendations WHERE recommendationId IN (:recommendationIds))")
     fun getRecipesByRecommendationIds(recommendationIds: List<Int>): LiveData<List<Recipe>>
@@ -122,9 +129,18 @@ interface FoodDao {
             SELECT SUM(calories) FROM recipes
             INNER JOIN recommendations ON recipes.recipeId = recommendations.recipe_id 
             WHERE mealType = :mealType 
-            AND isSelected = 1"""
+            AND isSelected = 2"""
     )
     suspend fun getTotalCaloriesByMealType(mealType: Int): Int
+
+    //Query untuk menentukan jumlah rekomendasi yang dipilih berdasarkan meal type (Yang bener)
+    //Kalau ada waktu, ubah yang di Dialog2 untuk pakai query ini juga
+    @Query("""
+        SELECT COUNT(*) FROM recommendations 
+        INNER JOIN recipes ON recommendations.recipe_id = recipes.recipeId
+        WHERE isSelected = 2 AND mealType = :mealType
+    """)
+    suspend fun getSelectedRecipeCountUsingMealType(mealType: Int): Int
 
     @Query(
         """
@@ -135,8 +151,39 @@ interface FoodDao {
             SUM(recipes.protein) AS totalProtein
         FROM recipes
         INNER JOIN recommendations ON recipes.recipeId = recommendations.recipe_id
-        WHERE recommendations.isSelected = 1
+        WHERE recommendations.isSelected = 2
         """
     )
     suspend fun getNutritionSums(): NutritionSum
+
+    @Query(
+        """
+    SELECT 
+        SUM(recipes.calories) AS totalCalories, 
+        SUM(recipes.carbs) AS totalCarbs, 
+        SUM(recipes.fat) AS totalFat, 
+        SUM(recipes.protein) AS totalProtein
+    FROM recipes
+    INNER JOIN recommendations ON recipes.recipeId = recommendations.recipe_id
+    WHERE (recommendations.isSelected = 1 OR recommendations.isSelected = 2)
+    AND recipes.mealType = :mealType
+    """
+    )
+    suspend fun getNutritionSumsInBasketAndHomePerMealType(mealType: Int): NutritionSum
+
+
+    @Query("""
+    UPDATE recommendations
+    SET isSelected = 2
+    WHERE recipe_id IN (
+        SELECT recipeId
+        FROM recipes
+        WHERE mealType = :mealType
+    )
+    AND isSelected = 1
+""")
+    suspend fun updateSelectedRecommendationsPerMealType(mealType: Int)
+
+
+
 }

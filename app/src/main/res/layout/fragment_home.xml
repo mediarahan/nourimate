@@ -861,13 +861,26 @@
                 android:id="@+id/TextView_kcalbreakfast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="582 / 631 kcal"
+                android:text="582 "
                 android:textSize="12sp"
                 android:textColor="#173430"
                 android:fontFamily="@font/zenkakugothicnewregular"
                 android:elevation="5dp"
                 android:layout_marginTop="2dp"
                 app:layout_constraintStart_toEndOf="@+id/spacebreakfast"
+                app:layout_constraintTop_toBottomOf="@+id/TextView_breakfast"/>
+
+            <TextView
+                android:id="@+id/TextView_kcalbreakfastNeeds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="/ 631 kcal"
+                android:textSize="12sp"
+                android:textColor="#173430"
+                android:fontFamily="@font/zenkakugothicnewregular"
+                android:elevation="5dp"
+                android:layout_marginTop="2dp"
+                app:layout_constraintStart_toEndOf="@+id/TextView_kcalbreakfast"
                 app:layout_constraintTop_toBottomOf="@+id/TextView_breakfast"/>
 
             <ImageView
@@ -934,13 +947,26 @@
                 android:id="@+id/TextView_kcallunch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="582 / 631 kcal"
+                android:text="582 "
                 android:textSize="12sp"
                 android:textColor="#173430"
                 android:fontFamily="@font/zenkakugothicnewregular"
                 android:elevation="5dp"
                 android:layout_marginTop="2dp"
                 app:layout_constraintStart_toEndOf="@+id/spacelunch"
+                app:layout_constraintTop_toBottomOf="@+id/TextView_lunch"/>
+
+            <TextView
+                android:id="@+id/TextView_kcallunchNeeds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="/ 631 kcal"
+                android:textSize="12sp"
+                android:textColor="#173430"
+                android:fontFamily="@font/zenkakugothicnewregular"
+                android:elevation="5dp"
+                android:layout_marginTop="2dp"
+                app:layout_constraintStart_toEndOf="@+id/TextView_kcallunch"
                 app:layout_constraintTop_toBottomOf="@+id/TextView_lunch"/>
 
             <ImageView
@@ -1007,13 +1033,26 @@
                 android:id="@+id/TextView_kcaldinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="582 / 631 kcal"
+                android:text="582 "
                 android:textSize="12sp"
                 android:textColor="#173430"
                 android:fontFamily="@font/zenkakugothicnewregular"
                 android:elevation="5dp"
                 android:layout_marginTop="2dp"
                 app:layout_constraintStart_toEndOf="@+id/spacedinner"
+                app:layout_constraintTop_toBottomOf="@+id/TextView_dinner"/>
+
+            <TextView
+                android:id="@+id/TextView_kcaldinnerNeeds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="/ 631 kcal"
+                android:textSize="12sp"
+                android:textColor="#173430"
+                android:fontFamily="@font/zenkakugothicnewregular"
+                android:elevation="5dp"
+                android:layout_marginTop="2dp"
+                app:layout_constraintStart_toEndOf="@+id/TextView_kcaldinner"
                 app:layout_constraintTop_toBottomOf="@+id/TextView_dinner"/>
 
 

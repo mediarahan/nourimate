@@ -1,5 +1,6 @@
 package com.telyu.nourimate.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,6 +10,7 @@ import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.telyu.nourimate.data.local.models.Detail
+import com.telyu.nourimate.data.local.models.NutritionSum
 import com.telyu.nourimate.data.local.models.Recipe
 import com.telyu.nourimate.data.local.models.Recommendation
 import com.telyu.nourimate.data.local.models.RecommendationRecipe
@@ -16,6 +18,8 @@ import com.telyu.nourimate.data.repository.NourimateRepository
 import com.telyu.nourimate.utils.GeneralUtil
 import kotlinx.coroutines.launch
 import com.telyu.nourimate.data.remote.Result
+import com.telyu.nourimate.utils.GeneralUtil.calculateDailyCalorieNeeds
+import com.telyu.nourimate.utils.GeneralUtil.calculateDailyNutritionNeeds
 import java.lang.Exception
 
 class RecipeViewModel(private val repository: NourimateRepository) : ViewModel() {
@@ -164,10 +168,15 @@ class RecipeViewModel(private val repository: NourimateRepository) : ViewModel()
         return repository.getAllSelectedRecommendationIdsByMealId(mealType)
     }
 
+    fun getAllConfirmedRecommendationIdsByMealId(mealType: Int): LiveData<List<Int>> {
+        return repository.getAllConfirmedRecommendationIdsByMealId(mealType)
+    }
+
     //Digunakan di RecipeDialogMeal dan RecipeDialogMealTutorial
     fun getSelectedRecipesByRecommendationIds(recommendationIds: List<Int>): LiveData<List<Recipe>> {
         return repository.getRecipesByRecommendationIds(recommendationIds)
     }
+
 
     //Digunakan di ketiga DialogFragment di RecipeFragment
     fun getSelectedRecipeCount(): LiveData<Int> {
@@ -179,6 +188,107 @@ class RecipeViewModel(private val repository: NourimateRepository) : ViewModel()
         return repository.getSelectedRecipeCountByMealType(mealType)
     }
 
+    //=============== Untuk di RecipeDialogMeal ===============
+
+    //Today's Meal Related Functions
+    //Part 2 of getting each nutrition percentage Values
+    //Fetching the user's personal health details
+    // Step 1: Fetch user's email
+
+    // Step 2: Fetch user's details based on email
+    private val userDetails: LiveData<Detail> = userEmail.switchMap { email ->
+        liveData {
+            val detail = repository.getUserDetailsByEmail(email)
+            emit(detail)
+        }
+    }
+
+    // Step 3: Get the calorie sum of selected meals
+    private val _nutritionSumsInBasket = MutableLiveData<NutritionSum>()
+
+    fun getNutritionSumsInBasketAndHomePerMealType(mealType: Int) {
+        viewModelScope.launch {
+            val nutritionSums = repository.getNutritionSumsInBasketAndHomePerMealType(mealType)
+            _nutritionSumsInBasket.value = nutritionSums
+            Log.d("NutritionSums", "Nutrition sums in basket: $nutritionSums")
+        }
+    }
+
+    // LiveData to track the selected meal
+    private val _selectedMeal = MutableLiveData<Int>()
+    val selectedMeal: LiveData<Int> = _selectedMeal
+
+    // Function to update selected meal from fragment
+    fun setSelectedMeal(meal: Int) {
+        _selectedMeal.value = meal
+    }
+
+    //Step 4: Extract user's health details
+    private val maxNutritionsLiveData: LiveData<List<Int>> = selectedMeal.switchMap { meal ->
+        userDetails.switchMap { detail ->
+            liveData {
+                val gender = detail.gender == "Laki-laki"
+                val age = GeneralUtil.calculateAge(detail.dob)
+                val mealTimeFactors = mapOf(1 to 0.25, 2 to 0.4, 3 to 0.35)
+                val mealTimeFactor = mealTimeFactors[meal] ?: 1.0
+
+                val dailyCalorieNeeds = (calculateDailyCalorieNeeds(detail.height?.toInt() ?: 420, gender, age) * mealTimeFactor).toInt()
+                val proteinNeeds = calculateDailyNutritionNeeds(dailyCalorieNeeds, 0.2)
+                val fatNeeds = calculateDailyNutritionNeeds(dailyCalorieNeeds, 0.025)
+                val carbNeeds = calculateDailyNutritionNeeds(dailyCalorieNeeds, 0.1375)
+
+                emit(listOf(dailyCalorieNeeds, proteinNeeds, fatNeeds, carbNeeds))
+            }
+        }
+    }
+
+    val isNutritionSumWithinNeeds = MediatorLiveData<Boolean>().apply {
+        var nutritionSum: NutritionSum? = null
+        var maxNutritions: List<Int>? = null
+
+        // Add source for nutrition sums
+        addSource(_nutritionSumsInBasket) { sum ->
+            nutritionSum = sum
+            maxNutritions?.let { max -> value = performCheck(sum, max) }
+        }
+
+        // Add source for maximum nutrition values
+        addSource(maxNutritionsLiveData) { max ->
+            maxNutritions = max
+            nutritionSum?.let { sum -> value = performCheck(sum, max) }
+        }
+    }
+
+    private fun performCheck(nutritionSum: NutritionSum, maxNutritions: List<Int>): Boolean {
+        Log.d("NutritionCheck", "Checking nutritional sums against max values")
+        Log.d("NutritionCheck", "Calories: ${nutritionSum.totalCalories} / Max: ${maxNutritions[0]}")
+        Log.d("NutritionCheck", "Protein: ${nutritionSum.totalProtein} / Max: ${maxNutritions[1]}")
+        Log.d("NutritionCheck", "Fat: ${nutritionSum.totalFat} / Max: ${maxNutritions[2]}")
+        Log.d("NutritionCheck", "Carbs: ${nutritionSum.totalCarbs} / Max: ${maxNutritions[3]}")
+
+        return nutritionSum.totalCalories <= maxNutritions[0] &&
+                nutritionSum.totalProtein <= maxNutritions[1] &&
+                nutritionSum.totalFat <= maxNutritions[2] &&
+                nutritionSum.totalCarbs <= maxNutritions[3]
+    }
+
+
+    fun updateSelectedRecommendationsPerMealType(mealType: Int) {
+        viewModelScope.launch {
+            try {
+                repository.updateSelectedRecommendationsPerMealType(mealType)
+                successMessage.postValue("Update successful")
+            } catch (e: Exception) {
+                errorMessage.postValue("Failed to update: ${e.message}")
+            }
+        }
+    }
+
+    // LiveData for UI messages
+    private val successMessage = MutableLiveData<String>()
+    private val errorMessage = MutableLiveData<String>()
+
+    //=============== Untuk di Dialog ===============
 
     //Digunakan di RecipeFragment. Semua fungsi dibawah user-related
     fun getUserIdByEmail(email: String) {

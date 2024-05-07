@@ -132,6 +132,10 @@ class NourimateRepository(
         foodDao.updateRecommendation(recommendation)
     }
 
+    suspend fun updateSelectedRecommendationsPerMealType(mealType: Int) {
+        foodDao.updateSelectedRecommendationsPerMealType(mealType)
+    }
+
     //=== QUERY FOOD ===
 
     //query weekly
@@ -157,15 +161,13 @@ class NourimateRepository(
         return foodDao.getNutritionSums()
     }
 
+    suspend fun getNutritionSumsInBasketAndHomePerMealType(mealType: Int): NutritionSum {
+        return foodDao.getNutritionSumsInBasketAndHomePerMealType(mealType)
+    }
 
-
-
-
-
-
-
-
-
+    suspend fun getSelectedRecipeCountUsingMealType(mealType: Int): Int {
+        return foodDao.getSelectedRecipeCountUsingMealType(mealType)
+    }
 
 
 
@@ -177,6 +179,10 @@ class NourimateRepository(
 
     fun getAllSelectedRecommendationIdsByMealId(mealType: Int): LiveData<List<Int>> {
         return foodDao.getAllSelectedRecommendationIdsByMealId(mealType)
+    }
+
+    fun getAllConfirmedRecommendationIdsByMealId(mealType: Int): LiveData<List<Int>> {
+        return foodDao.getAllConfirmedRecommendationIdsByMealId(mealType)
     }
 
     //query utama
@@ -233,6 +239,36 @@ class NourimateRepository(
 
         return ListOfIds(idSarapan, idMakanSiang, idMakanMalam)
     }
+
+    //RecipeViewModel and HomeViewModel related
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     companion object {
         @Volatile

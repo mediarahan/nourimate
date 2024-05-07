@@ -53,45 +53,38 @@ class RecipeDialogMealTutorial(val layoutResId: Int) : DialogFragment() {
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var selectedMeal: Int? = null
-        var args = arguments
+        // Retrieve 'selectedMeal' from arguments
+        val selectedMeal = arguments?.getInt("selectedMeal") ?: return  // Return early if null
 
-        if (args != null) {
-            selectedMeal = args.getInt("selectedMeal")
-            viewModel.getAllSelectedRecommendationIdsByMealId(selectedMeal)
-            viewModel.selectedRecommendationIds.observe(viewLifecycleOwner) { Ids ->
-                viewModel.getSelectedRecipesByRecommendationIds(Ids)
-            }
-        }
-
-        if (selectedMeal != null) {
-            setMealType(selectedMeal)
-            getRecipeCountByMealType(selectedMeal)
-
-            val recipeAdapter = DialogRecipeTutorialAdapter()
-            val recyclerView = view.findViewById<RecyclerView>(R.id.recipeTutorialRecyclerView)
-            if (recyclerView != null) {
-                recyclerView.layoutManager = LinearLayoutManager(requireContext())
-                recyclerView.adapter = recipeAdapter
-
-                viewModel.getAllSelectedRecommendationIdsByMealId(selectedMeal)
-                    .observe(viewLifecycleOwner) { recommendationIds ->
-                        viewModel.getSelectedRecipesByRecommendationIds(recommendationIds)
-                            .observe(viewLifecycleOwner) { recipes ->
-                                recipeAdapter.submitList(recipes)
-                            }
-                    }
-            }
-        }
+        setupRecyclerView(selectedMeal)
+        setMealType(selectedMeal)
+        getRecipeCountByMealType(selectedMeal)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         //set dialog width
         setWidthPercent(85)
+    }
+
+
+    private fun setupRecyclerView(selectedMeal: Int) {
+        val recipeAdapter = DialogRecipeTutorialAdapter()
+        binding.recipeTutorialRecyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = recipeAdapter
+        }
+
+        // Observing selected recommendation IDs and fetching recipes based on them
+        viewModel.getAllConfirmedRecommendationIdsByMealId(selectedMeal).observe(viewLifecycleOwner) { recommendationIds ->
+            viewModel.getSelectedRecipesByRecommendationIds(recommendationIds).observe(viewLifecycleOwner) { recipes ->
+                recipeAdapter.submitList(recipes)
+            }
+        }
     }
 
     private fun getRecipeCountByMealType(mealType: Int) {

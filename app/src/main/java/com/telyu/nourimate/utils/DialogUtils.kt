@@ -1,3 +1,5 @@
+import android.app.AlertDialog
+import android.content.Context
 import android.content.res.Resources
 import android.graphics.Rect
 import android.view.ViewGroup
@@ -17,4 +19,7 @@ object DialogUtils {
     fun DialogFragment.setFullScreen() {
         dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
+
+
+
 }

@@ -74,21 +74,21 @@ class EditProfileViewModel (private val repository: NourimateRepository): ViewMo
             recommendations.add(Recommendation(
                 recommendationId = recommendations.size + 1,
                 date = date,
-                isSelected = false,
+                isSelected = 0,
                 recipeId = idSarapan[i],
             ))
 
             recommendations.add(Recommendation(
                 recommendationId = recommendations.size + 1,
                 date = date,
-                isSelected = false,
+                isSelected = 0,
                 recipeId = idMakanSiang[i],
             ))
 
             recommendations.add(Recommendation(
                 recommendationId = recommendations.size + 1,
                 date = date,
-                isSelected = false,
+                isSelected = 0,
                 recipeId = idMakanMalam[i],
             ))
         }
