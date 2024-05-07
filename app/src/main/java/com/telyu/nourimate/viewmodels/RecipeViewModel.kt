@@ -17,9 +17,6 @@ import com.telyu.nourimate.data.local.models.RecommendationRecipe
 import com.telyu.nourimate.data.repository.NourimateRepository
 import com.telyu.nourimate.utils.GeneralUtil
 import kotlinx.coroutines.launch
-import com.telyu.nourimate.data.remote.Result
-import com.telyu.nourimate.utils.GeneralUtil.calculateDailyCalorieNeeds
-import com.telyu.nourimate.utils.GeneralUtil.calculateDailyNutritionNeeds
 import java.lang.Exception
 
 class RecipeViewModel(private val repository: NourimateRepository) : ViewModel() {
@@ -227,17 +224,28 @@ class RecipeViewModel(private val repository: NourimateRepository) : ViewModel()
     private val maxNutritionsLiveData: LiveData<List<Int>> = selectedMeal.switchMap { meal ->
         userDetails.switchMap { detail ->
             liveData {
-                val gender = detail.gender == "Laki-laki"
+                val gender = if (detail.gender == "Laki-laki") true else if (detail.gender == "Perempuan") false else null
                 val age = GeneralUtil.calculateAge(detail.dob)
-                val mealTimeFactors = mapOf(1 to 0.25, 2 to 0.4, 3 to 0.35)
-                val mealTimeFactor = mealTimeFactors[meal] ?: 1.0
 
-                val dailyCalorieNeeds = (calculateDailyCalorieNeeds(detail.height?.toInt() ?: 420, gender, age) * mealTimeFactor).toInt()
-                val proteinNeeds = calculateDailyNutritionNeeds(dailyCalorieNeeds, 0.2)
-                val fatNeeds = calculateDailyNutritionNeeds(dailyCalorieNeeds, 0.025)
-                val carbNeeds = calculateDailyNutritionNeeds(dailyCalorieNeeds, 0.1375)
+                val akei = GeneralUtil.calculateAKEi(detail.height?.toInt() ?: 420, gender!!, age)
+                val conditionCode = GeneralUtil.convertConditionToCode(detail.disease)
 
-                emit(listOf(dailyCalorieNeeds, proteinNeeds, fatNeeds, carbNeeds))
+                val nutrition = when (meal) {
+                    1 -> akei.let { GeneralUtil.calculateBreakfastNutrition(it, conditionCode) }
+                    2 -> akei.let { GeneralUtil.calculateLunchNutrition(it, conditionCode) }
+                    3 -> akei.let { GeneralUtil.calculateDinnerNutrition(it, conditionCode) }
+                    else -> null  // Handle invalid meal selection
+                }
+
+                //Kebutuhan nutrisi berdasarkan mealtime
+                nutrition?.let {
+                    val calorieNeedsOnMealTime = (it.calories).toInt()
+                    val proteinNeedsOnMealTime = (it.protein).toInt()
+                    val fatNeedsOnMealTime = (it.fat).toInt()
+                    val carbsNeedsOnMealTime = (it.carbohydrates).toInt()
+
+                    emit(listOf(calorieNeedsOnMealTime, proteinNeedsOnMealTime, fatNeedsOnMealTime, carbsNeedsOnMealTime))
+                } ?: emit(listOf(0, 0, 0, 0))
             }
         }
     }

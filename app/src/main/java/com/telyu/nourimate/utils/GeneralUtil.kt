@@ -64,11 +64,11 @@ object GeneralUtil {
         builder.setTitle(title)
         builder.setMessage(message)
 
-        builder.setPositiveButton("Yes") { dialog, which ->
+        builder.setPositiveButton("Yes") { _, _ ->
             onYes()
         }
 
-        builder.setNegativeButton("No") { dialog, which ->
+        builder.setNegativeButton("No") { _, _ ->
             onNo()
         }
 
@@ -81,7 +81,7 @@ object GeneralUtil {
         builder.setTitle("Confirmation")
         builder.setMessage("Your selected recipes have been added to the database.")
 
-        builder.setPositiveButton("Ok") { dialog, which ->
+        builder.setPositiveButton("Ok") { _, _ ->
             //huhah
         }
 
@@ -90,15 +90,15 @@ object GeneralUtil {
     }
 
 
-    //Menghitung Nutrisi
-    fun calculateDailyCalorieNeeds(
+    //Step 1: Menghitung BB Ideal + faktor usia
+    fun calculateAKEi(
         userHeight: Int,
         userGender: Boolean,
         userAge: Int
     ): Int {
         val idealWeight = (userHeight - 100) - (0.1 * (userHeight - 100))
 
-        val dailyCalorieNeeds = when {
+        val AKEi = when {
             userAge in 20..29 -> if (userGender) ((15.3 * idealWeight + 679) * 1.78).toInt()
             else ((14.7 * idealWeight + 496) * 1.64).toInt()
 
@@ -111,12 +111,75 @@ object GeneralUtil {
             else -> -999
         }
 
-        return (dailyCalorieNeeds * 0.2).toInt()
+        return (AKEi)
     }
 
-    fun calculateDailyNutritionNeeds(dailyCalories: Int, nutritionMultiplier: Double): Int {
-        return (dailyCalories * nutritionMultiplier).toInt()
+//    fun calculateDailyNutritionNeeds(dailyCalories: Int, nutritionMultiplier: Double): Int {
+//        return (dailyCalories * nutritionMultiplier).toInt()
+//    }
+
+    private fun calculateMealNutrition(akei: Int, conditionCode: Int, mealProportion: Double): Nutrition {
+        val dailyCalories = mealProportion * akei
+        val (carbMultiplier, protMultiplier, fatMultiplier) = multipliers[conditionCode] ?: Triple(0.55, 0.8, 0.2)
+        val nutritionCalculator = if (conditionCode == K) {
+            // Special handling for Cholesterol
+            { multiplier: Double -> multiplier * akei }
+        } else {
+            { multiplier: Double -> multiplier * dailyCalories }
+        }
+
+        return Nutrition(
+            calories = dailyCalories,
+            carbohydrates = nutritionCalculator(carbMultiplier) / 4,
+            protein = nutritionCalculator(protMultiplier) / 4,
+            fat = nutritionCalculator(fatMultiplier) / 9
+        )
     }
 
+    fun calculateBreakfastNutrition(akei: Int, conditionCode: Int) =
+        calculateMealNutrition(akei = akei, conditionCode, 0.25)
 
+    fun calculateLunchNutrition(akei: Int, conditionCode: Int) =
+        calculateMealNutrition(akei = akei, conditionCode, 0.40)
+
+    fun calculateDinnerNutrition(akei: Int, conditionCode: Int) =
+        calculateMealNutrition(akei = akei, conditionCode, 0.35)
+
+    data class Nutrition(
+        val calories: Double,
+        val carbohydrates: Double,
+        val protein: Double,
+        val fat: Double
+    )
+
+    fun convertConditionToCode(condition: String): Int {
+        return when (condition) {
+            "Diabetes" -> D
+            "Hypertension" -> H
+            "Cholesterol" -> K
+            "Hypertension, Cholesterol" -> HK
+            "Diabetes, Cholesterol" -> DK
+            "Diabetes, Hypertension" -> DH
+            "Diabetes, Hypertension, Cholesterol" -> DHK
+            else -> -1
+        }
+    }
+
+    private const val D = 1  // Diabetes
+    private const val H = 2  // Hypertension
+    private const val K = 3  // Cholesterol
+    private const val HK = 4 // Hypertension + Cholesterol
+    private const val DK = 5 // Diabetes + Cholesterol
+    private const val DH = 6 // Diabetes + Hypertension
+    private const val DHK = 7 // Diabetes + Hypertension + Cholesterol
+
+    private val multipliers = mapOf(
+        DHK to Triple(0.55, 0.8, 0.2),
+        DH to Triple(0.55, 0.8, 0.225),
+        DK to Triple(0.55, 0.8, 0.2),
+        HK to Triple(0.6, 0.8, 0.2),
+        D to Triple(0.65, 0.125, 0.225),
+        H to Triple(0.625, 0.8, 0.25),
+        K to Triple(0.65, 0.8, 0.225)
+    )
 }

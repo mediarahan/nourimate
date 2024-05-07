@@ -13,9 +13,12 @@ import androidx.lifecycle.viewModelScope
 import com.telyu.nourimate.data.local.models.Detail
 import com.telyu.nourimate.data.local.models.NutritionSum
 import com.telyu.nourimate.data.repository.NourimateRepository
+import com.telyu.nourimate.utils.GeneralUtil.calculateAKEi
 import com.telyu.nourimate.utils.GeneralUtil.calculateAge
-import com.telyu.nourimate.utils.GeneralUtil.calculateDailyCalorieNeeds
-import com.telyu.nourimate.utils.GeneralUtil.calculateDailyNutritionNeeds
+import com.telyu.nourimate.utils.GeneralUtil.calculateBreakfastNutrition
+import com.telyu.nourimate.utils.GeneralUtil.calculateDinnerNutrition
+import com.telyu.nourimate.utils.GeneralUtil.calculateLunchNutrition
+import com.telyu.nourimate.utils.GeneralUtil.convertConditionToCode
 import kotlinx.coroutines.launch
 import java.util.Calendar
 
@@ -146,34 +149,44 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
 
     //Step 3: Extract user's health details
     private val maxNuritionsLiveData: LiveData<List<Int>> = userDetails.switchMap { detail ->
-        val gender =
-            if (detail.gender == "Laki-laki") true else if (detail.gender == "Perempuan") false else null
-        val age = calculateAge(detail.dob)
         liveData {
-            val dailyCalorieNeeds =
-                calculateDailyCalorieNeeds(detail.height?.toInt() ?: 420, gender!!, age)
-            val proteinNeeds = calculateDailyNutritionNeeds(dailyCalorieNeeds, 0.2)
-            val fatNeeds = calculateDailyNutritionNeeds(dailyCalorieNeeds, 0.025)
-            val carbNeeds = calculateDailyNutritionNeeds(dailyCalorieNeeds, 0.1375)
+            val gender = if (detail.gender == "Laki-laki") true else if (detail.gender == "Perempuan") false else null
+            val age = calculateAge(detail.dob)
 
-            Log.d("MaxNutritionValues", "Calorie: $dailyCalorieNeeds, Protein: $proteinNeeds, Fat: $fatNeeds, Carb: $carbNeeds")
-            emit(listOf(dailyCalorieNeeds, proteinNeeds, fatNeeds, carbNeeds))
+            val akei = calculateAKEi(detail.height?.toInt() ?: 420, gender!!, age)
+            val conditionCode = convertConditionToCode(detail.disease)
+
+            val breakfastNutrition = calculateBreakfastNutrition(akei, conditionCode)
+            val lunchNutrition = calculateLunchNutrition(akei, conditionCode)
+            val dinnerNutrition = calculateDinnerNutrition(akei, conditionCode)
+
+            val totalCalorieNeeds = (breakfastNutrition.calories + lunchNutrition.calories + dinnerNutrition.calories).toInt()
+            val totalProteinNeeds = (breakfastNutrition.protein + lunchNutrition.protein + dinnerNutrition.protein).toInt()
+            val totalFatNeeds = (breakfastNutrition.fat + lunchNutrition.fat + dinnerNutrition.fat).toInt()
+            val totalCarbNeeds = (breakfastNutrition.carbohydrates + lunchNutrition.carbohydrates + dinnerNutrition.carbohydrates).toInt()
+
+            Log.d("MaxNutritionValues", "Calorie: $totalCalorieNeeds, Protein: $totalProteinNeeds, Fat: $totalFatNeeds, Carb: $totalCarbNeeds")
+            emit(listOf(totalCalorieNeeds, totalProteinNeeds, totalFatNeeds, totalCarbNeeds))
 
         }
     }
 
     //daftar kalori per meal time untuk di expose ke view
     val caloriesPerMealtime: LiveData<List<Int>> = userDetails.switchMap { detail ->
-        val gender =
-            if (detail.gender == "Laki-laki") true else if (detail.gender == "Perempuan") false else null
-        val age = calculateAge(detail.dob)
         liveData {
-            val dailyCalorieNeeds =
-                calculateDailyCalorieNeeds(detail.height?.toInt() ?: 420, gender!!, age)
+            val gender = if (detail.gender == "Laki-laki") true else if (detail.gender == "Perempuan") false else null
+            val age = calculateAge(detail.dob)
 
-            val breakfastCalorieNeeds = calculateDailyNutritionNeeds(dailyCalorieNeeds, 0.25)
-            val lunchCalorieNeeds = calculateDailyNutritionNeeds(dailyCalorieNeeds, 0.4)
-            val dinnerCalorieNeeds = calculateDailyNutritionNeeds(dailyCalorieNeeds, 0.35)
+            val akei = calculateAKEi(detail.height?.toInt() ?: 420, gender!!, age)
+            val conditionCode = convertConditionToCode(detail.disease)
+
+            val breakfastNutrition = calculateBreakfastNutrition(akei, conditionCode)
+            val lunchNutrition = calculateLunchNutrition(akei, conditionCode)
+            val dinnerNutrition = calculateDinnerNutrition(akei, conditionCode)
+
+            val breakfastCalorieNeeds = (breakfastNutrition.calories).toInt()
+            val lunchCalorieNeeds = (lunchNutrition.calories).toInt()
+            val dinnerCalorieNeeds = (dinnerNutrition.calories).toInt()
             emit(listOf(breakfastCalorieNeeds, lunchCalorieNeeds, dinnerCalorieNeeds))
         }
     }
@@ -201,8 +214,14 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
                 val fatPercentage = ((fatSum / fatNeeds.toDouble()) * 100).toInt()
                 val carbPercentage = ((carbSum / carbNeeds.toDouble()) * 100).toInt()
 
-                Log.d("NutritionPercentages", "Calorie: $dailyCalorieNeeds / $calorieSum = $caloriePercentage%, ")
-                Log.d("NutritionPercentages", "Protein: $proteinNeeds / $proteinSum = $proteinPercentage%, ")
+                Log.d(
+                    "NutritionPercentages",
+                    "Calorie: $dailyCalorieNeeds / $calorieSum = $caloriePercentage%, "
+                )
+                Log.d(
+                    "NutritionPercentages",
+                    "Protein: $proteinNeeds / $proteinSum = $proteinPercentage%, "
+                )
                 Log.d("NutritionPercentages", "Fat: $fatNeeds / $fatSum = $fatPercentage%, ")
                 Log.d("NutritionPercentages", "Carb: $carbNeeds / $carbSum = $carbPercentage%, ")
                 value = listOf(caloriePercentage, proteinPercentage, fatPercentage, carbPercentage)
