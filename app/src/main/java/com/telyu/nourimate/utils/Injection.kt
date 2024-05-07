@@ -15,7 +15,7 @@ object Injection {
         val userDao = provideUserDao(context)
         val foodDao = provideFoodDao(context)
 
-        return NourimateRepository.getInstance(apiService, pref, userDao, foodDao)
+        return NourimateRepository.getInstance(apiService, pref, userDao, foodDao, context)
     }
     private fun provideUserDao(context: Context): UserDao {
         val db = UserDatabase.getInstance(context)

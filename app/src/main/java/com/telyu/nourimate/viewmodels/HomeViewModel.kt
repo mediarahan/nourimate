@@ -1,5 +1,6 @@
 package com.telyu.nourimate.viewmodels
 
+import android.app.PendingIntent
 import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -12,6 +13,7 @@ import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.telyu.nourimate.data.local.models.Detail
 import com.telyu.nourimate.data.local.models.NutritionSum
+import com.telyu.nourimate.data.local.models.SleepSegmentEventEntity
 import com.telyu.nourimate.data.repository.NourimateRepository
 import com.telyu.nourimate.utils.GeneralUtil.calculateAKEi
 import com.telyu.nourimate.utils.GeneralUtil.calculateAge
@@ -250,6 +252,23 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
                 2 -> _lunchCount.value = selectedRecipeCount
                 3 -> _dinnerCount.value = selectedRecipeCount
             }
+        }
+    }
+
+    //Implementasi Sleep API
+    val sleepSegments: LiveData<List<SleepSegmentEventEntity>> = repository.getAllSleepSegments()
+    private val _isSubscribed = MutableLiveData<Boolean>()
+    val isSubscribed: LiveData<Boolean> get() = _isSubscribed
+
+    fun toggleSleepDataSubscription(pendingIntent: PendingIntent) {
+        if (_isSubscribed.value == true) {
+            repository.unsubscribeToSleepData(pendingIntent)
+            Log.d("SleepDataSubscription", "Unsubscribed.")
+            _isSubscribed.value = false
+        } else {
+            repository.subscribeToSleepData(pendingIntent)
+            Log.d("SleepDataSubscription", "Subscribed.")
+            _isSubscribed.value = true
         }
     }
 

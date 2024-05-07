@@ -1,19 +1,28 @@
 package com.telyu.nourimate.fragments
 
-import android.net.Uri
+import android.app.PendingIntent
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.telyu.nourimate.R
 import com.telyu.nourimate.data.local.models.NutritionSum
+import com.telyu.nourimate.data.local.models.SleepSegmentEventEntity
 import com.telyu.nourimate.databinding.FragmentHomeBinding
+import com.telyu.nourimate.utils.GeneralUtil.calculateDuration
+import com.telyu.nourimate.utils.SleepReceiver
 import com.telyu.nourimate.viewmodels.HomeViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
+import android.Manifest
+
 
 class HomeFragment : Fragment() {
 
@@ -79,6 +88,7 @@ class HomeFragment : Fragment() {
         setupMealCount()
         viewModel.getNutritionSums()
         //displayUserNameAndProfpic()
+        observeSleep()
     }
 
     private fun calculatePercentage(consumed: Int, total: Int) = (consumed * 100) / total
@@ -124,7 +134,7 @@ class HomeFragment : Fragment() {
     //Today's Meal Related Functions
     //Part 2
     private fun setupNutritionNeeds() {
-        viewModel.nutritionSums.observe(viewLifecycleOwner) {nutritions ->
+        viewModel.nutritionSums.observe(viewLifecycleOwner) { nutritions ->
             updateNutritionDisplay(nutritions)
         }
 
@@ -149,7 +159,7 @@ class HomeFragment : Fragment() {
     private fun updateNutritionDisplay(nutritionSum: NutritionSum) {
 
         //bind calorie needs (max calorie) per mealtime
-        viewModel.caloriesPerMealtime.observe(viewLifecycleOwner) {mealtimeCalories ->
+        viewModel.caloriesPerMealtime.observe(viewLifecycleOwner) { mealtimeCalories ->
             binding.apply {
                 TextViewKcalbreakfastNeeds.text = mealtimeCalories[0].toString() + " kcal"
                 TextViewKcallunchNeeds.text = mealtimeCalories[1].toString() + " kcal"
@@ -166,16 +176,84 @@ class HomeFragment : Fragment() {
         }
 
         //display how many recipes is Selected
-        viewModel.breakfastCount.observe(viewLifecycleOwner) {selectedRecipeCount ->
+        viewModel.breakfastCount.observe(viewLifecycleOwner) { selectedRecipeCount ->
             binding.TextViewQuantitybreakfast.text = selectedRecipeCount.toString() + " Foods"
         }
-        viewModel.lunchCount.observe(viewLifecycleOwner) {selectedRecipeCount ->
+        viewModel.lunchCount.observe(viewLifecycleOwner) { selectedRecipeCount ->
             binding.TextViewQuantitylunch.text = selectedRecipeCount.toString() + " Foods"
         }
-        viewModel.dinnerCount.observe(viewLifecycleOwner) {selectedRecipeCount ->
+        viewModel.dinnerCount.observe(viewLifecycleOwner) { selectedRecipeCount ->
             binding.TextViewQuantitydinner.text = selectedRecipeCount.toString() + " Foods"
         }
     }
+
+    //========== Sleep API Related ==========
+    private fun observeSleep() {
+        viewModel.sleepSegments.observe(viewLifecycleOwner) { segments ->
+            displaySleepSegments(segments)
+        }
+
+        viewModel.isSubscribed.observe(viewLifecycleOwner) { isSubscribed ->
+            // Update button text or UI elements based on subscription status
+            updateSubscriptionUI(isSubscribed)
+        }
+
+        binding.sleepSubscribeButton.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACTIVITY_RECOGNITION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                requestActivityRecognitionPermission()
+            } else {
+                viewModel.toggleSleepDataSubscription(createPendingIntent())
+            }
+        }
+    }
+
+    private fun requestActivityRecognitionPermission() {
+        ActivityCompat.requestPermissions(
+            requireActivity(),
+            arrayOf(Manifest.permission.ACTIVITY_RECOGNITION),
+            REQUEST_CODE_ACTIVITY_RECOGNITION // Make sure this constant is defined in your fragment
+        )
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE_ACTIVITY_RECOGNITION) {
+            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                viewModel.toggleSleepDataSubscription(createPendingIntent())
+            } else {
+                Toast.makeText(context, "Permission denied. Cannot subscribe to sleep data.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+
+    private fun createPendingIntent(): PendingIntent {
+        val intent = Intent(context, SleepReceiver::class.java)
+        return PendingIntent.getBroadcast(
+            context,
+            0,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+    }
+
+    private fun displaySleepSegments(segments: List<SleepSegmentEventEntity>) {
+        val formattedSegments = segments.joinToString("\n\n") {
+            val duration = calculateDuration(it.startTimeMillis, it.endTimeMillis)
+            duration
+        }
+
+        binding.timeInSleep.text = formattedSegments
+    }
+
+    private fun updateSubscriptionUI(isSubscribed: Boolean) {
+        binding.sleepSubscribeButton.text = if (isSubscribed) "Unsubscribe" else "Subscribe"
+    }
+
 
     //Untuk nampilin nama dan profpic
 //    private fun displayUserNameAndProfpic() {
@@ -277,5 +355,9 @@ class HomeFragment : Fragment() {
             true // Set true or false depending on the navigation bar icons' color
 
         window.statusBarColor = color
+    }
+
+    companion object {
+        private const val REQUEST_CODE_ACTIVITY_RECOGNITION = 1
     }
 }

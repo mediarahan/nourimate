@@ -1,8 +1,13 @@
 package com.telyu.nourimate.data.repository
 
+import android.app.PendingIntent
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
+import androidx.test.core.app.ApplicationProvider
+import com.google.android.gms.location.ActivityRecognition
+import com.google.android.gms.location.SleepSegmentRequest
 import com.telyu.nourimate.data.local.dao.FoodDao
 import com.telyu.nourimate.data.local.dao.UserDao
 import com.telyu.nourimate.data.local.models.Detail
@@ -11,6 +16,7 @@ import com.telyu.nourimate.data.local.models.Profpic
 import com.telyu.nourimate.data.local.models.Recipe
 import com.telyu.nourimate.data.local.models.Recommendation
 import com.telyu.nourimate.data.local.models.RecommendationRecipe
+import com.telyu.nourimate.data.local.models.SleepSegmentEventEntity
 import com.telyu.nourimate.data.local.models.User
 import com.telyu.nourimate.data.remote.response.RecommendationResponse
 import com.telyu.nourimate.data.remote.retrofit.ApiService
@@ -26,6 +32,7 @@ class NourimateRepository(
     private val userPreference: UserPreference,
     private val userDao: UserDao,
     private val foodDao: FoodDao,
+    context: Context
 ) {
 
     suspend fun insertUser(user: User) {
@@ -169,8 +176,6 @@ class NourimateRepository(
         return foodDao.getSelectedRecipeCountUsingMealType(mealType)
     }
 
-
-
     //query utama
 
     fun getRecipesByRecommendationIds(recommendationIds: List<Int>): LiveData<List<Recipe>> {
@@ -242,41 +247,34 @@ class NourimateRepository(
 
     //RecipeViewModel and HomeViewModel related
 
+    //========== Sleep API Related ==========
+    private val activityRecognitionClient = ActivityRecognition.getClient(context)
 
+    fun subscribeToSleepData(pendingIntent: PendingIntent) {
+        val request = SleepSegmentRequest.getDefaultSleepSegmentRequest()
+        activityRecognitionClient.requestSleepSegmentUpdates(pendingIntent, request)
+            .addOnSuccessListener { Log.d("Sleep", "Subscribed to sleep data updates") }
+            .addOnFailureListener { e -> Log.e("Sleep", "Failed to subscribe to sleep data updates", e) }
+    }
 
+    fun unsubscribeToSleepData(pendingIntent: PendingIntent) {
+        activityRecognitionClient.removeSleepSegmentUpdates(pendingIntent)
+            .addOnSuccessListener { Log.d("SleepRepository", "Unsubscribed from sleep data.") }
+            .addOnFailureListener { exception -> Log.e("SleepRepository", "Failed to unsubscribe.", exception) }
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    fun getAllSleepSegments(): LiveData<List<SleepSegmentEventEntity>> {
+        return userDao.getAllSleepSegments()
+    }
 
 
     companion object {
         @Volatile
         private var instance: NourimateRepository? = null
         fun getInstance(
-            apiService: ApiService, pref: UserPreference, userDao: UserDao, foodDao: FoodDao
+            apiService: ApiService, pref: UserPreference, userDao: UserDao, foodDao: FoodDao, context: Context
         ): NourimateRepository = instance ?: synchronized(this) {
-            instance ?: NourimateRepository(apiService, pref, userDao, foodDao)
+            instance ?: NourimateRepository(apiService, pref, userDao, foodDao, context)
         }.also { instance = it }
     }
 

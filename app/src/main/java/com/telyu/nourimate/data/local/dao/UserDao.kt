@@ -1,5 +1,6 @@
 package com.telyu.nourimate.data.local.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -7,6 +8,7 @@ import androidx.room.Query
 import androidx.room.Update
 import com.telyu.nourimate.data.local.models.Detail
 import com.telyu.nourimate.data.local.models.Profpic
+import com.telyu.nourimate.data.local.models.SleepSegmentEventEntity
 import com.telyu.nourimate.data.local.models.User
 import java.util.Date
 
@@ -58,5 +60,12 @@ interface UserDao {
         WHERE users.email = :email
     """)
     suspend fun getUserDetailsByEmail(email: String): Detail
+
+    //Sleep API Related
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertSleepSegment(segment: SleepSegmentEventEntity)
+
+    @Query("SELECT * FROM sleep_segments")
+    fun getAllSleepSegments(): LiveData<List<SleepSegmentEventEntity>>
 
 }

@@ -3,8 +3,10 @@ package com.telyu.nourimate.utils
 import android.app.AlertDialog
 import android.content.Context
 import android.util.Log
+import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 
 object GeneralUtil {
     fun getDateToday(hour: Int, minute: Int, second: Int, milisecond: Int): Long {
@@ -114,10 +116,6 @@ object GeneralUtil {
         return (AKEi)
     }
 
-//    fun calculateDailyNutritionNeeds(dailyCalories: Int, nutritionMultiplier: Double): Int {
-//        return (dailyCalories * nutritionMultiplier).toInt()
-//    }
-
     private fun calculateMealNutrition(akei: Int, conditionCode: Int, mealProportion: Double): Nutrition {
         val dailyCalories = mealProportion * akei
         val (carbMultiplier, protMultiplier, fatMultiplier) = multipliers[conditionCode] ?: Triple(0.55, 0.8, 0.2)
@@ -182,4 +180,17 @@ object GeneralUtil {
         H to Triple(0.625, 0.8, 0.25),
         K to Triple(0.65, 0.8, 0.225)
     )
+
+    //Sleep API related
+//    fun convertMillisToDateTime(millis: Long): String {
+//        val formatter = SimpleDateFormat("dd MMM yyyy, HH:mm:ss", Locale.getDefault())
+//        return formatter.format(millis)
+//    }
+
+    fun calculateDuration(startTimeMillis: Long, endTimeMillis: Long): String {
+        val durationMillis = endTimeMillis - startTimeMillis
+        val hours = durationMillis / (1000 * 60 * 60)
+        val minutes = (durationMillis / (1000 * 60)) % 60
+        return "${hours}h ${minutes}m"
+    }
 }
