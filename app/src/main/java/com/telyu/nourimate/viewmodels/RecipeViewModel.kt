@@ -85,42 +85,62 @@ class RecipeViewModel(private val repository: NourimateRepository) : ViewModel()
     val weeklyRecipes: LiveData<List<RecommendationRecipe>> = _recommendationRecipes
 
     init {
-        // Trigger data loading whenever mealType changes
         _recommendationRecipes.addSource(_mealType) { mealTypeId ->
+            Log.d("Debug", "Meal Type Changed: $mealTypeId")
             loadData(mealTypeId)
         }
     }
 
+
     private fun loadData(mealTypeId: Int) {
         val startDate: Long = GeneralUtil.getDateToday(0, 0, 0, 0)
         val endDate: Long = GeneralUtil.getDateNextWeek()
+        Log.d("Debug", "Loading data for Meal Type: $mealTypeId from $startDate to $endDate")
+
         val recipesLiveData = repository.getRecipesByDateAndMeal(mealTypeId, startDate, endDate)
         val recommendationsLiveData = repository.getRecommendationsByMealIdSortedAscending(mealTypeId)
 
-        // Reset sources to ensure we are only listening to the latest sources
         _recommendationRecipes.apply {
             removeSource(recipesLiveData)
             removeSource(recommendationsLiveData)
             addSource(recipesLiveData) { recipes ->
+                Log.d("Debug", "Recipes loaded: ${recipes.size}")
                 combineLatestData(recipes, recommendationsLiveData.value)
             }
             addSource(recommendationsLiveData) { recommendations ->
+                Log.d("Debug", "Recommendations loaded: ${recommendations.size}")
                 combineLatestData(recipesLiveData.value, recommendations)
             }
         }
     }
 
-    private fun combineLatestData(recipes: List<Recipe>?, recommendations: List<Recommendation>?) {
-        if (recipes == null || recommendations == null) return
 
-        val recommendationMap = recommendations.associateBy { it.recipeId }
-        val recommendationRecipes = recipes.flatMap { recipe ->
-            recommendationMap[recipe.recipeId]?.let { recommendation ->
-                listOf(RecommendationRecipe.RecommendationItem(recommendation), RecommendationRecipe.RecipeItem(recipe))
-            } ?: listOf()
+
+    private fun combineLatestData(recipes: List<Recipe>?, recommendations: List<Recommendation>?) {
+        if (recipes == null || recommendations == null) {
+            Log.d("Debug", "One of the lists is null -> Recipes: $recipes, Recommendations: $recommendations")
+            return
+        }
+
+        Log.d("Debug", "Combining data: Recipes (${recipes.size}), Recommendations (${recommendations.size})")
+        val recommendationRecipes = mutableListOf<RecommendationRecipe>()
+        val groupByDate = recipes.groupBy { recipe ->
+            recommendations.find { it.recipeId == recipe.recipeId }?.date
+        }
+
+        for ((date, groupedRecipes) in groupByDate) {
+            val recommendation = recommendations.find { it.date == date }
+            if (recommendation != null) {
+                recommendationRecipes.add(RecommendationRecipe.RecommendationItem(recommendation))
+            }
+            groupedRecipes.forEach { recipe ->
+                recommendationRecipes.add(RecommendationRecipe.RecipeItem(recipe))
+            }
         }
         _recommendationRecipes.value = recommendationRecipes
+        Log.d("Debug", "Combined list size: ${recommendationRecipes.size}")
     }
+
 
     suspend fun getRecommendationByRecipeAndMealId(recipeId: Int, mealId: Int): Recommendation? {
         return repository.getRecommendationByRecipeAndMealId(recipeId, mealId)
@@ -215,7 +235,7 @@ class RecipeViewModel(private val repository: NourimateRepository) : ViewModel()
                 val gender = if (detail.gender == "Laki-laki") true else if (detail.gender == "Perempuan") false else null
                 val age = GeneralUtil.calculateAge(detail.dob)
 
-                val akei = GeneralUtil.calculateAKEi(detail.height?.toInt() ?: 420, gender!!, age)
+                val akei = GeneralUtil.calculateAKEi(detail.height?.toInt() ?: 9999, gender!!, age)
                 val conditionCode = GeneralUtil.convertConditionToCode(detail.disease)
 
                 val nutrition = when (meal) {
@@ -304,14 +324,6 @@ class RecipeViewModel(private val repository: NourimateRepository) : ViewModel()
         viewModelScope.launch {
             val profpic = repository.getProfpicById(id)
             _profilePicture.value = profpic
-        }
-    }
-
-    val isDatabaseFilled: LiveData<Boolean?> = repository.observeDatabaseFilledStatus()
-
-    fun setDatabaseFilled() {
-        viewModelScope.launch {
-            repository.setDatabaseFilled()
         }
     }
 

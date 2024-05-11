@@ -33,4 +33,10 @@ class SignUpViewModel(private val repository: NourimateRepository) : ViewModel()
             }
         }
     }
+
+    //login dengan backend
+    fun register(name: String, phoneNumber: String, email: String, password: String) =
+        repository.register(name, phoneNumber, email, password)
+
+
 }

@@ -1,251 +1,371 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/wave_editprofile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="4dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/wave_editprofile"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="1.2" />
-
-    <ImageView
-        android:id="@+id/wave_editprofile_shadow"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:elevation="3dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/wave_editprofile_with_shadow"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="1.2" />
-
-    <TextView
-        android:id="@+id/textProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="6dp"
-        android:fontFamily="@font/alatsi"
-        android:text="Profile"
-        android:textColor="#000000"
-        android:textSize="33sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/wave_editprofile_shadow" />
-
-    <TextView
-        android:id="@+id/inputaccount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="6dp"
-        android:fontFamily="@font/abel"
-        android:text="Input Your Data"
-        android:textColor="#000000"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textProfile" />
-
-    <View
-        android:id="@+id/transparentRectangle"
+    <ScrollView
+        android:id="@+id/scrollviewprofile"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/rectangle_signup_with_shadow"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputaccount" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/DateOfBirth"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/rectangle_signup1"
-        android:elevation="3dp"
-        app:boxCornerRadiusBottomEnd="10dp"
-        app:boxCornerRadiusBottomStart="10dp"
-        app:boxCornerRadiusTopEnd="10dp"
-        app:boxCornerRadiusTopStart="10dp"
-        app:boxStrokeWidth="0dp"
-        app:boxStrokeWidthFocused="3dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:clickable="true"
-        android:focusable="true"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputaccount"
-        app:startIconDrawable="@drawable/profile"
-        app:startIconTint="#FFD689">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextBirth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/abel"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:hint="Date of Birth"
-            android:inputType="none" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/editTextWeightLayout"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/rectangle_signup1"
-        android:elevation="3dp"
-        app:boxCornerRadiusBottomEnd="10dp"
-        app:boxCornerRadiusBottomStart="10dp"
-        app:boxCornerRadiusTopEnd="10dp"
-        app:boxCornerRadiusTopStart="10dp"
-        app:boxStrokeWidth="0dp"
-        app:boxStrokeWidthFocused="3dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/DateOfBirth"
-        app:startIconDrawable="@drawable/profile"
-        app:startIconTint="#FFD689">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextWeight"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/abel"
-            android:hint="Insert weight here..."
-            android:inputType="textPersonName" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/editTextHeightLayout"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/rectangle_signup1"
-        android:elevation="3dp"
-        app:boxCornerRadiusBottomEnd="10dp"
-        app:boxCornerRadiusBottomStart="10dp"
-        app:boxCornerRadiusTopEnd="10dp"
-        app:boxCornerRadiusTopStart="10dp"
-        app:boxStrokeWidth="0dp"
-        app:boxStrokeWidthFocused="3dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextWeightLayout"
-        app:startIconDrawable="@drawable/profile"
-        app:startIconTint="#FFD689">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextHeight"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/abel"
-            android:hint="Insert height here..."
-            android:inputType="textPersonName" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/editTextWaistLayout"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/rectangle_signup1"
-        android:elevation="3dp"
-        app:boxCornerRadiusBottomEnd="10dp"
-        app:boxCornerRadiusBottomStart="10dp"
-        app:boxCornerRadiusTopEnd="10dp"
-        app:boxCornerRadiusTopStart="10dp"
-        app:boxStrokeWidth="0dp"
-        app:boxStrokeWidthFocused="3dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextHeightLayout"
-        app:startIconDrawable="@drawable/profile"
-        app:startIconTint="#FFD689">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextWaist"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/abel"
-            android:hint="Insert waist size here..."
-            android:inputType="textPersonName" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <Spinner
-        android:id="@+id/spinnerGender"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextWaistLayout" />
-
-    <Spinner
-        android:id="@+id/spinnerAllergies"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerGender" />
-
-    <Spinner
-        android:id="@+id/spinnerPersonalDisease"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerAllergies" />
-
-
-    <Button
-        android:id="@+id/buttonNext"
-        android:layout_width="240dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/buttonlogin_background_with_shadow"
-        android:elevation="6dp"
-        android:fontFamily="@font/alatsi"
-        android:onClick="onSignUpClicked"
-        android:text="Next"
-        android:textColor="@color/color23"
-        android:textSize="23sp"
-        app:backgroundTint="@null"
-        android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@id/spinnerPersonalDisease"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:elevation="8dp"
-        tools:visibility="visible" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:fillViewport="true">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/wave_editprofile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:elevation="4dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/wave_editprofile"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/wave_editprofile_shadow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:elevation="3dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/wave_editprofile_with_shadow"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="1.2" />
+
+
+
+
+
+
+            <TextView
+                android:id="@+id/textProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="6dp"
+                android:fontFamily="@font/alatsi"
+                android:text="Profile"
+                android:textColor="#000000"
+                android:textSize="33sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/wave_editprofile_shadow" />
+
+            <TextView
+                android:id="@+id/inputaccount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="6dp"
+                android:fontFamily="@font/abel"
+                android:text="Input Your Data"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textProfile" />
+
+
+
+            <View
+                android:id="@+id/transparentRectangle"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/rectangle_signup_with_shadow"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/inputaccount"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/DateOfBirth"
+                android:layout_width="350dp"
+                android:layout_height="65dp"
+                android:layout_marginTop="18dp"
+                android:background="@drawable/rectangle_signup1"
+                android:elevation="3dp"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="3dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/spinnerGender"
+                app:startIconDrawable="@drawable/dateofbirth"
+                app:startIconTint="#FFC745">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextBirth"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/abel"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="Date of Birth"
+                    android:inputType="none" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/editTextWeightLayout"
+                android:layout_width="350dp"
+                android:layout_height="65dp"
+                android:layout_marginTop="18dp"
+                android:background="@drawable/rectangle_signup1"
+                android:elevation="3dp"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="3dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/DateOfBirth"
+                app:startIconDrawable="@drawable/weight"
+                app:startIconTint="#FFC745">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextWeight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:fontFamily="@font/abel"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:hint="Weight (kg)"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/editTextHeightLayout"
+                android:layout_width="350dp"
+                android:layout_height="65dp"
+                android:layout_marginTop="18dp"
+                android:background="@drawable/rectangle_signup1"
+                android:elevation="3dp"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="3dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTextWeightLayout"
+                app:startIconDrawable="@drawable/height"
+                app:startIconTint="#FFC745">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextHeight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/abel"
+                    android:focusable="false"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:hint="Height (cm)"
+                    android:inputType="textPersonName" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/editTextWaistLayout"
+                android:layout_width="350dp"
+                android:layout_height="65dp"
+                android:layout_marginTop="18dp"
+                android:background="@drawable/rectangle_signup1"
+                android:elevation="3dp"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="3dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTextHeightLayout"
+                app:startIconDrawable="@drawable/waist"
+                app:startIconTint="#FFC745">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextWaist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/abel"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:focusable="false"
+                    android:hint="Waist Size (cm)"
+                    android:inputType="textPersonName" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Spinner
+                android:id="@+id/spinnerGender"
+                android:layout_width="350dp"
+                android:layout_height="65dp"
+                android:layout_marginTop="45dp"
+                android:background="@drawable/rectangle_signup1"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:paddingStart="45dp"
+                android:paddingEnd="12dp"
+                android:elevation="3dp"
+                android:fontFamily="@font/abel"
+                android:textColor="@color/color41"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/inputaccount"
+                android:spinnerMode="dropdown"
+                android:popupBackground="@drawable/rectangle_signup1"/>
+
+            <TextView
+                android:id="@+id/labelGender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gender"
+                android:fontFamily="@font/abel"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@id/spinnerGender"
+                app:layout_constraintTop_toTopOf="@id/spinnerGender"/>
+
+            <ImageView
+                android:id="@+id/icongenderImageView2"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="-5dp"
+                android:padding="12dp"
+                android:elevation="5dp"
+                app:layout_constraintStart_toStartOf="@id/spinnerGender"
+                app:layout_constraintTop_toTopOf="@id/spinnerGender"
+                app:layout_constraintBottom_toBottomOf="@id/spinnerGender"
+                android:src="@drawable/gender" />
+
+            <ImageView
+                android:id="@+id/icongenderImageView"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginEnd="5dp"
+                android:padding="12dp"
+                android:elevation="5dp"
+                app:layout_constraintEnd_toEndOf="@id/spinnerGender"
+                app:layout_constraintTop_toTopOf="@id/spinnerGender"
+                app:layout_constraintBottom_toBottomOf="@id/spinnerGender"
+                android:src="@drawable/arrow_drop" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/editTextAllergiesLayout"
+                android:layout_width="350dp"
+                android:layout_height="65dp"
+                android:layout_marginTop="18dp"
+                android:background="@drawable/rectangle_signup1"
+                android:elevation="3dp"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="3dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTextWaistLayout"
+                app:startIconDrawable="@drawable/allergy"
+                app:startIconTint="#FFC745">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextAllergies"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Select Allergies"
+                    android:fontFamily="@font/abel"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:focusable="false"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/editTextDiseaseLayout"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:background="@drawable/rectangle_signup1"
+                android:elevation="3dp"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="3dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTextAllergiesLayout"
+                app:startIconDrawable="@drawable/diease"
+                app:startIconTint="#FFC745">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextDisease"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Select Diseases"
+                    android:fontFamily="@font/abel"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:focusable="false"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/buttonNext"
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/buttonlogin_background_with_shadow"
+                android:elevation="6dp"
+                android:fontFamily="@font/alatsi"
+                android:onClick="onSignUpClicked"
+                android:text="Next"
+                android:textColor="@color/color23"
+                android:textSize="23sp"
+                android:layout_marginTop="24dp"
+                app:backgroundTint="@null"
+                app:layout_constraintTop_toBottomOf="@+id/editTextDiseaseLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <ImageView
+                android:id="@+id/wave_editprofile2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="4dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/editprofile2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/buttonNext"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+

@@ -10,6 +10,8 @@ import com.telyu.nourimate.data.local.models.Detail
 import com.telyu.nourimate.data.local.models.Profpic
 import com.telyu.nourimate.data.local.models.SleepSegmentEventEntity
 import com.telyu.nourimate.data.local.models.User
+import com.telyu.nourimate.data.local.models.WeightEntry
+import com.telyu.nourimate.data.local.models.WeightTrack
 import java.util.Date
 
 @Dao
@@ -75,5 +77,50 @@ interface UserDao {
 
     @Query("SELECT accountState FROM users WHERE userId = :userId")
     suspend fun getAccountStateByUserId(userId: Int?): Int
+
+    //WeightEntry / SpecialProgram related queries
+    //for inserting currentWeight
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertWeightEntry(entry: WeightEntry)
+
+    //for deleting a particular user's weight entries. Used in SpecialProgram's Restore Program
+    @Query("DELETE FROM weight_entries WHERE id = :entryId")
+    suspend fun deleteWeightEntryById(entryId: Int)
+
+    //for displaying weight entries from earliest to latest of a particular user
+    // used in displaying progress graph
+    @Query("SELECT *  FROM weight_entries WHERE userId = :userId ORDER BY date ASC")
+    suspend fun getWeightEntriesByUserIdAsc(userId: Int): List<WeightEntry>
+
+    //for displaying latest weight entry of a particular user
+    @Query("""
+    SELECT * FROM weight_entries 
+    WHERE date = (SELECT MAX(date) FROM weight_entries WHERE userId = :userId)
+    AND userId = :userId
+""")
+    suspend fun getLatestWeightEntryByUserId(userId: Int): WeightEntry
+
+    //for displaying latest weight entry date of a particular user
+    @Query("SELECT MAX(date) FROM weight_entries WHERE userId = :userId")
+    suspend fun getLatestWeightEntryDateByUserId(userId: Int): Date
+
+    //for displaying earliest weight entry date of a particular user
+    @Query("SELECT MIN(date) FROM weight_entries WHERE userId = :userId")
+    suspend fun getEarliestWeightEntryDateByUserId(userId: Int): Date
+
+    //getuserdetailbyid
+
+    //update user's weight (after restoring program)
+    @Query("UPDATE userDetails SET weight = :weight WHERE detailId = :detailId")
+    suspend fun updateWeight(detailId: Int, weight: Int)
+
+    @Query("SELECT * FROM weight_tracks  WHERE userId = :id")
+    suspend fun getWeightTrackById(id: Int): WeightTrack
+
+    @Query("SELECT name FROM users WHERE userId = :id")
+    suspend fun getUserNameById(id: Int): String?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertWeightTrack(weightTrack: WeightTrack)
 
 }

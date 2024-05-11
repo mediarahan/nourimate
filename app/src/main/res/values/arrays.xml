@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="program_choices">
+        <item>-- Select Your Program --</item>
+        <item>Maintain Weight</item>
+        <item>Loss Weight</item>
+        <item>Gain Weight</item>
+    </string-array>
+
+</resources>

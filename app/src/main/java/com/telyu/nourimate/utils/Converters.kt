@@ -8,6 +8,7 @@ import java.util.Locale
 class Converters {
 
     private val dateFormat = SimpleDateFormat("yyyy/MM/dd")
+    private val dateFormatProgram = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
     private val dayAndDateFormat = SimpleDateFormat("EEEE, dd MMMM yyyy", Locale.getDefault())
 
     @TypeConverter
@@ -18,6 +19,20 @@ class Converters {
     @TypeConverter
     fun dateToTimestamp(date: Date?): Long? {
         return date?.time
+    }
+
+    //ini 2 dibawah buat di program aja
+
+    fun toTimestamp(date: Date): Long {
+        return date.time
+    }
+
+    fun formatDate(date: Date?): String {
+        return date?.let { dateFormatProgram.format(it) } ?: ""
+    }
+
+    fun dateFromTimestamp(value: Long): Date {
+        return Date(value)
     }
 
     fun formatDateToString(date: Date?): String {

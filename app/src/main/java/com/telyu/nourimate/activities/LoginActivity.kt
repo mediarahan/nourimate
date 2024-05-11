@@ -43,7 +43,6 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         loginViewModel = obtainViewModel(this@LoginActivity)
 
-
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -54,17 +53,170 @@ class LoginActivity : AppCompatActivity() {
     private fun setupListeners() {
 
         binding.TextViewSignUp.setOnClickListener {
-            openSignUpPage()
+            val intent = Intent(this, SignUpActivity::class.java)
+            startActivity(intent)
         }
         binding.buttonLogin.setOnClickListener {
             login()
+            //loginWithBackend()
         }
         binding.buttonSignInWithGoogle.setOnClickListener {
-            openVerificationPage()
+            val intent = Intent(this, VerificationCode1Activity::class.java)
+            startActivity(intent)
+            finish()
         }
         binding.TextViewForgotPassword.setOnClickListener {
-            openVerificationPage()
+            val intent = Intent(this, VerificationCode1Activity::class.java)
+            startActivity(intent)
+            finish()
         }
+    }
+
+    private fun login() {
+        val email = binding.emailEditText.text.toString()
+        val password = binding.passwordEditText.text.toString()
+
+        if (InputValidator.isValidEmail(email) && InputValidator.isValidPassword(password)) {
+            loginViewModel.uiState.observe(this) { result ->
+                when (result) {
+                    is Result.Loading ->
+                        showLoading(true)
+
+                    is Result.Success -> {
+                        showLoading(false)
+                        observeLoginStatus()
+                    }
+
+                    is Result.Error -> {
+                        showLoading(false)
+                        Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            loginViewModel.login(email, password)
+        } else {
+            Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun loginWithBackend() {
+        binding.buttonLogin.setOnClickListener {
+            val email = binding.emailEditText.text.toString()
+            val password = binding.passwordEditText.text.toString()
+
+            loginViewModel.loginBackend(email, password).observe(this@LoginActivity) { result ->
+                if (result != null) {
+                    when (result) {
+                        is Result.Loading -> {
+                            showLoading(true)
+                        }
+
+                        is Result.Success -> {
+                            Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show()
+                            showLoading(false)
+
+                            val intent = Intent(this@LoginActivity, EditProfileActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
+
+                        is Result.Error -> {
+                            showLoading(false)
+                            Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //=============== Login State Observation ===============
+
+    private fun observeLoginStatus() {
+        loginViewModel.userLoginState.observe(this) { state ->
+            Log.d("TAEK", "observeLoginStatus: $state")
+            when (state) {
+                1 -> {
+                    startActivity(Intent(this, VerificationCode1Activity::class.java))
+                    finish()
+                }
+
+                2 -> showDetailsNeededDialog()
+                3 -> {
+                    startActivity(Intent(this, VerificationCode1Activity::class.java))
+                    finish()
+                }
+
+                else -> {
+                    // Handle initial state or re-enter credentials
+                    Toast.makeText(this, "Please enter your credentials", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private fun observeLoginStatusBackend() {
+        loginViewModel.isUserVerified.observe(this) { isVerified ->
+            when (isVerified) {
+                true -> {
+                    loginViewModel.isDetailFilled.observe(this) { isDetailFilled ->
+                        when (isDetailFilled) {
+                            true -> {
+                                startActivity(Intent(this, NavigationBarActivity::class.java))
+                                finish()
+                            }
+
+                            false -> {
+                                showDetailsNeededDialog()
+                            }
+                        }
+                    }
+
+                }
+
+                false -> {
+                    showVerificationNeededDialog()
+                }
+            }
+        }
+    }
+
+    private fun showDetailsNeededDialog() {
+        GeneralUtil.showDialog(
+            context = this,
+            title = "Account Details Empty",
+            message = "Would you like to fill out your account details?",
+            onYes = {
+                startActivity(Intent(this, EditProfileActivity::class.java))
+                finish()
+            },
+            onNo = {
+                validateInputs()
+            }
+        )
+    }
+
+    private fun showVerificationNeededDialog() {
+        GeneralUtil.showDialog(
+            context = this,
+            title = "Account Not Verified",
+            message = "Would you like to verify your account?",
+            onYes = {
+                startActivity(Intent(this, VerificationCode1Activity::class.java))
+                finish()
+            },
+            onNo = {
+                validateInputs()
+            }
+        )
+    }
+
+    //=============== Login w/ Google ===============
+    override fun onStart() {
+        super.onStart()
+        // google signin
+        val currentUser = auth.currentUser
+        updateUI(currentUser)
     }
 
     private fun configureGoogleSignIn() {
@@ -97,11 +249,9 @@ class LoginActivity : AppCompatActivity() {
             try {
                 //Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)!!
-                Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
                 firebaseAuthWithGoogle(account.idToken!!)
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
-                Log.w(TAG, "Google sign in failed", e)
             }
         }
     }
@@ -112,12 +262,10 @@ class LoginActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithCredential:success")
                     val user = auth.currentUser
                     updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithCredential:failure", task.exception)
                     updateUI(null)
                 }
             }
@@ -130,109 +278,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun login() {
-        val email = binding.emailEditText.text.toString()
-        val password = binding.passwordEditText.text.toString()
-
-        if (InputValidator.isValidEmail(email) && InputValidator.isValidPassword(password)) {
-            loginViewModel.uiState.observe(this) { result ->
-                when (result) {
-                    is Result.Loading ->
-                        showLoading(true)
-                    is Result.Success -> {
-                        showLoading(false)
-                        observeLoginStatus()
-                    }
-
-                    is Result.Error -> {
-                        showLoading(false)
-                        Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-            loginViewModel.login(email, password)
-        } else {
-            Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-
-    private fun observeLoginStatus() {
-        loginViewModel.userLoginState.observe(this) { state ->
-            when (state) {
-                1 -> {
-                    startActivity(Intent(this, VerificationCode1Activity::class.java))
-                    finish()
-                }
-                2 -> showDetailsNeededDialog()
-                3 -> {
-                    startActivity(Intent(this, NavigationBarActivity::class.java))
-                    finish()
-                }
-
-                else -> {
-                    // Handle initial state or re-enter credentials
-                    Toast.makeText(this, "Please enter your credentials", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
-
-    private fun showVerificationNeededDialog() {
-        GeneralUtil.showDialog(
-            context = this,
-            title = "Account Not Verified",
-            message = "Please verify your account first.",
-            onYes = {
-                startActivity(Intent(this, VerificationCode1Activity::class.java))
-                finish()
-            },
-            onNo = {
-                validateInputs()
-            }
-        )
-    }
-
-    private fun showDetailsNeededDialog() {
-        GeneralUtil.showDialog(
-            context = this,
-            title = "Account Details Empty",
-            message = "Please fill out your account details first.",
-            onYes = {
-                startActivity(Intent(this, EditProfileActivity::class.java))
-                finish()
-            },
-            onNo = {
-                validateInputs()
-            }
-        )
-    }
-
-    private fun openVerificationPage() {
-        // Buat Intent untuk membuka SignUpActivity
-        val intent = Intent(this, VerificationCode1Activity::class.java)
-        startActivity(intent)
-        finish()
-    }
-
-    private fun openSignUpPage() {
-        // Buat Intent untuk membuka SignUpActivity
-        val intent = Intent(this, SignUpActivity::class.java)
-        startActivity(intent)
-    }
-
-
-    private fun obtainViewModel(activity: AppCompatActivity): LoginViewModel {
-        val factory = ViewModelFactory.getInstance(activity.application)
-        return ViewModelProvider(activity, factory)[LoginViewModel::class.java]
-    }
-
-    override fun onStart() {
-        super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.currentUser
-        updateUI(currentUser)
-    }
+    //=============== Utility ===============
 
     private fun validateInputs() {
         binding.emailEditText.addTextChangedListener(object : TextWatcher {
@@ -297,8 +343,10 @@ class LoginActivity : AppCompatActivity() {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
-    companion object {
-        private const val TAG = "LoginActivity"
+    //================ ViewModel ===============
+    private fun obtainViewModel(activity: AppCompatActivity): LoginViewModel {
+        val factory = ViewModelFactory.getInstance(activity.application)
+        return ViewModelProvider(activity, factory)[LoginViewModel::class.java]
     }
 }
 

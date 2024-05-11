@@ -5,7 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "sleep_segments")
 data class SleepSegmentEventEntity(
-    @PrimaryKey(autoGenerate = true) val id: Int,
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
     val startTimeMillis: Long,
     val endTimeMillis: Long
 )

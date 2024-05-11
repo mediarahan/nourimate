@@ -11,12 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginTop="3dp"
         android:gravity="center">
 
         <ImageView
             android:id="@+id/doubleleftArrow"
             android:layout_width="24dp"
             android:layout_height="24dp"
+            android:layout_weight="1"
             android:src="@drawable/doubleleftarrow" />
 
         <TextView
@@ -24,6 +26,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
+            android:layout_weight="0"
+            android:textSize="16sp"
+            android:fontFamily="@font/robotobold"
+            android:textColor="@color/color24"
             android:layout_marginEnd="20dp"
             android:text="2000"/>
 
@@ -31,6 +37,7 @@
             android:id="@+id/doublerightArrow"
             android:layout_width="24dp"
             android:layout_height="24dp"
+            android:layout_weight="1"
             android:src="@drawable/doublerightarrow" />
     </LinearLayout>
 
@@ -40,12 +47,14 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@id/yearLayout"
+        android:layout_marginTop="2dp"
         android:gravity="center">
 
         <ImageView
             android:id="@+id/leftArrow"
             android:layout_width="24dp"
             android:layout_height="24dp"
+            android:layout_weight="1"
             android:src="@drawable/leftarrow" />
 
         <TextView
@@ -54,12 +63,17 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
+            android:layout_weight="0"
+            android:textSize="16sp"
+            android:fontFamily="@font/robotobold"
+            android:textColor="@color/color24"
             android:text="February"/>
 
         <ImageView
             android:id="@+id/rightArrow"
             android:layout_width="24dp"
             android:layout_height="24dp"
+            android:layout_weight="1"
             android:src="@drawable/rightarrow" />
     </LinearLayout>
 
@@ -68,6 +82,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
+        android:layout_marginTop="15dp"
         android:layout_below="@id/monthLayout">
 
         <TextView
@@ -150,8 +165,7 @@
         android:numColumns="7"
         android:gravity="center"
         android:layout_below="@id/monthLayout"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="24dp" />
+        android:layout_marginTop="40dp" />
 
 
     <TextView
@@ -161,8 +175,12 @@
         android:text="Cancel"
         android:clickable="true"
         android:focusable="true"
+        android:textSize="15sp"
+        android:fontFamily="@font/robotobold"
+        android:textColor="@color/black"
         android:layout_below="@id/gvCalendar"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="15dp"
         android:layout_alignParentStart="true"/>
 
 
@@ -172,11 +190,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Done"
-        android:theme="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:backgroundTint="@color/color23"
+        android:textSize="16sp"
+        android:fontFamily="@font/robotobold"
+        android:textColor="@color/white"
+        android:background="@drawable/button_popup"
+        style="@style/MyMaterialButton"
         android:layout_below="@id/btnCancel"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="24dp"
+        android:layout_marginEnd="15dp"
         android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

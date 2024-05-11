@@ -19,8 +19,6 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
     private lateinit var signUpViewModel: SignUpViewModel
 
-    private var user: User? = null //entity
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpBinding.inflate(layoutInflater)
@@ -32,14 +30,21 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun setupButtons() {
+        //daftar pake lokal
         binding.buttonRegister.setOnClickListener {
+            //Backend
+            //registerWithBackend()
+            //Lokal
             signup()
         }
 
         binding.TextViewSignIn.setOnClickListener {
-            openLoginPage()
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
         }
     }
+
+    //=============== Regular Signup ===============
 
     private fun signup() {
         //call signup function from viewmodel here
@@ -63,7 +68,8 @@ class SignUpActivity : AppCompatActivity() {
                 }
                 is Result.Success -> {
                     showLoading(false)
-                    openLoginPage()
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
                     //Perlu pakai finish supaya user tidak kembali ke menu register setelah mengisi data
                     finish()
                     Toast.makeText(this, "Signed Up Successfully", Toast.LENGTH_SHORT).show()
@@ -78,10 +84,35 @@ class SignUpActivity : AppCompatActivity() {
         signUpViewModel.signup(password, confirmPassword, user)
     }
 
-    private fun openLoginPage() {
-        // Buat Intent untuk membuka LoginActivity. Tidak perlu pakai finish
-        val intent = Intent(this, LoginActivity::class.java)
-        startActivity(intent)
+    //=============== Signup w/ Backend ===============
+
+    private fun registerWithBackend() {
+            val name =binding.editTextFullName.text.toString()
+            val phone =binding.editTextPhone.text.toString()
+            val email =binding.editTextEmail.text.toString()
+            val password =binding.editTextPassword.text.toString()
+
+            signUpViewModel.register(name, phone, email, password).observe(this@SignUpActivity){result ->
+                if (result != null) {
+                    when (result) {
+                        is Result.Loading -> {
+                            showLoading(true)
+                        }
+                        is Result.Success -> {
+                            Toast.makeText(this, "Signed Up Successfully", Toast.LENGTH_SHORT).show()
+                            showLoading(false)
+
+                            val intent = Intent(this, EditProfileActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
+                        is Result.Error -> {
+                            showLoading(false)
+                            Toast.makeText(this, "Failed to Sign Up", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
     }
 
     private fun showLoading(isLoading: Boolean) {
@@ -92,48 +123,5 @@ class SignUpActivity : AppCompatActivity() {
         val factory = ViewModelFactory.getInstance(activity.application)
         return ViewModelProvider(activity, factory)[SignUpViewModel::class.java]
     }
-
-//    private fun validateInputs() {
-//        binding.editTextEmail.addTextChangedListener(object: TextWatcher {
-//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//                //gak dipake
-//            }
-//
-//            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//                //gak dipake
-//            }
-//
-//            override fun afterTextChanged(p0: Editable?) {
-//                val email = p0.toString().trim()
-//
-//                if (InputValidator.isValidEmail(email)) {
-//                    binding.editTextEmail.error = null
-//                } else {
-//                    binding.editTextEmail.setError("Masukkan email yang valid", null)
-//                }
-//
-//            }
-//        })
-//
-//        binding.editTextPassword.addTextChangedListener(object: TextWatcher {
-//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//                //gak dipake
-//            }
-//
-//            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//                val password = p0.toString().trim()
-//
-//                if (InputValidator.isValidPassword(password)) {
-//                    binding.editTextPassword.error = null
-//                } else {
-//                    binding.editTextPassword.setError("Password tidak boleh kurang dari 8 karakter", null)
-//                }
-//            }
-//
-//            override fun afterTextChanged(p0: Editable?) {
-//                //gak dipake
-//            }
-//        })
-//    }
 
 }

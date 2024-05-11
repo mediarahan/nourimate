@@ -40,16 +40,14 @@ class ViewModelFactory private constructor(
             modelClass.isAssignableFrom(EditProfpicViewModel::class.java) -> {
                 EditProfpicViewModel(repository) as T
             }
-
-            modelClass.isAssignableFrom(MachineLearningViewModel::class.java) -> {
-                MachineLearningViewModel(repository) as T
-            }
-
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
                 HomeViewModel(repository) as T
             }
             modelClass.isAssignableFrom(VerificationViewModel::class.java) -> {
                 VerificationViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(ProgramViewModel::class.java) -> {
+                ProgramViewModel(repository) as T
             }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)

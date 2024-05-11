@@ -437,7 +437,7 @@ app:layout_constraintStart_toEndOf="@id/editTextWeight"
             android:layout_marginTop="15dp"
             android:background="@drawable/rectangle_profile_with_shadow"
             android:elevation="5dp"
-            app:layout_constraintEnd_toEndOf="@+id/rectanglegenderView"
+            app:layout_constraintEnd_toEndOf="@+id/spinnerGender"
             app:layout_constraintTop_toBottomOf="@+id/rectangleheightView" />
 
         <EditText
@@ -492,32 +492,28 @@ app:layout_constraintStart_toEndOf="@id/editTextWeight"
             app:layout_constraintEnd_toEndOf="@+id/rectanglewaistView"
             app:layout_constraintTop_toTopOf="@+id/rectanglewaistView" />
 
-        <View
-            android:id="@+id/rectanglegenderView"
-            android:layout_width="380dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/rectangle_profile_with_shadow"
-            android:elevation="5dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rectangleweightView" />
 
-        <EditText
-            android:id="@+id/editTextGender"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:elevation="6dp"
-            android:text="Male"
+        <Spinner
+            android:id="@+id/spinnerGender"
+            android:layout_width="350dp"
+            android:layout_height="65dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rectangle_signup1"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:paddingStart="45dp"
+            android:paddingEnd="12dp"
+            android:elevation="3dp"
+            android:fontFamily="@font/abel"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="16sp"
+            android:text="Male"
             android:inputType="text"
             android:maxLines="1"
             style="@style/DisabledEditTextStyle"
-            app:layout_constraintBottom_toBottomOf="@+id/rectanglegenderView"
-            app:layout_constraintStart_toStartOf="@+id/rectanglegenderView"
-            app:layout_constraintTop_toTopOf="@+id/rectanglegenderView" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rectangleweightView" />
 
         <ImageView
             android:id="@+id/icongenderImageView"
@@ -526,9 +522,9 @@ app:layout_constraintStart_toEndOf="@id/editTextWeight"
             android:layout_marginStart="10dp"
             android:elevation="6dp"
             android:src="@drawable/profile"
-            app:layout_constraintBottom_toBottomOf="@+id/rectanglegenderView"
-            app:layout_constraintStart_toStartOf="@+id/rectanglegenderView"
-            app:layout_constraintTop_toTopOf="@+id/rectanglegenderView" />
+            app:layout_constraintBottom_toBottomOf="@+id/spinnerGender"
+            app:layout_constraintStart_toStartOf="@+id/spinnerGender"
+            app:layout_constraintTop_toTopOf="@+id/spinnerGender" />
 
         <ImageView
             android:id="@+id/iconeditgenderImageView"
@@ -537,9 +533,9 @@ app:layout_constraintStart_toEndOf="@id/editTextWeight"
             android:layout_marginEnd="10dp"
             android:elevation="6dp"
             android:src="@drawable/edit"
-            app:layout_constraintBottom_toBottomOf="@+id/rectanglegenderView"
-            app:layout_constraintEnd_toEndOf="@+id/rectanglegenderView"
-            app:layout_constraintTop_toTopOf="@+id/rectanglegenderView" />
+            app:layout_constraintBottom_toBottomOf="@+id/spinnerGender"
+            app:layout_constraintEnd_toEndOf="@+id/spinnerGender"
+            app:layout_constraintTop_toTopOf="@+id/spinnerGender" />
 
         <View
             android:id="@+id/rectangleallergyView"
@@ -550,7 +546,7 @@ app:layout_constraintStart_toEndOf="@id/editTextWeight"
             android:elevation="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rectanglegenderView" />
+            app:layout_constraintTop_toBottomOf="@+id/spinnerGender" />
 
         <EditText
             android:id="@+id/editTextAllergy"

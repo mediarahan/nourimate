@@ -48,12 +48,7 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
     ): View {
         binding = FragmentRecipeBinding.inflate(inflater, container, false)
 
-        viewModel.isDatabaseFilled.observe(viewLifecycleOwner) {isDatabaseFilled ->
-            if (!isDatabaseFilled!!) {
-                fillDatabaseWithFakeData()
-            }
-        }
-
+        fillDatabaseWithFakeData()
 
         return binding.root
     }
@@ -71,12 +66,17 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
 
         viewModel.dailyRecipes.observe(viewLifecycleOwner) { recipes ->
             recipeAdapter.submitList(recipes)
+            Log.d("Debug", "RecyclerView data submitted: ${recipes.size}")
         }
 
         viewModel.weeklyRecipes.observe(viewLifecycleOwner) { recipes ->
             weeklyRecipeAdapter.submitList(recipes)
+            Log.d("Debug", "RecyclerView data submitted: ${recipes.size}")
         }
 
+        viewModel.searchResult.observe(viewLifecycleOwner) { recipes ->
+            recipeAdapter.submitList(recipes)
+        }
     }
 
     override fun onAddClick(recipe: Recipe) {
@@ -152,17 +152,27 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
 
     private fun setupSearchBarAndSearchView() {
         with(binding) {
-            searchView.editText.setOnEditorActionListener { _, actionId, _ ->
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    searchBar.text = searchView.text
-                    searchView.hide()
+            searchView.setupWithSearchBar(searchBar)
 
-                    val query = searchBar.text.toString()
-                    viewModel.getRecipeByName(query)
-                    true // Handle action and consume the event
-                } else false // Do not consume the event
+            searchView.editText.setOnEditorActionListener { _, _, _ ->
+                searchBar.text = searchView.text
+                searchView.hide()
+
+                val query = searchBar.text.toString()
+                viewModel.getRecipeByName(query)
+                true // Return true to indicate that the action has been handled
             }
             searchBar.inflateMenu(R.menu.selected_meal_menu)
+            searchBar.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.btn_selected_meal -> {
+                        showPopupMenu()
+                        true
+                    }
+
+                    else -> false
+                }
+            }
         }
     }
 
@@ -211,7 +221,9 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
         }
 
         viewModel.userName.observe(viewLifecycleOwner) { userName ->
+            //dari username, ambil kata paling depan
             binding.usernameTextView.text = userName
+
         }
 
         viewModel.userId.observe(viewLifecycleOwner) { userId ->
@@ -251,14 +263,14 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
             )
         }
 
-        val mappedRecommendations = fakeFoodData.recommendations.map { recommendation ->
-            Recommendation(
-                recommendationId = recommendation.recommendationId,
-                date = recommendation.date,
-                isSelected = recommendation.isSelected,
-                recipeId = recommendation.recipeId,
-            )
-        }
+//        val mappedRecommendations = fakeFoodData.recommendations.map { recommendation ->
+//            Recommendation(
+//                recommendationId = recommendation.recommendationId,
+//                date = recommendation.date,
+//                isSelected = recommendation.isSelected,
+//                recipeId = recommendation.recipeId,
+//            )
+//        }
 
         // Insert data into database within coroutine scope
         lifecycleScope.launch {
@@ -266,10 +278,9 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
             mappedRecipes.forEach { recipe ->
                 dao.insertRecipe(recipe)
             }
-            mappedRecommendations.forEach { recommendation ->
-                dao.insertRecommendation(recommendation)
-            }
+//            mappedRecommendations.forEach { recommendation ->
+//                dao.insertRecomFimendation(recommendation)
+//            }
         }
-        viewModel.setDatabaseFilled()
     }
 }

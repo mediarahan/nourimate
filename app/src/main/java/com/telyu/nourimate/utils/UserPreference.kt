@@ -24,8 +24,12 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
     suspend fun saveSession(user: UserModel) {
         dataStore.edit { preferences ->
             preferences[USER_ID_KEY] = user.id ?: 0
+            preferences[A_TOKEN_KEY] = user.accessToken ?: ""
+            preferences[R_TOKEN_KEY] = user.refreshToken ?: ""
             preferences[EMAIL_KEY] = user.email ?: ""
-            preferences[LOGIN_STATE_KEY] = user.loginState
+            preferences[IS_LOGIN_KEY] = user.isLoggedIn
+            preferences[IS_VERIFIED_KEY] = user.isVerified
+            preferences[IS_DETAIL_FILLED_KEY] = user.isDetailFilled
         }
     }
 
@@ -34,7 +38,11 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
             UserModel (
                 preferences[USER_ID_KEY] ?: 0,
                 preferences[EMAIL_KEY] ?: "",
-                preferences[LOGIN_STATE_KEY] ?: 0
+                preferences[A_TOKEN_KEY] ?: "",
+                preferences[R_TOKEN_KEY] ?: "",
+                preferences[IS_LOGIN_KEY] ?: false,
+                preferences[IS_VERIFIED_KEY] ?: false,
+                preferences[IS_DETAIL_FILLED_KEY] ?: false
             )
         }
     }
@@ -51,15 +59,21 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         }
     }
 
-    suspend fun setDatabaseFilled() {
-        dataStore.edit {preferences ->
-            preferences[DATABASE_KEY] = true
+    fun getUserLoginState(): Flow<Boolean> {
+        return dataStore.data.map { preferences ->
+            preferences[IS_LOGIN_KEY] ?: false
         }
     }
 
-    fun getDatabaseFilled(): Flow<Boolean> {
+    fun getUserVerificationState(): Flow<Boolean> {
         return dataStore.data.map { preferences ->
-            preferences[DATABASE_KEY] ?: false
+            preferences[IS_VERIFIED_KEY] ?: false
+        }
+    }
+
+    fun getUserDetailFilled(): Flow<Boolean> {
+        return dataStore.data.map { preferences ->
+            preferences[IS_DETAIL_FILLED_KEY] ?: false
         }
     }
 
@@ -69,14 +83,20 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         }
     }
 
+
+
     companion object {
         @Volatile
         private var INSTANCE: UserPreference? = null
 
         private val USER_ID_KEY = intPreferencesKey("userId")
+        private val A_TOKEN_KEY = stringPreferencesKey("access_token")
+        private val R_TOKEN_KEY = stringPreferencesKey("refresh_token")
+
         private val EMAIL_KEY = stringPreferencesKey("email")
-        private val LOGIN_STATE_KEY = intPreferencesKey("loginState")
-        private val DATABASE_KEY = booleanPreferencesKey("isDatabaseFilled")
+        private val IS_LOGIN_KEY = booleanPreferencesKey("loginState")
+        private val IS_VERIFIED_KEY = booleanPreferencesKey("isVerified")
+        private val IS_DETAIL_FILLED_KEY = booleanPreferencesKey("isDatabaseFilled")
 
         fun getInstance(dataStore: DataStore<Preferences>): UserPreference {
             return INSTANCE ?: synchronized(this) {

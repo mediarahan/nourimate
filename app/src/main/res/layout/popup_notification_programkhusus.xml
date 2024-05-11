@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Rectangle at the top -->
+    <ImageView
+        android:id="@+id/rectanglenotifpage"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@drawable/rectangle_program_notifpage"/>
+
+    <!-- Rectangle filling the rest of the screen below the first rectangle -->
+    <ImageView
+        android:id="@+id/rectanglenotifpage2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/rectangle_program_notifpage2"
+        android:layout_marginTop="70dp" />
+
+    <!-- ImageButton for the menu icon positioned inside the first rectangle -->
+    <ImageButton
+        android:id="@+id/notificationIcon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/notifications"
+        android:background="@null"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_gravity="end|top"/>
+
+    <!-- TextView for Program Setting aligned next to the ImageButton -->
+    <TextView
+        android:id="@+id/textViewNotifications"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Notifications"
+        android:textSize="25dp"
+        android:textColor="@color/color23"
+        android:fontFamily="@font/alatsi"
+        android:layout_marginEnd="80dp"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="end|top"/>
+
+    <!-- Button for Restore Program positioned below the first rectangle -->
+    <TextView
+        android:id="@+id/tvnotifProgram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hi, This is Notifications"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/abel"
+        android:layout_marginTop="90dp"
+        android:layout_marginStart="30dp"/>
+
+    <!-- Line below the Restore Program button -->
+    <View
+        android:id="@+id/lineanotifprogram"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#D3D3D3"
+        android:layout_marginTop="130dp" />
+
+</FrameLayout>

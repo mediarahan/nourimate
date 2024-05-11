@@ -1,6 +1,6 @@
 package com.telyu.nourimate.fragments
 
-import android.app.DatePickerDialog
+
 import android.content.ContentValues.TAG
 import android.net.Uri
 import android.os.Bundle
@@ -13,20 +13,45 @@ import android.widget.SeekBar
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.telyu.nourimate.R
 import com.telyu.nourimate.data.local.models.Detail
 import com.telyu.nourimate.databinding.FragmentUserDetailBinding
 import com.telyu.nourimate.utils.Converters
 import com.telyu.nourimate.viewmodels.UserDetailViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
+import com.telyu.nourimate.databinding.DialogWeightPickerBinding
+import com.telyu.nourimate.databinding.DialogHeightPickerBinding
+import com.telyu.nourimate.databinding.DialogWaistSizePickerBinding
+import com.telyu.nourimate.databinding.DialogNameChangeBinding
+import com.telyu.nourimate.custom.WeightRulerView
+import com.telyu.nourimate.custom.StraightRulerView
+import com.telyu.nourimate.custom.WaistSizeRulerView
+import androidx.fragment.app.viewModels
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import kotlin.math.max
 import kotlin.math.min
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.widget.Toast
+import android.util.DisplayMetrics
+import androidx.lifecycle.Observer
+import android.app.AlertDialog
+import android.graphics.Typeface
+import androidx.core.content.res.ResourcesCompat
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import com.telyu.nourimate.adapter.HintArrayAdapter
+
+
+
 
 class UserDetailFragment : Fragment() {
     private lateinit var binding: FragmentUserDetailBinding
+    private lateinit var genderAdapter: HintArrayAdapter
     private val viewModel by viewModels<UserDetailViewModel> {
         ViewModelFactory.getInstance(
             requireContext().applicationContext
@@ -59,6 +84,15 @@ class UserDetailFragment : Fragment() {
             requireActivity().supportFragmentManager.popBackStack()
         }
 
+        // Inisialisasi genderSpinner menggunakan View Binding
+        binding = FragmentUserDetailBinding.bind(view)
+        val genderOptions = arrayOf("Gender", "Laki-laki", "Perempuan")
+
+        // Set adapter untuk spinner
+        genderAdapter = HintArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, genderOptions)
+        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerGender.adapter = genderAdapter
+
     }
 
     private fun getAllData() {
@@ -89,7 +123,15 @@ class UserDetailFragment : Fragment() {
                 binding.editTextHeight.setText(detail.height?.toInt().toString())
                 binding.editTextWeight.setText(detail.weight?.toInt().toString())
                 binding.editTextWaist.setText(detail.waistSize?.toInt().toString())
-                binding.editTextGender.setText(detail.gender)
+
+                // Jika genderAdapter telah diinisialisasi, lakukan seleksi
+                if (::genderAdapter.isInitialized) {
+                    val position = genderAdapter.getPosition(detail.gender)
+                    if (position != -1) {
+                        binding.spinnerGender.setSelection(position)
+                    }
+                }
+
                 binding.editTextAllergy.setText(detail.allergen)
                 binding.editTextDisease.setText(detail.disease)
 
@@ -136,23 +178,41 @@ class UserDetailFragment : Fragment() {
     }
 
     private fun bindEditTextButtons() {
-        binding.iconeditnameImageView.setOnClickListener { requestFocusOnEditText(binding.editTextName) }
-        binding.iconeditheightImageView.setOnClickListener { requestFocusOnEditText(binding.editTextHeight) }
-        binding.iconeditweightImageView.setOnClickListener { requestFocusOnEditText(binding.editTextWeight) }
-        binding.iconeditwaistImageView.setOnClickListener { requestFocusOnEditText(binding.editTextWaist) }
-        binding.iconeditgenderImageView.setOnClickListener { requestFocusOnEditText(binding.editTextGender) }
-        binding.iconeditallergyImageView.setOnClickListener { requestFocusOnEditText(binding.editTextAllergy) }
-        binding.iconeditdiseaseImageView.setOnClickListener { requestFocusOnEditText(binding.editTextDisease) }
-        //setup date picker
-        binding.iconeditbirthImageView.setOnClickListener {
-            showDatePicker { selectedDate ->
-                selectedDate?.let { date ->
-                    val formattedDate =
-                        SimpleDateFormat("yyyy/MM/dd", Locale.getDefault()).format(date)
-                    binding.editTextBirth.setText(formattedDate)
-                }
-            }
+        binding.iconeditnameImageView.setOnClickListener {
+            showNameChangeDialog()
         }
+
+
+        binding.iconeditheightImageView.setOnClickListener {
+            val currentWeight = binding.editTextHeight.text.toString().toFloatOrNull() ?: 0f
+            showHeightRulerPickerDialog(currentWeight)
+        }
+
+        binding.iconeditweightImageView.setOnClickListener {
+            val currentWeight = binding.editTextWeight.text.toString().toFloatOrNull() ?: 0f
+            showWeightRulerPickerDialog(currentWeight)
+        }
+
+        binding.iconeditwaistImageView.setOnClickListener {
+            val currentWeight = binding.editTextWaist.text.toString().toFloatOrNull() ?: 0f
+            showWaistRulerPickerDialog(currentWeight)
+        }
+
+        binding.iconeditgenderImageView.setOnClickListener {
+            binding.spinnerGender.performClick()
+        }
+
+
+        binding.iconeditallergyImageView.setOnClickListener {
+            showAllergiesDialog()
+        }
+        binding.iconeditdiseaseImageView.setOnClickListener {
+            showDiseasesDialog()
+        }
+        binding.iconeditbirthImageView.setOnClickListener {
+            showDatePickerDialog()
+        }
+
     }
 
     private fun requestFocusOnEditText(editText: EditText) {
@@ -166,7 +226,7 @@ class UserDetailFragment : Fragment() {
         val height = binding.editTextHeight.text.toString().toFloatOrNull()
         val weight = binding.editTextWeight.text.toString().toFloatOrNull()
         val waistSize = binding.editTextWaist.text.toString().toFloatOrNull()
-        val gender = binding.editTextGender.text.toString()
+        val gender = binding.spinnerGender.selectedItem.toString()
         val allergen = binding.editTextAllergy.text.toString()
         val disease = binding.editTextDisease.text.toString()
 
@@ -207,28 +267,249 @@ class UserDetailFragment : Fragment() {
         }
     }
 
-    //retrieve date of birth
-    private fun showDatePicker(callback: (Date?) -> Unit) {
-        val calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-        val datePickerDialog = DatePickerDialog(
-            requireContext(),
-            { _, year, month, dayOfMonth ->
-                val selectedDate = Calendar.getInstance()
-                selectedDate.set(year, month, dayOfMonth)
-                // Convert Calendar to Date
-                val date = selectedDate.time
-                // Pass the selected date via callback
-                callback(date)
-            },
-            year,
-            month,
-            day
-        )
-        datePickerDialog.show()
+
+
+    //retrieve date of birth
+    private fun showDatePickerDialog() {
+        val datePickerFragment = CustomDatePickerFragment().apply {
+            setDatePickerDialogListener(object : CustomDatePickerFragment.DatePickerDialogListener {
+                override fun onDateSet(year: Int, month: Int, dayOfMonth: Int) {
+                    val calendar = Calendar.getInstance().apply {
+                        set(year, month, dayOfMonth)
+                    }
+                    val format = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+                    val formattedDate = format.format(calendar.time)
+                    binding.editTextBirth.setText(formattedDate)
+                }
+            })
+        }
+        datePickerFragment.show(childFragmentManager, "datePicker")
+    }
+
+    private fun showWeightRulerPickerDialog(initialSelectedValue: Float) {
+        val dialog = Dialog(requireContext())
+        val dialogBinding = DialogWeightPickerBinding.inflate(layoutInflater)
+        dialog.setContentView(dialogBinding.root)
+
+        // Mengatur agar latar dialog transparan
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        // Mendapatkan ukuran layar
+        val displayMetrics = requireContext().resources.displayMetrics
+        val screenWidth = displayMetrics.widthPixels
+        // Mengatur lebar dialog menjadi 85% dari lebar layar
+        val dialogWidth = (screenWidth * 0.85).toInt()
+        dialog.window?.setLayout(dialogWidth, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+        // Set initial selected value
+        dialogBinding.weightRulerView.selectedValue = initialSelectedValue
+        dialogBinding.textViewNumber2.text = initialSelectedValue.toInt().toString()
+
+        // Set listener untuk CurvedRulerView
+        dialogBinding.weightRulerView.listener = object : WeightRulerView.OnValueChangeListener {
+            override fun onValueChanged(value: Float) {
+                // Update selected value
+                dialogBinding.textViewNumber2.text = value.toInt().toString()
+                // Update EditText in real-time
+                binding.editTextWeight.setText(String.format("%d", value.toInt()))
+            }
+        }
+
+        // Set action for 'Done' button
+        dialogBinding.buttonDone.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun showHeightRulerPickerDialog(initialSelectedValue: Float) {
+        val dialog = Dialog(requireContext())
+        val dialogBinding = DialogHeightPickerBinding.inflate(layoutInflater)
+        dialog.setContentView(dialogBinding.root)
+
+        // Mengatur agar latar dialog transparan
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        // Mendapatkan ukuran layar
+        val displayMetrics = requireContext().resources.displayMetrics
+        val screenWidth = displayMetrics.widthPixels
+        // Mengatur lebar dialog menjadi 85% dari lebar layar
+        val dialogWidth = (screenWidth * 0.85).toInt()
+        dialog.window?.setLayout(dialogWidth, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+        // Set initial selected value
+        dialogBinding.straightRulerView.selectedValue = initialSelectedValue
+        dialogBinding.textViewNumber.text = initialSelectedValue.toInt().toString()
+
+        // Set listener untuk CurvedRulerView
+        dialogBinding.straightRulerView.listener = object : StraightRulerView.OnValueChangeListener {
+            override fun onValueChanged(value: Float) {
+                // Update selected value
+                dialogBinding.textViewNumber.text = value.toInt().toString()
+                // Update EditText in real-time
+                binding.editTextHeight.setText(String.format("%d", value.toInt()))
+            }
+        }
+
+        // Set action for 'Done' button
+        dialogBinding.buttonDone.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun showWaistRulerPickerDialog(initialSelectedValue: Float) {
+        val dialog = Dialog(requireContext())
+        val dialogBinding = DialogWaistSizePickerBinding.inflate(layoutInflater)
+        dialog.setContentView(dialogBinding.root)
+
+        // Mengatur agar latar dialog transparan
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        // Mendapatkan ukuran layar
+        val displayMetrics = requireContext().resources.displayMetrics
+        val screenWidth = displayMetrics.widthPixels
+        // Mengatur lebar dialog menjadi 85% dari lebar layar
+        val dialogWidth = (screenWidth * 0.85).toInt()
+        dialog.window?.setLayout(dialogWidth, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+        // Set initial selected value
+        dialogBinding.waistRulerView.selectedValue = initialSelectedValue
+        dialogBinding.textViewNumber1.text = initialSelectedValue.toInt().toString()
+
+        // Set listener untuk CurvedRulerView
+        dialogBinding.waistRulerView.listener = object : WaistSizeRulerView.OnValueChangeListener {
+            override fun onValueChanged(value: Float) {
+                // Update selected value
+                dialogBinding.textViewNumber1.text = value.toInt().toString()
+                // Update EditText in real-time
+                binding.editTextWaist.setText(String.format("%d", value.toInt()))
+            }
+        }
+
+        // Set action for 'Done' button
+        dialogBinding.buttonDone.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun showAllergiesDialog() {
+        val allergies = arrayOf("Kacang, Gluten")
+        val checkedItems = booleanArrayOf(false, false)
+        val selectedItems = mutableListOf<String>()
+
+        val dialogBuilder = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog)
+            .setTitle("Select Allergies")
+            .setMultiChoiceItems(allergies, checkedItems) { _, which, isChecked ->
+                if (isChecked) {
+                    selectedItems.add(allergies[which])
+                } else {
+                    selectedItems.remove(allergies[which])
+                }
+            }
+            .setPositiveButton("Done") { dialog, _ ->
+                val selectedText = selectedItems.joinToString(", ")
+                binding.editTextAllergy.setText(selectedText)  // Menggunakan ViewBinding untuk mengupdate view
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancel", null)
+
+        val dialog = dialogBuilder.create()
+        dialog.show()
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).isAllCaps = false
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).isAllCaps = false
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).apply {
+            setTextColor(Color.BLACK)
+            textSize = 16f
+            typeface = Typeface.create(ResourcesCompat.getFont(requireContext(), R.font.abel), Typeface.NORMAL)
+        }
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).apply {
+            setTextColor(Color.BLACK)
+            textSize = 16f
+            typeface = Typeface.create(ResourcesCompat.getFont(requireContext(), R.font.abel), Typeface.NORMAL)
+        }
+
+        val displayMetrics = requireContext().resources.displayMetrics
+        val screenWidth = displayMetrics.widthPixels
+        dialog.window?.setLayout((screenWidth * 0.85).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
+    }
+
+    private fun showDiseasesDialog() {
+        val diseases = arrayOf("Diabetes", "Kolesterol", "Hipertensi")
+        val checkedItems = booleanArrayOf(false, false, false)
+        val selectedItems = mutableListOf<String>()
+
+        val dialogBuilder = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog)
+            .setTitle("Select Diseases")
+            .setMultiChoiceItems(diseases, checkedItems) { _, which, isChecked ->
+                if (isChecked) {
+                    selectedItems.add(diseases[which])
+                } else {
+                    selectedItems.remove(diseases[which])
+                }
+            }
+            .setPositiveButton("Done") { dialog, _ ->
+                val selectedText = selectedItems.joinToString(", ")
+                binding.editTextDisease.setText(selectedText)
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancel", null)
+
+        val dialog = dialogBuilder.create()
+        dialog.show()
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).isAllCaps = false
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).isAllCaps = false
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).apply {
+            setTextColor(Color.BLACK)
+            textSize = 16f
+            typeface = Typeface.create(ResourcesCompat.getFont(requireContext(), R.font.abel), Typeface.NORMAL)
+        }
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).apply {
+            setTextColor(Color.BLACK)
+            textSize = 16f
+            typeface = Typeface.create(ResourcesCompat.getFont(requireContext(), R.font.abel), Typeface.NORMAL)
+        }
+
+        val displayMetrics = requireContext().resources.displayMetrics
+        val screenWidth = displayMetrics.widthPixels
+        dialog.window?.setLayout((screenWidth * 0.85).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
+    }
+
+    private fun showNameChangeDialog() {
+        val dialog = Dialog(requireContext())
+        val dialogBinding = DialogNameChangeBinding.inflate(layoutInflater)
+        dialog.setContentView(dialogBinding.root)
+
+        // Setting initial value
+        dialogBinding.editTextNameChange.setText(binding.editTextName.text.toString())
+
+        // Configure the dialog width
+        val displayMetrics = requireContext().resources.displayMetrics
+        val screenWidth = displayMetrics.widthPixels
+        val dialogWidth = (screenWidth * 0.85).toInt()
+        dialog.window?.setLayout(dialogWidth, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+        // Set actions for "Done" and "Cancel" buttons
+        dialogBinding.buttonDone.setOnClickListener {
+            val newName = dialogBinding.editTextNameChange.text.toString()
+            binding.editTextName.setText(newName)
+            dialog.dismiss()
+        }
+
+        dialogBinding.buttonCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
 }

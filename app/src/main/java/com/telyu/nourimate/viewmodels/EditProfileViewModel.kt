@@ -15,6 +15,7 @@ import com.telyu.nourimate.data.remote.retrofit.RecommendationRequest
 import com.telyu.nourimate.data.repository.NourimateRepository
 import com.telyu.nourimate.utils.GeneralUtil
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import java.util.Date
@@ -36,31 +37,31 @@ class EditProfileViewModel (private val repository: NourimateRepository): ViewMo
 
     private val userDetails: LiveData<Detail> = userEmail.switchMap { email ->
         liveData {
+            Log.d("Debug", "Fetching user details for email: $email")
             val detail = repository.getUserDetailsByEmail(email)
+            Log.d("Debug", "User details fetched: $detail")
             emit(detail)
         }
     }
 
-    val recommendationData: LiveData<Result<NourimateRepository.ListOfIds>> = userDetails.switchMap { detail ->
+    private val recommendationData: LiveData<Result<NourimateRepository.ListOfIds>> = userDetails.switchMap { detail ->
         val age = GeneralUtil.calculateAge(detail.dob)
 
         val recommendationRequest = RecommendationRequest(
             tinggi_badan = detail.height?.toInt() ?: 9999,
-            jenis_kelamin = detail.gender ?: "Unknown",
+            jenis_kelamin = detail.gender,
             umur = age,
-            penyakit = detail.disease ?: "None",
-            alergi = detail.allergen ?: "None"
+            penyakit = detail.disease,
+            alergi = detail.allergen
         )
-
+        Log.d("Debug", "Sending recommendation request: $recommendationRequest")
         liveData {
-            emit(Result.Loading)
-            //pura2 loading
-            delay(2000)
             try {
                 val response = repository.fetchRecommendationData(recommendationRequest)
-                Log.d("Age", age.toString())
+                Log.d("Debug", "Recommendation response received: $response")
                 emit(Result.Success(response))
             } catch (e: Exception) {
+                Log.e("Debug", "Error fetching recommendation data: ${e.message}")
                 emit(Result.Error(e.message.toString()))
             }
         }
@@ -102,16 +103,24 @@ class EditProfileViewModel (private val repository: NourimateRepository): ViewMo
     val recommendationsLiveData: LiveData<List<Recommendation>> = recommendationData.switchMap { result ->
         MutableLiveData<List<Recommendation>>().apply {
             value = when (result) {
-                is Result.Success -> mapFetchedIdsToRecommendationEntity(
-                    result.data.recipeIdsSarapan,
-                    result.data.recipeIdsMakanSiang,
-                    result.data.recipeIdsMakanMalam
-                )
-                is Result.Loading -> listOf()  // Or handle loading differently
-                is Result.Error -> listOf()    // Or handle errors differently
+                is Result.Success -> {
+                    val recommendations = mapFetchedIdsToRecommendationEntity(
+                        result.data.recipeIdsSarapan,
+                        result.data.recipeIdsMakanSiang,
+                        result.data.recipeIdsMakanMalam
+                    )
+                    Log.d("Debug", "Mapped recommendations: $recommendations")
+                    recommendations
+                }
+                is Result.Loading -> listOf()
+                is Result.Error -> {
+                    Log.e("Error", "Error in recommendation result: ")
+                    listOf()
+                }
             }
         }
     }
+
 
     fun insertRecommendations(recommendations: List<Recommendation>) {
         viewModelScope.launch {
@@ -122,8 +131,15 @@ class EditProfileViewModel (private val repository: NourimateRepository): ViewMo
 
     fun setAccountStateAsCompleted() {
         viewModelScope.launch {
-            repository.changeAccountState(userId.toString().toInt(), userEmail.toString(), 3)
-            repository.updateAccountState(userId.toString().toInt(), 3)
+            val email = repository.getUserEmail().firstOrNull() ?: ""
+            val userId = repository.getUserId().firstOrNull() ?: -1
+
+            if (userId != -1 && email.isNotEmpty()) {
+                repository.changeAccountState(userId, email, 3)
+                repository.updateAccountState(userId, 3)
+            } else {
+                Log.e("ViewModel", "Invalid userId or email: userId=$userId, email=$email")
+            }
         }
     }
 

@@ -9,7 +9,6 @@ import android.graphics.drawable.GradientDrawable
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.telyu.nourimate.R
-import com.telyu.nourimate.viewmodels.SignUpViewModel
 import com.telyu.nourimate.viewmodels.VerificationViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
 

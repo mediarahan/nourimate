@@ -134,7 +134,7 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
             val gender = if (detail.gender == "Laki-laki") true else if (detail.gender == "Perempuan") false else null
             val age = calculateAge(detail.dob)
 
-            val akei = calculateAKEi(detail.height?.toInt() ?: 420, gender, age)
+            val akei = calculateAKEi(detail.height?.toInt() ?: 9999, gender, age)
             val conditionCode = convertConditionToCode(detail.disease)
 
             val breakfastNutrition = calculateBreakfastNutrition(akei, conditionCode)
@@ -158,7 +158,7 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
             val gender = if (detail.gender == "Laki-laki") true else if (detail.gender == "Perempuan") false else null
             val age = calculateAge(detail.dob)
 
-            val akei = calculateAKEi(detail.height?.toInt() ?: 420, gender, age)
+            val akei = calculateAKEi(detail.height?.toInt() ?: 9999, gender, age)
             val conditionCode = convertConditionToCode(detail.disease)
 
             val breakfastNutrition = calculateBreakfastNutrition(akei, conditionCode)

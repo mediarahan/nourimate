@@ -2,6 +2,9 @@ package com.telyu.nourimate.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import android.graphics.drawable.ColorDrawable
+import android.graphics.Color
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +26,15 @@ class MonthViewFragment : DialogFragment() {
         this.listener = listener
     }
 
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.apply {
+            val width = context.resources.displayMetrics.widthPixels * 0.85 // Menggunakan 85% dari lebar layar
+            setLayout(width.toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
+            setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            setGravity(Gravity.CENTER)
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

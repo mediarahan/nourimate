@@ -126,7 +126,7 @@ object GeneralUtil {
 
         return Nutrition(
             calories = dailyCalories,
-            carbohydrates = nutritionCalculator(carbMultiplier) / 4,
+            carbohydrates = nutritionCalculator(carbMultiplier) / 4, 
             protein = nutritionCalculator(protMultiplier) / 4,
             fat = nutritionCalculator(fatMultiplier) / 9
         )
@@ -170,13 +170,13 @@ object GeneralUtil {
     private const val DHK = 7 // Diabetes + Hypertension + Cholesterol
 
     private val multipliers = mapOf(
-        DHK to Triple(0.55, 0.8, 0.2),
-        DH to Triple(0.55, 0.8, 0.225),
-        DK to Triple(0.55, 0.8, 0.2),
-        HK to Triple(0.6, 0.8, 0.2),
+        DHK to Triple(0.55, 0.125, 0.2),
+        DH to Triple(0.55, 0.125, 0.225),
+        DK to Triple(0.55, 0.125, 0.2),
+        HK to Triple(0.6, 0.125, 0.2),
         D to Triple(0.65, 0.125, 0.225),
-        H to Triple(0.625, 0.8, 0.25),
-        K to Triple(0.65, 0.8, 0.225)
+        H to Triple(0.625, 0.125, 0.25),
+        K to Triple(0.65, 0.125, 0.225)
     )
 
     //Sleep API related

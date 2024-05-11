@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/drawable/rectangle_home2_with_shadow.xml -->
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:id="@+id/shape_notif_icon"
+            android:shape="rectangle">
+            <solid android:color="#FFE8A3" />
+            <size
+                android:width="30dp"
+                android:height="30dp" />
+            <corners android:bottomLeftRadius="50dp" android:bottomRightRadius="0dp" android:topLeftRadius="0dp"/>
+        </shape>
+    </item>
+
+</layer-list>

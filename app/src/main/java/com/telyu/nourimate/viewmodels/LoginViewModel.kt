@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.telyu.nourimate.data.remote.Result
 import com.telyu.nourimate.data.repository.NourimateRepository
@@ -16,6 +17,9 @@ class LoginViewModel(private val repository: NourimateRepository) : ViewModel() 
     val userLoginState: LiveData<Int> = _userLoginState
 
     val uiState = MutableLiveData<Result<Unit>>()
+    val isLoggedInState: LiveData<Boolean> = repository.getUserLoginState().asLiveData()
+    val isUserVerified: LiveData<Boolean> = repository.getUserVerificationState().asLiveData()
+    val isDetailFilled: LiveData<Boolean> = repository.getUserDetailFilled().asLiveData()
 
     fun login(email: String, password: String) {
         viewModelScope.launch {
@@ -31,5 +35,7 @@ class LoginViewModel(private val repository: NourimateRepository) : ViewModel() 
             }
         }
     }
+
+    fun loginBackend(email: String, password: String) = repository.loginBackend(email, password)
 
 }

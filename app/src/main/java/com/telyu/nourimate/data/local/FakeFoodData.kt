@@ -47,7 +47,7 @@ class FakeFoodData {
                     "Aduk bahan basah dan kering hingga rata\n" +
                     "tambahkan coklat keping tapi sisakan sedikit untuk topping.\n" +
                     "Tuang ke dalam loyang dan taburi dengan sisa choco chips dan almond. Panggang selama 40 menit atau sampai matang.",
-            recipePictures = "capcay",
+            recipePictures = "roti_pisang_oat",
             mealType = 1
         ),
         Recipe(
@@ -67,7 +67,7 @@ class FakeFoodData {
                     "Tambahkan semua bahan basah dan uleni hingga halus.\n" +
                     "Diamkan hingga ukurannya dua kali lipat.\n" +
                     "Bentuk adonan dan goreng hingga berwarna cokelat keemasan.",
-            recipePictures = "capcay",
+            recipePictures = "donat",
             mealType = 1
         ),
         Recipe(
@@ -88,7 +88,7 @@ class FakeFoodData {
                     "Setelah tercampur\n" +
                     "bagi adonan ke dalam cetakan.\n" +
                     "Panggang dengan suhu 175°C selama 25 menit.",
-            recipePictures = "capcay",
+            recipePictures = "muffin_oat_pisang",
             mealType = 1
         ),
         Recipe(
@@ -112,7 +112,7 @@ class FakeFoodData {
                     "kecuali coklat kancing.\n" +
                     "Blender adonan hingga halus. Tuang ke dalam cangkir aluminium dan hiasi tombol cokelat di atasnya.\n" +
                     "Panggang adonan dengan suhu 160°C selama 15 menit.",
-            recipePictures = "capcay",
+            recipePictures = "banana_bread_oats",
             mealType = 1
         ),
         Recipe(
@@ -137,7 +137,7 @@ class FakeFoodData {
                     "padatkan\n" +
                     "tutup rapat. Simpan pada frezer minimal 30 menit.\n" +
                     "Potong menjadi batangan.",
-            recipePictures = "capcay",
+            recipePictures = "bilah_energi_oatmeal_cokelat",
             mealType = 1
         ),
         Recipe(
@@ -162,7 +162,7 @@ class FakeFoodData {
                     "Biarkan dingin\n" +
                     "buka cetakannya\n" +
                     "dan potong-potong.",
-            recipePictures = "capcay",
+            recipePictures = "kue_gandum_pisang",
             mealType = 1
         ),
         Recipe(
@@ -180,7 +180,7 @@ class FakeFoodData {
             cookingSteps = "Masak gandum dengan air sesuai kemasan.\n" +
                     "Pindahkan ke mangkuk lalu tambahkan yogurt.\n" +
                     "Iris buah dan tambahkan ke mangkuk. Gerimis dengan madu.",
-            recipePictures = "capcay",
+            recipePictures = "gandum_dengan_buah",
             mealType = 1
         ),
         Recipe(
@@ -197,7 +197,7 @@ class FakeFoodData {
             cookingSteps = "Panggang roti dalam wajan antilengket selama satu menit di setiap sisi.\n" +
                     "Atur telur dadar dan sayuran di dalam roti.\n" +
                     "Iris dan sajikan.",
-            recipePictures = "capcay",
+            recipePictures = "sandwich_telur_dadar",
             mealType = 1
         ),
         Recipe(
@@ -227,7 +227,7 @@ class FakeFoodData {
                     "telur dan mentega cair.\n" +
                     "Tuang ke dalam cetakan yang dialasi kertas roti dan taburi choco chips.\n" +
                     "Panggang dengan suhu 180°C selama 20 menit.",
-            recipePictures = "capcay",
+            recipePictures = "banana_oats_coklat",
             mealType = 1
         ),
         Recipe(
@@ -255,7 +255,7 @@ class FakeFoodData {
                     "Campur semuanya sampai halus. Diamkan selama 15 menit.\n" +
                     "Masak dalam waffle iron hingga berwarna keemasan.\n" +
                     "Sajikan dengan buah atau topping yang Anda inginkan.",
-            recipePictures = "capcay",
+            recipePictures = "wafel",
             mealType = 1
         ),
         Recipe(
@@ -279,7 +279,7 @@ class FakeFoodData {
                     "lalu aduk rata.\n" +
                     "Tuang adunan ke dalam acuan dan hiaskan baki choco chips. Bakar selama kira-kira 30 minit pada suhu 150°C.\n" +
                     "Biarkan dingin lalu iris.",
-            recipePictures = "capcay",
+            recipePictures = "kue_oat_pisang",
             mealType = 1
         ),
         Recipe(
@@ -306,7 +306,7 @@ class FakeFoodData {
                     "dan biji chia.\n" +
                     "Tambahkan mentega cair dan susu. Campur dengan baik.\n" +
                     "Tempatkan ke dalam cetakan dan hiasi dengan keping cokelat dan almond cincang. Kukus selama 25 menit.",
-            recipePictures = "capcay",
+            recipePictures = "kue_pisang_kukus",
             mealType = 1
         ),
         Recipe(
@@ -332,7 +332,7 @@ class FakeFoodData {
                     "Tambahkan tahu dan hancurkan. Tuangkan air secukupnya.\n" +
                     "Bumbui sesuai selera.\n" +
                     "Masukkan bawang daun dan sajikan.",
-            recipePictures = "capcay",
+            recipePictures = "tahu_dihancurkan_dengan_orak_arik",
             mealType = 1
         ),
         Recipe(
@@ -354,7 +354,7 @@ class FakeFoodData {
                     "Tambahkan nasi dan saus sambal. Mengaduk.\n" +
                     "Masukkan sayuran dan aduk rata.\n" +
                     "Bumbui sesuai selera.",
-            recipePictures = "capcay",
+            recipePictures = "nasi_goreng_sayuran",
             mealType = 1
         ),
         Recipe(
@@ -381,7 +381,7 @@ class FakeFoodData {
                     "Tuang ke dalam cetakan roti dan taburi dengan granola.\n" +
                     "Panggang dalam oven dengan suhu 180°C selama 20 menit atau hingga adonan tidak lengket lagi.\n" +
                     "Biarkan dingin sebelum membuka cetakan dan mengiris.",
-            recipePictures = "capcay",
+            recipePictures = "roti_pisang_havermut",
             mealType = 1
         ),
         Recipe(
@@ -407,7 +407,7 @@ class FakeFoodData {
                     "kecuali tepung dan minyak.\n" +
                     "Masukkan tepung dan aduk hingga rata.\n" +
                     "Masak dalam wajan dengan minyak sampai berwarna keemasan dan kencang.",
-            recipePictures = "capcay",
+            recipePictures = "goreng_labu_dengan_jagung",
             mealType = 1
         ),
         Recipe(
@@ -423,7 +423,7 @@ class FakeFoodData {
             cookingSteps = "Iris pisang dan parut keju.\n" +
                     "Susun di atas roti.\n" +
                     "Masak dalam penggorengan udara pada suhu 190°C selama 5 menit.",
-            recipePictures = "capcay",
+            recipePictures = "roti_pisang_dan_keju",
             mealType = 1
         ),
         Recipe(
@@ -442,7 +442,7 @@ class FakeFoodData {
             cookingSteps = "Giling oat hingga menjadi bubuk lalu campurkan dengan bahan kering lainnya.\n" +
                     "Campur semuanya sampai halus.\n" +
                     "Masak dalam wajan antilengket sampai keras di kedua sisi.",
-            recipePictures = "capcay",
+            recipePictures = "pancake_protein_oat",
             mealType = 1
         ),
         Recipe(
@@ -467,7 +467,7 @@ class FakeFoodData {
                     "Masukkan adunan ke dalam acuan dan kukus selama 15 minit.\n" +
                     "Biarkan ia sejuk\n" +
                     "buang acuan dan potong.",
-            recipePictures = "capcay",
+            recipePictures = "brownies_oatmeal",
             mealType = 1
         ),
         Recipe(
@@ -490,7 +490,7 @@ class FakeFoodData {
                     "dan tempe. Masak dalam wajan antilengket sampai empuk.\n" +
                     "Masukkan semua bahan ke dalam mangkuk.\n" +
                     "Sajikan sampai segar.",
-            recipePictures = "capcay",
+            recipePictures = "salad_sayur_dengan_ayam,_tahu,_dan_tempe",
             mealType = 1
         ),
         Recipe(
@@ -511,7 +511,7 @@ class FakeFoodData {
                     "Campur mie dan sayuran\n" +
                     "bumbui sesuai keinginan\n" +
                     "dan sajikan.",
-            recipePictures = "capcay",
+            recipePictures = "bihun_dengan_sayuran",
             mealType = 1
         ),
         Recipe(
@@ -529,7 +529,7 @@ class FakeFoodData {
             cookingSteps = "Potong pisang dan buah naga.\n" +
                     "Masukkan kesemuanya ke dalam pengisar dan kisar sehingga sebati.\n" +
                     "Tempatkan dalam mangkuk dan hiasi dengan granola dan buah sesuai keinginan. Nikmati sarapan Anda.",
-            recipePictures = "capcay",
+            recipePictures = "smoothie_buah_naga_dan_pisang",
             mealType = 1
         ),
         Recipe(
@@ -550,7 +550,7 @@ class FakeFoodData {
                     "Campur semua bahan.\n" +
                     "Panggang selama 30 menit pada suhu 170°C.\n" +
                     "Hasilnya jadi 2 loyang bisa dibagi 12 potong.",
-            recipePictures = "capcay",
+            recipePictures = "bolu_oatmeal_pisang_cokelat",
             mealType = 1
         ),
         Recipe(
@@ -567,7 +567,7 @@ class FakeFoodData {
                     "Tambahkan sebutir telur dan aduk rata.\n" +
                     "Tambahkan chocolatos dan aduk.\n" +
                     "Masak di atas pan anti lengket hingga matang kedua sisinya.",
-            recipePictures = "capcay",
+            recipePictures = "oat_panekuk",
             mealType = 1
         ),
         Recipe(
@@ -592,7 +592,7 @@ class FakeFoodData {
                     "aduk merata sambil ditambahkan gula\n" +
                     "garam dan kaldu jamur.\n" +
                     "Tumis brokoli siap disajikan.",
-            recipePictures = "capcay",
+            recipePictures = "tumis_brokoli",
             mealType = 1
         ),
         Recipe(
@@ -611,7 +611,7 @@ class FakeFoodData {
                     "campur dengan tahu dan bumbui dengan garam.\n" +
                     "Masukkan minyak ke dalam wajan.\n" +
                     "Goreng hingga matang.",
-            recipePictures = "capcay",
+            recipePictures = "omlete_tahu_telur",
             mealType = 1
         ),
         Recipe(
@@ -628,7 +628,7 @@ class FakeFoodData {
                     "Lalu masukan ke kulkas diamkan semalaman.\n" +
                     "Siap disantap pada pagi hari lalu taburi chia seed diatasnya.\n" +
                     "Bisa ditambahkan dengan buah buahan (opsional).",
-            recipePictures = "capcay",
+            recipePictures = "muesli_simple",
             mealType = 1
         ),
         Recipe(
@@ -648,7 +648,7 @@ class FakeFoodData {
                     "Rendam bokcoy dalam air panas\n" +
                     "sebentar saja.\n" +
                     "Blender semua bahan.",
-            recipePictures = "capcay",
+            recipePictures = "jus_bokcoy",
             mealType = 1
         ),
         Recipe(
@@ -669,7 +669,7 @@ class FakeFoodData {
                     "campurkan dengan air dan pemanis\n" +
                     "tambahkan air jeruk nipis.\n" +
                     "Blender hingga halus.",
-            recipePictures = "capcay",
+            recipePictures = "jus",
             mealType = 1
         ),
         Recipe(
@@ -691,7 +691,7 @@ class FakeFoodData {
                     "tekan ratakan dengan garpu.\n" +
                     "Panggang kue dengan suhu 160°C selama 30 menit.\n" +
                     "Angkat dan dinginkan. Siap disajikan.",
-            recipePictures = "capcay",
+            recipePictures = "banana_oat_cookies",
             mealType = 1
         ),
         Recipe(
@@ -724,7 +724,7 @@ class FakeFoodData {
                     "Tambahkan topping pilihan anda sesuai selera.\n" +
                     "Panggang di oven 180°C sekitar 20 - 25 menit.\n" +
                     "Angkat dan dinginkan.",
-            recipePictures = "capcay",
+            recipePictures = "healthy_banana_oat_muffin",
             mealType = 1
         ),
         Recipe(
@@ -748,7 +748,7 @@ class FakeFoodData {
                     "Haluskan bawang merah dan bawang putih beserta garam.\n" +
                     "Tumis bumbu halus.\n" +
                     "Masukkan adonan tahu dan masak hingga matang.",
-            recipePictures = "capcay",
+            recipePictures = "tahu_telur",
             mealType = 1
         ),
         Recipe(
@@ -764,7 +764,7 @@ class FakeFoodData {
             cookingSteps = "Campurkan chia seed dengan Yakult.\n" +
                     "Diamkan selama 5-10 menit di lemari es.\n" +
                     "Tambahkan potongan buah naga.",
-            recipePictures = "capcay",
+            recipePictures = "chia_seed_yakult",
             mealType = 1
         ),
         Recipe(
@@ -782,7 +782,7 @@ class FakeFoodData {
             cookingSteps = "Kupas buah pisang masukan dalam mangkok hancurkan hingga halus.\n" +
                     "Potong kurma dan parut keju masukan dalam mangkuk hancuran pisang tadi tambahkan vanilla paste. Tambahkan oatmeal.\n" +
                     "Campur adonan hingga merata cetak adonan pada loyang lalu panggang adoan di oven suhu 180°C selama kurleb 15 menitan.",
-            recipePictures = "capcay",
+            recipePictures = "oat_cookies",
             mealType = 1
         ),
         Recipe(
@@ -811,7 +811,7 @@ class FakeFoodData {
                     "Didihkan kembali rebus selama 10 menit\n" +
                     "hingga bakso mengambang.\n" +
                     "Sajikan bisa di sup/dibakar.",
-            recipePictures = "capcay",
+            recipePictures = "bakso_ayam_oat",
             mealType = 1
         ),
         Recipe(
@@ -832,7 +832,7 @@ class FakeFoodData {
                     "Masukkan choco chips\n" +
                     "aduk lagi sampai rata.\n" +
                     "Tuang ke loyang yg sudah di alas baking paper. Panggang api bawah 180° kurang lebih 15-20 menit.",
-            recipePictures = "capcay",
+            recipePictures = "healthy_oatmeal_bar",
             mealType = 1
         ),
         Recipe(
@@ -854,7 +854,7 @@ class FakeFoodData {
                     "Taburi dengan topping yang disukai seperti chia\n" +
                     "almond\n" +
                     "dll. dan sajikan.",
-            recipePictures = "capcay",
+            recipePictures = "smoothie_buah_naga",
             mealType = 1
         ),
         Recipe(
@@ -877,7 +877,7 @@ class FakeFoodData {
                     "balik adonan pancake. Tunggu hingga kedua sisi matang.\n" +
                     "Sajikan hangat\n" +
                     "boleh ditambah madu atau topping sesuai selera.",
-            recipePictures = "capcay",
+            recipePictures = "pancake_pisang",
             mealType = 1
         ),
         Recipe(
@@ -905,7 +905,7 @@ class FakeFoodData {
                     "wortel dan timun\n" +
                     "susun memanjang diatas tortilla kemudian gulung.\n" +
                     "Panggang tortilla hingga berwarna kecoklatan. Siap disajikan.",
-            recipePictures = "capcay",
+            recipePictures = "bolognese_wrap",
             mealType = 1
         ),
         Recipe(
@@ -924,7 +924,7 @@ class FakeFoodData {
             cookingSteps = "Bumbui ayam dengan kaldu jamur lalu panggang di wajan tanpa minyak.\n" +
                     "Atur semuanya di atas tortilla dan gulung.\n" +
                     "Panaskan bungkus dalam wajan antilengket selama 2-3 menit.",
-            recipePictures = "capcay",
+            recipePictures = "bungkus_salad_ayam",
             mealType = 1
         ),
         Recipe(
@@ -948,7 +948,7 @@ class FakeFoodData {
                     "Masukkan tofu hingga semua matang.\n" +
                     "Masukan garam saus tiram kaldu jamur.\n" +
                     "Masukan Kocokan telur aduk hingga berserabut. Tambahkan daun bawang (opsional).",
-            recipePictures = "capcay",
+            recipePictures = "steam_tofu_udang",
             mealType = 1
         ),
         Recipe(
@@ -972,7 +972,7 @@ class FakeFoodData {
                     "Oleskan adonan tuna di atas roti multigrain.\n" +
                     "Letakkan potongan keju diatasnya.\n" +
                     "Panggang dengan airfryer selama 15 menit.",
-            recipePictures = "capcay",
+            recipePictures = "tuna_bruschetta",
             mealType = 1
         ),
         Recipe(
@@ -999,7 +999,7 @@ class FakeFoodData {
                     "Setelah layu masukkan oatmeal aduk sampai tercampur\n" +
                     "tambahkan air sedikit agar dy bisa tercampur.\n" +
                     "Tambahkan selada air atau sayuran pilihan lainnya.",
-            recipePictures = "capcay",
+            recipePictures = "oatmeal_goreng",
             mealType = 1
         ),
         Recipe(
@@ -1019,7 +1019,7 @@ class FakeFoodData {
                     "Rebus air hingga mendidih lalu rebus jagung dan kentang. Biarkan agak dingin.\n" +
                     "Campur semua sayuran dalam mangkuk dan tambahkan sisa bahan.\n" +
                     "Pindahkan ke mangkuk dan sajikan.",
-            recipePictures = "capcay",
+            recipePictures = "salad_mentimun_dengan_coleslaw",
             mealType = 1
         ),
         Recipe(
@@ -1046,7 +1046,7 @@ class FakeFoodData {
                     "Tuang bubur ke dalam mangkuk. Tambahkan ayam suwir\n" +
                     "kacang tanah sangrai\n" +
                     "irisan telur dadar untuk topping dan taburi daun bawang.",
-            recipePictures = "capcay",
+            recipePictures = "bubur_ayam_merah",
             mealType = 1
         ),
         Recipe(
@@ -1073,7 +1073,7 @@ class FakeFoodData {
                     "serta garam dan kaldu jamur.\n" +
                     "Saat telur sudah matang\n" +
                     "masukkan sayuran dan tunggu hingga matang sesuai selera.",
-            recipePictures = "capcay",
+            recipePictures = "sup_telur_pedas",
             mealType = 1
         ),
         Recipe(
@@ -1103,7 +1103,7 @@ class FakeFoodData {
                     "Tambahkan minyak wijen.\n" +
                     "Masak hingga tekstur sesuai yg di inginkan.\n" +
                     "Taburi dengan daun bawang saat disajikan.",
-            recipePictures = "capcay",
+            recipePictures = "bubur_ayam_oatmeal",
             mealType = 1
         ),
         Recipe(
@@ -1128,7 +1128,7 @@ class FakeFoodData {
                     "Tambahkan perasan jeruk nipis.\n" +
                     "Tambahkan sedikit lada dan garam.\n" +
                     "Aduk rata.",
-            recipePictures = "capcay",
+            recipePictures = "salad_sayur",
             mealType = 1
         ),
         Recipe(
@@ -1152,7 +1152,7 @@ class FakeFoodData {
                     "air dan tepung bakwan. Aduk rata dan bumbui dengan garam dan merica.\n" +
                     "Beri teflon minyak zaitun. Panaskan minyak (jangan sampai terlalu panas).\n" +
                     "Goreng hingga matang.",
-            recipePictures = "capcay",
+            recipePictures = "bakwan_telur_teflon",
             mealType = 1
         ),
         Recipe(
@@ -1169,7 +1169,7 @@ class FakeFoodData {
             cookingSteps = "Cuci bersih dab siapkan bahan.\n" +
                     "Blend jadi satu.\n" +
                     "Serving tabur chia seed.",
-            recipePictures = "capcay",
+            recipePictures = "green_smoothie",
             mealType = 1
         ),
         Recipe(
@@ -1199,7 +1199,7 @@ class FakeFoodData {
                     "Bolak balik adonan dan pastikan semua matang merata.\n" +
                     "Setelah yakin sudah matang\n" +
                     "angkat dan sajikan.",
-            recipePictures = "capcay",
+            recipePictures = "omelet_bayam",
             mealType = 1
         ),
         Recipe(
@@ -1246,7 +1246,7 @@ class FakeFoodData {
                     "Terakhir masukkan tahu sebentar tidak usah diaduk-aduk\n" +
                     "tunggu sampai air sedikit berkurang. Matikan api kompor\n" +
                     "siram diatas pokcoy.",
-            recipePictures = "capcay",
+            recipePictures = "pokcoy_kuah_pedas",
             mealType = 1
         ),
         Recipe(
@@ -1270,7 +1270,7 @@ class FakeFoodData {
                     "masukkan bayam lalu tambahkan saos tiram dan royco.\n" +
                     "Tunggu hingga bayam benar-benar matang.\n" +
                     "Siap di hidangkan.",
-            recipePictures = "capcay",
+            recipePictures = "bayam_tumis_tahu",
             mealType = 1
         ),
         Recipe(
@@ -1293,7 +1293,7 @@ class FakeFoodData {
                     "masukkan bumbu dan daun bawang secukupnya.\n" +
                     "Tuangkan adonan telor ke atas kucai\n" +
                     "masak sampai matang.",
-            recipePictures = "capcay",
+            recipePictures = "telor_dadar",
             mealType = 1
         ),
         Recipe(
@@ -1314,7 +1314,7 @@ class FakeFoodData {
                     "Tambahkan telur\n" +
                     "orak arik\n" +
                     "dan campur semuanya.",
-            recipePictures = "capcay",
+            recipePictures = "nasi_goreng_mentega",
             mealType = 1
         ),
         Recipe(
@@ -1334,7 +1334,7 @@ class FakeFoodData {
                     "kecuali granola dan blend.\n" +
                     "Tuang ke mangkuk. Tambahkan granola.\n" +
                     "1 anggota telah menambahkan resep ini ke b",
-            recipePictures = "capcay",
+            recipePictures = "smoothies_berry",
             mealType = 1
         ),
         Recipe(
@@ -1352,7 +1352,7 @@ class FakeFoodData {
                     "Masukkan sawi dan sedikit air.\n" +
                     "Tambahkan telur\n" +
                     "bumbui dengan garam dan merica.",
-            recipePictures = "capcay",
+            recipePictures = "oseng_sawi_telur",
             mealType = 1
         ),
         Recipe(
@@ -1381,7 +1381,7 @@ class FakeFoodData {
                     "masukkan tempe.\n" +
                     "Masak hingga matang dan air surut\n" +
                     "jangan lupa koreksi rasa.",
-            recipePictures = "capcay",
+            recipePictures = "terong_balado_rebus",
             mealType = 1
         ),
         Recipe(
@@ -1409,7 +1409,7 @@ class FakeFoodData {
                     "Tambahkan telur\n" +
                     "tutup pan hingga telur matang.\n" +
                     "Makanan siap dihidangkan.",
-            recipePictures = "capcay",
+            recipePictures = "shakshuka",
             mealType = 1
         ),
         Recipe(
@@ -1428,7 +1428,7 @@ class FakeFoodData {
                     "Keruk alpukat letakkan diatas roti.\n" +
                     "Taburi gula palm.\n" +
                     "Tuang susu kental manis.",
-            recipePictures = "capcay",
+            recipePictures = "toast_avocado",
             mealType = 1
         ),
         Recipe(
@@ -1451,7 +1451,7 @@ class FakeFoodData {
                     "Campur semua bahan kecuali choco chips. Aduk rata.\n" +
                     "Terakhir tambahkan chocochips dan dibentuk.\n" +
                     "Panggang di api 180°C 25menit.",
-            recipePictures = "capcay",
+            recipePictures = "oat_almond_butter_cookies",
             mealType = 1
         ),
         Recipe(
@@ -1472,7 +1472,7 @@ class FakeFoodData {
             cookingSteps = "Kocok mentega dan gula. Kemudian tambahkan telur dan aduk.\n" +
                     "Tambahkan tepung yang sudah diayak dan bahan lainnya. Campur dengan baik.\n" +
                     "Bentuk biskuit dan sebarkan di atas loyang. Panggang selama 18 menit pada suhu 180°C-190°C.",
-            recipePictures = "capcay",
+            recipePictures = "blueband_biskuit_lunak",
             mealType = 1
         ),
         Recipe(
@@ -1488,7 +1488,7 @@ class FakeFoodData {
             cookingSteps = "Penyetkan pisang sampai hancur.\n" +
                     "Masukan oatmeal dan chiaseed.\n" +
                     "Aduk lalu cetak dan panggang di suhu 200•C selama 15menit.",
-            recipePictures = "capcay",
+            recipePictures = "oatbanana_cookies",
             mealType = 1
         ),
         Recipe(
@@ -1513,7 +1513,7 @@ class FakeFoodData {
             cookingSteps = "Masukkan semua bumbu dan air.\n" +
                     "Setelah mendidih masukkan sayur masak 2menit.\n" +
                     "Sajikan dalam wadah taburi bawang goreng.",
-            recipePictures = "capcay",
+            recipePictures = "tumis_pakcoy",
             mealType = 1
         ),
         Recipe(
@@ -1540,7 +1540,7 @@ class FakeFoodData {
                     "ratakan\n" +
                     "beri topping keju slice.\n" +
                     "Panggang di oven yg sdh dipanaskan selama 30m.",
-            recipePictures = "capcay",
+            recipePictures = "banana_oat_cake",
             mealType = 1
         ),
         Recipe(
@@ -1562,7 +1562,7 @@ class FakeFoodData {
                     "Tuangkan 1/2 adonan kedalam cetakan taburkan kismis sesuai selera.\n" +
                     "Tuangkan sisa adonan ratakan lalu taburkan kismis & kacang Almond sesuai selera.\n" +
                     "Kukus 20 menit atau sampai adonan padat (tusuk dengan tusuk gigi untuk test kepadatan).",
-            recipePictures = "capcay",
+            recipePictures = "setup_roti_gandum",
             mealType = 1
         ),
         Recipe(
@@ -1598,7 +1598,7 @@ class FakeFoodData {
                     "merica\n" +
                     "bon cabe dan ohaiong. Lalu di panggang pake telfon sampai matang.\n" +
                     "Sajikan deh! Tambahkan pilus buat topping aja wkwk.",
-            recipePictures = "capcay",
+            recipePictures = "oat_goreng_special",
             mealType = 1
         ),
         Recipe(
@@ -1615,7 +1615,7 @@ class FakeFoodData {
                     "Letakkan tuna diatas bayam.\n" +
                     "Tuangkan telur diatasnya. Tutup teflon.\n" +
                     "Balikkan dan selesai.",
-            recipePictures = "capcay",
+            recipePictures = "omelet_tuna",
             mealType = 1
         ),
         Recipe(
@@ -1637,7 +1637,7 @@ class FakeFoodData {
                     "Beri saos lalu beri toping.\n" +
                     "Tambahkan oregano dan parutan mozzarella.\n" +
                     "Tunggu 30 menit dgn ditutup dan api kecil.",
-            recipePictures = "capcay",
+            recipePictures = "pizza_oatmeal_teflon",
             mealType = 1
         ),
         Recipe(
@@ -1666,7 +1666,7 @@ class FakeFoodData {
                     "Tambah air sedikit saja.\n" +
                     "Tambahkan garam+kaldu jamur secukupnya sambil diaduk.\n" +
                     "Hidangkan dengan toping telur dan mentimun.",
-            recipePictures = "capcay",
+            recipePictures = "oatmeal_goreng_dan_omelet",
             mealType = 1
         ),
         Recipe(
@@ -1685,7 +1685,7 @@ class FakeFoodData {
             cookingSteps = "Celupkan rice paper ke air hangat hingga lemas & mudah dibentuk.\n" +
                     "Susun semua bahan di atas rice paper lalu gulung.\n" +
                     "Salad siap disajikan.",
-            recipePictures = "capcay",
+            recipePictures = "gulungan-salad_daging_sapi_asap",
             mealType = 1
         ),
         Recipe(
@@ -1705,7 +1705,7 @@ class FakeFoodData {
             cookingSteps = "Blender semua bahan kecuali kacang almond dan granola.\n" +
                     "Sajikan ke dalam mangkok.\n" +
                     "Letakkan kacang dan granola sebagai topping.",
-            recipePictures = "capcay",
+            recipePictures = "mangkuk_smoothie_hijau",
             mealType = 1
         ),
         Recipe(
@@ -1729,7 +1729,7 @@ class FakeFoodData {
                     "madu\n" +
                     "kurma.\n" +
                     "Campur dengan rata siap di sajikan dengan susu atau yogurt.",
-            recipePictures = "capcay",
+            recipePictures = "granola_homemade",
             mealType = 1
         ),
         Recipe(
@@ -1753,7 +1753,7 @@ class FakeFoodData {
                     "Hapus dari panas; agak dingin. Aduk vanilla. Aduk oat dan sisa bahan.\n" +
                     "Teteskan satu sendok makan bulat ke atas kertas lilin dan bentuk menjadi lingkaran atau batang. Tutup dan dinginkan 2 sampai 3 jam. Diamkan pada suhu kamar sekitar 15 menit sebelum disajikan. Simpan tertutup rapat di lemari es. Menghasilkan sekitar 3 lusin.\n" +
                     "6 anggota telah menambahkan resep ini ke buku m",
-            recipePictures = "capcay",
+            recipePictures = "chocolate_oatmeal_bars",
             mealType = 1
         ),
         Recipe(
@@ -1770,7 +1770,7 @@ class FakeFoodData {
             cookingSteps = "Campurkan semua bahan dalam mangkuk kecil dan aduk hingga tercampur rata.\n" +
                     "Dinginkan di lemari es selama 30 menit.\n" +
                     "Gunakan sendok atau sendok makan untuk membagi campuran menjadi 6 bola secara merata. Gunakan tangan Anda untuk membentuk bola. Nikmati sekarang dan simpan sisanya untuk nanti dengan menyimpannya dalam wadah tertutup di lemari es hingga 1 minggu.",
-            recipePictures = "capcay",
+            recipePictures = "bola_energi_oatmeal",
             mealType = 1
         ),
         Recipe(
@@ -1792,7 +1792,7 @@ class FakeFoodData {
                     "Kuning Telur dan Stevia.\n" +
                     "Panggang tanpa minyak di atas teflon dg api kecil per 1 sdm munjung\n" +
                     "dibalik sampe matang merata.",
-            recipePictures = "capcay",
+            recipePictures = "pancake_labu_sederhana",
             mealType = 1
         ),
         Recipe(
@@ -1808,7 +1808,7 @@ class FakeFoodData {
             cookingSteps = "Potong dadu buah naga.\n" +
                     "Siram dengan yoghurt.\n" +
                     "Taruh chia seed diatasnya.",
-            recipePictures = "capcay",
+            recipePictures = "yogurt_dan_chia_bowl",
             mealType = 1
         ),
         Recipe(
@@ -1830,7 +1830,7 @@ class FakeFoodData {
                     "Tambahkan pepaya dan almond yang sudah dipotong.\n" +
                     "Tambahkan juga madu\n" +
                     "jika ingin lebih manis.",
-            recipePictures = "capcay",
+            recipePictures = "papaya_yogurt_with_almonds",
             mealType = 1
         ),
         Recipe(
@@ -1852,7 +1852,7 @@ class FakeFoodData {
                     "Aduk hingga bubur mengental.\n" +
                     "Bubur siap di ajukan.\n" +
                     "Tambahkan sejumput chia seed untuk hiasan.",
-            recipePictures = "capcay",
+            recipePictures = "bubur_manis_oat",
             mealType = 1
         ),
         Recipe(
@@ -1873,7 +1873,7 @@ class FakeFoodData {
                     "masukkan bahan2\n" +
                     "lalu lipat/gulung.\n" +
                     "Makan!",
-            recipePictures = "capcay",
+            recipePictures = "salad_roll",
             mealType = 1
         ),
         Recipe(
@@ -1890,7 +1890,7 @@ class FakeFoodData {
             cookingSteps = "Pisang bekuin.\n" +
                     "Blender sama bubuk coklat.\n" +
                     "Kasih taburan topping.",
-            recipePictures = "capcay",
+            recipePictures = "smoothie_coklat_pisang",
             mealType = 1
         ),
         Recipe(
@@ -1915,7 +1915,7 @@ class FakeFoodData {
                     "Dingingkan\n" +
                     "siap disantap.\n" +
                     "4 anggota telah menambahka",
-            recipePictures = "capcay",
+            recipePictures = "snack_oat",
             mealType = 1
         ),
         Recipe(
@@ -1951,7 +1951,7 @@ class FakeFoodData {
                     "merica\n" +
                     "oregano\n" +
                     "dan olive oil.",
-            recipePictures = "capcay",
+            recipePictures = "salad",
             mealType = 1
         ),
         Recipe(
@@ -1979,7 +1979,7 @@ class FakeFoodData {
                     "Siram salad dressing ke salad yg telah disajikan\n" +
                     "aduk2\n" +
                     "siap utk disantap.",
-            recipePictures = "capcay",
+            recipePictures = "salad_selada_nanas_tomat_cerry",
             mealType = 1
         ),
         Recipe(
@@ -1996,7 +1996,7 @@ class FakeFoodData {
             cookingSteps = "Blender semua bahan jadi satu.\n" +
                     "Panggang di atas teflon jadi beberapa bagian.\n" +
                     "Angkat dan kasih toping naga.",
-            recipePictures = "capcay",
+            recipePictures = "pancake_naga",
             mealType = 1
         ),
         Recipe(
@@ -2018,7 +2018,7 @@ class FakeFoodData {
                     "Siapkan loyang dan Kukusan.\n" +
                     "Kukus kurang lebih 30menit.\n" +
                     "Sajikan.",
-            recipePictures = "capcay",
+            recipePictures = "bolu_pisang_oat_kukus",
             mealType = 1
         ),
         Recipe(
@@ -2053,7 +2053,7 @@ class FakeFoodData {
                     "kecap & royco.\n" +
                     "Koreksi rasa\n" +
                     "tunggu sampai matang.",
-            recipePictures = "capcay",
+            recipePictures = "tumis_sawi_putih",
             mealType = 1
         ),
         Recipe(
@@ -2077,7 +2077,7 @@ class FakeFoodData {
                     "lalu air perasan jeruk\n" +
                     "tambahkan air dan es batu secukupnya.\n" +
                     "Blender semua buah kurleb 2-3menit sampai halus sempurna. Siap dinikmati.",
-            recipePictures = "capcay",
+            recipePictures = "orange_smoothie",
             mealType = 1
         ),
         Recipe(
@@ -2097,7 +2097,7 @@ class FakeFoodData {
                     "Beratnya sekitar 24-25gr per porsi\n" +
                     "hasilnya 13 cookie. Bulatkan lalu ratakan.\n" +
                     "Panggang dengan suhu 175° selama 12-15 menit.",
-            recipePictures = "capcay",
+            recipePictures = "cookies_oatmeal",
             mealType = 1
         ),
         Recipe(
@@ -2128,7 +2128,7 @@ class FakeFoodData {
                     "tambahkan bumbu sesuai selera.\n" +
                     "Masukkan sawi.\n" +
                     "Tambahkan sedikit air. Masak sampai matang.",
-            recipePictures = "capcay",
+            recipePictures = "sayur_tumis_sawi_telur",
             mealType = 1
         ),
         Recipe(
@@ -2152,7 +2152,7 @@ class FakeFoodData {
                     "masukkan oat nya kurang lebih 3-5menit ( bila air diatas habis\n" +
                     "boleh ditambah untuk metebus oatnya. Sedikit saja ya).\n" +
                     "Tambahkan sedikit garam. Koreksi rasa.",
-            recipePictures = "capcay",
+            recipePictures = "bubur_oat",
             mealType = 1
         ),
         Recipe(
@@ -2169,7 +2169,7 @@ class FakeFoodData {
             cookingSteps = "Masukkan semua bahan ke dalam blender.\n" +
                     "Tambahkan air lalu Blender semua bahan sampai halus.\n" +
                     "Siap disajikan.",
-            recipePictures = "capcay",
+            recipePictures = "yellow_smoothies",
             mealType = 1
         ),
         Recipe(
@@ -2196,7 +2196,7 @@ class FakeFoodData {
                     "Masukan adonan ke dalam wadah anti panas\n" +
                     "lalu kukus selama 30 menit.\n" +
                     "Setelah 30 menit angkat lalu tiriskan.",
-            recipePictures = "capcay",
+            recipePictures = "telur_kukus",
             mealType = 1
         ),
         Recipe(
@@ -2233,7 +2233,7 @@ class FakeFoodData {
                     "tuang ke mangkuk.\n" +
                     "Tambahkan air lagi sedikit demi sedikit sambil diaduk sampai tekstur seperti bubur.\n" +
                     "Selamat menikmati.",
-            recipePictures = "capcay",
+            recipePictures = "bubur_oatmeal_asin",
             mealType = 1
         ),
         Recipe(
@@ -2258,7 +2258,7 @@ class FakeFoodData {
                     "Sajikan dengan toping madu\n" +
                     "wijen\n" +
                     "dan buah.",
-            recipePictures = "capcay",
+            recipePictures = "mini_pancakes",
             mealType = 1
         ),
         Recipe(
@@ -2286,7 +2286,7 @@ class FakeFoodData {
                     "Aduk hingha rata dan mengental.\n" +
                     "Siramkan diatas mangga dan oats yang telah di tata.\n" +
                     "Selesai.",
-            recipePictures = "capcay",
+            recipePictures = "manggo_sticky_oats",
             mealType = 1
         ),
         Recipe(
@@ -2315,7 +2315,7 @@ class FakeFoodData {
                     "Terakhir masukan bumbu seperti kecap\n" +
                     "garam\n" +
                     "dan lada.",
-            recipePictures = "capcay",
+            recipePictures = "nasi_goreng_oatmeal",
             mealType = 1
         ),
         Recipe(
@@ -2341,7 +2341,7 @@ class FakeFoodData {
                     "Tuang sedikit olive oil ke teflon klo bisa (anti lengket) yg sudah dipanaskan.\n" +
                     "Lumuri dada ayam dengan telur lalu balurkan ke oat yg sudah dibumbui. Panggang di dalam teflon dgn api sedang.\n" +
                     "Angkat ayam jika sudah kecoklatan.",
-            recipePictures = "capcay",
+            recipePictures = "ayam_crispy_oatmil",
             mealType = 1
         ),
         Recipe(
@@ -2368,7 +2368,7 @@ class FakeFoodData {
                     "Setelah roti matang\n" +
                     "oleskan margarin pada roti selagi hangat.\n" +
                     "Roti siap disajikan.",
-            recipePictures = "capcay",
+            recipePictures = "roti_tawar",
             mealType = 1
         ),
         Recipe(
@@ -2402,7 +2402,7 @@ class FakeFoodData {
                     "garam\n" +
                     "dll sesuai keinginan. Kalori perlu d tambahkn untuk modifikasi).\n" +
                     "Tambahkan irisan bawang daun (saya pakai yang putih) dan siap d hidangkan.",
-            recipePictures = "capcay",
+            recipePictures = "sup sehat",
             mealType = 1
         ),
         Recipe(
@@ -2425,7 +2425,7 @@ class FakeFoodData {
                     "Potong n cuci lettuce.\n" +
                     "Campur smuanya.\n" +
                     "Pakein mayo / salad dressing.",
-            recipePictures = "capcay",
+            recipePictures = "salad_ayam",
             mealType = 1
         ),
         Recipe(
@@ -2444,7 +2444,7 @@ class FakeFoodData {
                     "Masukkan ke cup.\n" +
                     "Taburin keju.\n" +
                     "Panggang dg suhu 200 C selama 30 menit.",
-            recipePictures = "capcay",
+            recipePictures = "bolu_cup",
             mealType = 1
         ),
         Recipe(
@@ -2460,7 +2460,7 @@ class FakeFoodData {
             cookingSteps = "Campur semua bahan.\n" +
                     "Bentuk kue dan sebarkan di atas loyang.\n" +
                     "Panggang dalam oven selama 20 menit dengan suhu 170°C.",
-            recipePictures = "capcay",
+            recipePictures = "kue_muesli",
             mealType = 1
         ),
         Recipe(
@@ -2486,7 +2486,7 @@ class FakeFoodData {
                     "Masukan baso\n" +
                     "tekakhir masukan sayuran\n" +
                     "siapkan wadah",
-            recipePictures = "capcay",
+            recipePictures = "sup_baso_ikan",
             mealType = 1
         ),
         Recipe(
@@ -2518,7 +2518,7 @@ class FakeFoodData {
                     "saus tiram\n" +
                     "lada\n" +
                     "garam oseng hingga tercampur rata selama 75 detik.",
-            recipePictures = "capcay",
+            recipePictures = "oseng_tahu",
             mealType = 1
         ),
         Recipe(
@@ -2545,7 +2545,7 @@ class FakeFoodData {
                     "Tambahkan saus sambal\n" +
                     "saus tiram\n" +
                     "minyak wijen.",
-            recipePictures = "capcay",
+            recipePictures = "nasi_goreng",
             mealType = 1
         ),
         Recipe(
@@ -2561,7 +2561,7 @@ class FakeFoodData {
             cookingSteps = "Hancurkan pisang.\n" +
                     "Tambahkan oatmeal dan mentega cair dan aduk rata.\n" +
                     "Bentuk kue dan letakkan di atas loyang. Panggang selama 20 menit pada suhu 180°C.",
-            recipePictures = "capcay",
+            recipePictures = "oat_pisang",
             mealType = 1
         ),
         Recipe(
@@ -2584,7 +2584,7 @@ class FakeFoodData {
                     "Terakhir\n" +
                     "tambahkan campuran cokelat leleh. Campur dengan baik.\n" +
                     "Tempatkan adonan ke dalam cetakan dan hiasi sesuai keinginan. Panggang selama 20 menit pada suhu 180°C.",
-            recipePictures = "capcay",
+            recipePictures = "brownies_oat",
             mealType = 1
         ),
         Recipe(
@@ -2609,7 +2609,7 @@ class FakeFoodData {
                     "dan madu. Campur dengan baik.\n" +
                     "Aduk sisa bahan dan aduk rata.\n" +
                     "Bagi menjadi cangkir muffin dan hiasi sesuai keinginan. Kukus selama 20 menit.",
-            recipePictures = "capcay",
+            recipePictures = "muffins_pisang",
             mealType = 1
         ),
         Recipe(
@@ -2634,7 +2634,7 @@ class FakeFoodData {
                     "Campurkan 2 campuran dan tempatkan dalam loyang kue. Hiasi keju cheddar di atasnya.\n" +
                     "Panggang dalam oven dengan suhu 160°C selama 50-55 menit.\n" +
                     "Tunggu dingin baru keluarkan dari loyang.",
-            recipePictures = "capcay",
+            recipePictures = "kue_chiffon",
             mealType = 1
         ),
         Recipe(
@@ -2656,7 +2656,7 @@ class FakeFoodData {
                     "kemudian pindah ke dalam mangkuk dan masukan putih telur kemudian di kocok dengan menggunakan sendok hingga tercampur rata.\n" +
                     "Masak dengan menggunakan teflon dan beri minyak zaitun\n" +
                     "masak hingga matang.",
-            recipePictures = "capcay",
+            recipePictures = "banana_oatmeal_pancake",
             mealType = 1
         ),
         Recipe(
@@ -2676,7 +2676,7 @@ class FakeFoodData {
                     "Jika sudah tercampur rata semua bahan\n" +
                     "tuang adonan ke pan yang sudah dipanaskan ingat dengan api kecil\n" +
                     "tunggu sampai matang. Pancake oat siap di hidangkan. Bisa di tambahkan topping tapi yang sehat.",
-            recipePictures = "capcay",
+            recipePictures = "pancake_oat",
             mealType = 1
         ),
         Recipe(
@@ -2705,7 +2705,7 @@ class FakeFoodData {
                     "tambah air 1/4 cangkir. masak kurang lebih 5 menit.\n" +
                     "Pada saat sayur matang\n" +
                     "masukkan oatmeal yang sudah disangrai tadi. Kalau kental masukkan air secukupnya sampai air terserap semuanya. Hidangkan.",
-            recipePictures = "capcay",
+            recipePictures = "tumis_oatmeal_dengan_sayur",
             mealType = 1
         ),
         Recipe(
@@ -2723,7 +2723,7 @@ class FakeFoodData {
                     "Keluarkan labu dari kukusan biarkan sebentar agar dingin. Lalu kupas kulit dan buang bijinya. Potong dadu dan blender (bisa ditambah air secukupnya).\n" +
                     "Labu yang sudah diblender\n" +
                     "lalu tuang ke panci. Lalu masak dengan api kecil-sedang. Perlahan tambahkan susu (kekentalan tergantung selera). Terus tambahkan 1 sdm tepung maizena untuk mengentalkan sup. Penyajian bisa dimakan selagi hangat atau dingin (simpan di kulkas dulu).",
-            recipePictures = "capcay",
+            recipePictures = "sup_labu_energi",
             mealType = 1
         ),
         Recipe(
@@ -2740,7 +2740,7 @@ class FakeFoodData {
             cookingSteps = "Potong semua bahan.\n" +
                     "Rebus air sampai mendidih.\n" +
                     "Masukan dan tunggu 5 - 10 menit atau sampai masak.",
-            recipePictures = "capcay",
+            recipePictures = "sup_pembakar_lemak",
             mealType = 1
         ),
         Recipe(
@@ -2765,7 +2765,7 @@ class FakeFoodData {
                     "dan bahan lainnya\n" +
                     "masak hingga matang.\n" +
                     "Pindahkan ke piring dan sajikan. Menikmati.",
-            recipePictures = "capcay",
+            recipePictures = "mie_shirataki_goreng",
             mealType = 2
         ),
         Recipe(
@@ -2785,7 +2785,7 @@ class FakeFoodData {
             cookingSteps = "Panaskan tempel dalam wajan antilengket lalu tambahkan ayam. Tambahkan air sesuai kebutuhan.\n" +
                     "Masukkan jagung dan buncis. Didihkan selama 5 menit.\n" +
                     "Sajikan di atas piring.",
-            recipePictures = "capcay",
+            recipePictures = "ayam_dengan_jagung_dan_kacang",
             mealType = 2
         ),
         Recipe(
@@ -2802,7 +2802,7 @@ class FakeFoodData {
             cookingSteps = "Rebus air secukupnya lalu masukkan irisan sayuran.\n" +
                     "Masukkan irisan sosis dan telur kocok.\n" +
                     "Bumbui sesuai keinginan dan masak selama 5 menit.",
-            recipePictures = "capcay",
+            recipePictures = "sup_sosis_dengan_sayuran",
             mealType = 2
         ),
         Recipe(
@@ -2820,7 +2820,7 @@ class FakeFoodData {
                     "Tambahkan irisan sayuran dan isi air sesuai kebutuhan.\n" +
                     "Bumbui sesuai selera dan masak hingga empuk.\n" +
                     "Sajikan dalam mangkuk dan hiasi sesuai keinginan.",
-            recipePictures = "capcay",
+            recipePictures = "sop_tulang_iga_sapi",
             mealType = 2
         ),
         Recipe(
@@ -2840,7 +2840,7 @@ class FakeFoodData {
                     "tumis bahan lainnya hingga harum.\n" +
                     "Tambahkan tuna dan aduk.\n" +
                     "Didihkan selama 5 menit.",
-            recipePictures = "capcay",
+            recipePictures = "ikan_tongkol_asam_pedas",
             mealType = 2
         ),
         Recipe(
@@ -2862,7 +2862,7 @@ class FakeFoodData {
                     "Panaskan minyak dalam wajan dan tumis bawang putih sampai keemasan.\n" +
                     "Tambahkan air dan biarkan mendidih.\n" +
                     "Masukkan sisa bahan dan bumbui. Masak sampai empuk.",
-            recipePictures = "capcay",
+            recipePictures = "rebusan_tahu_dengan_kecambah",
             mealType = 2
         ),
         Recipe(
@@ -2880,7 +2880,7 @@ class FakeFoodData {
             cookingSteps = "Suwir salmon yang sudah matang menggunakan garpu.\n" +
                     "Masukkan nasi ke dalam mangkuk.\n" +
                     "Tambahkan semua bahan dan hiasi dengan nori.",
-            recipePictures = "capcay",
+            recipePictures = "mangkuk_sushi_salmon",
             mealType = 2
         ),
         Recipe(
@@ -2901,7 +2901,7 @@ class FakeFoodData {
                     "Rebus dalam air bersama dengan buncis selama 10 menit.\n" +
                     "Giling semuanya dalam blender (kecuali mentega).\n" +
                     "Panaskan wajan dengan mentega dan masak campuran sampai berwarna keemasan.",
-            recipePictures = "capcay",
+            recipePictures = "nasi_pizza_dengan_ayam_dan_sayuran",
             mealType = 2
         ),
         Recipe(
@@ -2920,7 +2920,7 @@ class FakeFoodData {
             cookingSteps = "Campur bubuk dan larutkan dengan air secukupnya.\n" +
                     "Masukkan ke dalam panci dan didihkan sambil diaduk.\n" +
                     "Tambahkan tuna dan merica. Masak hingga empuk.",
-            recipePictures = "capcay",
+            recipePictures = "kari_tuna",
             mealType = 2
         ),
         Recipe(
@@ -2943,7 +2943,7 @@ class FakeFoodData {
                     "kocok telur lalu masukkan ke rebusan air.\n" +
                     "Tambah kecap\n" +
                     "saori dan sedikit bubuk cabai. Rebus hingga matang.",
-            recipePictures = "capcay",
+            recipePictures = "toge_telur",
             mealType = 2
         ),
         Recipe(
@@ -2978,7 +2978,7 @@ class FakeFoodData {
                     "masukan ayam masak hingga air susut.\n" +
                     "Terakhir masukan daun kemangi\n" +
                     "masak hingga matang angkat sajikan.",
-            recipePictures = "capcay",
+            recipePictures = "ayam_rica_rica",
             mealType = 2
         ),
         Recipe(
@@ -3006,7 +3006,7 @@ class FakeFoodData {
                     "beri adonan hasil gilingan\n" +
                     "gulung.\n" +
                     "Kukus selama 20 menit.",
-            recipePictures = "capcay",
+            recipePictures = "sawi_isi_ayam_udang",
             mealType = 2
         ),
         Recipe(
@@ -3030,7 +3030,7 @@ class FakeFoodData {
                     "saus tiram dan kaldu jamur.\n" +
                     "Masukkan tempe dan buncis. Masak sampai buncis empuk.\n" +
                     "Siap disajikan.",
-            recipePictures = "capcay",
+            recipePictures = "tumis_buncis_tempe",
             mealType = 2
         ),
         Recipe(
@@ -3051,7 +3051,7 @@ class FakeFoodData {
                     "tambahkan garam sejumput\n" +
                     "kocok telur dan goreng.\n" +
                     "Susun roti dengan bahan bahan yang sudah disiapkan.",
-            recipePictures = "capcay",
+            recipePictures = "sandwich",
             mealType = 2
         ),
         Recipe(
@@ -3085,7 +3085,7 @@ class FakeFoodData {
                     "Masukkan kacang panjang dan labu siam. Aduk rata\n" +
                     "diamkan sebentar sampai sayuran matang.\n" +
                     "Siap disajikan.",
-            recipePictures = "capcay",
+            recipePictures = "tumis_tempe_labu_kacang_panjang",
             mealType = 2
         ),
         Recipe(
@@ -3108,7 +3108,7 @@ class FakeFoodData {
                     "bawang putih dengan minyak canola.\n" +
                     "Masukkan tauge dan kacang pang\n" +
                     "beri air sedikit dan diamkan hingga sedikit layu.",
-            recipePictures = "capcay",
+            recipePictures = "tumis_kacang_panjang_dan_tauge",
             mealType = 2
         ),
         Recipe(
@@ -3132,7 +3132,7 @@ class FakeFoodData {
                     "Bagi adonan menjadi 8 bagian\n" +
                     "bentuk bulat pipih.\n" +
                     "Grill di pan anti lengket.",
-            recipePictures = "capcay",
+            recipePictures = "beef_patty",
             mealType = 2
         ),
         Recipe(
@@ -3149,7 +3149,7 @@ class FakeFoodData {
                     "Tumis bawang tanpa minyak\n" +
                     "tbahkan sedikit air.\n" +
                     "Tambahkan kaldu jamur dan tunggu sampai matang.",
-            recipePictures = "capcay",
+            recipePictures = "sawi_tumis",
             mealType = 2
         ),
         Recipe(
@@ -3172,7 +3172,7 @@ class FakeFoodData {
                     "Masukkan labu siam yang sudah dipotong-potong.\n" +
                     "Masukkan air.\n" +
                     "Tambahkan bumbu yang disukai (garam dan merica) secukupnya.",
-            recipePictures = "capcay",
+            recipePictures = "tumis_labu_siam",
             mealType = 2
         ),
         Recipe(
@@ -3203,7 +3203,7 @@ class FakeFoodData {
                     "Setelah adonan halus tambahkan udang potong kemudian diaduk.\n" +
                     "Masukan ke dalam kulit lumpia\n" +
                     "kukus 20 menit.",
-            recipePictures = "capcay",
+            recipePictures = "dimsum_ayam_udang",
             mealType = 2
         ),
         Recipe(
@@ -3228,7 +3228,7 @@ class FakeFoodData {
                     "Masukkan dada ayam yg sudah di suwir lalu aduk rata.\n" +
                     "Tambahkan kaldu ayam dan gula.\n" +
                     "Siap di hidangkan.",
-            recipePictures = "capcay",
+            recipePictures = "dada_ayam_suwir",
             mealType = 2
         ),
         Recipe(
@@ -3255,7 +3255,7 @@ class FakeFoodData {
                     "dan brokoli untuk dimasak lalu cabai.\n" +
                     "Tuangkan saus dan garam untuk membumbui.\n" +
                     "Masak hingga matang. Sajikan.",
-            recipePictures = "capcay",
+            recipePictures = "tumis_jamur_daging_brokoli",
             mealType = 2
         ),
         Recipe(
@@ -3279,7 +3279,7 @@ class FakeFoodData {
                     "Masukin ayam dan tahu setelah ayam matang masukan kimchi dan jamur...\n" +
                     "Setelah semua layu masukan putih telur\n" +
                     "bubuk cabai dan daun bawang aduk aduk. Taburi dengan nori dan biji wijen (opsional).",
-            recipePictures = "capcay",
+            recipePictures = "kimchi_jiggae",
             mealType = 2
         ),
         Recipe(
@@ -3304,7 +3304,7 @@ class FakeFoodData {
                     "bawang merah\n" +
                     "cabai yg sudah di potong.\n" +
                     "Masukan bolognese sauce dan tumis hingga harum bersama bakso.",
-            recipePictures = "capcay",
+            recipePictures = "bakso_kentang_fettuccine",
             mealType = 2
         ),
         Recipe(
@@ -3329,7 +3329,7 @@ class FakeFoodData {
                     ".\n" +
                     "Masukkan gorengan tempe dan tahu\n" +
                     "tambahakan garam secukupnya. Siap disajikan.",
-            recipePictures = "capcay",
+            recipePictures = "oseng_cabe_tahu_tempe",
             mealType = 2
         ),
         Recipe(
@@ -3362,7 +3362,7 @@ class FakeFoodData {
                     "Masak Daging tanpa minyak. Sampai matang. Setelah itu beri air sedikit\n" +
                     "kemudian jika masukkan bawang Bombay. Masak hingga layu.\n" +
                     "Hidangkan.",
-            recipePictures = "capcay",
+            recipePictures = "teriyaki_beef",
             mealType = 2
         ),
         Recipe(
@@ -3392,7 +3392,7 @@ class FakeFoodData {
                     "Beri sedikit air\n" +
                     "masukan garam\n" +
                     "saus tiram dan kecap manis. Masak sampai matang. Sajikan.",
-            recipePictures = "capcay",
+            recipePictures = "tumis_sayur_dengan_telur",
             mealType = 2
         ),
         Recipe(
@@ -3428,7 +3428,7 @@ class FakeFoodData {
                     "oregano\n" +
                     "dan boncabe.\n" +
                     "Siap disajikan.",
-            recipePictures = "capcay",
+            recipePictures = "aglio_olio",
             mealType = 2
         ),
         Recipe(
@@ -3450,7 +3450,7 @@ class FakeFoodData {
                     "Iris duo bawang merah dan bawang putih\n" +
                     "lalu tumis dengan minyak.\n" +
                     "Masukkan sawi tumis dan bumbui hingga matang siap disajikan.",
-            recipePictures = "capcay",
+            recipePictures = "sawi_tumis_tauge",
             mealType = 2
         ),
         Recipe(
@@ -3472,7 +3472,7 @@ class FakeFoodData {
                     "Campur semua bahan dalam food processor dan bumbui sesuai keinginan.\n" +
                     "Buat bola-bola (masing-masing sekitar 25 g).\n" +
                     "Masukkan ke dalam kukusan dan masak selama 20 menit.",
-            recipePictures = "capcay",
+            recipePictures = "bola_ikan_udang_wortel",
             mealType = 2
         ),
         Recipe(
@@ -3500,7 +3500,7 @@ class FakeFoodData {
                     "daun bawang\n" +
                     "dan bawang bombay dalam wajan dengan minyak. Aduk hingga harum.\n" +
                     "Masukkan ayam yang sudah dimarinasi dengan saus dan garam. Rebus sampai daging berwarna cokelat muda.",
-            recipePictures = "capcay",
+            recipePictures = "rebusan_ayam_saus_tiram",
             mealType = 2
         ),
         Recipe(
@@ -3525,7 +3525,7 @@ class FakeFoodData {
                     "bakso\n" +
                     "dan sayuran.\n" +
                     "Bumbui dan didihkan sampai matang.",
-            recipePictures = "capcay",
+            recipePictures = "tumis_udang_dan_bakso",
             mealType = 2
         ),
         Recipe(
@@ -3552,7 +3552,7 @@ class FakeFoodData {
                     "bumbu\n" +
                     "dan tepung maizena yang sudah dilarutkan dalam air.\n" +
                     "Masak hingga matang lalu sajikan.",
-            recipePictures = "capcay",
+            recipePictures = "tumis_sayuran_dengan_ayam",
             mealType = 2
         ),
         Recipe(
@@ -3572,7 +3572,7 @@ class FakeFoodData {
                     "Masukkan potongan ayam\n" +
                     "lalu masak dengan api kecil hingga empuk dan air menyusut.\n" +
                     "Goreng ayam di air fryer tanpa menggunakan minyak hingga matang.",
-            recipePictures = "capcay",
+            recipePictures = "ayam_goreng_bumbu_kuning",
             mealType = 2
         ),
         Recipe(
@@ -3596,7 +3596,7 @@ class FakeFoodData {
                     "tumis bawang bombay dan cabai yang sudah dicincang.\n" +
                     "Tambahkan air dan potongan ayam ke dalam wajan. Aduk selama beberapa menit.\n" +
                     "Tambahkan semua bahan yang tersisa. Aduk rata dan pindahkan ke piring setelah matang.",
-            recipePictures = "capcay",
+            recipePictures = "ayam_teriyaki",
             mealType = 2
         ),
         Recipe(
@@ -3624,7 +3624,7 @@ class FakeFoodData {
                     "Masukan jamur\n" +
                     "tunggu beberapa saat.\n" +
                     "Masukan selada air tunggu sampe selada air matang sebelum disajikan.",
-            recipePictures = "capcay",
+            recipePictures = "sup_daging_selada_air",
             mealType = 2
         ),
         Recipe(
@@ -3654,7 +3654,7 @@ class FakeFoodData {
                     "garam\n" +
                     "dan kaldu jamur.\n" +
                     "Hidangkan brokoli kemudian siramkan bawang putih goreng diatasnya.",
-            recipePictures = "capcay",
+            recipePictures = "brokoli_bawang_putih",
             mealType = 2
         ),
         Recipe(
@@ -3682,7 +3682,7 @@ class FakeFoodData {
                     "cabai\n" +
                     "garam dan merica.\n" +
                     "Siap disajikan.",
-            recipePictures = "capcay",
+            recipePictures = "ayam_suwir_kemangi",
             mealType = 2
         ),
         Recipe(
@@ -3707,7 +3707,7 @@ class FakeFoodData {
                     "Masukkan ayam yang telah disuwir.\n" +
                     "Aduk hingga semua bumbu tercampur rata.\n" +
                     "Sajikan.",
-            recipePictures = "capcay",
+            recipePictures = "ayam_suwir_kecap",
             mealType = 2
         ),
         Recipe(
@@ -3738,7 +3738,7 @@ class FakeFoodData {
                     "dan kaldu jamur.\n" +
                     "Masukan keju\n" +
                     "aduk kembali.",
-            recipePictures = "capcay",
+            recipePictures = "suwir_ayam_creamy",
             mealType = 2
         ),
         Recipe(
@@ -3773,7 +3773,7 @@ class FakeFoodData {
                     "bumbui dengan garam dan kaldu jamur secukupnya.\n" +
                     "Jika sudah matang\n" +
                     "matikan api dan masukkan daun bawang yang sudah dipotong-potong.",
-            recipePictures = "capcay",
+            recipePictures = "sup_daging_sapi_dengan_kacang_panjang",
             mealType = 2
         ),
         Recipe(
@@ -3796,7 +3796,7 @@ class FakeFoodData {
                     "Masukkan brokoli.\n" +
                     "Masukkan saus tiram dan minyak wijen\n" +
                     "tumis hingga matang.",
-            recipePictures = "capcay",
+            recipePictures = "tumis_brokoli_jamur",
             mealType = 2
         ),
         Recipe(
@@ -3834,7 +3834,7 @@ class FakeFoodData {
                     "gula\n" +
                     "dan kaldu\n" +
                     "racik sayur sop sesuai selera lalu tunggu hingga matang.",
-            recipePictures = "capcay",
+            recipePictures = "sop",
             mealType = 2
         ),
         Recipe(
@@ -3865,7 +3865,7 @@ class FakeFoodData {
                     "Ketika ayam sudah matang\n" +
                     "keluarkan ayam dari rebusan.\n" +
                     "Masukkan sayuran dan mie shirataki. Tunggu hingga matang!",
-            recipePictures = "capcay",
+            recipePictures = "chicken_ramen_shirataki",
             mealType = 2
         ),
         Recipe(
@@ -3900,7 +3900,7 @@ class FakeFoodData {
                     "Aduk\n" +
                     "biarkan bumbu meresap dan angkat dari api.\n" +
                     "Tata pokcoy di piring dan tuangkan di atas ayam yang sudah dimasak.",
-            recipePictures = "capcay",
+            recipePictures = "pokcoy_ayam_saus_tiram",
             mealType = 2
         ),
         Recipe(
@@ -3921,7 +3921,7 @@ class FakeFoodData {
                     "masukan air secukupnya tunggu mendidih.\n" +
                     "Masukan telur yg sudah dikocok lepas\n" +
                     "lalu masukan kecap asin dan daun bawang. Bumbui dengan garam dan merica sesuai selera. Tutup wajan sampai telur matang.",
-            recipePictures = "capcay",
+            recipePictures = "chicken_deopbap",
             mealType = 2
         ),
         Recipe(
@@ -3943,7 +3943,7 @@ class FakeFoodData {
                     "lalu tumis sebentar.\n" +
                     "Tambahkan kwetiau dan bumbunya.\n" +
                     "Campur dengan baik. Angkat dari api setelah selesai. Tambahkan lauk yang diinginkan.",
-            recipePictures = "capcay",
+            recipePictures = "kwetiau_ayam",
             mealType = 2
         ),
         Recipe(
@@ -3971,7 +3971,7 @@ class FakeFoodData {
                     "air dan kecap.\n" +
                     "Terakhir masukkan tahu dan saus sambal. Campur dengan baik.\n" +
                     "Masak hingga kental dan tambahkan royco. Aduk dan pindahkan ke dalam mangkuk.",
-            recipePictures = "capcay",
+            recipePictures = "semur_tahu",
             mealType = 2
         ),
         Recipe(
@@ -3994,7 +3994,7 @@ class FakeFoodData {
                     "garam secukupnya.\n" +
                     "Kemuadian masukkan air sedikit lalu masukkan tahu dan putuh telur.\n" +
                     "Setelah itu masukkan kacang dan wortel tumis sampai matang.",
-            recipePictures = "capcay",
+            recipePictures = "tumis_tahu_telur_wortel",
             mealType = 2
         ),
         Recipe(
@@ -4017,7 +4017,7 @@ class FakeFoodData {
                     "dan cabai. Campur mereka dengan baik.\n" +
                     "Tahu dihaluskan lalu masukkan semua bahan kecuali minyak.\n" +
                     "Panaskan minyak dalam wajan dan goreng sampai berwarna cokelat keemasan.",
-            recipePictures = "capcay",
+            recipePictures = "tahu_goreng_telur",
             mealType = 2
         ),
         Recipe(
@@ -4039,7 +4039,7 @@ class FakeFoodData {
                     "cabai\n" +
                     "saos lada hitam dan air.\n" +
                     "Kemudian masukan tomat tumis semuanya hingga masak.",
-            recipePictures = "capcay",
+            recipePictures = "cumi_lada_hitam",
             mealType = 2
         ),
         Recipe(
@@ -4063,7 +4063,7 @@ class FakeFoodData {
                     "Potong dadu tahu dan suwir ikan tongkol. Lalu\n" +
                     "masukan ke bumbu yang sudah di tumis.\n" +
                     "Tumis dan masukan garam serta royco secukupnya. Lalu hidangkan.",
-            recipePictures = "capcay",
+            recipePictures = "tumis_tahu_dan_tuna",
             mealType = 2
         ),
         Recipe(
@@ -4088,7 +4088,7 @@ class FakeFoodData {
                     "tumis daging sapi yang sudah diasinkan\n" +
                     "sering diaduk atau dibalik sesering yang Anda suka sampai matang.\n" +
                     "Sajikan dengan telur dan beberapa sayuran.",
-            recipePictures = "capcay",
+            recipePictures = "bulgogi",
             mealType = 2
         ),
         Recipe(
@@ -4112,7 +4112,7 @@ class FakeFoodData {
                     "Tambahkan telur dan susu rendah lemak dan aduk sampai sedikit mengental.\n" +
                     "Pindahkan ke piring dan sajikan dengan mentimun\n" +
                     "opsional.",
-            recipePictures = "capcay",
+            recipePictures = "spaghetti_gandum_dengan_saus_tomat",
             mealType = 2
         ),
         Recipe(
@@ -4139,7 +4139,7 @@ class FakeFoodData {
                     "gula dan saus tiram.\n" +
                     "Masukkan cumi aduk aduk hingga rata dan beri air.\n" +
                     "Masak selama 5 menit lalu hidangkan.",
-            recipePictures = "capcay",
+            recipePictures = "cumi_hitam",
             mealType = 2
         ),
         Recipe(
@@ -4163,7 +4163,7 @@ class FakeFoodData {
                     "merica. Rebus pakcoy.\n" +
                     "Tiriskan pakcoy\n" +
                     "siram dengan kuah.",
-            recipePictures = "capcay",
+            recipePictures = "pakcoy_dengan_bawang_putih",
             mealType = 2
         ),
         Recipe(
@@ -4191,7 +4191,7 @@ class FakeFoodData {
                     "lada dan aduk sampai layu.\n" +
                     "Masukkan jamur enoki dan scallions\n" +
                     "masak.",
-            recipePictures = "capcay",
+            recipePictures = "chicken_teriyaki",
             mealType = 2
         ),
         Recipe(
@@ -4231,7 +4231,7 @@ class FakeFoodData {
                     "telor\n" +
                     "bayam.\n" +
                     "Bumbui dengan garam dan merica sesuai selera.",
-            recipePictures = "capcay",
+            recipePictures = "bihun_jamur",
             mealType = 2
         ),
         Recipe(
@@ -4254,7 +4254,7 @@ class FakeFoodData {
                     "Tambahkan air secukupnya lalu masukkan tempe yg sudah dipanggamg tadi\n" +
                     "diamkan sampai bumbu meresap dengan api kecil.\n" +
                     "Jika bumbu sudah meresap dan mengering taruh tempe di atas piring dan taburi daun bawang. Tempe siap di sajikan.",
-            recipePictures = "capcay",
+            recipePictures = "tempe_teriyaki",
             mealType = 2
         ),
         Recipe(
@@ -4287,7 +4287,7 @@ class FakeFoodData {
                     "kalau kurang asin bisa tambah garam sedikit\n" +
                     "tumis sampai matang\n" +
                     "sajikan.",
-            recipePictures = "capcay",
+            recipePictures = "tumis_ayam_tahu_telur",
             mealType = 2
         ),
         Recipe(
@@ -4311,7 +4311,7 @@ class FakeFoodData {
                     "Tambahkan saus teriyaki\n" +
                     "royco\n" +
                     "dan cabai dan kacang buncis. Masak sebentar hingga matang.",
-            recipePictures = "capcay",
+            recipePictures = "oseng_tahu_buncis_telur",
             mealType = 2
         ),
         Recipe(
@@ -4340,7 +4340,7 @@ class FakeFoodData {
                     "gula dan royco (sesuai selera).\n" +
                     "Lalu tunggu air menyusut menjadi setengah.\n" +
                     "Setelah itu siap dihidangkan.",
-            recipePictures = "capcay",
+            recipePictures = "capcay_toge",
             mealType = 2
         ),
         Recipe(
@@ -4373,7 +4373,7 @@ class FakeFoodData {
                     "Tambahkan air rebusan spagheti lalu di tumis dan masukkan spagheti tadi.\n" +
                     "Masak sebentar lalu tambahkan keju yang sudah diparut.\n" +
                     "Siap disajikan.",
-            recipePictures = "capcay",
+            recipePictures = "spaghetti",
             mealType = 2
         ),
         Recipe(
@@ -4397,7 +4397,7 @@ class FakeFoodData {
                     "Setelah bawang merah dan bawang putih setengah matang masukkan tempe kemudian goreng hingga tempe setengah matang.\n" +
                     "Masukkan tahu\n" +
                     "kemudian aduk dan masukkan kecap dan sambal masak hingga matang.",
-            recipePictures = "capcay",
+            recipePictures = "tempe_tahu_orek",
             mealType = 2
         ),
         Recipe(
@@ -4419,7 +4419,7 @@ class FakeFoodData {
                     "Masukkan sawi hijau yg sudah dipotong\n" +
                     "aduk sampai sawi layu.\n" +
                     "Masukan tahu goreng yang sudah dipotong.",
-            recipePictures = "capcay",
+            recipePictures = "tumis_sawi_tahu",
             mealType = 2
         ),
         Recipe(
@@ -4441,7 +4441,7 @@ class FakeFoodData {
             cookingSteps = "Rebus udang sampai setengah matang dgn air.\n" +
                     "Masukkan brokoli dan bumbu.\n" +
                     "Rebus sehingga cukup air.",
-            recipePictures = "capcay",
+            recipePictures = "udang_tumis_brokoli",
             mealType = 2
         ),
         Recipe(
@@ -4461,7 +4461,7 @@ class FakeFoodData {
                     "wortel dan tahu sesuai kreasi.\n" +
                     "Potong bawang putih dan cabai.\n" +
                     "Masak menggunakan api sedang selama 10 menit.",
-            recipePictures = "capcay",
+            recipePictures = "sup_tahu_wortel",
             mealType = 2
         ),
         Recipe(
@@ -4497,7 +4497,7 @@ class FakeFoodData {
                     "Masukkan bumbu : garam\n" +
                     "lada\n" +
                     "dan royco secukupnya. Hidangkan.",
-            recipePictures = "capcay",
+            recipePictures = "bihun_rebus",
             mealType = 2
         ),
         Recipe(
@@ -4525,7 +4525,7 @@ class FakeFoodData {
                     "Tunggu hingga mendidih.\n" +
                     "Stim ikan senangin dengan daun bawang\n" +
                     "cabai merah dan cabai hijau di atasnya.",
-            recipePictures = "capcay",
+            recipePictures = "stim_ikan_ala_chinese",
             mealType = 2
         ),
         Recipe(
@@ -4570,7 +4570,7 @@ class FakeFoodData {
                     "saus sambal dan saus tomat. Masak hingga mengental.\n" +
                     "Panaskan teflon baru di api sedang\n" +
                     "olesi dengan minyak lalu panggang satu sisi pizza hingga matang (agak kecoklatan di beberapa bagian).",
-            recipePictures = "capcay",
+            recipePictures = "pan_sarden_pizza",
             mealType = 2
         ),
         Recipe(
@@ -4599,7 +4599,7 @@ class FakeFoodData {
                     "Tambahkan saus gocujhang atau saus tteokbokki.\n" +
                     "Campur semua makanan.\n" +
                     "Siap disajikan.",
-            recipePictures = "capcay",
+            recipePictures = "bibimbap",
             mealType = 2
         ),
         Recipe(
@@ -4623,7 +4623,7 @@ class FakeFoodData {
                     "Masukan mie dan tunggu hingga susu agak meresap.\n" +
                     "Jika susu mulai mengental\n" +
                     "matikan api dan Sesame Toowoomba Pasta sudah siap disajikan.",
-            recipePictures = "capcay",
+            recipePictures = "sesame_toowoomba_pasta",
             mealType = 2
         ),
         Recipe(
@@ -4655,7 +4655,7 @@ class FakeFoodData {
                     "minyak tropicana 1sdt\n" +
                     ".\n" +
                     "Tumis bumbu tumis lalu masukan bumbu marinasi.",
-            recipePictures = "capcay",
+            recipePictures = "ayam_saos_mentega",
             mealType = 2
         ),
         Recipe(
@@ -4681,7 +4681,7 @@ class FakeFoodData {
                     "tunggu sampai mendidih dan reduced.\n" +
                     "Masukan tahu\n" +
                     "masak kurang lebih 2 menit.",
-            recipePictures = "capcay",
+            recipePictures = "mapo_tofu",
             mealType = 2
         ),
         Recipe(
@@ -4711,7 +4711,7 @@ class FakeFoodData {
                     "Tambahkan bumbu halus dan tambahkan air jeruk nipis lalu tambahkan sayuran\n" +
                     "shirataki\n" +
                     "dan paprika. Kemudian tambahkan bumbu Soto Indomie secukupnya. Menyajikan.",
-            recipePictures = "capcay",
+            recipePictures = "mie_shirataki_soto",
             mealType = 2
         ),
         Recipe(
@@ -4745,7 +4745,7 @@ class FakeFoodData {
                     "Setelah surut\n" +
                     "tambahkan paprika dan daun bawang. Aduk hingga tercampur rata.\n" +
                     "Mie siap di sajikan.",
-            recipePictures = "capcay",
+            recipePictures = "japchae_shirataki",
             mealType = 2
         ),
         Recipe(
@@ -4767,7 +4767,7 @@ class FakeFoodData {
                     "masukkan kangkung dan cabe rawit.\n" +
                     "Tambahkan sedikit air.\n" +
                     "Tumis kangkung hingga masak dan tidak layu.",
-            recipePictures = "capcay",
+            recipePictures = "cah_kangkung_ala",
             mealType = 2
         ),
         Recipe(
@@ -4789,7 +4789,7 @@ class FakeFoodData {
                     "garam.\n" +
                     "Didihkan air masukan gula jawa dan kecap sampai mendidih.\n" +
                     "Siram tahu dengan larutan gula dan cabe ulek ke atas piring yg berisi tahu.",
-            recipePictures = "capcay",
+            recipePictures = "tahu_gejrot_cirebon",
             mealType = 2
         ),
         Recipe(
@@ -4811,7 +4811,7 @@ class FakeFoodData {
                     "Tumis bawang putih dengan minyak wijen.\n" +
                     "Masukan semua sayuran dan bumbu lalu tambahkan air.\n" +
                     "Siap disajikan.",
-            recipePictures = "capcay",
+            recipePictures = "tumis_shau",
             mealType = 2
         ),
         Recipe(
@@ -4836,7 +4836,7 @@ class FakeFoodData {
                     "Kocok 3 telur dengan susu\n" +
                     "dadar di teflon anti lengket.\n" +
                     "Lalu di bentuk seperti rolade dan kukus. Sudah siap disajikan.",
-            recipePictures = "capcay",
+            recipePictures = "rolade_sehat",
             mealType = 2
         ),
         Recipe(
@@ -4863,7 +4863,7 @@ class FakeFoodData {
                     "Marinasi jamur dan dada ayam selama 30 menit.\n" +
                     "Tusuk jamur tiram dan dada ayam yg sudah di marinasikan pada tusuk sate.\n" +
                     "Panggang sate jamur dada ayam di teflon anti lengket atau panggangan anti lengket.",
-            recipePictures = "capcay",
+            recipePictures = "sate_mix_ayam_dan_jamur",
             mealType = 2
         ),
         Recipe(
@@ -4883,7 +4883,7 @@ class FakeFoodData {
             cookingSteps = "Panfry ayam.\n" +
                     "Tumis bahan kering.\n" +
                     "Masukkan bumbu.",
-            recipePictures = "capcay",
+            recipePictures = "ayam_lada_hitam",
             mealType = 2
         ),
         Recipe(
@@ -4905,7 +4905,7 @@ class FakeFoodData {
                     "Tambahkan nasi tunggu sampai di rasa sudah cukup matang.\n" +
                     "Jika suka bisa di tambahkan telur ceplok\n" +
                     "telur rebus atau bakso.",
-            recipePictures = "capcay",
+            recipePictures = "nasgor_receh",
             mealType = 2
         ),
         Recipe(
@@ -4929,7 +4929,7 @@ class FakeFoodData {
                     "Masukan air fiber chreme dan bumbu lainnya sampai menyusut.\n" +
                     "Masukan kubis dan cabai.\n" +
                     "Matikan api kemudian masukan faun bawang dan potongan tomat.",
-            recipePictures = "capcay",
+            recipePictures = "tongseng_bango_dan_fiber_chreme",
             mealType = 2
         ),
         Recipe(
@@ -4992,7 +4992,7 @@ class FakeFoodData {
                     "aduk aduk dengan semua bahan diatas\n" +
                     "tambahkan lagi sedikit air dengan tujuan supaya semua rasa meresap kedalam kembang kol\n" +
                     "masak sampai kembanh kok agak berubah warna dan rasa tekstur sudah mirip seperti nasi goreng.",
-            recipePictures = "capcay",
+            recipePictures = "cauliflower_nasi_goreng",
             mealType = 2
         ),
         Recipe(
@@ -5029,7 +5029,7 @@ class FakeFoodData {
                     "keluarkan ayam dari kulkas. Panaskan wajan (boleh pakai minyak 1 sdm).\n" +
                     "Masukkan ayam ke wajan dengan kulit menghadap bawah. Bolak balik ayam hingga matang\n" +
                     "sekitar 7 menit sambil sedikit-sedikit dilumuri lagi dengan sisa bumbu marinasi.",
-            recipePictures = "capcay",
+            recipePictures = "chicken_tandoori",
             mealType = 2
         ),
         Recipe(
@@ -5059,7 +5059,7 @@ class FakeFoodData {
                     "garam\n" +
                     "lada bubuk dan kaldu jamur lalu di aduk aduk hingga pakcoy agak layu dan bumbu tercampur rata.\n" +
                     "Siap disajikan.",
-            recipePictures = "capcay",
+            recipePictures = "sayur_pokcoy_tahu_telur",
             mealType = 2
         ),
         Recipe(
@@ -5086,7 +5086,7 @@ class FakeFoodData {
                     "Masuk mie brokoli dada ayam.\n" +
                     "Koreksi rasa dg tambahkan himsalt dan kecap.\n" +
                     "2 anggota telah menambahkan resep ini ke buku",
-            recipePictures = "capcay",
+            recipePictures = "bakmi_goreng_shirataki",
             mealType = 2
         ),
         Recipe(
@@ -5118,7 +5118,7 @@ class FakeFoodData {
                     "minyak wijen\n" +
                     "saos tiram dan garam(opstional ya kalo kurang asin) dan lada.\n" +
                     "Aduk hingga tercampur rata. Nikmati.",
-            recipePictures = "capcay",
+            recipePictures = "nasi_goreng_china",
             mealType = 2
         ),
         Recipe(
@@ -5143,7 +5143,7 @@ class FakeFoodData {
                     "serta cabai lalu tumis dg air secukupnya.\n" +
                     "Masukkan wortel dan buncis serta tambahkan sedikit merica bubuk dan saos tiram.\n" +
                     "Pindahkan ke piring dengan nasi.",
-            recipePictures = "capcay",
+            recipePictures = "tumis_wortel_buncis",
             mealType = 2
         ),
         Recipe(
@@ -5170,7 +5170,7 @@ class FakeFoodData {
                     "Masukkan jamur + beri sedikit air.\n" +
                     "Beri saori saus tiram\n" +
                     "dan koreksi rasa.",
-            recipePictures = "capcay",
+            recipePictures = "tumis_ayam_jamur_tempe",
             mealType = 2
         ),
         Recipe(
@@ -5206,7 +5206,7 @@ class FakeFoodData {
                     "kecap asin\n" +
                     "gula jawa.\n" +
                     "Aduk hingga rata. Tes rasa. Siap disajikan.",
-            recipePictures = "capcay",
+            recipePictures = "ayam_suwir_balado",
             mealType = 2
         ),
         Recipe(
@@ -5241,7 +5241,7 @@ class FakeFoodData {
                     "Masukan sayuran.\n" +
                     "Koreksi rasa\n" +
                     "selesai.",
-            recipePictures = "capcay",
+            recipePictures = "capcay_ayam_kuah_tanpa_minyak",
             mealType = 2
         ),
         Recipe(
@@ -5266,7 +5266,7 @@ class FakeFoodData {
                     "Taruh di dalam kulit tahu yang telah di rendam air.\n" +
                     "Kukus kurang lebih 10 menit.\n" +
                     "5 anggota telah menambahkan resep",
-            recipePictures = "capcay",
+            recipePictures = "kekian_udang",
             mealType = 2
         ),
         Recipe(
@@ -5293,7 +5293,7 @@ class FakeFoodData {
                     "Campur semua bahan jadi.\n" +
                     "Tambahkan bumbu perasa.\n" +
                     "Sajikan selagi hangat.",
-            recipePictures = "capcay",
+            recipePictures = "cah_sayur",
             mealType = 2
         ),
         Recipe(
@@ -5325,7 +5325,7 @@ class FakeFoodData {
                     "dan kaldu jamur.\n" +
                     "Kemudian masukan spaghetti wholemeal yg sudah di rebus dan beri sedikit seledri\n" +
                     "aduk sampai rata.",
-            recipePictures = "capcay",
+            recipePictures = "spaghetti_aglio_olio_bandeng_tanpa_minyak",
             mealType = 2
         ),
         Recipe(
@@ -5352,7 +5352,7 @@ class FakeFoodData {
                     "Masukkan brokoli.\n" +
                     "Tambahkan garam.\n" +
                     "Pindahkan ke piring saat sudah matang.",
-            recipePictures = "capcay",
+            recipePictures = "cah_brokoli_ayam",
             mealType = 2
         ),
         Recipe(
@@ -5383,7 +5383,7 @@ class FakeFoodData {
                     "Masukkan oatmeal yg sudah disangrai tadi.\n" +
                     "Tumis sebentar hingga tercampur rata. Test rasa\n" +
                     "sajikan",
-            recipePictures = "capcay",
+            recipePictures = "nasi_goreng_tapi_bohong",
             mealType = 2
         ),
         Recipe(
@@ -5426,7 +5426,7 @@ class FakeFoodData {
                     "terakhir masukkan larutan maizena\n" +
                     "aduk2 hingga mengental\n" +
                     "sajikan.",
-            recipePictures = "capcay",
+            recipePictures = "steak_tempe",
             mealType = 2
         ),
         Recipe(
@@ -5466,7 +5466,7 @@ class FakeFoodData {
                     "saus teriyaki dan kecap.\n" +
                     "Diamkan hingga mendidih.\n" +
                     "Ready to serving.",
-            recipePictures = "capcay",
+            recipePictures = "shirataki_tomato_soup",
             mealType = 2
         ),
         Recipe(
@@ -5522,7 +5522,7 @@ class FakeFoodData {
                     "Tumis bawang merah dan bawang putih sebentar. Kemudian masukkan dada ayam dan tempe.\n" +
                     "Masukkan toge dan sawi aduk2. Jngan lupa bumbu nasi goreng instannya ya Terakhir masukkan sohun nya tumis hingga matang.\n" +
                     "Sajikan dengan irisan mentimun dan tomat.",
-            recipePictures = "capcay",
+            recipePictures = "sohun_goreng",
             mealType = 2
         ),
         Recipe(
@@ -5547,7 +5547,7 @@ class FakeFoodData {
                     "saos tiram\n" +
                     "garam\n" +
                     "dan kecap sesuai selera.",
-            recipePictures = "capcay",
+            recipePictures = "tumis_jamur_kacang_panjang",
             mealType = 2
         ),
         Recipe(
@@ -5574,7 +5574,7 @@ class FakeFoodData {
                     "merica dan 1 sendok saus tiram.\n" +
                     "Yang terakhir koreksi rasa.\n" +
                     "1 anggota telah menambah",
-            recipePictures = "capcay",
+            recipePictures = "telur_sutera",
             mealType = 2
         ),
         Recipe(
@@ -5596,7 +5596,7 @@ class FakeFoodData {
                     "Balurkan ayam dengan tepung rolled oat.\n" +
                     "Goreng ayam pakai minyak canola 1 sdm.\n" +
                     "Uleg cabai dan bawang putih sesuai selera.",
-            recipePictures = "capcay",
+            recipePictures = "ayam_geprek_low_calori",
             mealType = 2
         ),
         Recipe(
@@ -5623,7 +5623,7 @@ class FakeFoodData {
                     "saus tiram\n" +
                     "garam\n" +
                     "dan air seckupnya. Lalu tunggu hingga matang & air menyusut.",
-            recipePictures = "capcay",
+            recipePictures = "oseng_buncis_tempe",
             mealType = 2
         ),
         Recipe(
@@ -5643,7 +5643,7 @@ class FakeFoodData {
             cookingSteps = "Potong bawang cabe lalu tumis masukan telur hingga matang masukan sawi hingga layu masukan nasi dan tambahkan garam.\n" +
                     "Angkat nasgor jika sudah matang.\n" +
                     "Sajikan d piring.",
-            recipePictures = "capcay",
+            recipePictures = "nasgor_merah",
             mealType = 2
         ),
         Recipe(
@@ -5664,7 +5664,7 @@ class FakeFoodData {
                     "tambahkan crab stick rebus\n" +
                     "dan beri mentai.\n" +
                     "Bakar menggunakan gas torch.",
-            recipePictures = "capcay",
+            recipePictures = "mentai_shirataki",
             mealType = 2
         ),
         Recipe(
@@ -5689,7 +5689,7 @@ class FakeFoodData {
                     "Masukkan jamur enoki\n" +
                     "aduk rata hingga layu koreksi rasa.\n" +
                     "Tata pokcoy yg sudah d rebus d atas piring. Siram dengan tumisan jamur.",
-            recipePictures = "capcay",
+            recipePictures = "pokcoy_siram_jamur_enoki",
             mealType = 2
         ),
         Recipe(
@@ -5720,7 +5720,7 @@ class FakeFoodData {
                     "masukkan mie shirataki. Aduk rata\n" +
                     "masak sampai semua matang.\n" +
                     "Angkat dan sajikan.",
-            recipePictures = "capcay",
+            recipePictures = "mie_shirataki",
             mealType = 2
         ),
         Recipe(
@@ -5741,7 +5741,7 @@ class FakeFoodData {
                     "Hancurkan tempe dan masukkan semua bahan\n" +
                     "aduk sampai kalis.\n" +
                     "Bentuk bulat tempe dan rebus 15 menit sampai mengambang.",
-            recipePictures = "capcay",
+            recipePictures = "bakso_tempe",
             mealType = 2
         ),
         Recipe(
@@ -5771,7 +5771,7 @@ class FakeFoodData {
                     "Kemudian masukkan saus bolognese dan saus sambal 1 sendok.\n" +
                     "Kemudian masak hingga air menyusut.\n" +
                     "Tambah sedikit keju quick melt untuk hiasan aja sih hehe.",
-            recipePictures = "capcay",
+            recipePictures = "makaroni_ayam",
             mealType = 2
         ),
         Recipe(
@@ -5797,7 +5797,7 @@ class FakeFoodData {
                     "buat scramble egg. Lalu masukkan nasi merah.\n" +
                     "Tambahkan garam dan lada. Campur sampai rata dan matang.\n" +
                     "Buat satu telur mata sapi. Hidangkan dipiring.",
-            recipePictures = "capcay",
+            recipePictures = "nasi_goreng_spesial_nasi_merah",
             mealType = 2
         ),
         Recipe(
@@ -5821,7 +5821,7 @@ class FakeFoodData {
                     "Tambahkan bumbu penyedap\n" +
                     "lalu bisa tambahkan cabai/saus sambal bila suka pedas.\n" +
                     "Panaskan minyak goreng secukupnya lalu masak kurang lebih selama 6mnt.",
-            recipePictures = "capcay",
+            recipePictures = "omlate_bayam",
             mealType = 2
         ),
         Recipe(
@@ -5855,7 +5855,7 @@ class FakeFoodData {
                     "Cicipi\n" +
                     "tunggu sampai airnya agak surut.\n" +
                     "Selesai.",
-            recipePictures = "capcay",
+            recipePictures = "seblak_mie_shirataki",
             mealType = 2
         ),
         Recipe(
@@ -5878,7 +5878,7 @@ class FakeFoodData {
                     "Lalu masukan kangkung\n" +
                     "Saori dan sedikit air.\n" +
                     "Tunggu sampai kangkung masak dan siap disajikan.",
-            recipePictures = "capcay",
+            recipePictures = "kangkung_tumis",
             mealType = 2
         ),
         Recipe(
@@ -5917,7 +5917,7 @@ class FakeFoodData {
                     "Setelah 10 menit angkat ikan\n" +
                     "masukkan saus. Kemudian kukus lagi selama 10 menit.\n" +
                     "Tambahkan daun bawang dan cabai merah. Kukus lagi sebentar kemudian angkat.",
-            recipePictures = "capcay",
+            recipePictures = "steam_fish",
             mealType = 2
         ),
         Recipe(
@@ -5934,7 +5934,7 @@ class FakeFoodData {
             cookingSteps = "Bersihkan sayur.\n" +
                     "Rebus air sampai mendidih.\n" +
                     "Masukkan kembali bayam sampai tidak keras lagi. Menyajikan.",
-            recipePictures = "capcay",
+            recipePictures = "sayur_bayam_bening",
             mealType = 2
         ),
         Recipe(
@@ -5966,7 +5966,7 @@ class FakeFoodData {
                     "Terakhir masukan kol\n" +
                     "aduk dan tunggu sampai kol matang.\n" +
                     "Siap disajikan.",
-            recipePictures = "capcay",
+            recipePictures = "tumis_tempe_sayur",
             mealType = 2
         ),
         Recipe(
@@ -5988,7 +5988,7 @@ class FakeFoodData {
                     "masukan garam dan lada.\n" +
                     "Masukan brokoli\n" +
                     "tumis hingga matang.",
-            recipePictures = "capcay",
+            recipePictures = "tumis_brokoli_udang",
             mealType = 2
         ),
         Recipe(
@@ -6013,7 +6013,7 @@ class FakeFoodData {
                     "penyedap/garam secukupnya\n" +
                     "masak hingga matang\n" +
                     "taburkan bawang goreng. Siap dihidangkan.",
-            recipePictures = "capcay",
+            recipePictures = "tumis_kacang_panjang",
             mealType = 2
         ),
         Recipe(
@@ -6036,7 +6036,7 @@ class FakeFoodData {
                     "masukkan kedalam pisang.\n" +
                     "Tambahkan sisa bahan dan aduk rata.\n" +
                     "Bagi adonan ke dalam cetakan dan panggang dalam oven dengan suhu 210°C selama 15-20 menit.",
-            recipePictures = "capcay",
+            recipePictures = "kue_pisang",
             mealType = 3
         ),
         Recipe(
@@ -6059,7 +6059,7 @@ class FakeFoodData {
                     "Tumis bawang merah dan bawang putih dalam wajan yang diolesi sedikit minyak.\n" +
                     "Tambahkan bahan lainnya satu per satu.\n" +
                     "Tuang air secukupnya dan tutup. Masak hingga matang.",
-            recipePictures = "capcay",
+            recipePictures = "tumis_kubis",
             mealType = 3
         ),
         Recipe(
@@ -6086,7 +6086,7 @@ class FakeFoodData {
                     "aduk rata kembali.\n" +
                     "Panaskan oven 180°C selama 10 menit.Masukan adonan kedalam loyang panggang dan tambahkan almond sebagai topping selama 20-25m.\n" +
                     "Brownis siap dihidangkan.",
-            recipePictures = "capcay",
+            recipePictures = "brownies_mocaf",
             mealType = 3
         ),
         Recipe(
@@ -6109,7 +6109,7 @@ class FakeFoodData {
                     "Panaskan minyak dalam wajan dan tumis bawang putih hingga harum.\n" +
                     "Tambahkan sisa bahan secara bertahap.\n" +
                     "Masak selama 10 menit atau sampai empuk.",
-            recipePictures = "capcay",
+            recipePictures = "enoki_pedas_manis",
             mealType = 3
         ),
         Recipe(
@@ -6133,7 +6133,7 @@ class FakeFoodData {
                     "Masukkan tomat ke dalam wajan panas dan aduk sampai jusnya keluar.\n" +
                     "Tambahkan bawang putih dan bawang bombay. Aduk hingga harum.\n" +
                     "Masukkan sisa bahan satu per satu. Tambahkan air sesuai kebutuhan dan didihkan selama 3 menit.",
-            recipePictures = "capcay",
+            recipePictures = "tumis_kecambah",
             mealType = 3
         ),
         Recipe(
@@ -6154,7 +6154,7 @@ class FakeFoodData {
             cookingSteps = "Potong sayuran menjadi potongan-potongan kecil.\n" +
                     "Tumis bawang putih dan bawang bombay dalam wajan antilengket.\n" +
                     "Perlahan tambahkan sisa bahan. Masak hingga empuk.",
-            recipePictures = "capcay",
+            recipePictures = "tumis_sayuran",
             mealType = 3
         ),
         Recipe(
@@ -6178,7 +6178,7 @@ class FakeFoodData {
                     "Celup rice paper 2 detik di air.\n" +
                     "Siapkan dan gulung kertas nasi dengan bihun\n" +
                     "ayam dan sayuran di dalamnya. Gunakan saus wijen sebagai saus.",
-            recipePictures = "capcay",
+            recipePictures = "spring_roll_ayam",
             mealType = 3
         ),
         Recipe(
@@ -6212,7 +6212,7 @@ class FakeFoodData {
                     "Jika sudah hampir matang\n" +
                     "balikkan perlahan.\n" +
                     "Sajikan di piring dengan nasi dan sayuran pilihan.",
-            recipePictures = "capcay",
+            recipePictures = "udang_nori",
             mealType = 3
         ),
         Recipe(
@@ -6230,7 +6230,7 @@ class FakeFoodData {
                     "Masukkan asparagus yang telah direbus.\n" +
                     "Tumis asparagus dengan bawang putih dan tunggu hingga matang.\n" +
                     "Hidangan siap disantap.",
-            recipePictures = "capcay",
+            recipePictures = "stir_fry_asparagus",
             mealType = 3
         ),
         Recipe(
@@ -6259,7 +6259,7 @@ class FakeFoodData {
                     "jika diinginkan.\n" +
                     "Diamkan selama 15 menit selagi oven dipanaskan terlebih dahulu.\n" +
                     "Panggang dalam oven selama 30 menit dengan suhu 140°C.",
-            recipePictures = "capcay",
+            recipePictures = "pizza",
             mealType = 3
         ),
         Recipe(
@@ -6293,7 +6293,7 @@ class FakeFoodData {
                     "tambahkan air sedikit.\n" +
                     "Masak sampai bumbu meresap.\n" +
                     "Oseng toge tahu telur siap disajikan.",
-            recipePictures = "capcay",
+            recipePictures = "oseng_toge_tahu_telur",
             mealType = 3
         ),
         Recipe(
@@ -6323,7 +6323,7 @@ class FakeFoodData {
                     "tambahkan air sedikit.\n" +
                     "Tunggu hingga matang\n" +
                     "makanan siap disajikan.",
-            recipePictures = "capcay",
+            recipePictures = "tumis_pokcoy_saus_tiram",
             mealType = 3
         ),
         Recipe(
@@ -6339,7 +6339,7 @@ class FakeFoodData {
             cookingSteps = "Iris bawang putih dan tumis di atas api yang panas tanpa minyak.\n" +
                     "Tambahkan taoge dan penyedap rasa sesuai selera. Campur dengan baik.\n" +
                     "Tumis hingga matang.",
-            recipePictures = "capcay",
+            recipePictures = "tumis_toge",
             mealType = 3
         ),
         Recipe(
@@ -6358,7 +6358,7 @@ class FakeFoodData {
                     "Matikan api. Aduk hingga adonan ampyang benar-benar mengental dan matang.\n" +
                     "Ambil satu sendok makan campuran ampyang. Tuang di atas kertas lalu bentuk menjadi bentuk datar atau bulat. Lakukan hingga adonan habis.\n" +
                     "Biarkan dingin dan mengeras lalu simpan di toples kedap udara.",
-            recipePictures = "capcay",
+            recipePictures = "ampyang",
             mealType = 3
         ),
         Recipe(
@@ -6380,7 +6380,7 @@ class FakeFoodData {
                     "Aduk hingga harum dan merata.\n" +
                     "Pindahkan ke piring dan sajikan dengan nasi\n" +
                     "opsional.",
-            recipePictures = "capcay",
+            recipePictures = "tumis_timmun_dan_ayam",
             mealType = 3
         ),
         Recipe(
@@ -6398,7 +6398,7 @@ class FakeFoodData {
             cookingSteps = "Tumis bawang merah dan bawang putih smpai harum dalam minyak goreng.\n" +
                     "Masukan cabai dan kangkung.\n" +
                     "Tumis hingga layu.",
-            recipePictures = "capcay",
+            recipePictures = "tumis_kangkung",
             mealType = 3
         ),
         Recipe(
@@ -6427,7 +6427,7 @@ class FakeFoodData {
                     "daun bawang dan bayam lalu tambahkan lebih banyak air jika perlu.\n" +
                     "Tambahkan bumbu kaldu jamur dan sedikit royco. Tumis hingga semuanya matang.\n" +
                     "Angkat dan sajikan.",
-            recipePictures = "capcay",
+            recipePictures = "tumis_telur_tahu",
             mealType = 3
         ),
         Recipe(
@@ -6456,7 +6456,7 @@ class FakeFoodData {
                     "tumis bawang bombay lalu tambahkan cabai dan lengkuas. Aduk dan tambahkan sisa bumbu dan rempah-rempah.\n" +
                     "Masukkan ayam dan tambahkan sedikit air.\n" +
                     "Tambahkan daun bawang cincang halus. Aduk rata.",
-            recipePictures = "capcay",
+            recipePictures = "ayam_saos_tiram",
             mealType = 3
         ),
         Recipe(
@@ -6481,7 +6481,7 @@ class FakeFoodData {
                     "dan kecap manis\n" +
                     "Masukan tempe yang udah dipotong dadu\n" +
                     "Aduk-aduk hingga air susut",
-            recipePictures = "capcay",
+            recipePictures = "tempe_kecap",
             mealType = 3
         ),
         Recipe(
@@ -6505,7 +6505,7 @@ class FakeFoodData {
                     "Terakhir kocok telur dan tuang sdkit ke dlm panci rebusan.\n" +
                     "Aduk rata\n" +
                     "siap dimakan.",
-            recipePictures = "capcay",
+            recipePictures = "sup_tahu_brokoli",
             mealType = 3
         ),
         Recipe(
@@ -6537,7 +6537,7 @@ class FakeFoodData {
                     "orak arik terus.\n" +
                     "Kemudian masukan tofu\n" +
                     "diamkan hingga mendidih atau sudah terlihat matang.",
-            recipePictures = "capcay",
+            recipePictures = "sup_tofu_telur",
             mealType = 3
         ),
         Recipe(
@@ -6553,7 +6553,7 @@ class FakeFoodData {
             cookingSteps = "Iris tempe tipis tipis.\n" +
                     "Beri bumbu bawang putih dan garam.\n" +
                     "Lumuri bumbu dan masukkan ke air fryer dengan suhu 200°C waktu 20 menit.",
-            recipePictures = "capcay",
+            recipePictures = "tempe_goreng",
             mealType = 3
         ),
         Recipe(
@@ -6573,7 +6573,7 @@ class FakeFoodData {
             cookingSteps = "Kocok telur dan campurkan garam.\n" +
                     "Didihkan air dan jika air sudah mendidih masukkan telur kocok.\n" +
                     "Kemudian masukkan sosis dan sawi bersama kaldu dan merica.",
-            recipePictures = "capcay",
+            recipePictures = "sup_telur",
             mealType = 3
         ),
         Recipe(
@@ -6602,7 +6602,7 @@ class FakeFoodData {
                     "dan bumbu.\n" +
                     "Aduk sampai rata.\n" +
                     "Sajikan.",
-            recipePictures = "capcay",
+            recipePictures = "ayam_brokoli_tumis",
             mealType = 3
         ),
         Recipe(
@@ -6625,7 +6625,7 @@ class FakeFoodData {
                     "Tambahkan royco dan lada bubuk\n" +
                     "tes rasa hingga sesuai yang diinginkan.\n" +
                     "Setelah matang tambahkan daun bawang dam hidangkan.",
-            recipePictures = "capcay",
+            recipePictures = "sup_tomat",
             mealType = 3
         ),
         Recipe(
@@ -6652,7 +6652,7 @@ class FakeFoodData {
                     "masukkan telur dan aduk hingga matang.\n" +
                     "Tambahkan air\n" +
                     "masukkan lahu dan tahu.",
-            recipePictures = "capcay",
+            recipePictures = "sup_labu_telur",
             mealType = 3
         ),
         Recipe(
@@ -6679,7 +6679,7 @@ class FakeFoodData {
                     "Masukan sayuran dan bumbu lainya.\n" +
                     "Aduk sampai matang.\n" +
                     "Sajikan dengan taburan daun petersely.",
-            recipePictures = "capcay",
+            recipePictures = "dada_ayam_paprika",
             mealType = 3
         ),
         Recipe(
@@ -6703,7 +6703,7 @@ class FakeFoodData {
                     "Tiriskan\n" +
                     "plating buah pir kemudian tambahkan 2 scoops ice cream\n" +
                     "tambahkan saus coklat dan beri taburan kacang almond.",
-            recipePictures = "capcay",
+            recipePictures = "poires_helena",
             mealType = 3
         ),
         Recipe(
@@ -6729,7 +6729,7 @@ class FakeFoodData {
                     "Masukan jamur enoki yg sdh dicuci bersih.\n" +
                     "Tambahkan susu non fat.\n" +
                     "Diamkan sebentar kemudian angkat.",
-            recipePictures = "capcay",
+            recipePictures = "bayam_jamur",
             mealType = 3
         ),
         Recipe(
@@ -6756,7 +6756,7 @@ class FakeFoodData {
                     "Isi kulit pangsit dengan isian gyoza.\n" +
                     "Kukus di atas teflon selama 30 menit dengan sedikit air sambil ditutup.\n" +
                     "10 anggota telah menambahkan resep ini ke buku masak mereka",
-            recipePictures = "capcay",
+            recipePictures = "gyoza",
             mealType = 3
         ),
         Recipe(
@@ -6775,7 +6775,7 @@ class FakeFoodData {
                     "tambahkan fiber creme.\n" +
                     "Bentuk ubi dan isi dengan nanas.\n" +
                     "Lapisi dengan biji wijen.",
-            recipePictures = "capcay",
+            recipePictures = "bola_ubi_jalar",
             mealType = 3
         ),
         Recipe(
@@ -6798,7 +6798,7 @@ class FakeFoodData {
                     "gula\n" +
                     "bawang putih bubuk\n" +
                     "dan lada hitam.",
-            recipePictures = "capcay",
+            recipePictures = "bakso_dan_sup_telur",
             mealType = 3
         ),
         Recipe(
@@ -6826,7 +6826,7 @@ class FakeFoodData {
                     "Campurkan semua bahan dan telur aduk rata dan tambahkan bumbu-bumbu.\n" +
                     "Siapkan pan panas lalu kecilkan api dan panggang bertahap.\n" +
                     "6 anggota telah menambahkan resep ini ke buku masak mereka",
-            recipePictures = "capcay",
+            recipePictures = "martabak_tofu",
             mealType = 3
         ),
         Recipe(
@@ -6845,7 +6845,7 @@ class FakeFoodData {
                     "Masukkan pisang keju gula pasir ke kulit pangsit lalu gulung.\n" +
                     "Goreng.\n" +
                     "Tambahkan lelehan coklat dan keju diatas nya.",
-            recipePictures = "capcay",
+            recipePictures = "tumpia_pisang_aroma",
             mealType = 3
         ),
         Recipe(
@@ -6871,7 +6871,7 @@ class FakeFoodData {
                     "Bagi menjadi 12 bagian tepungnya\n" +
                     "masukan isian ubinya bulat dan gepengkan. Lalu panggang selama 1 jam di suhu 120°c.\n" +
     "Onde-onde ubi panggang siap disajikan.",
-    recipePictures = "capcay",
+    recipePictures = "onde_onde_panggang",
     mealType = 3
     ),
     Recipe(
@@ -6900,7 +6900,7 @@ class FakeFoodData {
     "setelah itu masukan jg daun bawang.\n" +
     "Tambahkan garam dan merica setelah itu dicicip.\n" +
     "Sudah biss dihidangkan.",
-    recipePictures = "capcay",
+    recipePictures = "sup_telur_jagung",
     mealType = 3
     ),
     Recipe(
@@ -6929,7 +6929,7 @@ class FakeFoodData {
     "kurleb 1 sdm adonan setiap goreng perkedel.\n" +
     "Tunggu hingga ke coklatan\n" +
     "dan angkat. Perkedel siap dinikmati.",
-    recipePictures = "capcay",
+    recipePictures = "perkedel_tahu_bawang",
     mealType = 3
     ),
     Recipe(
@@ -6955,7 +6955,7 @@ class FakeFoodData {
     "garam dan kaldu bubuk\n" +
     "tambahkan cabe rawit utuh.\n" +
     "Tes rasa.",
-    recipePictures = "capcay",
+    recipePictures = "kare_capit_kepiting",
     mealType = 3
     ),
     Recipe(
@@ -6978,7 +6978,7 @@ class FakeFoodData {
     "dan air.\n" +
     "Tambah garam. Dan biarkan air menyusut.\n" +
     "Hidangkan..",
-    recipePictures = "capcay",
+    recipePictures = "ayam_tempe_penyet",
     mealType = 3
     ),
     Recipe(
@@ -7005,7 +7005,7 @@ class FakeFoodData {
     "gulung seperti menggulung risoles.\n" +
     "Lakukan sampai adonan tahu habis.\n" +
     "Kukus kurang lebih 10 menit.",
-    recipePictures = "capcay",
+    recipePictures = "sawi_gulung",
     mealType = 3
     ),
     Recipe(
@@ -7027,7 +7027,7 @@ class FakeFoodData {
     "usahakan kulit buah naga masih tersisa.\n" +
     "Potong Nutrijell dingin menjadi kubus\n" +
     "lalu sajikan dengan irisan buah naga di atas kulit buah naga. Selamat menikmati.",
-    recipePictures = "capcay",
+    recipePictures = "dragon_fruit_jelly",
     mealType = 3
     ),
     Recipe(
@@ -7057,7 +7057,7 @@ class FakeFoodData {
     "dan kaldu.\n" +
     "Parut semua wortel dengan parutan rujak / potong korek api tipis2.\n" +
     "Isi kulit pangsit dengan isian ayam tahu yg sudah di haluskan.. Kemudian kukus sampai matang kurang lebih 15 menit . Siap di santap dan di nikmati.",
-    recipePictures = "capcay",
+    recipePictures = "dimsum_diet",
     mealType = 3
     ),
     Recipe(
@@ -7091,7 +7091,7 @@ class FakeFoodData {
     "Kocok putih telur dengan gula pasir.\n" +
     "Letakkan diatas adonan pertama.\n" +
     "Panggang dengan suhu 170 derajat selama 20menit.",
-    recipePictures = "capcay",
+    recipePictures = "klapertart",
     mealType = 3
     ),
     Recipe(
@@ -7113,7 +7113,7 @@ class FakeFoodData {
     "Panaskan kukusan.\n" +
     "Masukkan kedalam cetakan tambahkan kacang secukupnya.\n" +
     "Kukus 10-15menit. Angkat.",
-    recipePictures = "capcay",
+    recipePictures = "agar_agar_kukus_coklat",
     mealType = 3
     ),
     Recipe(
@@ -7150,7 +7150,7 @@ class FakeFoodData {
     "Tambah semua bahan\n" +
     "test rasa.\n" +
     "Masak sampai mendidih.",
-    recipePictures = "capcay",
+    recipePictures = "sup_daging_tahu",
     mealType = 3
     ),
     Recipe(
@@ -7200,7 +7200,7 @@ class FakeFoodData {
     "Kalo mau pake sambel\n" +
     "tinggal haluskan rawit dan juga air kuah sotonya.\n" +
     "Selesai.",
-    recipePictures = "capcay",
+    recipePictures = "soto_ayam",
     mealType = 3
     ),
     Recipe(
@@ -7226,7 +7226,7 @@ class FakeFoodData {
     "Setelah 3 menit masukkan kentang dan wortel.\n" +
     "Setelah wortel dan kentang setengah matang masukkan brokoli dan kol.\n" +
     "Taburkan sedikit garam. Menyajikan.",
-    recipePictures = "capcay",
+    recipePictures = "sup_bening",
     mealType = 3
     ),
     Recipe(
@@ -7252,7 +7252,7 @@ class FakeFoodData {
     "Masak dengan api kecil sambil diaduk2 sampai mendidih.\n" +
     "Setelah mendidih tuang ketempat yg telah disediakan.\n" +
     "Tunggu hingga puding set beri puding chia seed dan buah2an yang sudah dipotong2 lalu simpan dikulkas.",
-    recipePictures = "capcay",
+    recipePictures = "puding_chia",
     mealType = 3
     ),
     Recipe(
@@ -7270,7 +7270,7 @@ class FakeFoodData {
     "Campurkan semua bahan dan kacau sehingga menjadi doh.\n" +
     "Masukkan ke dalam cetakan/tutup dengan plastik cling dan potong menjadi batangan.\n" +
     "Dinginkan di lemari es.",
-    recipePictures = "capcay",
+    recipePictures = "protein_bar_kacang_tanah",
     mealType = 3
     ),
     )
