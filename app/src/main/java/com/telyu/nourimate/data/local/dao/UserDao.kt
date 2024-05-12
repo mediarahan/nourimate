@@ -19,7 +19,7 @@ interface UserDao {
     suspend fun insertUser(users: User)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertDetail (details: Detail)
+    suspend fun insertDetail(details: Detail)
 
     @Query("SELECT * FROM users WHERE name = :name")
     suspend fun getUserByName(name: String): User?
@@ -28,13 +28,13 @@ interface UserDao {
     suspend fun getUserByEmail(email: String): User?
 
     @Query("SELECT name FROM users WHERE email = :email")
-    suspend fun getUserNameByEmail(email:String): String?
+    suspend fun getUserNameByEmail(email: String): String?
 
     @Query("SELECT userId FROM users WHERE email = :email")
     suspend fun getUserIdByEmail(email: String): Int?
 
     @Query("SELECT * FROM userDetails WHERE detailId = :id")
-    suspend fun getUserDetailsById (id: Int): Detail?
+    suspend fun getUserDetailsById(id: Int): Detail?
 
     @Query("SELECT bmi FROM userDetails WHERE detailId = :id")
     suspend fun getBMIById(id: Int?): Int?
@@ -54,11 +54,13 @@ interface UserDao {
     @Query("DELETE FROM users")
     suspend fun deleteAllRecords()
 
-    @Query("""
+    @Query(
+        """
         SELECT * FROM userDetails
         INNER JOIN users ON userDetails.detailId = users.userId
         WHERE users.email = :email
-    """)
+    """
+    )
     suspend fun getUserDetailsByEmail(email: String): Detail
 
     //Sleep API Related
@@ -67,5 +69,11 @@ interface UserDao {
 
     @Query("SELECT * FROM sleep_segments")
     fun getAllSleepSegments(): LiveData<List<SleepSegmentEventEntity>>
+
+    @Query("UPDATE users SET accountState = :state WHERE userId = :userId")
+    suspend fun updateAccountState(userId: Int, state: Int)
+
+    @Query("SELECT accountState FROM users WHERE userId = :userId")
+    suspend fun getAccountStateByUserId(userId: Int?): Int
 
 }

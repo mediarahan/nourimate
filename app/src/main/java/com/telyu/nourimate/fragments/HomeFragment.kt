@@ -22,6 +22,7 @@ import com.telyu.nourimate.utils.SleepReceiver
 import com.telyu.nourimate.viewmodels.HomeViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
 import android.Manifest
+import android.net.Uri
 
 
 class HomeFragment : Fragment() {
@@ -61,10 +62,6 @@ class HomeFragment : Fragment() {
             binding.weightMessageTextView.text = weightMessage
         }
 
-        viewModel.userProfilePhoto.observe(viewLifecycleOwner) { userProfilePhoto ->
-            binding.profileImageView.setImageBitmap(userProfilePhoto)
-        }
-
         viewModel.sleepTime.observe(viewLifecycleOwner) { sleepTime ->
             binding.timeInSleep.text = getString(R.string.sleep_time_format, sleepTime)
         }
@@ -73,9 +70,6 @@ class HomeFragment : Fragment() {
             binding.wakeUpTime.text = getString(R.string.wake_up_time_format, wakeUpTime)
         }
 
-        viewModel.consumedCalories.observe(viewLifecycleOwner) { calories ->
-            updateUI(calories)
-        }
         viewModel.currentGlass.observe(viewLifecycleOwner) { glass ->
             updateGlassesUI(glass)
         }
@@ -87,7 +81,7 @@ class HomeFragment : Fragment() {
         setupNutritionNeeds()
         setupMealCount()
         viewModel.getNutritionSums()
-        //displayUserNameAndProfpic()
+        displayProfpic()
         observeSleep()
     }
 
@@ -256,28 +250,28 @@ class HomeFragment : Fragment() {
 
 
     //Untuk nampilin nama dan profpic
-//    private fun displayUserNameAndProfpic() {
-//        viewModel.userEmail.observe(viewLifecycleOwner) { userEmail ->
-//            userEmail.let {
-//                viewModel.getUserIdByEmail(it)
-//            }
-//        }
-//
-//        viewModel.userId.observe(viewLifecycleOwner) { userId ->
-//            if (userId != null) {
-//                viewModel.getProfpicById(userId)
-//            }
-//        }
-//
-//        viewModel.profilePicture.observe(viewLifecycleOwner) { uriString ->
-//            uriString?.let { uriStr ->
-//                val uri = Uri.parse(uriStr)
-//                binding.profileImageView.setImageURI(uri)
-//            }
-//
-//        }
-//
-//    }
+    private fun displayProfpic() {
+        viewModel.userEmail.observe(viewLifecycleOwner) { userEmail ->
+            userEmail.let {
+                viewModel.getUserIdByEmail(it)
+            }
+        }
+
+        viewModel.userId.observe(viewLifecycleOwner) { userId ->
+            if (userId != null) {
+                viewModel.getProfpicById(userId)
+            }
+        }
+
+        viewModel.profilePicture.observe(viewLifecycleOwner) { uriString ->
+            uriString?.let { uriStr ->
+                val uri = Uri.parse(uriStr)
+                binding.profileImageView.setImageURI(uri)
+            }
+
+        }
+
+    }
 
     //Water Related Functions
 

@@ -14,6 +14,7 @@ import com.telyu.nourimate.data.remote.Result
 import com.telyu.nourimate.data.remote.retrofit.RecommendationRequest
 import com.telyu.nourimate.data.repository.NourimateRepository
 import com.telyu.nourimate.utils.GeneralUtil
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import java.util.Date
@@ -31,6 +32,7 @@ class EditProfileViewModel (private val repository: NourimateRepository): ViewMo
     //BISMILLAH API ----------------------------------------------------------------------------------------
 
     private val userEmail: LiveData<String> = repository.getUserEmail().asLiveData()
+    private val userId: LiveData<Int> = repository.getUserId().asLiveData()
 
     private val userDetails: LiveData<Detail> = userEmail.switchMap { email ->
         liveData {
@@ -39,7 +41,7 @@ class EditProfileViewModel (private val repository: NourimateRepository): ViewMo
         }
     }
 
-    private val recommendationData: LiveData<Result<NourimateRepository.ListOfIds>> = userDetails.switchMap { detail ->
+    val recommendationData: LiveData<Result<NourimateRepository.ListOfIds>> = userDetails.switchMap { detail ->
         val age = GeneralUtil.calculateAge(detail.dob)
 
         val recommendationRequest = RecommendationRequest(
@@ -52,6 +54,8 @@ class EditProfileViewModel (private val repository: NourimateRepository): ViewMo
 
         liveData {
             emit(Result.Loading)
+            //pura2 loading
+            delay(2000)
             try {
                 val response = repository.fetchRecommendationData(recommendationRequest)
                 Log.d("Age", age.toString())
@@ -115,5 +119,12 @@ class EditProfileViewModel (private val repository: NourimateRepository): ViewMo
         }
     }
     //BISMILLAH API ----------------------------------------------------------------------------------------
+
+    fun setAccountStateAsCompleted() {
+        viewModelScope.launch {
+            repository.changeAccountState(userId.toString().toInt(), userEmail.toString(), 3)
+            repository.updateAccountState(userId.toString().toInt(), 3)
+        }
+    }
 
 }

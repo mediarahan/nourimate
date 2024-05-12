@@ -1,6 +1,7 @@
 package com.telyu.nourimate.activities
 
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -42,5 +43,18 @@ class NavigationBarActivity : AppCompatActivity() {
             replace(R.id.fragmentContainer, fragment)
             commit()
         }
+    }
+
+    override fun onBackPressed() {
+        val alertDialogBuilder = AlertDialog.Builder(this)
+        alertDialogBuilder.setTitle("Exit App")
+        alertDialogBuilder.setMessage("Are you sure you want to exit the app?")
+        alertDialogBuilder.setPositiveButton("Yes") { _, _ ->
+            finishAffinity()
+        }
+        alertDialogBuilder.setNegativeButton("No") { dialog, _ ->
+            dialog.dismiss()
+        }
+        alertDialogBuilder.show()
     }
 }

@@ -31,10 +31,6 @@ class RecipeViewModel(private val repository: NourimateRepository) : ViewModel()
     private val _searchResult = MutableLiveData<List<Recipe>>()
     val searchResult: LiveData<List<Recipe>> get() = _searchResult
 
-    //Digunakan di RecipeDialogMealTutorial
-    private val _selectedRecommendationIds = MutableLiveData<List<Int>>()
-    val selectedRecommendationIds: LiveData<List<Int>> get() = _selectedRecommendationIds
-
     //Digunakan untuk menampilkan data - data terkait pengguna
     private val _userId = MutableLiveData<Int?>()
     val userId: LiveData<Int?> = _userId
@@ -117,19 +113,11 @@ class RecipeViewModel(private val repository: NourimateRepository) : ViewModel()
     private fun combineLatestData(recipes: List<Recipe>?, recommendations: List<Recommendation>?) {
         if (recipes == null || recommendations == null) return
 
-        val recommendationRecipes = mutableListOf<RecommendationRecipe>()
-        val groupByDate = recipes.groupBy { recipe ->
-            recommendations.find { it.recipeId == recipe.recipeId }?.date
-        }
-
-        for ((date, groupedRecipes) in groupByDate) {
-            val recommendation = recommendations.find { it.date == date }
-            if (recommendation != null) {
-                recommendationRecipes.add(RecommendationRecipe.RecommendationItem(recommendation))
-            }
-            groupedRecipes.forEach { recipe ->
-                recommendationRecipes.add(RecommendationRecipe.RecipeItem(recipe))
-            }
+        val recommendationMap = recommendations.associateBy { it.recipeId }
+        val recommendationRecipes = recipes.flatMap { recipe ->
+            recommendationMap[recipe.recipeId]?.let { recommendation ->
+                listOf(RecommendationRecipe.RecommendationItem(recommendation), RecommendationRecipe.RecipeItem(recipe))
+            } ?: listOf()
         }
         _recommendationRecipes.value = recommendationRecipes
     }
@@ -279,7 +267,6 @@ class RecipeViewModel(private val repository: NourimateRepository) : ViewModel()
                 nutritionSum.totalFat <= maxNutritions[2] &&
                 nutritionSum.totalCarbs <= maxNutritions[3]
     }
-
 
     fun updateSelectedRecommendationsPerMealType(mealType: Int) {
         viewModelScope.launch {

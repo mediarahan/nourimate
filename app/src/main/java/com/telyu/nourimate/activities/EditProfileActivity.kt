@@ -4,8 +4,8 @@ import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
-import android.view.LayoutInflater
-import android.view.ViewGroup
+import android.view.View
+import android.widget.Toast
 import com.telyu.nourimate.databinding.ActivityEditProfileBinding
 import com.telyu.nourimate.databinding.DialogRulerPickerBinding
 import com.telyu.nourimate.custom.CurvedRulerView
@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.telyu.nourimate.R
 import com.telyu.nourimate.data.local.models.Detail
+import com.telyu.nourimate.data.remote.Result
 import com.telyu.nourimate.viewmodels.EditProfileViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
 import java.text.SimpleDateFormat
@@ -67,6 +68,7 @@ class EditProfileActivity : AppCompatActivity() {
 
         //Activity onCreate
         binding.buttonNext.setOnClickListener {
+            viewModel.setAccountStateAsCompleted()
             insertUserDetails()
             setupObservers()
         }
@@ -101,12 +103,29 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
 
+    //Fungsi dibawah untuk masukin rekomendasi yang didapatkan dari ML ke device
 
-    //API Related
     private fun setupObservers() {
         viewModel.recommendationsLiveData.observe(this) {recommendations ->
             if (recommendations.isNotEmpty()) {
                 viewModel.insertRecommendations(recommendations)
+            } else {
+                handleLoadingOrErrorState()
+            }
+        }
+    }
+
+    //Fungsi dibawah buat ganti state akun dari verified jadi completed, beres. Sudah isi semua profil akun
+
+    private fun handleLoadingOrErrorState() {
+        viewModel.recommendationData.observe(this) { result ->
+            when (result) {
+                is Result.Loading -> showLoading(true)
+                is Result.Error -> {
+                    showLoading(false)
+                    Toast.makeText(this, "Error Fetching Recipes", Toast.LENGTH_SHORT).show()
+                }
+                else -> showLoading(false)
             }
         }
     }
@@ -171,6 +190,9 @@ class EditProfileActivity : AppCompatActivity() {
         return weight / (heightInMeters * heightInMeters)
     }
 
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
 
     private fun obtainViewModel(activity: AppCompatActivity): EditProfileViewModel {
         val factory = ViewModelFactory.getInstance(activity.application)

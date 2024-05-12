@@ -5,7 +5,6 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
-import androidx.test.core.app.ApplicationProvider
 import com.google.android.gms.location.ActivityRecognition
 import com.google.android.gms.location.SleepSegmentRequest
 import com.telyu.nourimate.data.local.dao.FoodDao
@@ -15,7 +14,6 @@ import com.telyu.nourimate.data.local.models.NutritionSum
 import com.telyu.nourimate.data.local.models.Profpic
 import com.telyu.nourimate.data.local.models.Recipe
 import com.telyu.nourimate.data.local.models.Recommendation
-import com.telyu.nourimate.data.local.models.RecommendationRecipe
 import com.telyu.nourimate.data.local.models.SleepSegmentEventEntity
 import com.telyu.nourimate.data.local.models.User
 import com.telyu.nourimate.data.remote.response.RecommendationResponse
@@ -25,7 +23,7 @@ import com.telyu.nourimate.utils.UserModel
 import com.telyu.nourimate.utils.UserPreference
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import java.util.Date
+import kotlin.math.log
 
 class NourimateRepository(
     private val apiService: ApiService,
@@ -49,32 +47,46 @@ class NourimateRepository(
 
     // === AUTHENTICATION RELATED QUERIES ===
 
-    fun signup(
-        password: String,
-        confirmPassword: String,
-    ): Boolean {
-        return password == confirmPassword
-    }
+//    fun signup(password: String, confirmPassword: String, ): Boolean {
+//        return password == confirmPassword
+//    }
 
-    suspend fun login(
-        email: String,
-        password: String,
-    ): Boolean {
+    //inimah lancar, masukin ke userPreference aman2 aja
+    suspend fun login(email: String, password: String): Int {
         val user = userDao.getUserByEmail(email)
-        val isLoginSuccessful = user != null && user.password == password
+        if (user != null && user.password == password && email == user.email) {
+            val currentAccountState = userDao.getAccountStateByUserId(user.userId)
 
-        Log.d("Login", "Email: $email, IsLoginSuccessful: $isLoginSuccessful")
-
-        //redundan, jangan lupa ubah logikanya kalau udah pake API
-        val userModel = UserModel(email, isLoginSuccessful)
-        userPreference.saveSession(userModel)
-
-        return isLoginSuccessful
+            userPreference.logout()
+            val userModel = UserModel(user.userId, email, currentAccountState)
+            userPreference.saveSession(userModel)
+            Log.d("UserModel", "$userModel")
+            return currentAccountState
+        } else {
+            return -1
+        }
     }
 
-    fun observeUserLoginStatus(): LiveData<Boolean?> {
+//    }   suspend fun login(email: String, password: String): Boolean {
+//        val user = userDao.getUserByEmail(email)
+//        val isLoginSuccessful = user != null && user.password == password
+//
+//        if (isLoginSuccessful) {
+//            userPreference.logout() // Make sure to clear previous session data
+//            val userModel = UserModel(user?.userId, email, 1) // Assuming `userId` is fetched here
+//            userPreference.saveSession(userModel)
+//            Log.d("Login", "Email: $email, IsLoginSuccessful: true")
+//        } else {
+//            Log.d("Login", "Email: $email, IsLoginSuccessful: false")
+//        }
+//
+//        return isLoginSuccessful
+//    }
+
+
+    fun observeUserLoginStatus(): LiveData<Int?> {
         return userPreference.getSession().map { userModel ->
-            userModel.isLogin
+            userModel.loginState
         }.asLiveData()
     }
 
@@ -86,6 +98,11 @@ class NourimateRepository(
 
     suspend fun setDatabaseFilled() {
         userPreference.setDatabaseFilled()
+    }
+
+    suspend fun changeAccountState(id: Int, email: String, loginState: Int) {
+        val userModel = UserModel(id, email, loginState)
+        userPreference.saveSession(userModel)
     }
 
     suspend fun logout() {
@@ -120,6 +137,9 @@ class NourimateRepository(
     fun getUserEmail(): Flow<String> {
         return userPreference.getUserEmail()
     }
+    fun getUserId(): Flow<Int> {
+        return userPreference.getUserId()
+    }
 
     suspend fun getUserDetailsByEmail(email: String): Detail {
         return userDao.getUserDetailsByEmail(email)
@@ -141,6 +161,10 @@ class NourimateRepository(
 
     suspend fun updateSelectedRecommendationsPerMealType(mealType: Int) {
         foodDao.updateSelectedRecommendationsPerMealType(mealType)
+    }
+
+    suspend fun updateAccountState(userId: Int, loginState: Int) {
+        userDao.updateAccountState(userId, loginState)
     }
 
     //=== QUERY FOOD ===
@@ -266,7 +290,6 @@ class NourimateRepository(
     fun getAllSleepSegments(): LiveData<List<SleepSegmentEventEntity>> {
         return userDao.getAllSleepSegments()
     }
-
 
     companion object {
         @Volatile

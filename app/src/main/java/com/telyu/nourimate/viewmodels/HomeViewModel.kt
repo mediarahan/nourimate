@@ -1,7 +1,6 @@
 package com.telyu.nourimate.viewmodels
 
 import android.app.PendingIntent
-import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -33,26 +32,14 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
     val weightMessage: LiveData<String>
         get() = _weightMessage
 
-    private val _userProfilePhoto = MutableLiveData<Bitmap>()
-    val userProfilePhoto: LiveData<Bitmap>
-        get() = _userProfilePhoto
-
     val sleepTime = MutableLiveData<String>()
     val wakeUpTime = MutableLiveData<String>()
-
-
-    private val _consumedCalories = MutableLiveData<Int>()
-    val consumedCalories: LiveData<Int> = _consumedCalories
 
     private val _waterIntake = MutableLiveData(0)
     val waterIntake: LiveData<Int> get() = _waterIntake
 
     private val _currentGlass = MutableLiveData(0)
     val currentGlass: LiveData<Int> get() = _currentGlass
-
-    fun updateConsumedCalories(calories: Int) {
-        _consumedCalories.value = calories
-    }
 
 
     init {
@@ -68,29 +55,21 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
         _weightMessage.value = "You've gained 0 kg today!"
     }
 
-    fun setWeightMessage(weightGain: Int) {
-        _weightMessage.value = "You've gained $weightGain kg today!"
-    }
-
-    fun setUserProfilePhoto(photo: Bitmap) {
-        _userProfilePhoto.value = photo
-    }
-
     private fun updateGreetingMessage() {
         val calendar = Calendar.getInstance()
         val hourOfDay = calendar.get(Calendar.HOUR_OF_DAY)
 
         val greeting = when {
-            hourOfDay < 12 -> "Good morning"
-            hourOfDay < 18 -> "Good afternoon"
-            else -> "Good evening"
+            hourOfDay < 12 -> "Good morning!"
+            hourOfDay < 18 -> "Good afternoon!"
+            else -> "Good evening!"
         }
 
         _greetingMessage.value = greeting
     }
 
     fun addWater(amount: Int) {
-        if (_currentGlass.value ?: 0 < 8) { // Assuming there are 8 glasses
+        if ((_currentGlass.value ?: 0) < 8) { // Assuming there are 8 glasses
             _waterIntake.value = (_waterIntake.value ?: 0) + amount
             _currentGlass.value = (_currentGlass.value ?: 0) + 1
         }
@@ -155,7 +134,7 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
             val gender = if (detail.gender == "Laki-laki") true else if (detail.gender == "Perempuan") false else null
             val age = calculateAge(detail.dob)
 
-            val akei = calculateAKEi(detail.height?.toInt() ?: 420, gender!!, age)
+            val akei = calculateAKEi(detail.height?.toInt() ?: 420, gender, age)
             val conditionCode = convertConditionToCode(detail.disease)
 
             val breakfastNutrition = calculateBreakfastNutrition(akei, conditionCode)
@@ -179,7 +158,7 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
             val gender = if (detail.gender == "Laki-laki") true else if (detail.gender == "Perempuan") false else null
             val age = calculateAge(detail.dob)
 
-            val akei = calculateAKEi(detail.height?.toInt() ?: 420, gender!!, age)
+            val akei = calculateAKEi(detail.height?.toInt() ?: 420, gender, age)
             val conditionCode = convertConditionToCode(detail.disease)
 
             val breakfastNutrition = calculateBreakfastNutrition(akei, conditionCode)

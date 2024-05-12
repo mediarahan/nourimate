@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -151,15 +152,15 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
 
     private fun setupSearchBarAndSearchView() {
         with(binding) {
-            searchView.setupWithSearchBar(searchBar)
+            searchView.editText.setOnEditorActionListener { _, actionId, _ ->
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    searchBar.text = searchView.text
+                    searchView.hide()
 
-            searchView.editText.setOnEditorActionListener { _, _, _ ->
-                searchBar.text = searchView.text
-                searchView.hide()
-
-                val query = searchBar.text.toString()
-                viewModel.getRecipeByName(query)
-                true // Return true to indicate that the action has been handled
+                    val query = searchBar.text.toString()
+                    viewModel.getRecipeByName(query)
+                    true // Handle action and consume the event
+                } else false // Do not consume the event
             }
             searchBar.inflateMenu(R.menu.selected_meal_menu)
         }

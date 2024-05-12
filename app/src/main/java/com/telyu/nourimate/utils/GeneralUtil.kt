@@ -3,10 +3,8 @@ package com.telyu.nourimate.utils
 import android.app.AlertDialog
 import android.content.Context
 import android.util.Log
-import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
-import java.util.Locale
 
 object GeneralUtil {
     fun getDateToday(hour: Int, minute: Int, second: Int, milisecond: Int): Long {
@@ -95,19 +93,19 @@ object GeneralUtil {
     //Step 1: Menghitung BB Ideal + faktor usia
     fun calculateAKEi(
         userHeight: Int,
-        userGender: Boolean,
+        userGender: Boolean?,
         userAge: Int
     ): Int {
         val idealWeight = (userHeight - 100) - (0.1 * (userHeight - 100))
 
         val AKEi = when {
-            userAge in 20..29 -> if (userGender) ((15.3 * idealWeight + 679) * 1.78).toInt()
+            userAge in 20..29 -> if (userGender == true) ((15.3 * idealWeight + 679) * 1.78).toInt()
             else ((14.7 * idealWeight + 496) * 1.64).toInt()
 
-            userAge in 30..59 -> if (userGender) ((11.6 * idealWeight + 879) * 1.78).toInt()
+            userAge in 30..59 -> if (userGender == true) ((11.6 * idealWeight + 879) * 1.78).toInt()
             else ((8.7 * idealWeight + 829) * 1.64).toInt()
 
-            userAge >= 60 -> if (userGender) ((13.5 * idealWeight + 487) * 1.78).toInt()
+            userAge >= 60 -> if (userGender == true) ((13.5 * idealWeight + 487) * 1.78).toInt()
             else ((13.5 * idealWeight + 596) * 1.64).toInt()
 
             else -> -999

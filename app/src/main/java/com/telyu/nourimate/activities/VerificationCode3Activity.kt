@@ -7,12 +7,16 @@ import com.telyu.nourimate.databinding.ActivityVerificationCode3Binding
 import android.app.Activity
 import android.graphics.drawable.GradientDrawable
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import com.telyu.nourimate.R
+import com.telyu.nourimate.viewmodels.VerificationViewModel
+import com.telyu.nourimate.viewmodels.ViewModelFactory
 
 
 class VerificationCode3Activity : AppCompatActivity() {
 
     private lateinit var binding: ActivityVerificationCode3Binding
+    private lateinit var viewModel: VerificationViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,6 +24,8 @@ class VerificationCode3Activity : AppCompatActivity() {
         window.statusBarColor = ContextCompat.getColor(this, R.color.color25)
         val view = binding.root
         setContentView(view)
+
+        viewModel = obtainViewModel(this@VerificationCode3Activity)
 
         val gradientColors = intArrayOf(
             getColor(R.color.color25),
@@ -58,6 +64,7 @@ class VerificationCode3Activity : AppCompatActivity() {
     }
 
     private fun navigateToProfile() {
+        viewModel.setAccountStateAsVerified()
         startActivity(Intent(this, EditProfileActivity::class.java))
         finish() // Optional, to finish the current activity if going to a different screen
     }
@@ -78,6 +85,11 @@ class VerificationCode3Activity : AppCompatActivity() {
         // Buat Intent untuk membuka VerificationActivity
         val intent = Intent(this, PasswordPopupActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun obtainViewModel(activity: AppCompatActivity): VerificationViewModel {
+        val factory = ViewModelFactory.getInstance(activity.application)
+        return ViewModelProvider(activity, factory)[VerificationViewModel::class.java]
     }
 
 }

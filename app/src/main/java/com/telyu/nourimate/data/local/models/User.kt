@@ -30,7 +30,6 @@ data class User(
 
     val password: String,
 
-    @ColumnInfo(name = "detailId")  // Ensuring correct column naming
-    val detailId: Int? = null,
+    val accountState: Int = 0
 
 ) : Parcelable
