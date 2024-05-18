@@ -29,8 +29,8 @@ class DecadeViewFragment : DialogFragment() {
         super.onStart()
         dialog?.window?.apply {
             val metrics = resources.displayMetrics
-            val width = metrics.widthPixels * 0.85 // 85% dari lebar layar
-            val height = metrics.heightPixels * 0.6 // 60% dari tinggi layar
+            val width = metrics.widthPixels * 0.85
+            val height = metrics.heightPixels * 0.5
             setLayout(width.toInt(), height.toInt())
             setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             setGravity(Gravity.CENTER)
@@ -47,7 +47,7 @@ class DecadeViewFragment : DialogFragment() {
         val gridView: GridView = binding.gridViewDecade
 
         // Create a list of years from 1950 to 2100
-        val years = (1970..2050).toList()
+        val years = (1980..2030).toList()
 
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, years)
         gridView.adapter = adapter

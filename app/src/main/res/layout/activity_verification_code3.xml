@@ -87,22 +87,24 @@
 
     <Button
         android:id="@+id/buttonVerify"
-        android:layout_width="240dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:onClick="onVerifyClicked"
         android:text="Verify"
         android:textSize="23sp"
         android:fontFamily="@font/alatsi"
-        android:background="@drawable/buttonlogin_background"        app:backgroundTint="@null"
+        android:background="@drawable/buttonlogin_background"
+        app:backgroundTint="@null"
         android:textColor="@color/color23"
         android:layout_marginTop="30dp"
+        app:layout_constraintWidth_percent="0.5"
         app:layout_constraintTop_toBottomOf="@+id/TextViewReceiveCode"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/verifyInputLayout"
-        android:layout_width="350dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         app:boxStrokeWidth="2dp"
@@ -111,6 +113,7 @@
         app:boxCornerRadiusTopEnd="10dp"
         app:boxCornerRadiusBottomStart="10dp"
         app:boxCornerRadiusBottomEnd="10dp"
+        app:layout_constraintWidth_percent="0.85"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/verificationcode4">

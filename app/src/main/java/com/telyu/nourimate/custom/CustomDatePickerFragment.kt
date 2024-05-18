@@ -1,4 +1,4 @@
-package com.telyu.nourimate.fragments
+package com.telyu.nourimate.custom
 
 import android.graphics.drawable.ColorDrawable
 import android.graphics.Color
@@ -7,13 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.graphics.Point
-import android.util.Log
 import android.view.WindowManager
 import android.view.Gravity
 import androidx.fragment.app.DialogFragment
 import com.telyu.nourimate.adapter.DateAdapter
 import com.telyu.nourimate.databinding.FragmentCustomDatePickerBinding
-import com.telyu.nourimate.utils.DateItem
+import com.telyu.nourimate.custom.DateItem
+import com.telyu.nourimate.fragments.DecadeViewFragment
+import com.telyu.nourimate.fragments.MonthViewFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -139,7 +140,6 @@ class CustomDatePickerFragment : DialogFragment() {
         selectedMonth = displayedMonth
         selectedDayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
         updateCalendar(displayedMonth, displayedYear)
-        Log.d("DatePicker", "Initial set to 20 years ago: Day: $selectedDayOfMonth, Month: $selectedMonth, Year: $selectedYear")
     }
 
     private fun updateCalendar(month: Int, year: Int) {
@@ -158,7 +158,6 @@ class CustomDatePickerFragment : DialogFragment() {
 
         binding.gvCalendar.setOnItemClickListener { _, _, position, _ ->
             val selectedDate = dates[position]
-            Log.d("DatePicker", "Clicked Date: ${selectedDate.day}, Month: $displayedMonth, Year: $displayedYear")
 
             if (selectedDate.day.isNotEmpty()) {
                 val selectedCalendar = Calendar.getInstance()
@@ -173,10 +172,7 @@ class CustomDatePickerFragment : DialogFragment() {
                     selectedCalendar.set(Calendar.MONTH, month)
                 }
                 selectedCalendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(selectedDate.day))
-                Log.d("DatePicker", "Adjusted Date: ${selectedCalendar.get(Calendar.DAY_OF_MONTH)}, Month: ${selectedCalendar.get(Calendar.MONTH)}, Year: ${selectedCalendar.get(Calendar.YEAR)}")
-
                 val age = calculateAge(selectedCalendar.time)
-                Log.d("DatePicker", "Age for selected date: $age")
 
                 if (age < 20) {
                     selectedYear = 0
@@ -237,34 +233,33 @@ class CustomDatePickerFragment : DialogFragment() {
         val dates = mutableListOf<DateItem>()
         val calendar = Calendar.getInstance()
 
-        // Generate dates for the previous month
-        calendar.set(year, month - 1, 1)
-        val daysInPrevMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+        // Set the calendar to the start of the month
         calendar.set(year, month, 1)
+        val daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
         val firstDayOfMonth = calendar.get(Calendar.DAY_OF_WEEK)
 
+        // Adjust for previous month's days
+        calendar.add(Calendar.MONTH, -1)
+        val daysInPrevMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
         var day = daysInPrevMonth - (firstDayOfMonth - 2)
-        if (day > daysInPrevMonth) day -= daysInPrevMonth
         for (i in 1 until firstDayOfMonth) {
             dates.add(DateItem(day++.toString(), isCurrentMonth = false, isPreviousMonth = true))
             if (day > daysInPrevMonth) day = 1
         }
 
-        // Generate dates for the current month
+        // Reset calendar for the current month
         calendar.set(year, month, 1)
-        val daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
         for (i in 1..daysInMonth) {
-            val dateItem = DateItem(i.toString(), isCurrentMonth = true)
-            val age = calculateAge(Calendar.getInstance().apply {
-                set(Calendar.YEAR, year)
-                set(Calendar.MONTH, month)
-                set(Calendar.DAY_OF_MONTH, i)
-            }.time)
-            dateItem.isUnderAge = age < 20
-            dates.add(dateItem)
+            val date = Calendar.getInstance().apply {
+                set(year, month, i)
+            }.time
+            val age = calculateAge(date)
+            val isUnderAge = age < 20
+
+            dates.add(DateItem(i.toString(), isCurrentMonth = true, isUnderAge = isUnderAge))
         }
 
-        // Generate dates for the next month
+        // Fill the rest of the calendar row with next month's days
         day = 1
         while (dates.size % 7 != 0) {
             dates.add(DateItem(day++.toString(), isCurrentMonth = false, isNextMonth = true))
@@ -272,6 +267,7 @@ class CustomDatePickerFragment : DialogFragment() {
 
         return dates
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

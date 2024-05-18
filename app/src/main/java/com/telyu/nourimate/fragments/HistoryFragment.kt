@@ -1,58 +1,66 @@
-package com.telyu.nourimate
+package com.telyu.nourimate.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
-import com.telyu.nourimate.databinding.FragmentSettingBinding
-import android.widget.AdapterView
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.telyu.nourimate.adapter.HistoryItemAdapter
+import com.telyu.nourimate.data.local.models.History
+import com.telyu.nourimate.data.local.models.NestedHistory
+import com.telyu.nourimate.databinding.FragmentHistoryBinding
 
+class HistoryFragment : Fragment() {
 
-class SettingFragment : Fragment() {
-    private var _binding: FragmentSettingBinding? = null
+    private var _binding: FragmentHistoryBinding? = null
     private val binding get() = _binding!!
-
+    private lateinit var mList: MutableList<History>
+    private lateinit var adapter: HistoryItemAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentSettingBinding.inflate(inflater, container, false)
+    ): View? {
+        _binding = FragmentHistoryBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.historyrecyclerview.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(context)
+        }
+
         binding.backButton.setOnClickListener {
-            // Navigasi kembali ke ProfileFragment
             requireActivity().supportFragmentManager.popBackStack()
         }
 
-        val themesOptions = arrayOf("Bright", "Dark")
-        val themeAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, themesOptions)
+        mList = mutableListOf()
 
-        themeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinnerThemes.adapter = themeAdapter
+        val nestedList1 = listOf(
+            NestedHistory("200", "10g", "5g", "30g", "60kg", "62kg"),
+            NestedHistory("150", "8g", "4g", "25g", "60kg", "61kg")
+        )
 
-        binding.spinnerThemes.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val selectedTheme = parent?.getItemAtPosition(position).toString()
-                // Di sini Anda dapat melakukan sesuatu dengan tema yang dipilih
-            }
+        val nestedList2 = listOf(
+            NestedHistory("100", "5g", "2g", "15g", "60kg", "60.5kg"),
+            NestedHistory("200", "10g", "5g", "30g", "60kg", "61kg")
+        )
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
+        val nestedList3 = listOf(
+            NestedHistory("300", "15g", "7g", "40g", "60kg", "62kg"),
+            NestedHistory("250", "12g", "6g", "35g", "60kg", "61.5kg")
+        )
 
-        binding.switchNotification.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                // Proses untuk menyalakan notifikasi
-            } else {
-                // Proses untuk mematikan notifikasi
-            }
-        }
+        mList.add(History("Weight Loss Program", "2023-01-01", "2023-03-01", nestedList1))
+        mList.add(History("Muscle Gain Program", "2023-02-01", "2023-04-01", nestedList2))
+        mList.add(History("Maintenance Program", "2023-03-01", "2023-05-01", nestedList3))
+
+        adapter = HistoryItemAdapter(mList)
+        binding.historyrecyclerview.adapter = adapter
     }
 
     override fun onDestroyView() {

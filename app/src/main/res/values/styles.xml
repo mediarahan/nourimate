@@ -42,6 +42,12 @@
         <item name="android:fontFamily">@font/abel</item>
     </style>
 
+    <style name="BottomNavigationBarTextStyle">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/abel</item>
+    </style>
+
+
 
 
 

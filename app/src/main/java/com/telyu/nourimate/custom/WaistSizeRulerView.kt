@@ -48,7 +48,7 @@ class WaistSizeRulerView(context: Context, attrs: AttributeSet? = null) : View(c
         style = Paint.Style.FILL
     }
 
-    private val maxRulerValue = 200f
+    private val maxRulerValue = 150f
     private var rulerOffset = 0f
     private var lastX = 0f
 
@@ -64,16 +64,17 @@ class WaistSizeRulerView(context: Context, attrs: AttributeSet? = null) : View(c
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
+        // Inisialisasi
         val rulerStart = width / 2f + rulerOffset
         val mainTickInterval = 10
         val topMargin = 20f
         val lengthOfMainTick = 100f
         val lengthOfMidTick = 70f
         val lengthOfSmallTick = 40f
-
         val highestTick = lengthOfMainTick // garis terpanjang yang ada
 
-        for (i in 0..200) {
+        // Menggambar setiap garis
+        for (i in 0..150) {
             val xPosition = rulerStart + i * gapBetweenNumbers
             val isMainTick = i % mainTickInterval == 0
             val lineLength = when (i % 10) {

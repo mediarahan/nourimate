@@ -19,12 +19,13 @@ import com.telyu.nourimate.databinding.DialogWaistSizePickerBinding
 import com.telyu.nourimate.custom.WeightRulerView
 import com.telyu.nourimate.custom.StraightRulerView
 import com.telyu.nourimate.custom.WaistSizeRulerView
-import com.telyu.nourimate.fragments.CustomDatePickerFragment
 import com.telyu.nourimate.adapter.HintArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.telyu.nourimate.R
+import com.telyu.nourimate.custom.CustomDatePickerFragment
+import com.telyu.nourimate.custom.CustomDateStartProgramFragment
 import com.telyu.nourimate.data.local.models.Detail
 import com.telyu.nourimate.viewmodels.EditProfileViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
@@ -49,6 +50,10 @@ class EditProfileActivity : AppCompatActivity() {
 
         binding.editTextBirth.setOnClickListener {
             showDatePickerDialog()
+        }
+
+        binding.editTextDateStartProgram.setOnClickListener {
+            showDateStartProgramDialog()
         }
 
         binding.editTextWeight.setOnClickListener {
@@ -144,6 +149,22 @@ class EditProfileActivity : AppCompatActivity() {
                     val format = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
                     val formattedDate = format.format(calendar.time)
                     binding.editTextBirth.setText(formattedDate)
+                }
+            })
+        }
+        datePickerFragment.show(supportFragmentManager, "datePicker")
+    }
+
+    private fun showDateStartProgramDialog() {
+        val datePickerFragment = CustomDateStartProgramFragment().apply {
+            setDateStartProgramDialogListener(object : CustomDateStartProgramFragment.DateStartProgramDialogListener {
+                override fun onDateSet(year: Int, month: Int, dayOfMonth: Int) {
+                    val calendar = Calendar.getInstance().apply {
+                        set(year, month, dayOfMonth)
+                    }
+                    val format = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+                    val formattedDate = format.format(calendar.time)
+                    binding.editTextDateStartProgram.setText(formattedDate)
                 }
             })
         }

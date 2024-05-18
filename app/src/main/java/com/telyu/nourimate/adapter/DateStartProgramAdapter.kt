@@ -10,12 +10,11 @@ import androidx.core.content.res.ResourcesCompat
 import com.telyu.nourimate.databinding.GridItemDateBinding
 import com.telyu.nourimate.R
 import com.telyu.nourimate.custom.DateItem
-import java.util.Calendar
 
-class DateAdapter(
+class DateStartProgramAdapter(
     private val context: Context,
     private val datesOfMonth: List<DateItem>,
-    private var selectedPosition: Int
+    private var selectedPosition: Int // Add selectedPosition variable to store the position of the selected date
 ) : BaseAdapter() {
 
     override fun getCount(): Int = datesOfMonth.size
@@ -41,36 +40,43 @@ class DateAdapter(
 
         val dateItem = getItem(position) as DateItem
         holder.binding.dateText.text = dateItem.day
-
         holder.binding.dateText.textSize = 14f
-        val typeface = ResourcesCompat.getFont(context, R.font.robotomedium)
-        holder.binding.dateText.typeface = typeface
+        holder.binding.dateText.typeface = ResourcesCompat.getFont(context, R.font.robotomedium)
 
-        val textColorId = if (dateItem.isUnderAge) {
-            android.R.color.darker_gray
-        } else if (dateItem.isCurrentMonth) {
-            android.R.color.black
+        // Set text color based on whether the day is selectable
+        if (!dateItem.isCurrentMonth) {
+            // Set the text color to grey for dates not in the current month
+            holder.binding.dateText.setTextColor(ContextCompat.getColor(context, android.R.color.darker_gray))
+        } else if (!dateItem.isSelectable) {
+            // Set the text color to grey for dates that are not selectable
+            holder.binding.dateText.setTextColor(ContextCompat.getColor(context, android.R.color.darker_gray))
         } else {
-            android.R.color.darker_gray
+            // Set the text color to black for dates that are selectable and in the current month
+            holder.binding.dateText.setTextColor(ContextCompat.getColor(context, android.R.color.black))
         }
 
-        holder.binding.dateText.setTextColor(ContextCompat.getColor(context, textColorId))
 
+        // Determine background color based on selection state
         if (dateItem.isSelected) {
             holder.root.setBackgroundResource(R.drawable.circle_background_orange)
         } else {
             holder.root.background = null
         }
 
+        // Disable click on past dates
+        holder.root.isEnabled = dateItem.isSelectable
+
         return view
     }
 
+
     fun setSelectedPosition(position: Int) {
         selectedPosition = position
-        notifyDataSetChanged()
+        notifyDataSetChanged() // Update the view after changing the selected position
     }
 
+    // ViewHolder pattern with ViewBinding
     private class ViewHolder(val binding: GridItemDateBinding) {
-        val root: View = binding.root
+        val root: View = binding.root // Access the root view of the layout
     }
 }

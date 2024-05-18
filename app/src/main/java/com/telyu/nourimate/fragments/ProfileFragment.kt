@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.telyu.nourimate.databinding.FragmentProfileBinding
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.viewModels
 import com.telyu.nourimate.R
 import com.telyu.nourimate.activities.EditProfpicActivity
@@ -38,6 +40,8 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setStatusBarColor(ContextCompat.getColor(requireContext(), R.color.color20))
+
         displayImage()
         setupButtons()
         getBMIAndName()
@@ -47,6 +51,16 @@ class ProfileFragment : Fragment() {
             val intent = Intent(requireContext(), EditProfpicActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun setStatusBarColor(color: Int) {
+        val window = requireActivity().window
+        val insetsController = WindowInsetsControllerCompat(window, window.decorView)
+
+        insetsController.isAppearanceLightStatusBars = true // Set true or false depending on the status bar icons' color
+        insetsController.isAppearanceLightNavigationBars = true // Set true or false depending on the navigation bar icons' color
+
+        window.statusBarColor = color
     }
 
     private fun showLogoutConfirmationDialog() {
@@ -138,6 +152,17 @@ class ProfileFragment : Fragment() {
             val accountFragment = AccountFragment()
             requireActivity().supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fragmentContainer, accountFragment)
+                addToBackStack(null)
+                commit()
+            }
+        }
+
+        // Implementasi event click untuk tombol History
+        binding.historyButton.setOnClickListener {
+            // Kode untuk menuju ke AccountFragment
+            val historyFragment = HistoryFragment()
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fragmentContainer, historyFragment)
                 addToBackStack(null)
                 commit()
             }

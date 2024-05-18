@@ -20,6 +20,7 @@
         android:icon="@drawable/iconcd"
         android:label="NOURIMATE"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:enableOnBackInvokedCallback="true"
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.NourimateTA"
         tools:targetApi="31">

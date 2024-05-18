@@ -45,8 +45,7 @@ import androidx.core.content.res.ResourcesCompat
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import com.telyu.nourimate.adapter.HintArrayAdapter
-
-
+import com.telyu.nourimate.custom.CustomDatePickerFragment
 
 
 class UserDetailFragment : Fragment() {
