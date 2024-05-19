@@ -10,11 +10,8 @@ import android.graphics.Point
 import android.view.WindowManager
 import android.view.Gravity
 import androidx.fragment.app.DialogFragment
-import com.telyu.nourimate.adapter.DateAdapter
+import com.telyu.nourimate.adapter.date.DateAdapter
 import com.telyu.nourimate.databinding.FragmentCustomDatePickerBinding
-import com.telyu.nourimate.custom.DateItem
-import com.telyu.nourimate.fragments.DecadeViewFragment
-import com.telyu.nourimate.fragments.MonthViewFragment
 import java.text.SimpleDateFormat
 import java.util.*
 

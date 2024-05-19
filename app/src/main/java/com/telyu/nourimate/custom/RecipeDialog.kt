@@ -1,7 +1,6 @@
-package com.telyu.nourimate.views.custom
+package com.telyu.nourimate.custom
 
 import DialogUtils.setWidthPercent
-import RecipeDialogMeal
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -91,7 +90,7 @@ class RecipeDialog : DialogFragment() {
 
         val recipeDialogMeal = RecipeDialogMeal()
         recipeDialogMeal.arguments = bundle
-        recipeDialogMeal.show(parentFragmentManager, "RecipeDialogMeal")
+        recipeDialogMeal.show(parentFragmentManager, "com.telyu.nourimate.custom.RecipeDialogMeal")
     }
 
 }

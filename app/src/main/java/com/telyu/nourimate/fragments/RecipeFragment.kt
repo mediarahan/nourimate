@@ -8,23 +8,21 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.telyu.nourimate.R
-import com.telyu.nourimate.adapter.RecipeAdapter
-import com.telyu.nourimate.adapter.RecommendationRecipeAdapter
+import com.telyu.nourimate.adapter.recipe.RecipeAdapter
+import com.telyu.nourimate.adapter.recipe.RecommendationRecipeAdapter
 import com.telyu.nourimate.data.local.FakeFoodData
 import com.telyu.nourimate.data.local.db.FoodDatabase
 import com.telyu.nourimate.data.local.models.Recipe
-import com.telyu.nourimate.data.local.models.Recommendation
 import com.telyu.nourimate.databinding.FragmentRecipeBinding
 import com.telyu.nourimate.viewmodels.RecipeViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
-import com.telyu.nourimate.views.custom.RecipeDialog
+import com.telyu.nourimate.custom.RecipeDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -146,7 +144,7 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
         val dialogFragment = RecipeDialog()
         dialogFragment.show(
             parentFragmentManager,
-            "com.telyu.nourimate.views.custom.RecipeDialog"
+            "com.telyu.nourimate.custom.RecipeDialog"
         )
     }
 

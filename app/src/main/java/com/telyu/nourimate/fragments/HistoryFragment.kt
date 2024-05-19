@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.telyu.nourimate.adapter.HistoryItemAdapter
+import com.telyu.nourimate.adapter.history.HistoryItemAdapter
 import com.telyu.nourimate.data.local.models.History
 import com.telyu.nourimate.data.local.models.NestedHistory
 import com.telyu.nourimate.databinding.FragmentHistoryBinding

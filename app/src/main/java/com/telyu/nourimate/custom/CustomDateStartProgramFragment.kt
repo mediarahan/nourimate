@@ -5,17 +5,13 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import com.telyu.nourimate.adapter.DateStartProgramAdapter
+import com.telyu.nourimate.adapter.date.DateStartProgramAdapter
 import android.view.ViewGroup
 import android.graphics.Point
-import android.widget.GridView
 import android.view.WindowManager
 import android.view.Gravity
 import androidx.fragment.app.DialogFragment
-import com.telyu.nourimate.custom.DateItem
 import com.telyu.nourimate.databinding.FragmentCustomDateStartProgramBinding
-import com.telyu.nourimate.fragments.DecadeViewFragment
-import com.telyu.nourimate.fragments.MonthViewFragment
 import java.util.*
 import java.text.SimpleDateFormat
 

@@ -1,0 +1,389 @@
+ <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="16dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/rectanglemealprogramImageView"
+                android:layout_width="350dp"
+                android:layout_height="280dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/rectangle_main_program_khusus"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <ImageView
+                android:id="@+id/rectanglemealprogrambreakfast"
+                android:layout_width="300dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/rectangle_signup"
+                android:elevation="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/rectanglemealprogramImageView" />
+
+            <ImageView
+                android:id="@+id/imagebreakfast"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="15dp"
+                android:background="@drawable/breakfastmeal"
+                android:elevation="7dp"
+                app:layout_constraintBottom_toBottomOf="@+id/rectanglemealprogrambreakfast"
+                app:layout_constraintStart_toStartOf="@+id/rectanglemealprogrambreakfast"
+                app:layout_constraintTop_toTopOf="@+id/rectanglemealprogrambreakfast" />
+
+            <TextView
+                android:id="@+id/TextView_breakfast"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:elevation="5dp"
+                android:fontFamily="@font/zenkakugothicnewbold"
+                android:text="Breakfast"
+                android:textColor="#173430"
+                android:textSize="15sp"
+                app:layout_constraintStart_toEndOf="@+id/imagebreakfast"
+                app:layout_constraintTop_toTopOf="@+id/imagebreakfast" />
+
+            <TextView
+                android:id="@+id/TextView_caloriesbreakfast"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="2dp"
+                android:elevation="5dp"
+                android:fontFamily="@font/zenkakugothicnewregular"
+                android:textColor="#173430"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/imagebreakfast"
+                app:layout_constraintTop_toBottomOf="@+id/TextView_breakfast" />
+
+
+            <TextView
+                android:id="@+id/TextView_kkalbreakfast"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:elevation="5dp"
+                android:fontFamily="@font/zenkakugothicnewregular"
+                android:text="kkal"
+                android:textColor="#173430"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/TextView_caloriesbreakfast"
+                app:layout_constraintTop_toBottomOf="@+id/TextView_breakfast" />
+
+            <ImageView
+                android:id="@+id/rectanglemealprogramlunch"
+                android:layout_width="300dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/rectangle_signup"
+                android:elevation="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rectanglemealprogrambreakfast" />
+
+            <ImageView
+                android:id="@+id/imagelunch"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="15dp"
+                android:background="@drawable/lunchmeal"
+                android:elevation="7dp"
+                app:layout_constraintBottom_toBottomOf="@+id/rectanglemealprogramlunch"
+                app:layout_constraintStart_toStartOf="@+id/rectanglemealprogramlunch"
+                app:layout_constraintTop_toTopOf="@+id/rectanglemealprogramlunch" />
+
+            <TextView
+                android:id="@+id/TextView_lunch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:elevation="5dp"
+                android:fontFamily="@font/zenkakugothicnewbold"
+                android:text="Lunch"
+                android:textColor="#173430"
+                android:textSize="15sp"
+                app:layout_constraintStart_toEndOf="@+id/imagelunch"
+                app:layout_constraintTop_toTopOf="@+id/imagelunch" />
+
+            <TextView
+                android:id="@+id/TextView_calorieslunch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="2dp"
+                android:elevation="5dp"
+                android:fontFamily="@font/zenkakugothicnewregular"
+                android:text='@{"Total Calories : " }'
+                android:textColor="#173430"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/imagelunch"
+                app:layout_constraintTop_toBottomOf="@+id/TextView_lunch" />
+
+
+            <TextView
+                android:id="@+id/TextView_kkallunch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:elevation="5dp"
+                android:fontFamily="@font/zenkakugothicnewregular"
+                android:text="kkal"
+                android:textColor="#173430"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/TextView_calorieslunch"
+                app:layout_constraintTop_toBottomOf="@+id/TextView_lunch" />
+
+            <ImageView
+                android:id="@+id/rectanglemealprogramdinner"
+                android:layout_width="300dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/rectangle_signup"
+                android:elevation="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rectanglemealprogramlunch" />
+
+            <ImageView
+                android:id="@+id/imagedinner"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="15dp"
+                android:background="@drawable/dinnermeal"
+                android:elevation="7dp"
+                app:layout_constraintBottom_toBottomOf="@+id/rectanglemealprogramdinner"
+                app:layout_constraintStart_toStartOf="@+id/rectanglemealprogramdinner"
+                app:layout_constraintTop_toTopOf="@+id/rectanglemealprogramdinner" />
+
+            <TextView
+                android:id="@+id/TextView_dinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:elevation="5dp"
+                android:fontFamily="@font/zenkakugothicnewbold"
+                android:text="Dinner"
+                android:textColor="#173430"
+                android:textSize="15sp"
+                app:layout_constraintStart_toEndOf="@+id/imagedinner"
+                app:layout_constraintTop_toTopOf="@+id/imagedinner" />
+
+
+            <TextView
+                android:id="@+id/TextView_caloriesdinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="2dp"
+                android:elevation="5dp"
+                android:fontFamily="@font/zenkakugothicnewregular"
+                android:text='@{"Total Calories : "}'
+                android:textColor="#173430"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/imagedinner"
+                app:layout_constraintTop_toBottomOf="@+id/TextView_dinner" />
+
+
+            <TextView
+                android:id="@+id/TextView_kkaldinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:elevation="5dp"
+                android:fontFamily="@font/zenkakugothicnewregular"
+                android:text="kkal"
+                android:textColor="#173430"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@+id/TextView_caloriesdinner"
+                app:layout_constraintTop_toBottomOf="@+id/TextView_dinner" />
+
+
+            <ImageView
+                android:id="@+id/rectangleInputWeightMWImageView"
+                android:layout_width="350dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/rectangle_main_program_khusus"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rectanglemealprogramImageView" />
+
+            <FrameLayout
+                android:id="@+id/startingweightMW"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="6dp"
+                android:paddingStart="40dp"
+                app:layout_constraintBottom_toBottomOf="@+id/rectangleInputWeightMWImageView"
+                app:layout_constraintStart_toStartOf="@+id/rectangleInputWeightMWImageView"
+                app:layout_constraintTop_toTopOf="@+id/rectangleInputWeightMWImageView">
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/textViewStartingWeightMW"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/zenkakugothicnewbold"
+                            android:text="70"
+                            android:textColor="#173430"
+                            android:textSize="27sp" />
+
+                        <TextView
+                            android:id="@+id/textViewQuantifierStartingWeightMW"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@+id/textViewStartingWeightMW"
+                            android:layout_toEndOf="@+id/textViewStartingWeightMW"
+                            android:fontFamily="@font/zenkakugothicnewbold"
+                            android:paddingStart="3dp"
+                            android:text="kg"
+                            android:textColor="#173430"
+                            android:textSize="15sp" />
+                    </RelativeLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="4dp">
+
+                        <TextView
+                            android:id="@+id/textViewStartingWeightLabelMW"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/zenkakugothicnewbold"
+                            android:text="Start Weight"
+                            android:textColor="#173430"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/currentweightMW"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="6dp"
+                android:paddingEnd="40dp"
+                app:layout_constraintBottom_toBottomOf="@+id/rectangleInputWeightMWImageView"
+                app:layout_constraintEnd_toEndOf="@+id/rectangleInputWeightMWImageView"
+                app:layout_constraintTop_toTopOf="@+id/rectangleInputWeightMWImageView">
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/textViewCurrentWeightMW"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/zenkakugothicnewbold"
+                            android:text="134"
+                            android:textColor="#173430"
+                            android:textSize="27sp" />
+
+                        <TextView
+                            android:id="@+id/textViewQuantifierCurrentWeightMW"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@+id/textViewCurrentWeightMW"
+                            android:layout_toEndOf="@+id/textViewCurrentWeightMW"
+                            android:fontFamily="@font/zenkakugothicnewbold"
+                            android:paddingStart="3dp"
+                            android:text="kg"
+                            android:textColor="#173430"
+                            android:textSize="15sp" />
+
+                        <ImageView
+                            android:id="@+id/iconeditweightMWImageView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@+id/textViewQuantifierCurrentWeightMW"
+                            android:src="@drawable/edit"
+                            app:layout_constraintTop_toTopOf="@+id/textViewCurrentWeightMW" />
+                    </RelativeLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="4dp">
+
+                        <TextView
+                            android:id="@+id/textViewCurrentWeightLabelMW"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/zenkakugothicnewbold"
+                            android:text="Current Weight"
+                            android:textColor="#173430"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </FrameLayout>
+
+            <ImageView
+                android:id="@+id/rectangleGraphicWeightMWImageView"
+                android:layout_width="350dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/rectangle_main_program_khusus"
+                android:elevation="1dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rectangleInputWeightMWImageView" />
+
+            <com.telyu.nourimate.custom.WeightChartView
+                android:id="@+id/weightChartMW"
+                android:layout_width="350dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="15dp"
+                android:elevation="3dp"
+                app:layout_constraintBottom_toBottomOf="@+id/rectangleGraphicWeightMWImageView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/rectangleGraphicWeightMWImageView" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

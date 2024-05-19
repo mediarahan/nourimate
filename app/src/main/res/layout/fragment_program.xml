@@ -1,7 +1,5 @@
-<!-- fragment_program.xml -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -10,17 +8,8 @@
         <ImageView
             android:id="@+id/rectangleprogramImageView"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:background="@drawable/rectangle_main_program_khusus"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/rectangleProgramKhususImageView"
-            android:layout_width="match_parent"
             android:layout_height="105dp"
-            android:background="@drawable/rectangle_program_khusus"
+            android:background="@drawable/rectangle_main_program_khusus"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -29,12 +18,12 @@
             android:id="@+id/menuIcon"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:src="@drawable/menu"
             android:background="@drawable/rectangle_menu_icon"
-            android:elevation="5dp"
             android:paddingEnd="10dp"
             android:paddingBottom="5dp"
+            android:elevation="5dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/menu"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -42,12 +31,12 @@
             android:id="@+id/notificationIcon"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:src="@drawable/notifications"
             android:background="@drawable/rectangle_notif_icon"
-            android:elevation="5dp"
             android:paddingStart="10dp"
             android:paddingBottom="5dp"
+            android:elevation="5dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/notifications"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -55,313 +44,34 @@
             android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:fontFamily="@font/alatsi"
             android:text="Choose Program"
-            android:textColor="@color/black"
+            android:fontFamily="@font/alatsi"
             android:textSize="28sp"
-            app:layout_constraintEnd_toStartOf="@+id/notificationIcon"
+            android:textColor="@color/black"
+            android:layout_marginTop="15dp"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@+id/menuIcon"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toStartOf="@+id/notificationIcon" />
 
         <TextView
             android:id="@+id/subtitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="No programs registered"
             android:fontFamily="@font/abel"
-            android:text="Make it easier to plan your program"
-            android:textColor="@color/black"
             android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@+id/notificationIcon"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toBottomOf="@id/titleTextView"
             app:layout_constraintStart_toEndOf="@+id/menuIcon"
-            app:layout_constraintTop_toBottomOf="@id/titleTextView" />
-
-        <Spinner
-            android:id="@+id/programSpinner"
-            android:layout_width="350dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/rectangle_spinner"
-            android:fontFamily="@font/abel"
-            android:popupBackground="@drawable/rectangle_signup1"
-            android:spinnerMode="dropdown"
-            android:textColor="@color/color41"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/subtitleTextView" />
-
-        <ImageView
-            android:id="@+id/rectangleInputWeightImageView"
-            android:layout_width="350dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/rectangle_program_khusus2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rectangleProgramKhususImageView" />
+            app:layout_constraintEnd_toStartOf="@+id/notificationIcon" />
 
         <FrameLayout
-            android:id="@+id/startingweight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:elevation="6dp"
-            android:paddingStart="40dp"
-            app:layout_constraintBottom_toBottomOf="@+id/rectangleInputWeightImageView"
-            app:layout_constraintStart_toStartOf="@+id/rectangleInputWeightImageView"
-            app:layout_constraintTop_toTopOf="@+id/rectangleInputWeightImageView">
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/textViewStartingWeight"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/zenkakugothicnewbold"
-                        android:text="0"
-                        android:textColor="#173430"
-                        android:textSize="27sp" />
-
-                    <TextView
-                        android:id="@+id/textViewQuantifierStartingWeight"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@+id/textViewStartingWeight"
-                        android:layout_toEndOf="@+id/textViewStartingWeight"
-                        android:fontFamily="@font/zenkakugothicnewbold"
-                        android:paddingStart="3dp"
-                        android:text="kg"
-                        android:textColor="#173430"
-                        android:textSize="15sp" />
-                </RelativeLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingBottom="4dp">
-
-                    <TextView
-                        android:id="@+id/textViewStartingWeightLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/zenkakugothicnewbold"
-                        android:text="Start Weight"
-                        android:textColor="#173430"
-                        android:textSize="15sp" />
-
-                </LinearLayout>
-            </LinearLayout>
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/currentweight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:elevation="6dp"
-            android:paddingEnd="40dp"
-            app:layout_constraintBottom_toBottomOf="@+id/rectangleInputWeightImageView"
-            app:layout_constraintEnd_toEndOf="@+id/rectangleInputWeightImageView"
-            app:layout_constraintTop_toTopOf="@+id/rectangleInputWeightImageView">
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/textViewCurrentWeight"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/zenkakugothicnewbold"
-                        android:text="0"
-                        android:textColor="#173430"
-                        android:textSize="27sp" />
-
-                    <TextView
-                        android:id="@+id/textViewQuantifierCurrentWeight"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@+id/textViewCurrentWeight"
-                        android:layout_toEndOf="@+id/textViewCurrentWeight"
-                        android:fontFamily="@font/zenkakugothicnewbold"
-                        android:paddingStart="3dp"
-                        android:text="kg"
-                        android:textColor="#173430"
-                        android:textSize="15sp" />
-
-                    <ImageView
-                        android:id="@+id/iconeditweightImageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toEndOf="@+id/textViewQuantifierCurrentWeight"
-                        android:src="@drawable/edit"
-                        app:layout_constraintTop_toTopOf="@+id/textViewCurrentWeight" />
-                </RelativeLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingBottom="4dp">
-
-                    <TextView
-                        android:id="@+id/textViewCurrentWeightLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/zenkakugothicnewbold"
-                        android:text="Current Weight"
-                        android:textColor="#173430"
-                        android:textSize="15sp" />
-
-                </LinearLayout>
-            </LinearLayout>
-        </FrameLayout>
-
-        <ImageView
-            android:id="@+id/rectangleGraphicWeightImageView"
-            android:layout_width="350dp"
-            android:layout_height="200dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/rectangle_program_khusus2"
-            android:elevation="1dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rectangleInputWeightImageView" />
-
-        <com.telyu.nourimate.custom.WeightChartView
-            android:id="@+id/weightChart"
-            android:layout_width="350dp"
-            android:layout_height="200dp"
-            android:layout_marginTop="15dp"
-            android:elevation="3dp"
-            app:layout_constraintBottom_toBottomOf="@+id/rectangleGraphicWeightImageView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/rectangleGraphicWeightImageView" />
-
-        <ImageView
-            android:id="@+id/rectangleInformationWeightImageView"
-            android:layout_width="350dp"
-            android:layout_height="150dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/rectangle_program_khusus2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rectangleGraphicWeightImageView" />
-
-        <ImageView
-            android:id="@+id/imageburger"
-            android:layout_width="150dp"
-            android:layout_height="140dp"
-            android:layout_marginEnd="5dp"
-            android:elevation="4dp"
-            android:src="@drawable/programkhususburger"
-            app:layout_constraintBottom_toBottomOf="@+id/rectangleInformationWeightImageView"
-            app:layout_constraintEnd_toEndOf="@+id/rectangleInformationWeightImageView"
-            app:layout_constraintTop_toTopOf="@+id/rectangleInformationWeightImageView" />
-
-        <ImageView
-            android:id="@+id/rectangleburger"
-            android:layout_width="180dp"
-            android:layout_height="80dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginBottom="18dp"
-            android:background="@drawable/rectangle_burger"
-            app:layout_constraintBottom_toBottomOf="@+id/rectangleInformationWeightImageView"
-            app:layout_constraintEnd_toStartOf="@+id/imageburger"
-            app:layout_constraintStart_toStartOf="@+id/rectangleInformationWeightImageView" />
-
-        <TextView
-            android:id="@+id/GreatProgramKhususTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="3dp"
-            android:layout_marginBottom="5dp"
-            android:fontFamily="@font/concertone"
-            android:text="You're Great!"
-            android:textColor="@color/color43"
-            android:textSize="28sp"
-            app:layout_constraintBottom_toTopOf="@+id/rectangleburger"
-            app:layout_constraintStart_toStartOf="@+id/rectangleburger" />
-
-        <TextView
-            android:id="@+id/WeightBurgerProgramKhususTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/alumnisanssemibold"
-            android:text="Weight : 50 kg"
-            android:textColor="@color/black"
-            android:textSize="15sp"
-            app:layout_constraintStart_toStartOf="@+id/rectangleburger"
-            app:layout_constraintTop_toTopOf="@+id/rectangleburger" />
-
-        <TextView
-            android:id="@+id/heightBurgerProgramKhususTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:fontFamily="@font/alumnisanssemibold"
-            android:text="Height : 150 cm"
-            android:textColor="@color/black"
-            android:textSize="15sp"
-            app:layout_constraintStart_toStartOf="@+id/rectangleburger"
-            app:layout_constraintTop_toBottomOf="@+id/WeightBurgerProgramKhususTextView" />
-
-        <TextView
-            android:id="@+id/LabelBurgerProgramKhususTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:fontFamily="@font/abel"
-            android:text="Keep up the progress, Flint."
-            android:textColor="@color/black"
-            android:textSize="15sp"
-            app:layout_constraintStart_toStartOf="@+id/rectangleburger"
-            app:layout_constraintTop_toBottomOf="@+id/heightBurgerProgramKhususTextView" />
-
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/group_starting_and_current_weight"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:constraint_referenced_ids="startingweight,currentweight,rectangleInputWeightImageView" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/group_graph"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:constraint_referenced_ids="rectangleGraphicWeightImageView, weightChart" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/group_burger"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:constraint_referenced_ids="rectangleInformationWeightImageView, GreatProgramKhususTextView, rectangleburger, WeightBurgerProgramKhususTextView, heightBurgerProgramKhususTextView,  LabelBurgerProgramKhususTextView, imageburger" />
+            android:id="@+id/programContentFrame"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="56dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rectangleprogramImageView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

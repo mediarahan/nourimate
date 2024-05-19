@@ -2,7 +2,6 @@ package com.telyu.nourimate.fragments
 
 
 import android.content.ContentValues.TAG
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.SeekBar
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.telyu.nourimate.R
@@ -26,25 +24,18 @@ import com.telyu.nourimate.databinding.DialogNameChangeBinding
 import com.telyu.nourimate.custom.WeightRulerView
 import com.telyu.nourimate.custom.StraightRulerView
 import com.telyu.nourimate.custom.WaistSizeRulerView
-import androidx.fragment.app.viewModels
 import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Date
 import java.util.Locale
 import kotlin.math.max
 import kotlin.math.min
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.widget.Toast
-import android.util.DisplayMetrics
-import androidx.lifecycle.Observer
 import android.app.AlertDialog
 import android.graphics.Typeface
 import androidx.core.content.res.ResourcesCompat
-import android.widget.ArrayAdapter
-import android.widget.Spinner
-import com.telyu.nourimate.adapter.HintArrayAdapter
+import com.telyu.nourimate.adapter.date.HintArrayAdapter
 import com.telyu.nourimate.custom.CustomDatePickerFragment
 
 

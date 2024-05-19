@@ -1,10 +1,9 @@
-package com.telyu.nourimate.views.custom
+package com.telyu.nourimate.custom
 
 import DialogUtils.setWidthPercent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -13,10 +12,7 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.telyu.nourimate.R
-import com.telyu.nourimate.adapter.DialogRecipeTutorialAdapter
-import com.telyu.nourimate.databinding.PopupLayoutMealBinding
+import com.telyu.nourimate.adapter.recipe.DialogRecipeTutorialAdapter
 import com.telyu.nourimate.databinding.PopupLayoutMealTutorialBinding
 import com.telyu.nourimate.viewmodels.RecipeViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory

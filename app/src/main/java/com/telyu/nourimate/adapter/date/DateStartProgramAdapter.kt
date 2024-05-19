@@ -1,4 +1,4 @@
-package com.telyu.nourimate.adapter
+package com.telyu.nourimate.adapter.date
 
 import android.content.Context
 import android.view.LayoutInflater

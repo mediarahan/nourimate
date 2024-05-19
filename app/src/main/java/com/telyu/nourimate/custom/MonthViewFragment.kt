@@ -1,20 +1,15 @@
-package com.telyu.nourimate.fragments
+package com.telyu.nourimate.custom
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.graphics.drawable.ColorDrawable
 import android.graphics.Color
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.telyu.nourimate.R
 import androidx.fragment.app.DialogFragment
 import com.telyu.nourimate.databinding.FragmentMonthViewBinding
 import android.widget.ArrayAdapter
-import android.widget.GridView
-import com.telyu.nourimate.adapter.DateAdapter
-import java.util.Calendar
 
 class MonthViewFragment : DialogFragment() {
     private var listener: ((Int) -> Unit)? = null

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragments.ProgramEmptyFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <ImageView
+        android:id="@+id/ErrorImageView"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/sad_burger"
+        android:layout_marginBottom="150dp"
+        android:alpha="0.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/subtitleErrorTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="You haven't registered in any programs."
+        android:fontFamily="@font/zenkakugothicnewbold"
+        android:textSize="16sp"
+        android:textColor="@color/color22"
+        app:layout_constraintTop_toBottomOf="@+id/ErrorImageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/subtitleNewProgramTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please choose the program."
+        android:fontFamily="@font/zenkakugothicnewbold"
+        android:textSize="16sp"
+        android:textColor="@color/color22"
+        app:layout_constraintTop_toBottomOf="@+id/subtitleErrorTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/buttonChooseProgram"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:onClick="onChooseProgramClicked"
+        android:text="Select Program"
+        android:textStyle="bold"
+        android:background="@drawable/rectangle_outlined"
+        android:elevation="6dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:textColor="@color/color23"
+        android:textSize="17sp"
+        android:fontFamily="@font/zenkakugothicnewbold"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/subtitleNewProgramTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

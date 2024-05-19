@@ -78,7 +78,7 @@ class SplashScreenActivity : AppCompatActivity() {
                 startActivity(Intent(this@SplashScreenActivity, NavigationBarActivity::class.java))
             } else {
                 Log.d("SplashScreenActivity", "Not logged in, going to the LoginActivity...")
-                startActivity(Intent(this@SplashScreenActivity, LoginActivity::class.java))
+                startActivity(Intent(this@SplashScreenActivity, NavigationBarActivity::class.java))
             }
             finish()
         }

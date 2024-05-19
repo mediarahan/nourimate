@@ -1,10 +1,11 @@
+package com.telyu.nourimate.custom
+
 import DialogUtils.setWidthPercent
 import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -16,13 +17,12 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.telyu.nourimate.R
-import com.telyu.nourimate.adapter.DialogRecipeAdapter
+import com.telyu.nourimate.adapter.recipe.DialogRecipeAdapter
 import com.telyu.nourimate.data.local.models.Recipe
 import com.telyu.nourimate.databinding.PopupLayoutMealBinding
 import com.telyu.nourimate.utils.GeneralUtil
 import com.telyu.nourimate.viewmodels.RecipeViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
-import com.telyu.nourimate.views.custom.RecipeDialogMealTutorial
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -135,7 +135,7 @@ class RecipeDialogMeal : DialogFragment(), DialogRecipeAdapter.DialogOnAddClickL
 
         val recipeDialogMeal = RecipeDialogMealTutorial(R.layout.popup_layout_meal_tutorial)
         recipeDialogMeal.arguments = bundle
-        recipeDialogMeal.show(parentFragmentManager, "RecipeDialogMeal")
+        recipeDialogMeal.show(parentFragmentManager, "com.telyu.nourimate.custom.RecipeDialogMeal")
     }
 
     //Dialog konfirmasi masukin seluruh meal.

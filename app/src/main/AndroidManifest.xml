@@ -43,22 +43,19 @@
             android:name=".activities.VerificationCode2Activity"
             android:exported="false" />
         <activity
-            android:name=".activities.HomeActivity"
-            android:exported="false" />
-        <activity
             android:name=".activities.VerificationCode1Activity"
             android:exported="false" />
         <activity
             android:name=".activities.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.MainActivity"
-            android:exported="false" />
-        <activity
             android:name=".activities.EditProfpicActivity"
             android:exported="false" />
         <activity
             android:name=".activities.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ChooseProgramActivity"
             android:exported="false" />
         <activity
             android:name=".activities.SplashScreenActivity"

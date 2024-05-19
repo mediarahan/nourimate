@@ -4,8 +4,6 @@ import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.app.AlertDialog
-import android.widget.ArrayAdapter
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.graphics.drawable.ColorDrawable
 import android.graphics.Color
@@ -19,7 +17,7 @@ import com.telyu.nourimate.databinding.DialogWaistSizePickerBinding
 import com.telyu.nourimate.custom.WeightRulerView
 import com.telyu.nourimate.custom.StraightRulerView
 import com.telyu.nourimate.custom.WaistSizeRulerView
-import com.telyu.nourimate.adapter.HintArrayAdapter
+import com.telyu.nourimate.adapter.date.HintArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -75,6 +73,8 @@ class EditProfileActivity : AppCompatActivity() {
         val genderAdapter = HintArrayAdapter(this, android.R.layout.simple_spinner_item, genderOptions)
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerGender.adapter = genderAdapter
+
+
 
         binding.editTextAllergies.setOnClickListener {
             showAllergiesDialog()

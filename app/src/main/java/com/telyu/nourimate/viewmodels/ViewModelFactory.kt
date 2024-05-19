@@ -49,6 +49,9 @@ class ViewModelFactory private constructor(
             modelClass.isAssignableFrom(ProgramViewModel::class.java) -> {
                 ProgramViewModel(repository) as T
             }
+            modelClass.isAssignableFrom(ChooseProgramViewModel::class.java) -> {
+                ChooseProgramViewModel(repository) as T
+            }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

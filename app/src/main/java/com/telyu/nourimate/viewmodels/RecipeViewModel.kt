@@ -152,7 +152,7 @@ class RecipeViewModel(private val repository: NourimateRepository) : ViewModel()
 
 
 
-    //Digunakan di Recipe Fragment dan RecipeDialogMeal
+    //Digunakan di Recipe Fragment dan com.telyu.nourimate.custom.RecipeDialogMeal
     //Bagian pertama untuk fitur add / remove resep dengan mendapatkan Recommendation yang di klik
     fun selectRecommendation(recommendation: Recommendation) {
         viewModelScope.launch {
@@ -167,7 +167,7 @@ class RecipeViewModel(private val repository: NourimateRepository) : ViewModel()
         return repository.getRecommendationByRecipeIdAndMealType(recipeId, mealType)
     }
 
-    //Digunakan di RecipeDialogMeal dan RecipeDialogMealTutorial
+    //Digunakan di com.telyu.nourimate.custom.RecipeDialogMeal dan RecipeDialogMealTutorial
     //2 query ini buat dialog
     fun getAllSelectedRecommendationIdsByMealId(mealType: Int): LiveData<List<Int>> {
         return repository.getAllSelectedRecommendationIdsByMealId(mealType)
@@ -177,7 +177,7 @@ class RecipeViewModel(private val repository: NourimateRepository) : ViewModel()
         return repository.getAllConfirmedRecommendationIdsByMealId(mealType)
     }
 
-    //Digunakan di RecipeDialogMeal dan RecipeDialogMealTutorial
+    //Digunakan di com.telyu.nourimate.custom.RecipeDialogMeal dan RecipeDialogMealTutorial
     fun getSelectedRecipesByRecommendationIds(recommendationIds: List<Int>): LiveData<List<Recipe>> {
         return repository.getRecipesByRecommendationIds(recommendationIds)
     }
@@ -193,7 +193,7 @@ class RecipeViewModel(private val repository: NourimateRepository) : ViewModel()
         return repository.getSelectedRecipeCountByMealType(mealType)
     }
 
-    //=============== Untuk di RecipeDialogMeal ===============
+    //=============== Untuk di com.telyu.nourimate.custom.RecipeDialogMeal ===============
 
     //Today's Meal Related Functions
     //Part 2 of getting each nutrition percentage Values

@@ -1,4 +1,4 @@
-package com.telyu.nourimate.adapter
+package com.telyu.nourimate.adapter.recipe
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.telyu.nourimate.data.local.models.Recipe
 import com.telyu.nourimate.databinding.ItemRecipeDialogBinding
 
-class DialogRecipeAdapter(private val listener: DialogOnAddClickListener) : ListAdapter<Recipe, DialogRecipeAdapter.DialogRecipeViewHolder>(DIFF_CALLBACK) {
+class DialogRecipeAdapter(private val listener: DialogOnAddClickListener) : ListAdapter<Recipe, DialogRecipeAdapter.DialogRecipeViewHolder>(
+    DIFF_CALLBACK
+) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DialogRecipeViewHolder {
         val binding = ItemRecipeDialogBinding.inflate(LayoutInflater.from(parent.context), parent, false)

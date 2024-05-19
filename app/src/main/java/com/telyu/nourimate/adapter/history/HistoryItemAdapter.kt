@@ -1,4 +1,4 @@
-package com.telyu.nourimate.adapter
+package com.telyu.nourimate.adapter.history
 
 import android.view.LayoutInflater
 import android.view.View

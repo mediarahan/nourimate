@@ -1,4 +1,4 @@
-package com.telyu.nourimate.adapter
+package com.telyu.nourimate.adapter.date
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -10,7 +10,6 @@ import androidx.core.content.res.ResourcesCompat
 import com.telyu.nourimate.databinding.GridItemDateBinding
 import com.telyu.nourimate.R
 import com.telyu.nourimate.custom.DateItem
-import java.util.Calendar
 
 class DateAdapter(
     private val context: Context,
