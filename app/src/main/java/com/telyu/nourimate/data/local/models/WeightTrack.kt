@@ -11,7 +11,7 @@ import java.util.Date
 data class WeightTrack(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val ongoingProgram: Int = 0,
+    val ongoingProgram: Int? = 0,
     val startDate: Date?,
     val endDate: Date?,
     val startWeight: Int,

@@ -15,8 +15,8 @@ class ProfileViewModel(private val repository: NourimateRepository) : ViewModel(
     private val _userId = MutableLiveData<Int?>()
     val userId: LiveData<Int?> = _userId
 
-    private val _BMI = MutableLiveData<Int?>()
-    val BMI: LiveData<Int?> = _BMI
+    private val _BMI = MutableLiveData<Float?>()
+    val BMI: LiveData<Float?> = _BMI
 
     private val _userName = MutableLiveData<String?>()
     val userName: LiveData<String?> = _userName

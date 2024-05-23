@@ -1,6 +1,7 @@
 package com.telyu.nourimate.fragments
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -15,11 +16,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.telyu.nourimate.R
+import com.telyu.nourimate.activities.TransitionProgramActivity
 import com.telyu.nourimate.data.local.FakeFoodData
 import com.telyu.nourimate.data.local.db.UserDatabase
 import com.telyu.nourimate.data.local.models.History
 import com.telyu.nourimate.data.local.models.WeightEntry
 import com.telyu.nourimate.databinding.FragmentProgramBinding
+import com.telyu.nourimate.databinding.PopupNotificationProgramkhususBinding
 import com.telyu.nourimate.databinding.PopupSettingProgramkhususBinding
 import com.telyu.nourimate.utils.Converters
 import com.telyu.nourimate.viewmodels.ProgramViewModel
@@ -45,7 +48,7 @@ class ProgramFragment : Fragment() {
         setCurrentFragment(ProgramEmptyFragment())
 
         //buat dummy
-        fillDatabaseWithFakeData()
+        //fillDatabaseWithFakeData()
 
         setupSideButtons()
 
@@ -100,10 +103,14 @@ class ProgramFragment : Fragment() {
                 binding.titleTextView.text = "Choose Program"
                 binding.subtitleTextView.text = "No programs registered"
 
-                val currentFragment = childFragmentManager.findFragmentById(R.id.programContentFrame)
+                val currentFragment =
+                    childFragmentManager.findFragmentById(R.id.programContentFrame)
                 if (currentFragment is ProgramEmptyFragment) {
                     finalizeProgramResults()
                 }
+
+                val intent = Intent(context, TransitionProgramActivity::class.java)
+                startActivity(intent)
 
                 settingPopup.dismiss()
             }
@@ -114,57 +121,52 @@ class ProgramFragment : Fragment() {
     }
 
     private fun showNotificationSidebar() {
-        TODO("Not yet implemented")
+        setupNotificationPopup()
     }
 
     //For inputting final results of the program, and deleting relevant weight entries and track
     private fun finalizeProgramResults() {
+        Log.d("ProgramFragment", "Finalizing program results")
         viewModel.userWeightTrack.observe(viewLifecycleOwner) { weightTrack ->
-            if (weightTrack != null) {
-                val programName = when (weightTrack.ongoingProgram) {
-                    1 -> "Maintain Weight"
-                    2 -> "Loss Weight"
-                    3 -> "Gain Weight"
-                    else -> "invalid"
-                }
+            val programName = when (weightTrack.ongoingProgram) {
+                1 -> "Maintain Weight"
+                2 -> "Loss Weight"
+                3 -> "Gain Weight"
+                else -> "Invalid Program"
+            }
 
-                val startDate = Converters().formatDateToString(weightTrack.startDate)
-                val endDate = Converters().formatDateToString(weightTrack.endDate)
+            val startDate = Converters().formatDateToString(weightTrack.startDate)
+            val endDate = Converters().formatDateToString(weightTrack.endDate)
 
-                viewModel.getNutritionSumsForHistory()
-                viewModel.historyNutritionSum.observe(viewLifecycleOwner) { sum ->
-                    if (sum != null) {
-                        val calories = sum.totalCalories.toInt()
-                        val fat = sum.totalFat.toInt()
-                        val protein = sum.totalProtein.toInt()
-                        val carbs = sum.totalCarbs.toInt()
+            viewModel.getNutritionSumsForHistory()
+            viewModel.historyNutritionSum.observe(viewLifecycleOwner) { sum ->
+                if (sum != null) {
+                    val calories = sum.totalCalories.toInt()
+                    val fat = sum.totalFat.toInt()
+                    val protein = sum.totalProtein.toInt()
+                    val carbs = sum.totalCarbs.toInt()
 
-                        viewModel.userId.observe(viewLifecycleOwner) { id ->
-                            if (id != null) {
-                                val history = History(
-                                    id = 0,
-                                    programName = programName,
-                                    startDate = startDate,
-                                    endDate = endDate,
-                                    calories = calories,
-                                    protein = protein,
-                                    fat = fat,
-                                    carbs = carbs,
-                                    startWeight = weightTrack.startWeight,
-                                    endWeight = weightTrack.endWeight,
-                                    userId = id
-                                )
-                                viewModel.insertHistory(history)
-                            }
-                        }
+                    viewModel.userId.observe(viewLifecycleOwner) { id ->
+                            val history = History(
+                                id = 0,
+                                programName = programName,
+                                startDate = startDate,
+                                endDate = endDate,
+                                calories = calories,
+                                protein = protein,
+                                fat = fat,
+                                carbs = carbs,
+                                startWeight = weightTrack.startWeight,
+                                endWeight = weightTrack.endWeight,
+                                userId = id
+                            )
+                            viewModel.insertHistory(history)
                     }
                 }
-            } else {
-                // Handle the case where weightTrack is null, perhaps log an error or notify the user
-                Log.e("ProgramFragment", "Weight track data is null, cannot finalize program results")
             }
         }
     }
+
 
     //===== Setting UI =====
     private fun setupSettingPopup() {
@@ -187,6 +189,25 @@ class ProgramFragment : Fragment() {
 
         binding.menuIcon.setOnClickListener {
             settingPopup.showAtLocation(binding.root, Gravity.START, 0, 0)
+        }
+    }
+
+    private fun setupNotificationPopup() {
+        val displayMetrics = Resources.getSystem().displayMetrics
+        val width = (displayMetrics.widthPixels * 0.75).toInt()
+        val notifPopupBinding = PopupNotificationProgramkhususBinding.inflate(layoutInflater)
+        val notifPopup = PopupWindow(
+            notifPopupBinding.root,
+            width,
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            true
+        ).apply {
+            isOutsideTouchable = true
+            setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }
+
+        binding.notificationIcon.setOnClickListener {
+            notifPopup.showAtLocation(binding.root, Gravity.END, 0, 0)
         }
     }
 

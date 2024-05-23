@@ -1,0 +1,1089 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.telyu.nourimate.viewmodels.HomeViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:id="@+id/rectanglehomeImageView"
+                android:layout_width="match_parent"
+                android:layout_height="125dp"
+                android:background="@drawable/rectangle_home"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="0dp"/>
+
+            <TextView
+                android:id="@+id/greetingTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Good Morning,"
+                android:fontFamily="@font/concertone"
+                android:textSize="30dp"
+                android:textColor="@color/color29"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="15dp"/>
+
+            <TextView
+                android:id="@+id/usernameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Username😉"
+                android:textSize="30dp"
+                android:layout_marginTop="0dp"
+                android:textColor="@color/color29"
+                android:fontFamily="@font/concertone"
+                app:layout_constraintStart_toStartOf="@+id/greetingTextView"
+                app:layout_constraintTop_toBottomOf="@+id/greetingTextView" />
+
+            <ImageView
+                android:id="@+id/profileImageView"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                app:layout_constraintTop_toTopOf="@+id/rectanglehomeImageView"
+                app:layout_constraintBottom_toTopOf="@+id/weightMessageTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="30dp"/>
+
+
+            <TextView
+                android:id="@+id/weightMessageTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="You've loss ...kg last week!"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:fontFamily="@font/abel"
+                android:layout_marginTop="5dp"
+                app:layout_constraintTop_toBottomOf="@+id/usernameTextView"
+                app:layout_constraintStart_toStartOf="@+id/greetingTextView"/>
+
+
+            <TextView
+                android:id="@+id/programMessageTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Weight Loss"
+                android:padding="5dp"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/rectangle_home2"
+                android:fontFamily="@font/abel"
+                app:layout_constraintTop_toBottomOf="@+id/profileImageView"
+                app:layout_constraintStart_toStartOf="@+id/profileImageView"
+                app:layout_constraintEnd_toEndOf="@+id/profileImageView"/>
+
+
+            <ImageView
+                android:id="@+id/halfCircleImageView"
+                android:layout_width="350dp"
+                android:layout_height="290dp"
+                android:background="@drawable/shape_half_rectangle_with_shadow"
+                android:elevation="5dp"
+                app:layout_constraintTop_toBottomOf="@+id/rectanglehomeImageView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="18dp"/>
+
+
+            <com.telyu.nourimate.custom.SemiCircleProgressView
+                android:id="@+id/semiCircleProgressView"
+                android:layout_width="290dp"
+                android:layout_height="260dp"
+                android:elevation="6dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintTop_toTopOf="@+id/halfCircleImageView"
+                app:layout_constraintStart_toStartOf="@+id/halfCircleImageView"
+                app:layout_constraintEnd_toEndOf="@+id/halfCircleImageView"/>
+
+            <ImageView
+                android:id="@+id/BurntImageView"
+                android:layout_width="30dp"
+                android:layout_height="35dp"
+                android:background="@drawable/speed"
+                android:elevation="7dp"
+                app:layout_constraintBottom_toTopOf="@+id/BurntTextView"
+                app:layout_constraintStart_toStartOf="@+id/halfCircleImageView"
+                app:layout_constraintEnd_toEndOf="@+id/halfCircleImageView"
+                android:layout_marginTop="25dp"/>
+
+            <TextView
+                android:id="@+id/BurntTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Body Mass Index"
+                android:elevation="7dp"
+                android:textSize="15dp"
+                android:textColor="#173430"
+                android:layout_marginBottom="-5dp"
+                android:fontFamily="@font/zenkakugothicnewbold"
+                app:layout_constraintBottom_toTopOf="@+id/caloriesBurnedTextView"
+                app:layout_constraintStart_toStartOf="@+id/halfCircleImageView"
+                app:layout_constraintEnd_toEndOf="@+id/halfCircleImageView"/>
+
+            <TextView
+                android:id="@+id/caloriesBurnedTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="20.5"
+                android:elevation="7dp"
+                android:textSize="38dp"
+                android:textColor="@color/color31"
+                android:fontFamily="@font/zenkakugothicnewbold"
+                app:layout_constraintBottom_toTopOf="@+id/speedTextView"
+                app:layout_constraintStart_toStartOf="@+id/halfCircleImageView"
+                app:layout_constraintEnd_toEndOf="@+id/halfCircleImageView"
+                app:layout_constraintHorizontal_chainStyle="packed"/>
+
+
+            <TextView
+                android:id="@+id/speedTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Normal"
+                android:elevation="7dp"
+                android:background="@drawable/rectangle_green"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:padding="3dp"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
+                android:textColor="#173430"
+                android:fontFamily="@font/zenkakugothicnewbold"
+                android:layout_marginTop="40dp"
+                app:layout_constraintBottom_toBottomOf="@+id/semiCircleProgressView"
+                app:layout_constraintTop_toTopOf="@+id/semiCircleProgressView"
+                app:layout_constraintStart_toStartOf="@+id/halfCircleImageView"
+                app:layout_constraintEnd_toEndOf="@+id/halfCircleImageView"/>
+
+
+            <LinearLayout
+                android:layout_width="290dp"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:elevation="5dp"
+                android:background="@drawable/rectangle_home5"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="18dp"
+                app:layout_constraintTop_toBottomOf="@+id/speedTextView"
+                app:layout_constraintStart_toStartOf="@+id/halfCircleImageView"
+                app:layout_constraintEnd_toEndOf="@+id/halfCircleImageView">
+
+                <TextView
+                    android:id="@+id/ageTextView"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:textColor="#173430"
+                    android:fontFamily="@font/robotomedium"
+                    android:text="Ideal Weight\n22 kg"
+                    android:gravity="center"
+                    android:textSize="15sp" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="fill_parent"
+                    android:background="#173430" />
+
+                <TextView
+                    android:id="@+id/heightTextView"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:textColor="#173430"
+                    android:fontFamily="@font/robotomedium"
+                    android:text="Waist Size\n165 cm"
+                    android:gravity="center"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+
+            <ImageView
+                android:id="@+id/rectanglehomeingredientsImageView"
+                android:layout_width="350dp"
+                android:layout_height="200dp"
+                android:background="@drawable/rectangle_home2_with_shadow"
+                android:elevation="5dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/halfCircleImageView"
+                android:layout_marginTop="15dp"/>
+
+            <FrameLayout
+                android:id="@+id/calories"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:elevation="6dp"
+                android:paddingStart="30dp"
+                android:paddingTop="20dp"
+                app:layout_constraintStart_toStartOf="@+id/rectanglehomeingredientsImageView"
+                app:layout_constraintTop_toTopOf="@+id/rectanglehomeingredientsImageView" >
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/textViewTotalCalories"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="134"
+                            android:textSize="24sp"
+                            android:textColor="#173430"
+                            android:fontFamily="@font/zenkakugothicnewbold"/>
+
+                        <TextView
+                            android:id="@+id/textViewQuantifierCalories"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@+id/textViewTotalCalories"
+                            android:layout_toEndOf="@+id/textViewTotalCalories"
+                            android:fontFamily="@font/zenkakugothicnewbold"
+                            android:paddingStart="3dp"
+                            android:text="kkal"
+                            android:textColor="#173430"
+                            android:textSize="12sp" />
+                    </RelativeLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="4dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/textViewTotalCaloriesLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Total calories"
+                            android:textSize="12sp"
+                            android:textColor="#173430"
+                            android:fontFamily="@font/zenkakugothicnewbold" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/tvCaloriesPercentage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="28%"
+                            android:textSize="12sp"
+                            android:textColor="#173430"
+                            android:fontFamily="@font/zenkakugothicnewbold" />
+
+                    </LinearLayout>
+
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/linearProgressCaloriesIndicator"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:progress="28"
+                        android:max="100"
+                        app:indicatorColor="#DF1414"
+                        app:trackColor="#CCC19E"
+                        app:trackCornerRadius="8dp"
+                        app:trackThickness="8dp" />
+
+                </LinearLayout>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/carbs"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:elevation="6dp"
+                android:paddingEnd="30dp"
+                android:paddingTop="20dp"
+                app:layout_constraintEnd_toEndOf="@+id/rectanglehomeingredientsImageView"
+                app:layout_constraintTop_toTopOf="@+id/rectanglehomeingredientsImageView">
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/textViewTotalCarbs"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="134"
+                            android:textSize="24sp"
+                            android:textColor="#173430"
+                            android:fontFamily="@font/zenkakugothicnewbold"/>
+
+                        <TextView
+                            android:id="@+id/textViewQuantifierCarbs"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="3dp"
+                            android:text="g"
+                            android:textSize="12sp"
+                            android:textColor="#173430"
+                            android:fontFamily="@font/zenkakugothicnewbold"
+                            android:layout_toEndOf="@+id/textViewTotalCarbs"
+                            android:layout_alignBaseline="@+id/textViewTotalCarbs"/>
+                    </RelativeLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="4dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/textViewTotalCarbsLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Total carbs"
+                            android:textSize="12sp"
+                            android:textColor="#173430"
+                            android:fontFamily="@font/zenkakugothicnewbold" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/tvCarbsPercentage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="28%"
+                            android:textSize="12sp"
+                            android:textColor="#173430"
+                            android:fontFamily="@font/zenkakugothicnewbold" />
+
+                    </LinearLayout>
+
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/linearProgressCarbsIndicator"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:progress="28"
+                        android:max="100"
+                        app:indicatorColor="#3D94E4"
+                        app:trackColor="#CCC19E"
+                        app:trackCornerRadius="8dp"
+                        app:trackThickness="8dp" />
+
+                </LinearLayout>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/fat"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:elevation="6dp"
+                android:paddingStart="30dp"
+                android:paddingBottom="25dp"
+                app:layout_constraintStart_toStartOf="@+id/rectanglehomeingredientsImageView"
+                app:layout_constraintBottom_toBottomOf="@+id/rectanglehomeingredientsImageView" >
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/textViewTotalFat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="134"
+                            android:textSize="24sp"
+                            android:textColor="#173430"
+                            android:fontFamily="@font/zenkakugothicnewbold"/>
+
+                        <TextView
+                            android:id="@+id/textViewQuantifierFat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="3dp"
+                            android:text="g"
+                            android:textSize="12sp"
+                            android:textColor="#173430"
+                            android:fontFamily="@font/zenkakugothicnewbold"
+                            android:layout_toEndOf="@+id/textViewTotalFat"
+                            android:layout_alignBaseline="@+id/textViewTotalFat"/>
+                    </RelativeLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="4dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/textViewTotalFatLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Total fat"
+                            android:textSize="12sp"
+                            android:textColor="#173430"
+                            android:fontFamily="@font/zenkakugothicnewbold" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/tvFatPercentage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="28%"
+                            android:textSize="12sp"
+                            android:textColor="#173430"
+                            android:fontFamily="@font/zenkakugothicnewbold" />
+
+                    </LinearLayout>
+
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/linearProgressFatIndicator"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:progress="28"
+                        android:max="100"
+                        app:indicatorColor="#00B407"
+                        app:trackColor="#CCC19E"
+                        app:trackCornerRadius="8dp"
+                        app:trackThickness="8dp" />
+
+                </LinearLayout>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/protein"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:elevation="6dp"
+                android:paddingEnd="30dp"
+                android:paddingBottom="25dp"
+                app:layout_constraintEnd_toEndOf="@+id/rectanglehomeingredientsImageView"
+                app:layout_constraintBottom_toBottomOf="@+id/rectanglehomeingredientsImageView" >
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/textViewTotalProtein"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="134"
+                            android:textSize="24sp"
+                            android:textColor="#173430"
+                            android:fontFamily="@font/zenkakugothicnewbold"/>
+
+                        <TextView
+                            android:id="@+id/textViewQuantifierProtein"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="3dp"
+                            android:text="g"
+                            android:textSize="12sp"
+                            android:textColor="#173430"
+                            android:fontFamily="@font/zenkakugothicnewbold"
+                            android:layout_toEndOf="@+id/textViewTotalProtein"
+                            android:layout_alignBaseline="@+id/textViewTotalProtein"/>
+                    </RelativeLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="4dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/textViewTotalProteinLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Total protein"
+                            android:textSize="12sp"
+                            android:textColor="#173430"
+                            android:fontFamily="@font/zenkakugothicnewbold" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/tvProteinPercentage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="28%"
+                            android:textSize="12sp"
+                            android:textColor="#173430"
+                            android:fontFamily="@font/zenkakugothicnewbold" />
+
+                    </LinearLayout>
+
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/linearProgressProteinIndicator"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:progress="28"
+                        android:max="100"
+                        app:indicatorColor="#A253E1"
+                        app:trackColor="#CCC19E"
+                        app:trackCornerRadius="8dp"
+                        app:trackThickness="8dp" />
+
+                </LinearLayout>
+            </FrameLayout>
+
+            <ImageView
+                android:id="@+id/rectanglehomesleepImageView"
+                android:layout_width="350dp"
+                android:layout_height="120dp"
+                android:background="@drawable/rectangle_home2_with_shadow"
+                android:elevation="5dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rectanglehomewaterImageView"
+                android:layout_marginTop="15dp"/>
+
+            <TextView
+                android:id="@+id/textViewSleep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sleep"
+                android:elevation="6dp"
+                android:textSize="20sp"
+                android:textColor="@color/color31"
+                android:fontFamily="@font/urbanistbold"
+                app:layout_constraintStart_toStartOf="@+id/rectanglehomesleepImageView"
+                app:layout_constraintTop_toTopOf="@+id/rectanglehomesleepImageView"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="13dp"/>
+
+            <ImageView
+                android:id="@+id/sleep_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/night"
+                android:elevation="6dp"
+                app:layout_constraintStart_toStartOf="@+id/rectanglehomesleepImageView"
+                app:layout_constraintTop_toBottomOf="@+id/textViewSleep"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:id="@+id/time_in_sleep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="6h 52m"
+                android:textSize="21sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/opensanssemibold"
+                android:elevation="6dp"
+                app:layout_constraintStart_toEndOf="@id/sleep_icon"
+                app:layout_constraintTop_toTopOf="@+id/sleep_icon"
+                android:layout_marginStart="8dp"/>
+
+            <TextView
+                android:id="@+id/TextView_time_in_sleep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Time In Sleep"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/opensansregular"
+                android:elevation="6dp"
+                app:layout_constraintStart_toEndOf="@id/sleep_icon"
+                app:layout_constraintTop_toBottomOf="@+id/time_in_sleep"
+                android:layout_marginStart="8dp"/>
+
+            <ImageView
+                android:id="@+id/wakeup_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/day"
+                android:elevation="6dp"
+                app:layout_constraintStart_toEndOf="@+id/TextView_time_in_sleep"
+                app:layout_constraintTop_toTopOf="@+id/sleep_icon"
+                android:layout_marginStart="35dp"/>
+
+            <TextView
+                android:id="@+id/wake_up_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="07:12 AM"
+                android:textSize="21sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/opensanssemibold"
+                android:elevation="6dp"
+                app:layout_constraintStart_toEndOf="@id/wakeup_icon"
+                app:layout_constraintTop_toTopOf="@+id/wakeup_icon"
+                android:layout_marginStart="8dp"/>
+
+            <TextView
+                android:id="@+id/TextView_wake_up_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Wake Up Time"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/opensansregular"
+                android:elevation="6dp"
+                app:layout_constraintStart_toEndOf="@id/wakeup_icon"
+                app:layout_constraintTop_toBottomOf="@+id/wake_up_time"
+                android:layout_marginStart="8dp"/>
+
+            <ImageView
+                android:id="@+id/rectanglehomewaterImageView"
+                android:layout_width="350dp"
+                android:layout_height="120dp"
+                android:background="@drawable/rectangle_home2_with_shadow"
+                android:elevation="5dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rectanglehomemealImageView"
+                android:layout_marginTop="15dp"/>
+
+            <TextView
+                android:id="@+id/textViewWater"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Water"
+                android:elevation="6dp"
+                android:textSize="20sp"
+                android:textColor="@color/color31"
+                android:fontFamily="@font/urbanistbold"
+                app:layout_constraintStart_toStartOf="@+id/rectanglehomewaterImageView"
+                app:layout_constraintTop_toTopOf="@+id/rectanglehomewaterImageView"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="13dp"/>
+
+            <ImageView
+                android:id="@+id/water1"
+                android:layout_width="44dp"
+                android:layout_height="52dp"
+                android:background="@drawable/water_selector"
+                android:elevation="6dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/addwater"
+                app:layout_constraintStart_toStartOf="@+id/textViewWater"
+                app:layout_constraintTop_toBottomOf="@+id/textViewWater"
+                />
+
+            <ImageView
+                android:id="@+id/water2"
+                android:layout_width="44dp"
+                android:layout_height="52dp"
+                android:background="@drawable/water_selector"
+                android:elevation="6dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintStart_toEndOf="@+id/water1"
+                app:layout_constraintTop_toBottomOf="@+id/textViewWater"
+                android:layout_marginStart="-7dp"/>
+
+            <ImageView
+                android:id="@+id/water3"
+                android:layout_width="44dp"
+                android:layout_height="52dp"
+                android:background="@drawable/water_selector"
+                android:elevation="6dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintStart_toEndOf="@+id/water2"
+                app:layout_constraintTop_toBottomOf="@+id/textViewWater"
+                android:layout_marginStart="-7dp"/>
+
+            <ImageView
+                android:id="@+id/water4"
+                android:layout_width="44dp"
+                android:layout_height="52dp"
+                android:background="@drawable/water_selector"
+                android:elevation="6dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintStart_toEndOf="@+id/water3"
+                app:layout_constraintTop_toBottomOf="@+id/textViewWater"
+                android:layout_marginStart="-7dp"/>
+
+            <ImageView
+                android:id="@+id/water5"
+                android:layout_width="44dp"
+                android:layout_height="52dp"
+                android:background="@drawable/water_selector"
+                android:elevation="6dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintStart_toEndOf="@+id/water4"
+                app:layout_constraintTop_toBottomOf="@+id/textViewWater"
+                android:layout_marginStart="-7dp"/>
+
+            <ImageView
+                android:id="@+id/water6"
+                android:layout_width="44dp"
+                android:layout_height="52dp"
+                android:background="@drawable/water_selector"
+                android:elevation="6dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintStart_toEndOf="@+id/water5"
+                app:layout_constraintTop_toBottomOf="@+id/textViewWater"
+                android:layout_marginStart="-7dp"/>
+
+            <ImageView
+                android:id="@+id/water7"
+                android:layout_width="44dp"
+                android:layout_height="52dp"
+                android:background="@drawable/water_selector"
+                android:elevation="6dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintStart_toEndOf="@+id/water6"
+                app:layout_constraintTop_toBottomOf="@+id/textViewWater"
+                android:layout_marginStart="-7dp"/>
+
+            <ImageView
+                android:id="@+id/water8"
+                android:layout_width="44dp"
+                android:layout_height="52dp"
+                android:background="@drawable/water_selector"
+                android:elevation="6dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintStart_toEndOf="@+id/water7"
+                app:layout_constraintTop_toBottomOf="@+id/textViewWater"
+                android:layout_marginStart="-7dp"/>
+
+            <TextView
+                android:id="@+id/textWaterIntake"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" "
+                android:textSize="12sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/zenkakugothicnewbold"
+                android:elevation="6dp"
+                app:layout_constraintTop_toBottomOf="@+id/water1"
+                app:layout_constraintStart_toStartOf="@+id/water1"/>
+
+            <TextView
+                android:id="@+id/textWaterPersentage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" "
+                android:textSize="12sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/zenkakugothicnewbold"
+                android:elevation="6dp"
+                app:layout_constraintTop_toBottomOf="@+id/water1"
+                app:layout_constraintEnd_toEndOf="@+id/water8"/>
+
+
+
+            <ImageView
+                android:id="@+id/rectanglehomemealImageView"
+                android:layout_width="350dp"
+                android:layout_height="320dp"
+                android:background="@drawable/rectangle_home2_with_shadow"
+                android:elevation="5dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rectanglehomeingredientsImageView"
+                android:layout_marginTop="15dp"/>
+
+            <TextView
+                android:id="@+id/textViewTodayMeal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Today's Meal"
+                android:elevation="6dp"
+                android:textSize="20sp"
+                android:textColor="@color/color31"
+                android:fontFamily="@font/urbanistbold"
+                app:layout_constraintStart_toStartOf="@+id/rectanglehomemealImageView"
+                app:layout_constraintTop_toTopOf="@+id/rectanglehomemealImageView"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="13dp"/>
+
+            <ImageView
+                android:id="@+id/rectanglehomemealbreakfast"
+                android:layout_width="300dp"
+                android:layout_height="70dp"
+                android:background="@drawable/rectangle_signup_with_shadow_white"
+                android:elevation="7dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewTodayMeal"
+                android:layout_marginTop="15dp"/>
+
+            <ImageView
+                android:id="@+id/imagebreakfast"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/breakfastmeal"
+                android:elevation="7dp"
+                app:layout_constraintStart_toStartOf="@+id/rectanglehomemealbreakfast"
+                app:layout_constraintTop_toTopOf="@+id/rectanglehomemealbreakfast"
+                app:layout_constraintBottom_toBottomOf="@+id/rectanglehomemealbreakfast"
+                android:layout_marginStart="15dp"/>
+
+            <TextView
+                android:id="@+id/TextView_breakfast"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Breakfast"
+                android:textSize="15sp"
+                android:textColor="#173430"
+                android:fontFamily="@font/zenkakugothicnewbold"
+                android:elevation="7dp"
+                app:layout_constraintStart_toEndOf="@+id/imagebreakfast"
+                app:layout_constraintTop_toTopOf="@+id/imagebreakfast"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="10dp"/>
+
+            <TextView
+                android:id="@+id/TextView_quantitybreakfast"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="... Foods"
+                android:textSize="12sp"
+                android:textColor="#173430"
+                android:fontFamily="@font/zenkakugothicnewregular"
+                android:elevation="7dp"
+                app:layout_constraintStart_toEndOf="@+id/imagebreakfast"
+                app:layout_constraintTop_toBottomOf="@+id/TextView_breakfast"
+                android:layout_marginTop="2dp"
+                android:layout_marginStart="10dp"/>
+
+            <TextView
+                android:id="@+id/spacebreakfast"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/space"
+                android:elevation="7dp"
+                android:layout_marginTop="2dp"
+                app:layout_constraintStart_toEndOf="@+id/TextView_quantitybreakfast"
+                app:layout_constraintTop_toBottomOf="@+id/TextView_breakfast"/>
+
+            <TextView
+                android:id="@+id/TextView_kcalbreakfast"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="582 / 631 kcal"
+                android:textSize="12sp"
+                android:textColor="#173430"
+                android:fontFamily="@font/zenkakugothicnewregular"
+                android:elevation="7dp"
+                android:layout_marginTop="2dp"
+                app:layout_constraintStart_toEndOf="@+id/spacebreakfast"
+                app:layout_constraintTop_toBottomOf="@+id/TextView_breakfast"/>
+
+            <ImageView
+                android:id="@+id/rectanglehomemeallunch"
+                android:layout_width="300dp"
+                android:layout_height="70dp"
+                android:background="@drawable/rectangle_signup_with_shadow_white"
+                android:elevation="7dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rectanglehomemealbreakfast"
+                android:layout_marginTop="15dp"/>
+
+            <ImageView
+                android:id="@+id/imagelunch"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/lunchmeal"
+                android:elevation="7dp"
+                app:layout_constraintStart_toStartOf="@+id/rectanglehomemeallunch"
+                app:layout_constraintTop_toTopOf="@+id/rectanglehomemeallunch"
+                app:layout_constraintBottom_toBottomOf="@+id/rectanglehomemeallunch"
+                android:layout_marginStart="15dp"/>
+
+            <TextView
+                android:id="@+id/TextView_lunch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lunch"
+                android:textSize="15sp"
+                android:textColor="#173430"
+                android:fontFamily="@font/zenkakugothicnewbold"
+                android:elevation="7dp"
+                app:layout_constraintStart_toEndOf="@+id/imagelunch"
+                app:layout_constraintTop_toTopOf="@+id/imagelunch"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="10dp"/>
+
+            <TextView
+                android:id="@+id/TextView_quantitylunch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="... Foods"
+                android:textSize="12sp"
+                android:textColor="#173430"
+                android:fontFamily="@font/zenkakugothicnewregular"
+                android:elevation="7dp"
+                app:layout_constraintStart_toEndOf="@+id/imagelunch"
+                app:layout_constraintTop_toBottomOf="@+id/TextView_lunch"
+                android:layout_marginTop="2dp"
+                android:layout_marginStart="10dp"/>
+
+            <TextView
+                android:id="@+id/spacelunch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/space"
+                android:elevation="7dp"
+                android:layout_marginTop="2dp"
+                app:layout_constraintStart_toEndOf="@+id/TextView_quantitylunch"
+                app:layout_constraintTop_toBottomOf="@+id/TextView_lunch"/>
+
+            <TextView
+                android:id="@+id/TextView_kcallunch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="582 / 631 kcal"
+                android:textSize="12sp"
+                android:textColor="#173430"
+                android:fontFamily="@font/zenkakugothicnewregular"
+                android:elevation="7dp"
+                android:layout_marginTop="2dp"
+                app:layout_constraintStart_toEndOf="@+id/spacelunch"
+                app:layout_constraintTop_toBottomOf="@+id/TextView_lunch"/>
+
+            <ImageView
+                android:id="@+id/rectanglehomemealdinner"
+                android:layout_width="300dp"
+                android:layout_height="70dp"
+                android:background="@drawable/rectangle_signup_with_shadow_white"
+                android:elevation="7dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rectanglehomemeallunch"
+                android:layout_marginTop="15dp"/>
+
+            <ImageView
+                android:id="@+id/imagedinner"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/dinnermeal"
+                android:elevation="7dp"
+                app:layout_constraintStart_toStartOf="@+id/rectanglehomemealdinner"
+                app:layout_constraintTop_toTopOf="@+id/rectanglehomemealdinner"
+                app:layout_constraintBottom_toBottomOf="@+id/rectanglehomemealdinner"
+                android:layout_marginStart="15dp"/>
+
+            <TextView
+                android:id="@+id/TextView_dinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dinner"
+                android:textSize="15sp"
+                android:textColor="#173430"
+                android:fontFamily="@font/zenkakugothicnewbold"
+                android:elevation="7dp"
+                app:layout_constraintStart_toEndOf="@+id/imagedinner"
+                app:layout_constraintTop_toTopOf="@+id/imagedinner"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="10dp"/>
+
+            <TextView
+                android:id="@+id/TextView_quantitydinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="... Foods"
+                android:textSize="12sp"
+                android:textColor="#173430"
+                android:fontFamily="@font/zenkakugothicnewregular"
+                android:elevation="7dp"
+                app:layout_constraintStart_toEndOf="@+id/imagedinner"
+                app:layout_constraintTop_toBottomOf="@+id/TextView_dinner"
+                android:layout_marginTop="2dp"
+                android:layout_marginStart="10dp"/>
+
+            <TextView
+                android:id="@+id/spacedinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/space"
+                android:elevation="7dp"
+                android:layout_marginTop="2dp"
+                app:layout_constraintStart_toEndOf="@+id/TextView_quantitydinner"
+                app:layout_constraintTop_toBottomOf="@+id/TextView_dinner"/>
+
+            <TextView
+                android:id="@+id/TextView_kcaldinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="582 / 631 kcal"
+                android:textSize="12sp"
+                android:textColor="#173430"
+                android:fontFamily="@font/zenkakugothicnewregular"
+                android:elevation="7dp"
+                android:layout_marginTop="2dp"
+                app:layout_constraintStart_toEndOf="@+id/spacedinner"
+                app:layout_constraintTop_toBottomOf="@+id/TextView_dinner"/>
+
+
+
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

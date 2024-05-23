@@ -146,7 +146,7 @@ class RecipeDialogMeal : DialogFragment(), DialogRecipeAdapter.DialogOnAddClickL
             if (isWithinNeeds) {
                 viewModel.updateSelectedRecommendationsPerMealType(selectedMeal)
                 GeneralUtil.showConfirmationDialog(requireContext())
-                showThirdDialog(selectedMeal)
+                //showThirdDialog(selectedMeal)
             } else {
                 showNutritionExceededDialog(requireContext())
             }

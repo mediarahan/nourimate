@@ -237,6 +237,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/radio_selected"
         android:layout_marginBottom="15dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@+id/search_bar"
         app:layout_constraintBottom_toTopOf="@+id/search_bar">
 

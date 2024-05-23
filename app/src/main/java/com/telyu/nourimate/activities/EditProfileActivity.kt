@@ -89,7 +89,6 @@ class EditProfileActivity : AppCompatActivity() {
         binding.buttonNext.setOnClickListener {
             insertUserDetails()
             setupObservers()
-            viewModel.setAccountStateAsCompleted()
         }
 
     }
@@ -114,9 +113,9 @@ class EditProfileActivity : AppCompatActivity() {
 
         // Calculate BMI
         val bmi = calculateBMI(height, weight)?.toInt()
-        val id = viewModel.userId.value
+        val id = ???
 
-        val detail = Detail(0, date, height, weight, waistSize, gender, allergies, disease, bmi)
+        val detail = Detail(0, date, height, weight, waistSize, gender, allergies, disease, bmi?.toFloat())
         viewModel.insertDetail(detail)
 
         openHomePage()

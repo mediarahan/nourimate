@@ -3,36 +3,74 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/historybackground">
 
     <ImageView
-        android:id="@+id/backButton"
-        android:layout_width="wrap_content"
+        android:id="@+id/wave_profile"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/back"
-        android:contentDescription="Back"
+        android:elevation="4dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/wave_profile"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:padding="30dp"/>
+        app:layout_constraintWidth_percent="1.2"/>
+
+    <ImageView
+        android:id="@+id/wave_profile_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:elevation="3dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/wave_profile_with_shadow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="1.2" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/backButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="-40dp"
+        app:icon="@drawable/back"
+        android:clickable="true"
+        app:iconSize="25dp"
+        app:iconGravity="textStart"
+        app:iconTint="@color/black"
+        app:backgroundTint="@null"
+        android:background="@drawable/button_background_profile_with_shadow"
+        style="@style/Widget.MaterialComponents.Button.Circle"
+        app:layout_constraintTop_toBottomOf="@+id/wave_profile_shadow"
+        app:iconPadding="0dp"
+        android:insetTop="0dp"
+        android:elevation="3dp"
+        android:insetBottom="0dp" />
 
     <TextView
         android:id="@+id/settingTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Settings"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:fontFamily="@font/alatsi"
+        android:textColor="#F18300"
+        android:textSize="33sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="100dp"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wave_profile_shadow"/>
 
     <ImageView
         android:id="@+id/rectanglesettingImageView"
         android:layout_width="350dp"
         android:layout_height="70dp"
-        android:background="@drawable/rectangle_profile_with_shadow"
-        android:elevation="5dp"
+        android:background="@drawable/rectangle_settings_with_shadow"
+        android:elevation="7dp"
+        app:layout_constraintWidth_percent="0.85"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settingTextView"
@@ -45,26 +83,48 @@
         app:layout_constraintTop_toTopOf="@+id/rectanglesettingImageView"
         app:layout_constraintStart_toStartOf="@+id/rectanglesettingImageView"
         android:layout_marginTop="10dp"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="15dp"
         android:text="Themes"
-        android:textSize="16sp"
-        android:elevation="6dp"/>
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/alatsi"
+        android:elevation="7dp"/>
 
     <Spinner
         android:id="@+id/spinnerThemes"
-        android:layout_width="320dp"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="65dp"
+        android:elevation="7dp"
+        android:textSize="14sp"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/alatsi"
+        app:layout_constraintWidth_percent="0.85"
+        app:layout_constraintEnd_toEndOf="@+id/rectanglesettingImageView"
         app:layout_constraintTop_toTopOf="@+id/textViewThemes"
         app:layout_constraintStart_toStartOf="@+id/textViewThemes"
-        android:layout_marginTop="20dp"
-        android:elevation="6dp"/>
+        android:spinnerMode="dropdown"
+        android:popupBackground="@drawable/rectangle_signup1"/>
+
+    <ImageView
+        android:id="@+id/iconthemesImageView"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="5dp"
+        android:padding="12dp"
+        android:elevation="8dp"
+        app:layout_constraintEnd_toEndOf="@id/spinnerThemes"
+        app:layout_constraintTop_toTopOf="@id/spinnerThemes"
+        app:layout_constraintBottom_toBottomOf="@id/spinnerThemes"
+        android:src="@drawable/arrow_drop" />
 
     <ImageView
         android:id="@+id/rectanglesetting2ImageView"
         android:layout_width="350dp"
         android:layout_height="70dp"
-        android:background="@drawable/rectangle_profile_with_shadow"
-        android:elevation="5dp"
+        android:background="@drawable/rectangle_settings_with_shadow"
+        android:elevation="7dp"
+        app:layout_constraintWidth_percent="0.85"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rectanglesettingImageView"
@@ -75,12 +135,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Notification"
-        android:textSize="16sp"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/alatsi"
         app:layout_constraintTop_toTopOf="@+id/rectanglesetting2ImageView"
         app:layout_constraintStart_toStartOf="@+id/rectanglesetting2ImageView"
         android:layout_marginTop="10dp"
-        android:layout_marginStart="5dp"
-        android:elevation="5dp"/>
+        android:layout_marginStart="15dp"
+        android:elevation="7dp"/>
 
     <Switch
         android:id="@+id/switchNotification"
@@ -89,7 +151,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewNotification"
         app:layout_constraintStart_toStartOf="@+id/textViewNotification"
         android:layout_marginTop="5dp"
-        android:elevation="5dp"/>
+        android:elevation="7dp"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

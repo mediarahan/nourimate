@@ -35,6 +35,7 @@ class ChooseProgramActivity : AppCompatActivity() {
         setupDateEditText()
 
         binding.buttonSelectProgram.setOnClickListener {
+            Log.d("ChooseProgramActivity", "Click!")
             insertProgramDetails()
         }
     }
@@ -43,8 +44,11 @@ class ChooseProgramActivity : AppCompatActivity() {
     private fun setupWeightEntry() {
         val today = Converters().dateFromTimestamp(System.currentTimeMillis())
         viewModel.userDetails.observe(this) {detail ->
-            val weightEntry =  WeightEntry(0, detail.weight?.toInt() ?: -999, today, detail.detailId )
-            viewModel.insertWeightEntry(weightEntry)
+            val weightEntry =
+                detail?.let { WeightEntry(0, detail?.weight?.toInt() ?: -999, today, it.detailId ) }
+            if (weightEntry != null) {
+                viewModel.insertWeightEntry(weightEntry)
+            }
             Log.d("ProgramFilledFragment", "InsertedWeightEntry: $weightEntry")
         }
     }
@@ -67,17 +71,18 @@ class ChooseProgramActivity : AppCompatActivity() {
         val today = System.currentTimeMillis()
         val todayDate = Converters().dateFromTimestamp(today)
 
+        Log.d("ChooseProgramActivity", "noT OBESERVERD YET")
         viewModel.userDetails.observe(this) { detail ->
-            // Insert program details into the database
+            Log.d("ChooseProgramActivity", "OBSERVED")
             val weightTrack = WeightTrack(
                 0,
                 selectedProgramInt,
                 startDateParsed,
                 endDateParsed,
-                detail.weight?.toInt() ?: -999,
-                detail.weight?.toInt() ?: -999,
+                detail?.weight?.toInt() ?: -999,
+                detail?.weight?.toInt() ?: -999,
                 todayDate,
-                detail.detailId
+                detail?.detailId ?: -999
             )
             viewModel.insertWeightTrack(weightTrack)
             setupWeightEntry()

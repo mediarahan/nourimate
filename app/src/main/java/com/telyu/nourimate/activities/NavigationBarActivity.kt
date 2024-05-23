@@ -9,6 +9,7 @@ import com.telyu.nourimate.fragments.ProfileFragment
 import com.telyu.nourimate.fragments.ProgramFragment
 import com.telyu.nourimate.R
 import com.telyu.nourimate.databinding.ActivityNavigationBarBinding
+import com.telyu.nourimate.fragments.HistoryFragment
 import com.telyu.nourimate.fragments.RecipeFragment
 import com.telyu.nourimate.fragments.HomeFragment
 
@@ -26,6 +27,16 @@ class NavigationBarActivity : AppCompatActivity() {
 
         val homeFragment = HomeFragment()
         setCurrentFragment(homeFragment)
+
+        if (intent.getStringExtra("loadFragment") == "HistoryFragment") {
+            val historyFragment = HistoryFragment()
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fragmentContainer, historyFragment)
+                addToBackStack(null)
+                commit()
+            }
+        }
+
 
         binding.bottomNavigationView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
@@ -46,6 +57,7 @@ class NavigationBarActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        super.onBackPressed()
         val alertDialogBuilder = AlertDialog.Builder(this)
         alertDialogBuilder.setTitle("Exit App")
         alertDialogBuilder.setMessage("Are you sure you want to exit the app?")

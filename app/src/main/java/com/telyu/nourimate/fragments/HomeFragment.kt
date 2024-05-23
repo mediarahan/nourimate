@@ -23,13 +23,16 @@ import com.telyu.nourimate.viewmodels.HomeViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
 import android.Manifest
 import android.net.Uri
+import android.util.Log
+import androidx.fragment.app.activityViewModels
+import com.telyu.nourimate.utils.GeneralUtil
 
 
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
 
-    private val viewModel by viewModels<HomeViewModel> {
+    private val viewModel by activityViewModels<HomeViewModel> {
         ViewModelFactory.getInstance(
             requireContext().applicationContext
         )
@@ -58,10 +61,6 @@ class HomeFragment : Fragment() {
             binding.greetingTextView.text = greeting
         }
 
-        viewModel.weightMessage.observe(viewLifecycleOwner) { weightMessage ->
-            binding.weightMessageTextView.text = weightMessage
-        }
-
         viewModel.sleepTime.observe(viewLifecycleOwner) { sleepTime ->
             binding.timeInSleep.text = getString(R.string.sleep_time_format, sleepTime)
         }
@@ -76,14 +75,59 @@ class HomeFragment : Fragment() {
         // Call updateGlassesUI initially to set the '+' on the first glass
         updateGlassesUI(viewModel.currentGlass.value ?: 0)
 
+        bindBMI()
+        bindIdealWeightAndSize()
         observeMealCalories()
         setupMealCalories()
         setupNutritionNeeds()
         setupMealCount()
         viewModel.getNutritionSums()
         displayProfpic()
-        observeSleep()
+        setupMealHistory()
+        //observeSleep()
     }
+
+    //=============== Kotak UI Pertama ===============
+    private fun bindBMI() {
+        viewModel.userBMI.observe(viewLifecycleOwner) { bmi ->
+            val minBMI = 15f
+            val maxBMI = 40f
+
+            val progress = ((bmi - minBMI) / (maxBMI - minBMI)) * 3000f
+            binding.semiCircleProgressView.animateProgress(progress)
+
+            val formattedBMI = String.format("%.1f", bmi)
+            binding.caloriesBurnedTextView.text = formattedBMI
+
+            when(bmi) {
+                in 0.0..18.5 -> {
+                    binding.speedTextView.text = "Underweight"
+                    binding.speedTextView.setBackgroundResource(R.drawable.rectangle_light_green)
+                }
+                in 18.6..24.9 -> {
+                    binding.speedTextView.text = "Normal"
+                    binding.speedTextView.setBackgroundResource(R.drawable.rectangle_green)
+                }
+                in 25.0..29.9 -> {
+                    binding.speedTextView.text = "Overweight"
+                    binding.speedTextView.setBackgroundResource(R.drawable.rectangle_orange)
+                }
+                in 30.0..40.0 -> {
+                    binding.speedTextView.text = "Obese"
+                    binding.speedTextView.setBackgroundResource(R.drawable.rectangle_red)
+                }
+            }
+        }
+
+    }
+
+    private fun bindIdealWeightAndSize() {
+        viewModel.weightValues.observe(viewLifecycleOwner) {values ->
+            binding.ageTextView.text = values.first.toString() + " kg" + "\nIdeal Weight"
+            binding.heightTextView.text = values.second.toString() + "\nWaist Size"
+        }
+    }
+
 
     private fun calculatePercentage(consumed: Int, total: Int) = (consumed * 100) / total
 
@@ -181,29 +225,31 @@ class HomeFragment : Fragment() {
         }
     }
 
+
+
     //========== Sleep API Related ==========
-    private fun observeSleep() {
-        viewModel.sleepSegments.observe(viewLifecycleOwner) { segments ->
-            displaySleepSegments(segments)
-        }
-
-        viewModel.isSubscribed.observe(viewLifecycleOwner) { isSubscribed ->
-            // Update button text or UI elements based on subscription status
-            updateSubscriptionUI(isSubscribed)
-        }
-
-        binding.sleepSubscribeButton.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.ACTIVITY_RECOGNITION
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                requestActivityRecognitionPermission()
-            } else {
-                viewModel.toggleSleepDataSubscription(createPendingIntent())
-            }
-        }
-    }
+//    private fun observeSleep() {
+//        viewModel.sleepSegments.observe(viewLifecycleOwner) { segments ->
+//            displaySleepSegments(segments)
+//        }
+//
+//        viewModel.isSubscribed.observe(viewLifecycleOwner) { isSubscribed ->
+//            // Update button text or UI elements based on subscription status
+//            updateSubscriptionUI(isSubscribed)
+//        }
+//
+//        binding.sleepSubscribeButton.setOnClickListener {
+//            if (ContextCompat.checkSelfPermission(
+//                    requireContext(),
+//                    Manifest.permission.ACTIVITY_RECOGNITION
+//                ) != PackageManager.PERMISSION_GRANTED
+//            ) {
+//                requestActivityRecognitionPermission()
+//            } else {
+//                viewModel.toggleSleepDataSubscription(createPendingIntent())
+//            }
+//        }
+//    }
 
     private fun requestActivityRecognitionPermission() {
         ActivityCompat.requestPermissions(
@@ -243,9 +289,9 @@ class HomeFragment : Fragment() {
         binding.timeInSleep.text = formattedSegments
     }
 
-    private fun updateSubscriptionUI(isSubscribed: Boolean) {
-        binding.sleepSubscribeButton.text = if (isSubscribed) "Unsubscribe" else "Subscribe"
-    }
+//    private fun updateSubscriptionUI(isSubscribed: Boolean) {
+//        binding.sleepSubscribeButton.text = if (isSubscribed) "Unsubscribe" else "Subscribe"
+//    }
 
 
     //Untuk nampilin nama dan profpic
@@ -259,6 +305,7 @@ class HomeFragment : Fragment() {
         viewModel.userId.observe(viewLifecycleOwner) { userId ->
             if (userId != null) {
                 viewModel.getProfpicById(userId)
+                viewModel.getUserNameById(userId)
             }
         }
 
@@ -268,8 +315,41 @@ class HomeFragment : Fragment() {
                 binding.profileImageView.setImageURI(uri)
             }
 
+            viewModel.userName.observe(viewLifecycleOwner) { userName ->
+                binding.usernameTextView.text = userName + "!"
+            }
+
+            viewModel.userOngoingProgramAndMessage.observe(viewLifecycleOwner) { programMessages ->
+                binding.programMessageTextView.text = programMessages.first
+                binding.weightMessageTextView.text = programMessages.second
+            }
         }
 
+    }
+
+    //=============== Kotak UI Ketiga (Today's Meal) ===============
+    private fun setupMealHistory() {
+        binding.apply {
+            setMealClickListener(rectanglehomemealbreakfast, 1)
+            setMealClickListener(rectanglehomemeallunch, 2)
+            setMealClickListener(rectanglehomemealdinner, 3)
+        }
+    }
+
+    private fun setMealClickListener(view: View, mealTime: Int) {
+        view.setOnClickListener {
+            viewModel.selectMealTime(mealTime)
+            Log.d("ProgramFilledFragment", "setMealClickListener: $mealTime")
+            displayMealHistoryFragment()
+        }
+    }
+
+    private fun displayMealHistoryFragment() {
+        requireActivity().supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fragmentContainer, HomeMealHistoryFragment())
+            addToBackStack(null)
+            commit()
+        }
     }
 
     //Water Related Functions

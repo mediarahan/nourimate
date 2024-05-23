@@ -33,9 +33,9 @@ class SignUpActivity : AppCompatActivity() {
         //daftar pake lokal
         binding.buttonRegister.setOnClickListener {
             //Backend
-            //registerWithBackend()
+            registerWithBackend()
             //Lokal
-            signup()
+            //signup()
         }
 
         binding.TextViewSignIn.setOnClickListener {
@@ -59,7 +59,7 @@ class SignUpActivity : AppCompatActivity() {
             return //return disini maksudnya lebih mirip ke break / pass kalau di Python. Untuk flow control, bukan returnnya fungsi
         }
 
-        val user = User(0, fullName, email, phoneNumber, password, 1)
+        val user = User(0, fullName, email, phoneNumber, password)
 
         signUpViewModel.uiState.observe(this) {result ->
             when (result) {
@@ -92,7 +92,7 @@ class SignUpActivity : AppCompatActivity() {
             val email =binding.editTextEmail.text.toString()
             val password =binding.editTextPassword.text.toString()
 
-            signUpViewModel.register(name, phone, email, password).observe(this@SignUpActivity){result ->
+            signUpViewModel.registerBackend(name, phone, email, password).observe(this@SignUpActivity){result ->
                 if (result != null) {
                     when (result) {
                         is Result.Loading -> {

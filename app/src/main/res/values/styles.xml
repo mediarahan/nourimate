@@ -9,7 +9,6 @@
     <style name="Widget.MaterialComponents.Button.Circle" parent="Widget.MaterialComponents.Button">
         <item name="shapeAppearance">@style/ShapeAppearance.MaterialComponents.Circle</item>
         <item name="android:padding">0dp</item>
-        <item name="iconPadding">0dp</item>
         <item name="android:minWidth">56dp</item>
         <item name="android:minHeight">56dp</item>
     </style>
@@ -46,6 +45,7 @@
         <item name="android:textSize">16sp</item>
         <item name="android:fontFamily">@font/abel</item>
     </style>
+
 
 
 

@@ -4,7 +4,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import com.google.android.gms.location.ActivityRecognition
 import com.google.android.gms.location.SleepSegmentRequest
@@ -26,18 +25,21 @@ import com.telyu.nourimate.data.remote.response.LoginResponse
 import com.telyu.nourimate.data.remote.response.RecommendationResponse
 import com.telyu.nourimate.data.remote.response.RegisterResponse
 import com.telyu.nourimate.data.remote.retrofit.ApiService
+import com.telyu.nourimate.data.remote.retrofit.ApiService2
+import com.telyu.nourimate.data.remote.retrofit.EmailVerificationBody
 import com.telyu.nourimate.data.remote.retrofit.LoginRequest
 import com.telyu.nourimate.data.remote.retrofit.RecommendationRequest
 import com.telyu.nourimate.data.remote.retrofit.RegisterRequest
+import com.telyu.nourimate.data.remote.retrofit.SignUpBody
 import com.telyu.nourimate.utils.UserModel
 import com.telyu.nourimate.utils.UserPreference
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import java.util.Date
 
 class NourimateRepository(
     private val apiService: ApiService,
+    private val apiService2: ApiService2,
     private val userPreference: UserPreference,
     private val userDao: UserDao,
     private val foodDao: FoodDao,
@@ -58,7 +60,27 @@ class NourimateRepository(
 
     // === AUTHENTICATION RELATED QUERIES ===
 
-    fun register(
+//    fun register(
+//        name: String,
+//        phoneNumber: String,
+//        email: String,
+//        password: String
+//    ): LiveData<Result<Unit>> = liveData {
+//        emit(Result.Loading)
+//        try {
+//            val registerRequest = SignUpBody(name, phoneNumber, email, password)
+//            val requestBody = apiService2.signup(registerRequest)
+//
+//            delay(2000)
+//            emit(Result.Success(requestBody))
+//
+//        } catch (e: java.lang.Exception) {
+//            Log.d("UserRepository", "register:${e.message.toString()}")
+//            emit(Result.Error(e.message.toString()))
+//        }
+//    }
+
+        fun registerBackend(
         name: String,
         phoneNumber: String,
         email: String,
@@ -76,6 +98,38 @@ class NourimateRepository(
             Log.d("UserRepository", "register:${e.message.toString()}")
             emit(Result.Error(e.message.toString()))
         }
+    }
+
+    fun sendVerifyEmail(userId: Int, email: String): LiveData<Result<Unit>> = liveData {
+        emit(Result.Loading)
+        try {
+            val verifyRequest = EmailVerificationBody(userId, email)
+            val requestBody = apiService2.sendEmailVerification(verifyRequest)
+            delay(2000)
+            emit(Result.Success(requestBody))
+
+        } catch (e: java.lang.Exception) {
+            Log.d("UserRepository", "register:${e.message.toString()}")
+            emit(Result.Error(e.message.toString()))
+        }
+    }
+
+    fun verifyEmail(userId: Int, email: String): LiveData<Result<Unit>> = liveData {
+        emit(Result.Loading)
+        try {
+            val verifyRequest = EmailVerificationBody(userId, email)
+            val requestBody = apiService2.verifyEmail(verifyRequest)
+            delay(2000)
+            emit(Result.Success(requestBody))
+        } catch (e: java.lang.Exception) {
+            Log.d("UserRepository", "register:${e.message.toString()}")
+            emit(Result.Error(e.message.toString()))
+        }
+    }
+
+    fun postDetails(detailId:Int, dob: String, height: Int, waistSize: Int, gender: String, allergen: String, disease: String, userId: Int): LiveData<Result<Unit>> = liveData {
+       emit(Result.Loading)
+
     }
 
     fun loginBackend(email: String, password: String): LiveData<Result<LoginResponse>> = liveData {
@@ -109,59 +163,35 @@ class NourimateRepository(
         }
     }
 
+    suspend fun saveSession(userModel: UserModel) {
+        userPreference.saveSession(userModel)
+    }
+
 
 //    fun signup(password: String, confirmPassword: String, ): Boolean {
 //        return password == confirmPassword
 //    }
 
     //inimah lancar, masukin ke userPreference aman2 aja
-    suspend fun login(email: String, password: String): Int {
-        val user = userDao.getUserByEmail(email)
-        if (user != null && user.password == password && email == user.email) {
-            val currentAccountState = userDao.getAccountStateByUserId(user.userId)
-
-            userPreference.logout()
-            val userModel = UserModel(
-                user.userId, email, null, null,
-                isLoggedIn = true,
-                isVerified = false,
-                isDetailFilled = false
-            )
-            userPreference.saveSession(userModel)
-            Log.d("Login", "Email: $email, userId: ${user.userId} IsLoginSuccessful: true")
-            return currentAccountState
-        } else {
-            return -1
-        }
-    }
-
-//    }   suspend fun login(email: String, password: String): Boolean {
+//    suspend fun login(email: String, password: String): Int {
 //        val user = userDao.getUserByEmail(email)
-//        val isLoginSuccessful = user != null && user.password == password
+//        if (user != null && user.password == password && email == user.email) {
+//            val currentAccountState = userDao.getAccountStateByUserId(user.userId)
 //
-//        if (isLoginSuccessful) {
-//            userPreference.logout() // Make sure to clear previous session data
-//            val userModel = UserModel(user?.userId, email, 1) // Assuming `userId` is fetched here
+//            userPreference.logout()
+//            val userModel = UserModel(
+//                user.userId, email, null, null,
+//                isLoggedIn = true,
+//                isVerified = false,
+//                isDetailFilled = false
+//            )
 //            userPreference.saveSession(userModel)
-//            Log.d("Login", "Email: $email, IsLoginSuccessful: true")
+//            Log.d("Login", "Email: $email, userId: ${user.userId} IsLoginSuccessful: true")
+//            return currentAccountState
 //        } else {
-//            Log.d("Login", "Email: $email, IsLoginSuccessful: false")
+//            return -1
 //        }
-//
-//        return isLoginSuccessful
 //    }
-
-
-    fun observeUserLoginStatus(): LiveData<Boolean?> {
-        return userPreference.getSession().map { userModel ->
-            userModel.isLoggedIn
-        }.asLiveData()
-    }
-
-    suspend fun changeAccountState(id: Int, email: String, loginState: Int) {
-        //  val userModel = UserModel(id, email, loginState)
-        //userPreference.saveSession(userModel)
-    }
 
     suspend fun logout() {
         userPreference.logout()
@@ -184,7 +214,7 @@ class NourimateRepository(
         return userDao.getUserNameByEmail(email)
     }
 
-    suspend fun getBMIById(id: Int?): Int? {
+    suspend fun getBMIById(id: Int?): Float? {
         return userDao.getBMIById(id)
     }
 
@@ -235,9 +265,9 @@ class NourimateRepository(
         foodDao.updateSelectedRecommendationsPerMealType(mealType)
     }
 
-    suspend fun updateAccountState(userId: Int, loginState: Int) {
-        userDao.updateAccountState(userId, loginState)
-    }
+//    suspend fun updateAccountState(userId: Int, loginState: Int) {
+//        userDao.updateAccountState(userId, loginState)
+//    }
 
     //=== QUERY FOOD ===
 
@@ -324,7 +354,7 @@ class NourimateRepository(
 
     suspend fun fetchRecommendationData(recommendationRequest: RecommendationRequest): ListOfIds {
         try {
-            val requestBody = apiService.getRecommendedRecipes(recommendationRequest)
+            val requestBody = apiService2.getRecommendedRecipes(recommendationRequest)
             Log.d("Recommendation", "Response: $requestBody")
             val mappedResponse = mapResponseToRecipeIds(requestBody)
 
@@ -399,6 +429,10 @@ class NourimateRepository(
         return userDao.getLatestWeightEntryByUserId(userId)
     }
 
+    fun getLatestWeightEntryByUserId2(userId: Int): LiveData<WeightEntry> {
+        return userDao.getLatestWeightEntryByUserId2(userId)
+    }
+
     suspend fun getLatestWeightEntryDateByUserId(userId: Int): Date {
         return userDao.getLatestWeightEntryDateByUserId(userId)
     }
@@ -455,17 +489,42 @@ class NourimateRepository(
         return userDao.getHistory(userId)
     }
 
+    fun getSelectedRecipesByMealType(mealType: Int): LiveData<List<Recipe>> {
+        return foodDao.getSelectedRecipesByMealType(mealType)
+    }
+
+    suspend fun getRecipeDetailByRecipeId(recipeId: Int): Recipe {
+        return foodDao.getRecipeDetailByRecipeId(recipeId)
+    }
+
+    suspend fun getAllRecipe(): List<Recipe> {
+        return foodDao.getAllRecipe()
+    }
+
+    suspend fun getAllInactiveRecommendations(): List<Recommendation> {
+        return foodDao.getAllInactiveRecommendations()
+    }
+
+    fun getWeightEntriesLiveData(): LiveData<List<WeightEntry>> {
+        return userDao.getWeightEntriesLiveData()
+    }
+
+    suspend fun getLatestHistory(): History {
+        return userDao.getLatestHistory()
+    }
+
     companion object {
         @Volatile
         private var instance: NourimateRepository? = null
         fun getInstance(
             apiService: ApiService,
+            apiService2: ApiService2,
             pref: UserPreference,
             userDao: UserDao,
             foodDao: FoodDao,
             context: Context
         ): NourimateRepository = instance ?: synchronized(this) {
-            instance ?: NourimateRepository(apiService, pref, userDao, foodDao, context)
+            instance ?: NourimateRepository(apiService, apiService2, pref, userDao, foodDao, context)
         }.also { instance = it }
     }
 

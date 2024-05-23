@@ -18,8 +18,9 @@
         android:id="@+id/linear_layout">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/nestedprogram"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="75dp">
 
             <TextView
                 android:id="@+id/itemTv"
@@ -29,7 +30,7 @@
                 android:fontFamily="@font/alatsi"
                 android:textColor="@color/color39"
                 android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -53,10 +54,11 @@
                 android:textColor="@color/black"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="15dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/itemTv"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/nestedprogram"
                 app:layout_constraintEnd_toStartOf="@id/toTv" />
 
             <TextView
@@ -68,12 +70,12 @@
                 android:textColor="@color/black"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="15dp"
                 app:layout_constraintStart_toEndOf="@id/startDateTv"
                 app:layout_constraintEnd_toStartOf="@id/endDateTv"
                 app:layout_constraintTop_toBottomOf="@id/itemTv"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"/>
+                app:layout_constraintBottom_toBottomOf="@+id/nestedprogram"/>
 
             <TextView
                 android:id="@+id/endDateTv"
@@ -84,11 +86,12 @@
                 android:textColor="@color/black"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="15dp"
                 app:layout_constraintStart_toEndOf="@id/toTv"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/itemTv"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintBottom_toBottomOf="@+id/nestedprogram"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

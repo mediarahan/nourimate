@@ -78,6 +78,7 @@
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="5dp"
         app:layout_constraintTop_toBottomOf="@+id/cardAvatar"/>
 
     <TextView
@@ -93,10 +94,11 @@
         android:paddingBottom="2dp"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:layout_marginTop="3dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameTextView"/>
+        app:layout_constraintTop_toBottomOf="@+id/nameTextView"
+        app:layout_constraintBottom_toBottomOf="@+id/picturebackground"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/settingsIcon"
@@ -116,7 +118,7 @@
         style="@style/Widget.MaterialComponents.Button.Circle"
         app:iconPadding="0dp"
         android:insetTop="0dp"
-        android:elevation="3dp"
+        android:elevation="5dp"
         android:insetBottom="0dp" />
 
     <com.google.android.material.button.MaterialButton
@@ -142,7 +144,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/profileButton"
-        android:layout_width="330dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:elevation="5dp"
         android:clickable="true"
@@ -159,6 +161,7 @@
         app:icon="@drawable/profile"
         app:iconTint="@color/color34"
         app:iconGravity="textStart"
+        app:layout_constraintWidth_percent="0.8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/picturebackground"
@@ -178,7 +181,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/accountButton"
-        android:layout_width="330dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:elevation="5dp"
         android:clickable="true"
@@ -195,6 +198,7 @@
         app:icon="@drawable/accountsecurity"
         app:iconTint="@color/color34"
         app:iconGravity="textStart"
+        app:layout_constraintWidth_percent="0.8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profileButton"
@@ -214,7 +218,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/historyButton"
-        android:layout_width="330dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:elevation="5dp"
         android:clickable="true"
@@ -232,6 +236,7 @@
         app:icon="@drawable/history"
         app:iconTint="@color/color34"
         app:iconGravity="textStart"
+        app:layout_constraintWidth_percent="0.8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/accountButton"
@@ -251,7 +256,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/communityButton"
-        android:layout_width="330dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:elevation="5dp"
         android:clickable="true"
@@ -269,6 +274,7 @@
         app:icon="@drawable/community"
         app:iconTint="@color/color34"
         app:iconGravity="textStart"
+        app:layout_constraintWidth_percent="0.8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/historyButton"
@@ -288,7 +294,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/faqButton"
-        android:layout_width="330dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:elevation="5dp"
         android:clickable="true"
@@ -306,6 +312,7 @@
         app:icon="@drawable/faq"
         app:iconTint="@color/color34"
         app:iconGravity="textStart"
+        app:layout_constraintWidth_percent="0.8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/communityButton"

@@ -234,7 +234,7 @@ class UserDetailFragment : Fragment() {
         Log.d("UserDetailFragment", "User ID: $id")
         val formattedDob = Converters().fromStringToDate(dob)
         val heightInMeters = height?.div(100)
-        val bmi = weight?.div((heightInMeters?.times(heightInMeters)!!))?.toInt()
+        val bmi = weight?.div((heightInMeters?.times(heightInMeters)!!))
 
         viewModel.userDetails.observe(viewLifecycleOwner) { userDetails ->
             if (id != null) {

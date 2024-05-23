@@ -47,7 +47,7 @@ class VerificationCode1Activity : AppCompatActivity() {
 
         // Tambahkan logika sign-up jika diperlukan
         initVerificationCode1()
-        viewModel.setAccountStateAsLoggedIn()
+        //viewModel.setAccountStateAsLoggedIn()
     }
 
     private fun initVerificationCode1() {

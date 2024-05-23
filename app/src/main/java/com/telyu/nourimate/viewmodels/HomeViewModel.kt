@@ -12,25 +12,27 @@ import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.telyu.nourimate.data.local.models.Detail
 import com.telyu.nourimate.data.local.models.NutritionSum
+import com.telyu.nourimate.data.local.models.Recipe
+import com.telyu.nourimate.data.local.models.RecipeHistoryData
 import com.telyu.nourimate.data.local.models.SleepSegmentEventEntity
 import com.telyu.nourimate.data.repository.NourimateRepository
+import com.telyu.nourimate.utils.GeneralUtil
 import com.telyu.nourimate.utils.GeneralUtil.calculateAKEi
 import com.telyu.nourimate.utils.GeneralUtil.calculateAge
 import com.telyu.nourimate.utils.GeneralUtil.calculateBreakfastNutrition
 import com.telyu.nourimate.utils.GeneralUtil.calculateDinnerNutrition
 import com.telyu.nourimate.utils.GeneralUtil.calculateLunchNutrition
 import com.telyu.nourimate.utils.GeneralUtil.convertConditionToCode
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.util.Calendar
 
 class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
     private val _greetingMessage = MutableLiveData<String>()
-    val greetingMessage: LiveData<String>
-        get() = _greetingMessage
+    val greetingMessage: LiveData<String> get() = _greetingMessage
 
-    private val _weightMessage = MutableLiveData<String>()
-    val weightMessage: LiveData<String>
-        get() = _weightMessage
+    private val _ongoingProgram = MutableLiveData<String>()
+    val ongoingProgram: LiveData<String> get() = _ongoingProgram
 
     val sleepTime = MutableLiveData<String>()
     val wakeUpTime = MutableLiveData<String>()
@@ -51,8 +53,6 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
 
     init {
         updateGreetingMessage()
-        // Default weight message
-        _weightMessage.value = "You've gained 0 kg today!"
     }
 
     private fun updateGreetingMessage() {
@@ -60,13 +60,81 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
         val hourOfDay = calendar.get(Calendar.HOUR_OF_DAY)
 
         val greeting = when {
-            hourOfDay < 12 -> "Good morning!"
-            hourOfDay < 18 -> "Good afternoon!"
-            else -> "Good evening!"
+            hourOfDay < 12 -> "Good morning,"
+            hourOfDay < 18 -> "Good afternoon,"
+            else -> "Good evening,"
         }
 
         _greetingMessage.value = greeting
     }
+
+    private val usersId = repository.getUserId().asLiveData()
+
+    val userOngoingProgramAndMessage: LiveData<Pair<String, String>> = usersId.switchMap { id ->
+        liveData {
+            val weightTrack = repository.getWeightTrackById(id)
+            val programStatus = weightTrack?.ongoingProgram ?: 0
+            val programText = when (programStatus) {
+                1 -> "Maintain Weight"
+                2 -> "Loss Weight"
+                3 -> "Gain Weight"
+                else -> "No Program"
+            }
+
+            //kasus khusus maintain
+            val weightDifference = weightTrack?.let {
+                val difference = it.endWeight - it.startWeight
+                when {
+                    difference < 0 -> "You've lost ${-difference} kg from last week"
+                    difference > 0 -> "You've gained ${difference} kg from last week"
+                    else -> "You've successfully maintained your weight"
+                }
+            } ?: "Weight data unavailable."
+
+            // Kasus untuk lost / gain weight
+            val messageText = when (programStatus) {
+                1 -> weightDifference
+                2 -> if (weightTrack != null) "You've lost ${-(weightTrack.endWeight - weightTrack.startWeight)} kg since last week." else "Weight data unavailable."
+                3 -> if (weightTrack != null) "You've gained ${weightTrack.endWeight - weightTrack.startWeight} kg since last week." else "Weight data unavailable."
+                else -> "Please choose a program."
+            }
+
+            emit(Pair(programText, messageText))
+        }
+    }
+
+    val userBMI: LiveData<Float> = usersId.switchMap { id ->
+        Log.d("UserBMI", "User ID: $id")
+        liveData {
+            val detail = repository.getUserDetailsById(id)
+            val weight = detail?.weight
+            val height = detail?.height
+            val bmi = GeneralUtil.calculateBMI(height, weight)
+            emit(bmi ?: -999f)
+        }
+    }
+
+    val weightValues: LiveData<Pair<Float?, Int?>> = usersId.switchMap { id ->
+        liveData {
+            val detail = repository.getUserDetailsById(id)
+            val idealWeight = GeneralUtil.calculateIdealWeight(detail?.height)
+            val waistSize = detail?.waistSize?.toInt()
+            emit(Pair(idealWeight, waistSize))
+        }
+    }
+
+    private val _selectedMealTime = MutableLiveData<Int>()
+    val selectedMealTime: LiveData<Int> get() = _selectedMealTime
+
+    fun selectMealTime(mealTime: Int) {
+        _selectedMealTime.value = mealTime
+        Log.d("SelectedMealTime", _selectedMealTime.value.toString())
+    }
+
+    fun getSelectedRecipesByMealType(mealType: Int): LiveData<List<Recipe>> {
+        return repository.getSelectedRecipesByMealType(mealType)
+    }
+
 
     fun addWater(amount: Int) {
         if ((_currentGlass.value ?: 0) < 8) { // Assuming there are 8 glasses
@@ -112,8 +180,13 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
     // Step 2: Fetch user's details based on email
     private val userDetails: LiveData<Detail> = userEmail.switchMap { email ->
         liveData {
-            val detail = repository.getUserDetailsByEmail(email)
-            emit(detail)
+            val usersId = repository.getUserId().firstOrNull() ?: -1
+            Log.d("Debug", "Fetching user details for id: $usersId")
+            val detail = repository.getUserDetailsById(usersId)
+            Log.d("Debug", "User details fetched: $detail")
+            if (detail != null) {
+                emit(detail)
+            }
         }
     }
 
@@ -131,7 +204,8 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
     //Step 3: Extract user's health details
     private val maxNuritionsLiveData: LiveData<List<Int>> = userDetails.switchMap { detail ->
         liveData {
-            val gender = if (detail.gender == "Laki-laki") true else if (detail.gender == "Perempuan") false else null
+            val gender =
+                if (detail.gender == "Laki-laki") true else if (detail.gender == "Perempuan") false else null
             val age = calculateAge(detail.dob)
 
             val akei = calculateAKEi(detail.height?.toInt() ?: 9999, gender, age)
@@ -141,12 +215,19 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
             val lunchNutrition = calculateLunchNutrition(akei, conditionCode)
             val dinnerNutrition = calculateDinnerNutrition(akei, conditionCode)
 
-            val totalCalorieNeeds = (breakfastNutrition.calories + lunchNutrition.calories + dinnerNutrition.calories).toInt()
-            val totalProteinNeeds = (breakfastNutrition.protein + lunchNutrition.protein + dinnerNutrition.protein).toInt()
-            val totalFatNeeds = (breakfastNutrition.fat + lunchNutrition.fat + dinnerNutrition.fat).toInt()
-            val totalCarbNeeds = (breakfastNutrition.carbohydrates + lunchNutrition.carbohydrates + dinnerNutrition.carbohydrates).toInt()
+            val totalCalorieNeeds =
+                (breakfastNutrition.calories + lunchNutrition.calories + dinnerNutrition.calories).toInt()
+            val totalProteinNeeds =
+                (breakfastNutrition.protein + lunchNutrition.protein + dinnerNutrition.protein).toInt()
+            val totalFatNeeds =
+                (breakfastNutrition.fat + lunchNutrition.fat + dinnerNutrition.fat).toInt()
+            val totalCarbNeeds =
+                (breakfastNutrition.carbohydrates + lunchNutrition.carbohydrates + dinnerNutrition.carbohydrates).toInt()
 
-            Log.d("MaxNutritionValues", "Calorie: $totalCalorieNeeds, Protein: $totalProteinNeeds, Fat: $totalFatNeeds, Carb: $totalCarbNeeds")
+            Log.d(
+                "MaxNutritionValues",
+                "Calorie: $totalCalorieNeeds, Protein: $totalProteinNeeds, Fat: $totalFatNeeds, Carb: $totalCarbNeeds"
+            )
             emit(listOf(totalCalorieNeeds, totalProteinNeeds, totalFatNeeds, totalCarbNeeds))
 
         }
@@ -155,7 +236,8 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
     //daftar kalori per meal time untuk di expose ke view
     val caloriesPerMealtime: LiveData<List<Int>> = userDetails.switchMap { detail ->
         liveData {
-            val gender = if (detail.gender == "Laki-laki") true else if (detail.gender == "Perempuan") false else null
+            val gender =
+                if (detail.gender == "Laki-laki") true else if (detail.gender == "Perempuan") false else null
             val age = calculateAge(detail.dob)
 
             val akei = calculateAKEi(detail.height?.toInt() ?: 9999, gender, age)
@@ -258,6 +340,9 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
     private val _profilePicture = MutableLiveData<String?>()
     val profilePicture: LiveData<String?> = _profilePicture
 
+    private val _userName = MutableLiveData<String?>()
+    val userName: LiveData<String?> = _userName
+
     fun getUserIdByEmail(email: String) {
         viewModelScope.launch {
             val id = repository.getUserIdByEmail(email)
@@ -271,5 +356,14 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
             _profilePicture.value = profpic
         }
     }
+
+    fun getUserNameById(userId: Int) {
+        viewModelScope.launch {
+            val userName = repository.getUserNameById(userId)
+            _userName.value = userName
+        }
+
+    }
+
 
 }

@@ -64,7 +64,7 @@ class VerificationCode2Activity : AppCompatActivity() {
     }
 
     private fun navigateToProfile() {
-        viewModel.setAccountStateAsVerified()
+        //viewModel.setAccountStateAsVerified()
         startActivity(Intent(this, EditProfileActivity::class.java))
         finish() // Optional, to finish the current activity if going to a different screen
     }

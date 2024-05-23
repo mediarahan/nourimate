@@ -4,45 +4,81 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:background="@drawable/historybackground">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/backButton"
-            android:layout_width="wrap_content"
+            android:id="@+id/wave_profile"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/back"
-            android:contentDescription="Back"
+            android:elevation="4dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/wave_profile"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:padding="30dp" />
+            app:layout_constraintWidth_percent="1.2"/>
+
+        <ImageView
+            android:id="@+id/wave_profile_shadow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:elevation="3dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/wave_profile_with_shadow"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="1.2" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/backButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="-40dp"
+            app:icon="@drawable/back"
+            android:clickable="true"
+            app:iconSize="25dp"
+            app:iconGravity="textStart"
+            app:iconTint="@color/black"
+            app:backgroundTint="@null"
+            android:background="@drawable/button_background_profile_with_shadow"
+            style="@style/Widget.MaterialComponents.Button.Circle"
+            app:layout_constraintTop_toBottomOf="@+id/wave_profile_shadow"
+            app:iconPadding="0dp"
+            android:insetTop="0dp"
+            android:elevation="3dp"
+            android:insetBottom="0dp" />
 
         <TextView
             android:id="@+id/historyTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="History"
-            android:textSize="30sp"
             android:fontFamily="@font/alatsi"
-            android:textStyle="bold"
-            android:textColor="@color/color46"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textColor="#F18300"
+            android:textSize="33sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="70dp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/wave_profile_shadow"/>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/historyrecyclerview"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginBottom="60dp"
-            android:background="@drawable/rectangle_profile_with_shadow"
+            android:layout_marginBottom="55dp"
+            android:background="@drawable/rectangle_settings_with_shadow"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/historyTextView"

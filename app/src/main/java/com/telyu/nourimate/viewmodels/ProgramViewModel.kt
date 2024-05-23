@@ -153,31 +153,62 @@ class ProgramViewModel(private val repository: NourimateRepository) : ViewModel(
 
     //===== Untuk grafik =====
 
-    val weightEntries: LiveData<List<WeightEntry>> = userId.switchMap { id ->
-        liveData {
-            val weightEntries = repository.getWeightEntriesByUserIdAsc(id)
-            if (weightEntries.isNotEmpty()) {
-                emit(weightEntries)
-            } else {
-                Log.d("ProgramViewModel", "Weight entries not found")
-            }
-        }
+//    val weightEntries: LiveData<List<WeightEntry>> = userId.switchMap { id ->
+//        liveData {
+//            val weightEntries = repository.getWeightEntriesByUserIdAsc(id)
+//            if (weightEntries.isNotEmpty()) {
+//                emit(weightEntries)
+//            } else {
+//                Log.d("ProgramViewModel", "Weight entries not found")
+//            }
+//        }
+//    }
+
+    val weightEntries: LiveData<List<WeightEntry>> = liveData {
+        emitSource(repository.getWeightEntriesLiveData())
     }
+
+//    private var _weightEntries: MutableLiveData<List<WeightEntry>> = MutableLiveData()
+//    val weightEntries: LiveData<List<WeightEntry>> = _weightEntries
+//
+//    fun setWeightEntries(userId: Int) {
+//        viewModelScope.launch {
+//            val weightEntries = repository.getWeightEntriesByUserIdAsc(userId)
+//            _weightEntries.value = weightEntries
+//        }
+//    }
 
     //===== Untuk current dan start weight =====
 
-    val latestWeightEntry: LiveData<Int?> = userId.switchMap { id ->
-        liveData {
-            val latestWeightEntry = repository.getLatestWeightEntryByUserId(id)
-            emit(latestWeightEntry.weight)
+//    val latestWeightEntry: LiveData<WeightEntry> = userId.switchMap { id ->
+//        liveData {
+//            emitSource(repository.getLatestWeightEntryByUserId2(id))
+//        }
+//    }
+
+    private var _latestWeightEntryWeight: MutableLiveData<Int> = MutableLiveData()
+    val latestWeightEntryWeight: LiveData<Int> = _latestWeightEntryWeight
+
+//    val latestWeightEntry: LiveData<Int?> = userId.switchMap { id ->
+//        liveData {
+//            val latestWeightEntry = repository.getLatestWeightEntryByUserId(id)
+//            emit(latestWeightEntry.weight)
+//        }
+//    }
+
+    fun setLatestWeightEntryWeight(userId: Int) {
+        viewModelScope.launch {
+            val latestWeightEntry = repository.getLatestWeightEntryByUserId(userId)
+            _latestWeightEntryWeight.value = latestWeightEntry.weight
         }
     }
 
-    val userDetail: LiveData<Detail> = userId.switchMap { id ->
+
+    val userWeightDetail: LiveData<Float?> = userId.switchMap { id ->
         liveData {
             val detail = repository.getUserDetailsById(id)
             if (detail != null) {
-                emit(detail)
+                emit(detail.weight)
             }
         }
     }
@@ -188,8 +219,6 @@ class ProgramViewModel(private val repository: NourimateRepository) : ViewModel(
             repository.insertWeightTrack(weightTrack)
         }
     }
-
-
 
 
 }
