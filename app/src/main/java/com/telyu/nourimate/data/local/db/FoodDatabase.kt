@@ -7,11 +7,12 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.telyu.nourimate.data.local.dao.FoodDao
 import com.telyu.nourimate.data.local.models.Recipe
+import com.telyu.nourimate.data.local.models.RecipeHistory
 import com.telyu.nourimate.data.local.models.Recommendation
 import com.telyu.nourimate.utils.Converters
 
 @Database(
-    entities = [Recipe::class, Recommendation::class],
+    entities = [Recipe::class, Recommendation::class, RecipeHistory::class],
     version = 1, exportSchema = false
 )
 @TypeConverters(Converters::class)

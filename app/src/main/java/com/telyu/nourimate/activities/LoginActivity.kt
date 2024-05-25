@@ -134,7 +134,6 @@ class LoginActivity : AppCompatActivity() {
 
     private fun observeLoginStatus() {
         loginViewModel.userLoginState.observe(this) { state ->
-            Log.d("TAEK", "observeLoginStatus: $state")
             when (state) {
                 1 -> {
                     startActivity(Intent(this, VerificationCode1Activity::class.java))

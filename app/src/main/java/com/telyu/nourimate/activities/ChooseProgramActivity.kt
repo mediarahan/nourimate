@@ -2,11 +2,13 @@ package com.telyu.nourimate.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.EditText
 import androidx.lifecycle.ViewModelProvider
 import com.telyu.nourimate.adapter.date.HintArrayAdapter
 import com.telyu.nourimate.custom.CustomDatePickerFragment
 import com.telyu.nourimate.custom.CustomDateStartProgramFragment
+import com.telyu.nourimate.data.local.models.WeightEntry
 import com.telyu.nourimate.data.local.models.WeightTrack
 import com.telyu.nourimate.databinding.ActivityChooseProgramBinding
 import com.telyu.nourimate.utils.Converters
@@ -34,6 +36,16 @@ class ChooseProgramActivity : AppCompatActivity() {
 
         binding.buttonSelectProgram.setOnClickListener {
             insertProgramDetails()
+        }
+    }
+
+    //setup untuk masukkin weight entry untuk tampilan grafik
+    private fun setupWeightEntry() {
+        val today = Converters().dateFromTimestamp(System.currentTimeMillis())
+        viewModel.userDetails.observe(this) {detail ->
+            val weightEntry =  WeightEntry(0, detail.weight?.toInt() ?: -999, today, detail.detailId )
+            viewModel.insertWeightEntry(weightEntry)
+            Log.d("ProgramFilledFragment", "InsertedWeightEntry: $weightEntry")
         }
     }
 
@@ -68,6 +80,7 @@ class ChooseProgramActivity : AppCompatActivity() {
                 detail.detailId
             )
             viewModel.insertWeightTrack(weightTrack)
+            setupWeightEntry()
             finish()
         }
     }

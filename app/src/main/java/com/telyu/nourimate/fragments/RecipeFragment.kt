@@ -23,6 +23,8 @@ import com.telyu.nourimate.databinding.FragmentRecipeBinding
 import com.telyu.nourimate.viewmodels.RecipeViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
 import com.telyu.nourimate.custom.RecipeDialog
+import com.telyu.nourimate.data.local.models.RecipeHistory
+import com.telyu.nourimate.data.local.models.Recommendation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -261,14 +263,23 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
             )
         }
 
-//        val mappedRecommendations = fakeFoodData.recommendations.map { recommendation ->
-//            Recommendation(
-//                recommendationId = recommendation.recommendationId,
-//                date = recommendation.date,
-//                isSelected = recommendation.isSelected,
-//                recipeId = recommendation.recipeId,
-//            )
-//        }
+        val mappedRecommendations = fakeFoodData.recommendations.map { recommendation ->
+            Recommendation(
+                recommendationId = recommendation.recommendationId,
+                date = recommendation.date,
+                isSelected = recommendation.isSelected,
+                recipeId = recommendation.recipeId,
+            )
+        }
+
+        val mappedRecipeHistory = fakeFoodData.recipeHistory.map {recipeHistory ->
+            RecipeHistory(
+                id = recipeHistory.id,
+                recipeId = recipeHistory.recipeId,
+                consumedDate = recipeHistory.consumedDate,
+                userId = recipeHistory.userId,
+            )
+        }
 
         // Insert data into database within coroutine scope
         lifecycleScope.launch {
@@ -276,9 +287,12 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
             mappedRecipes.forEach { recipe ->
                 dao.insertRecipe(recipe)
             }
-//            mappedRecommendations.forEach { recommendation ->
-//                dao.insertRecomFimendation(recommendation)
-//            }
+            mappedRecommendations.forEach { recommendation ->
+                dao.insertRecommendation(recommendation)
+            }
+            mappedRecipeHistory.forEach { recipeHistory ->
+                dao.insertRecipeHistory(recipeHistory)
+            }
         }
     }
 }

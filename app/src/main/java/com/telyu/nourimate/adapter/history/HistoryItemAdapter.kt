@@ -1,15 +1,14 @@
 package com.telyu.nourimate.adapter.history
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.telyu.nourimate.R
 import com.telyu.nourimate.data.local.models.History
 import com.telyu.nourimate.databinding.EachHistoryItemBinding
 
-class HistoryItemAdapter(private var mList: List<History>) : RecyclerView.Adapter<HistoryItemAdapter.HistoryItemViewHolder>() {
+class HistoryItemAdapter : ListAdapter<History, HistoryItemAdapter.HistoryItemViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryItemViewHolder {
         val binding = EachHistoryItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -17,35 +16,32 @@ class HistoryItemAdapter(private var mList: List<History>) : RecyclerView.Adapte
     }
 
     override fun onBindViewHolder(holder: HistoryItemViewHolder, position: Int) {
-        val model = mList[position]
+        val model = getItem(position)
         holder.bind(model)
-    }
-
-    override fun getItemCount(): Int {
-        return mList.size
     }
 
     inner class HistoryItemViewHolder(private val binding: EachHistoryItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(model: History) {
-            binding.itemTv.text = model.programName
-            binding.startDateTv.text = "${model.startDate}"
-            binding.endDateTv.text = "${model.endDate}"
+        fun bind(item: History) {
+            binding.itemTv.text = item.programName
+            binding.startDateTv.text = item.startDate
+            binding.endDateTv.text = item.endDate
+            binding.TotalCalories.text = item.calories.toString()
+            binding.TotalProtein.text = item.protein.toString()
+            binding.TotalFat.text = item.fat.toString()
+            binding.TotalCarbs.text = item.carbs.toString()
+            binding.StartWeight.text = item.startWeight.toString()
+            binding.EndWeight.text = item.endWeight.toString()
+        }
+    }
 
-            val isExpandable = model.isExpandable
-            binding.expandableLayout.visibility = if (isExpandable) View.VISIBLE else View.GONE
+    companion object DiffCallback : DiffUtil.ItemCallback<History>() {
+        override fun areItemsTheSame(oldItem: History, newItem: History): Boolean {
+            return oldItem.id == newItem.id
+        }
 
-            binding.arroImageview.setImageResource(if (isExpandable) R.drawable.arrow else R.drawable.arrow_drop)
-
-            val adapter = NestedHistoryAdapter(model.nestedItems)
-            binding.childRv.layoutManager = LinearLayoutManager(binding.root.context)
-            binding.childRv.setHasFixedSize(true)
-            binding.childRv.adapter = adapter
-
-            binding.linearLayout.setOnClickListener {
-                model.isExpandable = !model.isExpandable
-                notifyItemChanged(adapterPosition)
-            }
+        override fun areContentsTheSame(oldItem: History, newItem: History): Boolean {
+            return oldItem == newItem
         }
     }
 }

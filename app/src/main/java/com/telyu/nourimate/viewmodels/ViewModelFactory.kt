@@ -52,6 +52,9 @@ class ViewModelFactory private constructor(
             modelClass.isAssignableFrom(ChooseProgramViewModel::class.java) -> {
                 ChooseProgramViewModel(repository) as T
             }
+            modelClass.isAssignableFrom(HistoryViewModel::class.java) -> {
+                HistoryViewModel(repository) as T
+            }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

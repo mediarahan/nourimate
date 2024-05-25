@@ -224,7 +224,6 @@ class HomeFragment : Fragment() {
         }
     }
 
-
     private fun createPendingIntent(): PendingIntent {
         val intent = Intent(context, SleepReceiver::class.java)
         return PendingIntent.getBroadcast(

@@ -11,9 +11,11 @@ import com.google.android.gms.location.SleepSegmentRequest
 import com.telyu.nourimate.data.local.dao.FoodDao
 import com.telyu.nourimate.data.local.dao.UserDao
 import com.telyu.nourimate.data.local.models.Detail
+import com.telyu.nourimate.data.local.models.History
 import com.telyu.nourimate.data.local.models.NutritionSum
 import com.telyu.nourimate.data.local.models.Profpic
 import com.telyu.nourimate.data.local.models.Recipe
+import com.telyu.nourimate.data.local.models.RecipeHistory
 import com.telyu.nourimate.data.local.models.Recommendation
 import com.telyu.nourimate.data.local.models.SleepSegmentEventEntity
 import com.telyu.nourimate.data.local.models.User
@@ -119,12 +121,14 @@ class NourimateRepository(
             val currentAccountState = userDao.getAccountStateByUserId(user.userId)
 
             userPreference.logout()
-            val userModel = UserModel(user.userId, email, null, null,
+            val userModel = UserModel(
+                user.userId, email, null, null,
                 isLoggedIn = true,
                 isVerified = false,
                 isDetailFilled = false
             )
             userPreference.saveSession(userModel)
+            Log.d("Login", "Email: $email, userId: ${user.userId} IsLoginSuccessful: true")
             return currentAccountState
         } else {
             return -1
@@ -417,6 +421,38 @@ class NourimateRepository(
 
     suspend fun insertWeightTrack(weightTrack: WeightTrack) {
         userDao.insertWeightTrack(weightTrack)
+    }
+
+    suspend fun changeRecommendationFromConsumedToExpired() {
+        foodDao.changeRecommendationFromConsumedToExpired()
+    }
+
+    fun getConsumedRecipesByMealType(mealType: Int): LiveData<List<Recipe>> {
+        return foodDao.getConsumedRecipesByMealType(mealType)
+    }
+
+    fun getRecipeHistorySortedAscending(): LiveData<List<RecipeHistory>> {
+        return foodDao.getRecipeHistorySortedAscending()
+    }
+
+    suspend fun getTotalCaloriesByMealTypeHistory(mealType: Int): Int {
+        return foodDao.getTotalCaloriesByMealTypeHistory(mealType)
+    }
+
+    suspend fun deleteWeightTrackByUserId(userId: Int?) {
+        return userDao.deleteWeightTrackByUserId(userId)
+    }
+
+    suspend fun getNutritionSumsForHistory(): NutritionSum {
+        return foodDao.getNutritionSumsForHistory()
+    }
+
+    suspend fun insertHistory(history: History) {
+        return userDao.insertHistory(history)
+    }
+
+    suspend fun getHistory(userId: Int): List<History> {
+        return userDao.getHistory(userId)
     }
 
     companion object {

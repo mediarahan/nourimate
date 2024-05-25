@@ -79,7 +79,8 @@ class UserDetailFragment : Fragment() {
         val genderOptions = arrayOf("Gender", "Laki-laki", "Perempuan")
 
         // Set adapter untuk spinner
-        genderAdapter = HintArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, genderOptions)
+        genderAdapter =
+            HintArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, genderOptions)
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerGender.adapter = genderAdapter
 
@@ -211,8 +212,7 @@ class UserDetailFragment : Fragment() {
 
     private fun updateUserProfile() {
         val name = binding.editTextName.text.toString()
-        val dob =
-            binding.editTextBirth.text.toString() // Assuming this is a String representation of the date
+        val dob = binding.editTextBirth.text.toString() // Assuming this is a String representation of the date
         val height = binding.editTextHeight.text.toString().toFloatOrNull()
         val weight = binding.editTextWeight.text.toString().toFloatOrNull()
         val waistSize = binding.editTextWaist.text.toString().toFloatOrNull()
@@ -231,33 +231,33 @@ class UserDetailFragment : Fragment() {
         Log.d(TAG, "Disease: $disease")
 
         val id = viewModel.userId.value
+        Log.d("UserDetailFragment", "User ID: $id")
         val formattedDob = Converters().fromStringToDate(dob)
         val heightInMeters = height?.div(100)
         val bmi = weight?.div((heightInMeters?.times(heightInMeters)!!))?.toInt()
 
-        if (id != null) {
-            val detail = Detail(
-                detailId = id,
-                dob = formattedDob,
-                height = height,
-                weight = weight,
-                waistSize = waistSize,
-                gender = gender,
-                allergen = allergen,
-                disease = disease,
-                bmi = bmi,
-            )
-
-            viewModel.userId.observe(viewLifecycleOwner) { userId ->
-                userId?.let {
-                    viewModel.updateUserName(it, name)
-                    viewModel.updateUserProfile(detail)
+        viewModel.userDetails.observe(viewLifecycleOwner) { userDetails ->
+            if (id != null) {
+                val detail = Detail(
+                    detailId = userDetails?.detailId ?: -999,
+                    dob = formattedDob,
+                    height = height,
+                    weight = weight,
+                    waistSize = waistSize,
+                    gender = gender,
+                    allergen = allergen,
+                    disease = disease,
+                    bmi = bmi,
+                )
+                viewModel.userId.observe(viewLifecycleOwner) { userId ->
+                    userId?.let {
+                        viewModel.updateUserName(it, name)
+                        viewModel.updateUserProfile(detail)
+                    }
                 }
             }
         }
     }
-
-
 
 
     //retrieve date of birth
@@ -334,14 +334,15 @@ class UserDetailFragment : Fragment() {
         dialogBinding.textViewNumber.text = initialSelectedValue.toInt().toString()
 
         // Set listener untuk CurvedRulerView
-        dialogBinding.straightRulerView.listener = object : StraightRulerView.OnValueChangeListener {
-            override fun onValueChanged(value: Float) {
-                // Update selected value
-                dialogBinding.textViewNumber.text = value.toInt().toString()
-                // Update EditText in real-time
-                binding.editTextHeight.setText(String.format("%d", value.toInt()))
+        dialogBinding.straightRulerView.listener =
+            object : StraightRulerView.OnValueChangeListener {
+                override fun onValueChanged(value: Float) {
+                    // Update selected value
+                    dialogBinding.textViewNumber.text = value.toInt().toString()
+                    // Update EditText in real-time
+                    binding.editTextHeight.setText(String.format("%d", value.toInt()))
+                }
             }
-        }
 
         // Set action for 'Done' button
         dialogBinding.buttonDone.setOnClickListener {
@@ -418,12 +419,18 @@ class UserDetailFragment : Fragment() {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).apply {
             setTextColor(Color.BLACK)
             textSize = 16f
-            typeface = Typeface.create(ResourcesCompat.getFont(requireContext(), R.font.abel), Typeface.NORMAL)
+            typeface = Typeface.create(
+                ResourcesCompat.getFont(requireContext(), R.font.abel),
+                Typeface.NORMAL
+            )
         }
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).apply {
             setTextColor(Color.BLACK)
             textSize = 16f
-            typeface = Typeface.create(ResourcesCompat.getFont(requireContext(), R.font.abel), Typeface.NORMAL)
+            typeface = Typeface.create(
+                ResourcesCompat.getFont(requireContext(), R.font.abel),
+                Typeface.NORMAL
+            )
         }
 
         val displayMetrics = requireContext().resources.displayMetrics
@@ -461,12 +468,18 @@ class UserDetailFragment : Fragment() {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).apply {
             setTextColor(Color.BLACK)
             textSize = 16f
-            typeface = Typeface.create(ResourcesCompat.getFont(requireContext(), R.font.abel), Typeface.NORMAL)
+            typeface = Typeface.create(
+                ResourcesCompat.getFont(requireContext(), R.font.abel),
+                Typeface.NORMAL
+            )
         }
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).apply {
             setTextColor(Color.BLACK)
             textSize = 16f
-            typeface = Typeface.create(ResourcesCompat.getFont(requireContext(), R.font.abel), Typeface.NORMAL)
+            typeface = Typeface.create(
+                ResourcesCompat.getFont(requireContext(), R.font.abel),
+                Typeface.NORMAL
+            )
         }
 
         val displayMetrics = requireContext().resources.displayMetrics

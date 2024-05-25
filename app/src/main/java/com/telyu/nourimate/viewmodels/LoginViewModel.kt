@@ -27,7 +27,7 @@ class LoginViewModel(private val repository: NourimateRepository) : ViewModel() 
             delay(2000)  // simulate network delay
 
             val currentState = repository.login(email, password)
-            if (currentState != -1) {  // assuming -1 indicates a failed login
+            if (currentState != -1) {
                 _userLoginState.postValue(currentState)
                 uiState.value = Result.Success(Unit)
             } else {

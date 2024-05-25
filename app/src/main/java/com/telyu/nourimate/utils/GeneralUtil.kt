@@ -116,7 +116,7 @@ object GeneralUtil {
 
     private fun calculateMealNutrition(akei: Int, conditionCode: Int, mealProportion: Double): Nutrition {
         val dailyCalories = mealProportion * akei
-        val (carbMultiplier, protMultiplier, fatMultiplier) = multipliers[conditionCode] ?: Triple(0.55, 0.8, 0.2)
+        val (carbMultiplier, protMultiplier, fatMultiplier) = multipliers[conditionCode] ?: Triple(0.55, 0.125, 0.2)
         val nutritionCalculator = if (conditionCode == K) {
             // Special handling for Cholesterol
             { multiplier: Double -> multiplier * akei }
@@ -191,4 +191,27 @@ object GeneralUtil {
         val minutes = (durationMillis / (1000 * 60)) % 60
         return "${hours}h ${minutes}m"
     }
+
+    fun calculateNextWeekMidnight(): Long {
+        val calendar = Calendar.getInstance() // Get the current date and time
+
+        // Set the time to midnight
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+
+        calendar.add(Calendar.WEEK_OF_YEAR, 1)
+
+        return calendar.timeInMillis
+    }
+
+    fun calculateOneMinuteLaterTimestamp(): Long {
+        val calendar = Calendar.getInstance() // Get the current date and time
+
+        calendar.add(Calendar.MINUTE, 1)
+
+        return calendar.timeInMillis
+    }
+
 }

@@ -8,6 +8,7 @@ import androidx.room.Query
 import androidx.room.Update
 import com.telyu.nourimate.data.local.models.NutritionSum
 import com.telyu.nourimate.data.local.models.Recipe
+import com.telyu.nourimate.data.local.models.RecipeHistory
 import com.telyu.nourimate.data.local.models.Recommendation
 
 @Dao
@@ -171,7 +172,6 @@ interface FoodDao {
     )
     suspend fun getNutritionSumsInBasketAndHomePerMealType(mealType: Int): NutritionSum
 
-
     @Query("""
     UPDATE recommendations
     SET isSelected = 2
@@ -184,6 +184,48 @@ interface FoodDao {
 """)
     suspend fun updateSelectedRecommendationsPerMealType(mealType: Int)
 
+    @Query("""
+        UPDATE recommendations
+        SET isSelected = 3
+        WHERE isSelected = 2
+    """)
+    suspend fun changeRecommendationFromConsumedToExpired()
 
+    @Query("""
+        SELECT * FROM recipes
+        INNER JOIN recommendations ON recipes.recipeId = recommendations.recipe_id
+        WHERE mealType = :mealType AND isSelected = 3
+    """)
+    fun getConsumedRecipesByMealType(mealType: Int): LiveData<List<Recipe>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertRecipeHistory(recipeHistory: RecipeHistory)
+
+    @Query("SELECT * FROM consumed_recipes ORDER BY consumed_date DESC")
+    fun getRecipeHistorySortedAscending(): LiveData<List<RecipeHistory>>
+
+    @Query(
+        """
+            SELECT SUM(calories) FROM recipes
+            INNER JOIN recommendations ON recipes.recipeId = recommendations.recipe_id 
+            WHERE mealType = :mealType 
+            AND isSelected = 3
+        """
+    )
+    suspend fun getTotalCaloriesByMealTypeHistory(mealType: Int): Int
+
+    @Query(
+        """
+        SELECT 
+            SUM(recipes.calories) AS totalCalories, 
+            SUM(recipes.carbs) AS totalCarbs, 
+            SUM(recipes.fat) AS totalFat, 
+            SUM(recipes.protein) AS totalProtein
+        FROM recipes
+        INNER JOIN recommendations ON recipes.recipeId = recommendations.recipe_id
+        WHERE recommendations.isSelected = 3
+        """
+    )
+    suspend fun getNutritionSumsForHistory(): NutritionSum
 
 }

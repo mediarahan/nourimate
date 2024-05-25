@@ -70,7 +70,8 @@ class EditProfileActivity : AppCompatActivity() {
         }
 
         val genderOptions = arrayOf("Gender", "Laki-laki", "Perempuan")
-        val genderAdapter = HintArrayAdapter(this, android.R.layout.simple_spinner_item, genderOptions)
+        val genderAdapter =
+            HintArrayAdapter(this, android.R.layout.simple_spinner_item, genderOptions)
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerGender.adapter = genderAdapter
 
@@ -92,6 +93,7 @@ class EditProfileActivity : AppCompatActivity() {
         }
 
     }
+
     private fun insertUserDetails() {
         //all input
         val heightString = binding.editTextHeight.text.toString()
@@ -112,9 +114,9 @@ class EditProfileActivity : AppCompatActivity() {
 
         // Calculate BMI
         val bmi = calculateBMI(height, weight)?.toInt()
+        val id = viewModel.userId.value
 
-        // Insert details into the database inside the callback
-        val detail = Detail(0 ,date, height, weight, waistSize, gender, allergies, disease, bmi)
+        val detail = Detail(0, date, height, weight, waistSize, gender, allergies, disease, bmi)
         viewModel.insertDetail(detail)
 
         openHomePage()
@@ -129,7 +131,7 @@ class EditProfileActivity : AppCompatActivity() {
 
     //API Related
     private fun setupObservers() {
-        viewModel.recommendationsLiveData.observe(this) {recommendations ->
+        viewModel.recommendationsLiveData.observe(this) { recommendations ->
             if (recommendations.isNotEmpty()) {
                 Log.d("ML", "Recommendation from ML successfully inserted")
                 viewModel.insertRecommendations(recommendations)
@@ -157,7 +159,8 @@ class EditProfileActivity : AppCompatActivity() {
 
     private fun showDateStartProgramDialog() {
         val datePickerFragment = CustomDateStartProgramFragment().apply {
-            setDateStartProgramDialogListener(object : CustomDateStartProgramFragment.DateStartProgramDialogListener {
+            setDateStartProgramDialogListener(object :
+                CustomDateStartProgramFragment.DateStartProgramDialogListener {
                 override fun onDateSet(year: Int, month: Int, dayOfMonth: Int) {
                     val calendar = Calendar.getInstance().apply {
                         set(year, month, dayOfMonth)
@@ -226,14 +229,15 @@ class EditProfileActivity : AppCompatActivity() {
         dialogBinding.textViewNumber.text = initialSelectedValue.toInt().toString()
 
         // Set listener untuk CurvedRulerView
-        dialogBinding.straightRulerView.listener = object : StraightRulerView.OnValueChangeListener {
-            override fun onValueChanged(value: Float) {
-                // Update selected value
-                dialogBinding.textViewNumber.text = value.toInt().toString()
-                // Update EditText in real-time
-                binding.editTextHeight.setText(String.format("%d", value.toInt()))
+        dialogBinding.straightRulerView.listener =
+            object : StraightRulerView.OnValueChangeListener {
+                override fun onValueChanged(value: Float) {
+                    // Update selected value
+                    dialogBinding.textViewNumber.text = value.toInt().toString()
+                    // Update EditText in real-time
+                    binding.editTextHeight.setText(String.format("%d", value.toInt()))
+                }
             }
-        }
 
         // Set action for 'Done' button
         dialogBinding.buttonDone.setOnClickListener {
@@ -278,6 +282,7 @@ class EditProfileActivity : AppCompatActivity() {
 
         dialog.show()
     }
+
     private fun showAllergiesDialog() {
         val allergies = arrayOf("Nuts", "Eggs", "Seafood")
         val checkedItems = booleanArrayOf(false, false, false)
@@ -310,12 +315,14 @@ class EditProfileActivity : AppCompatActivity() {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).apply {
             setTextColor(Color.BLACK)  // Mengeset warna secara langsung
             textSize = 16f            // Mengeset ukuran teks
-            typeface = Typeface.create(ResourcesCompat.getFont(context, R.font.abel), Typeface.NORMAL)
+            typeface =
+                Typeface.create(ResourcesCompat.getFont(context, R.font.abel), Typeface.NORMAL)
         }
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).apply {
             setTextColor(Color.BLACK)
             textSize = 16f
-            typeface = Typeface.create(ResourcesCompat.getFont(context, R.font.abel), Typeface.NORMAL)
+            typeface =
+                Typeface.create(ResourcesCompat.getFont(context, R.font.abel), Typeface.NORMAL)
         }
 
         // Set dialog width to 85% of the screen width
@@ -355,12 +362,14 @@ class EditProfileActivity : AppCompatActivity() {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).apply {
             setTextColor(Color.BLACK)
             textSize = 16f
-            typeface = Typeface.create(ResourcesCompat.getFont(context, R.font.abel), Typeface.NORMAL)
+            typeface =
+                Typeface.create(ResourcesCompat.getFont(context, R.font.abel), Typeface.NORMAL)
         }
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).apply {
             setTextColor(Color.BLACK)
             textSize = 16f
-            typeface = Typeface.create(ResourcesCompat.getFont(context, R.font.abel), Typeface.NORMAL)
+            typeface =
+                Typeface.create(ResourcesCompat.getFont(context, R.font.abel), Typeface.NORMAL)
         }
 
         val displayMetrics = resources.displayMetrics

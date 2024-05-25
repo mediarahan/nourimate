@@ -5,8 +5,10 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import com.telyu.nourimate.data.local.models.Detail
+import com.telyu.nourimate.data.local.models.History
 import com.telyu.nourimate.data.local.models.Profpic
 import com.telyu.nourimate.data.local.models.SleepSegmentEventEntity
 import com.telyu.nourimate.data.local.models.User
@@ -123,4 +125,12 @@ interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWeightTrack(weightTrack: WeightTrack)
 
+    @Query("DELETE FROM weight_tracks WHERE userId = :userId")
+    suspend fun deleteWeightTrackByUserId(userId: Int?)
+
+    @Insert
+    suspend fun insertHistory(history: History)
+
+    @Query("SELECT * FROM history WHERE userId = :userId")
+    suspend fun getHistory(userId: Int): List<History>
 }

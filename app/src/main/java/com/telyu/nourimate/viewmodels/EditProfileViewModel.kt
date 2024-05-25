@@ -33,7 +33,7 @@ class EditProfileViewModel (private val repository: NourimateRepository): ViewMo
     //BISMILLAH API ----------------------------------------------------------------------------------------
 
     private val userEmail: LiveData<String> = repository.getUserEmail().asLiveData()
-    private val userId: LiveData<Int> = repository.getUserId().asLiveData()
+    val userId: LiveData<Int> = repository.getUserId().asLiveData()
 
     private val userDetails: LiveData<Detail> = userEmail.switchMap { email ->
         liveData {

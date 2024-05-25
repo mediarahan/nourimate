@@ -1,4 +1,4 @@
- <layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.core.widget.NestedScrollView
@@ -79,7 +79,7 @@
                 android:layout_marginTop="2dp"
                 android:elevation="5dp"
                 android:fontFamily="@font/zenkakugothicnewregular"
-                android:text="kkal"
+                android:text=" kkal"
                 android:textColor="#173430"
                 android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/TextView_caloriesbreakfast"
@@ -129,7 +129,7 @@
                 android:layout_marginTop="2dp"
                 android:elevation="5dp"
                 android:fontFamily="@font/zenkakugothicnewregular"
-                android:text='@{"Total Calories : " }'
+                android:text=""
                 android:textColor="#173430"
                 android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/imagelunch"
@@ -143,7 +143,7 @@
                 android:layout_marginTop="2dp"
                 android:elevation="5dp"
                 android:fontFamily="@font/zenkakugothicnewregular"
-                android:text="kkal"
+                android:text=" kkal"
                 android:textColor="#173430"
                 android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/TextView_calorieslunch"
@@ -194,7 +194,7 @@
                 android:layout_marginTop="2dp"
                 android:elevation="5dp"
                 android:fontFamily="@font/zenkakugothicnewregular"
-                android:text='@{"Total Calories : "}'
+                android:text=""
                 android:textColor="#173430"
                 android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/imagedinner"
@@ -208,7 +208,7 @@
                 android:layout_marginTop="2dp"
                 android:elevation="5dp"
                 android:fontFamily="@font/zenkakugothicnewregular"
-                android:text="kkal"
+                android:text=" kkal"
                 android:textColor="#173430"
                 android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/TextView_caloriesdinner"
@@ -218,12 +218,25 @@
             <ImageView
                 android:id="@+id/rectangleInputWeightMWImageView"
                 android:layout_width="350dp"
-                android:layout_height="100dp"
+                android:layout_height="150dp"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/rectangle_main_program_khusus"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rectanglemealprogramImageView" />
+
+            <Button
+                android:id="@+id/buttonInputWeight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Input Current Weight"
+                android:layout_marginStart="48dp"
+                android:layout_marginEnd="48dp"
+                android:backgroundTint="@color/color2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/startingweightMW"
+                app:layout_constraintBottom_toBottomOf="@id/rectangleInputWeightMWImageView"/>
 
             <FrameLayout
                 android:id="@+id/startingweightMW"
@@ -231,7 +244,7 @@
                 android:layout_height="wrap_content"
                 android:elevation="6dp"
                 android:paddingStart="40dp"
-                app:layout_constraintBottom_toBottomOf="@+id/rectangleInputWeightMWImageView"
+                android:layout_marginTop="12dp"
                 app:layout_constraintStart_toStartOf="@+id/rectangleInputWeightMWImageView"
                 app:layout_constraintTop_toTopOf="@+id/rectangleInputWeightMWImageView">
 
@@ -293,9 +306,9 @@
                 android:id="@+id/currentweightMW"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
                 android:elevation="6dp"
                 android:paddingEnd="40dp"
-                app:layout_constraintBottom_toBottomOf="@+id/rectangleInputWeightMWImageView"
                 app:layout_constraintEnd_toEndOf="@+id/rectangleInputWeightMWImageView"
                 app:layout_constraintTop_toTopOf="@+id/rectangleInputWeightMWImageView">
 
@@ -365,24 +378,35 @@
                 android:id="@+id/rectangleGraphicWeightMWImageView"
                 android:layout_width="350dp"
                 android:layout_height="200dp"
-                android:layout_marginTop="15dp"
                 android:background="@drawable/rectangle_main_program_khusus"
                 android:elevation="1dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="24dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rectangleInputWeightMWImageView" />
 
             <com.telyu.nourimate.custom.WeightChartView
-                android:id="@+id/weightChartMW"
+                android:id="@+id/weightChart"
                 android:layout_width="350dp"
                 android:layout_height="200dp"
                 android:layout_marginTop="15dp"
                 android:elevation="3dp"
+                app:layout_constraintTop_toTopOf="@+id/rectangleGraphicWeightMWImageView"
                 app:layout_constraintBottom_toBottomOf="@+id/rectangleGraphicWeightMWImageView"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Button
+                android:id="@+id/changeRecipeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/weightChart"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/rectangleGraphicWeightMWImageView" />
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="32dp"
+                android:text="Change Consumed Recipe to Expired"
+                android:backgroundTint="@color/color1" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

@@ -12,7 +12,6 @@ import java.util.Date
 data class Detail(
     @PrimaryKey(autoGenerate = true)
     val detailId: Int,
-
     val dob: Date?,
 
     val height: Float?,

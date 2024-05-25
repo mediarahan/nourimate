@@ -1,5 +1,8 @@
 package com.telyu.nourimate.data.local
 
+import com.telyu.nourimate.data.local.models.RecipeHistory
+import com.telyu.nourimate.data.local.models.RecipeHistoryData
+import com.telyu.nourimate.data.local.models.WeightEntry
 import com.telyu.nourimate.utils.Converters
 import java.util.Date
 
@@ -7275,6 +7278,60 @@ class FakeFoodData {
     ),
     )
 
+    val recipeHistory = listOf(
+        RecipeHistory(
+            id = 1,
+            recipeId = 1,
+            consumedDate = Date(System.currentTimeMillis()),
+            userId = 1,
+        ),
+        RecipeHistory(
+            id = 2,
+            recipeId = 2,
+            consumedDate = Date(System.currentTimeMillis()),
+            userId = 1,
+        ),
+        RecipeHistory(
+            id = 3,
+            recipeId = 3,
+            consumedDate = Date(System.currentTimeMillis() * 2),
+            userId = 1,
+        ),
+        RecipeHistory(
+            id = 3,
+            recipeId = 4,
+            consumedDate = Date(System.currentTimeMillis() * 2),
+            userId = 1,
+        ),
+    )
+
+    val weightEntries = listOf(
+        WeightEntry(
+            id = 1,
+            weight = 80,
+            date = Date(System.currentTimeMillis() + (86400000 * 7)),
+            userId = 1,
+        ),
+        WeightEntry(
+            id = 2,
+            weight = 81,
+            date = Date(System.currentTimeMillis() + (86400000 * 14)),
+            userId = 1,
+        ),
+        WeightEntry(
+            id = 3,
+            weight = 78,
+            date = Date(System.currentTimeMillis() + (86400000 * 21)),
+            userId = 1,
+        ),
+        WeightEntry(
+            id = 4,
+            weight = 83,
+            date = Date(System.currentTimeMillis() + (2419200000)),
+            userId = 1,
+        ),
+    )
+
     val recommendations = listOf(
         Recommendation(
             recommendationId = 1,
@@ -7323,6 +7380,96 @@ class FakeFoodData {
             date = Date(System.currentTimeMillis() + 86400000),
             isSelected = 0,
             recipeId = 14
+        ),
+        Recommendation(
+            recommendationId = 9,
+            date = Date(System.currentTimeMillis()), // Today, now
+            isSelected = 0,
+            recipeId = 3
+        ),
+        Recommendation(
+            recommendationId = 10,
+            date = Date(System.currentTimeMillis() - 86400000), // Yesterday
+            isSelected = 0,
+            recipeId = 10
+        ),
+        Recommendation(
+            recommendationId = 11,
+            date = Date(System.currentTimeMillis() + 86400000), // Tomorrow
+            isSelected = 0,
+            recipeId = 15
+        ),
+        Recommendation(
+            recommendationId = 12,
+            date = Date(System.currentTimeMillis() + 86400000 * 2), // Day after tomorrow
+            isSelected = 0,
+            recipeId = 20
+        ),
+        Recommendation(
+            recommendationId = 13,
+            date = Date(System.currentTimeMillis() + 86400000 * 2), // Day after tomorrow
+            isSelected = 0,
+            recipeId = 24
+        ),
+        Recommendation(
+            recommendationId = 14,
+            date = Date(System.currentTimeMillis() + 86400000 * 2), // Day after tomorrow
+            isSelected = 0,
+            recipeId = 19
+        ),
+        Recommendation(
+            recommendationId = 15,
+            date = Date(System.currentTimeMillis() + 86400000 * 2), // Day after tomorrow
+            isSelected = 0,
+            recipeId = 19
+        ),
+        Recommendation(
+            recommendationId = 16,
+            date = Date(System.currentTimeMillis() + 86400000), // Tomorrow
+            isSelected = 0,
+            recipeId = 14
+        ),
+        Recommendation(
+            recommendationId = 17,
+            date = Date(System.currentTimeMillis() - 86400000 * 2), // Two days ago
+            isSelected = 0,
+            recipeId = 22
+        ),
+        Recommendation(
+            recommendationId = 18,
+            date = Date(System.currentTimeMillis() + 86400000 * 3), // In three days
+            isSelected = 0,
+            recipeId = 25
+        ),
+        Recommendation(
+            recommendationId = 19,
+            date = Date(System.currentTimeMillis() + 86400000), // Tomorrow
+            isSelected = 0,
+            recipeId = 26
+        ),
+        Recommendation(
+            recommendationId = 20,
+            date = Date(System.currentTimeMillis() + 86400000 * 4), // In four days
+            isSelected = 0,
+            recipeId = 29
+        ),
+        Recommendation(
+            recommendationId = 21,
+            date = Date(System.currentTimeMillis()), // Today, now
+            isSelected = 3,
+            recipeId = 30
+        ),
+        Recommendation(
+            recommendationId = 22,
+            date = Date(System.currentTimeMillis() - 86400000 * 3), // Three days ago
+            isSelected = 3,
+            recipeId = 7
+        ),
+        Recommendation(
+            recommendationId = 23,
+            date = Date(System.currentTimeMillis() + 86400000 * 2), // Day after tomorrow
+            isSelected = 3,
+            recipeId = 305
         )
     )
 }
