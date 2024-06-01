@@ -214,4 +214,21 @@ object GeneralUtil {
         return calendar.timeInMillis
     }
 
+    fun calculateBMI(height: Float?, weight: Float?): Float? {
+        if (height == null || weight == null || height == 0f) {
+            return null
+        }
+
+        // Convert height from cm to meters
+        val heightInMeters = height / 100
+
+        // Calculate BMI
+        return weight / (heightInMeters * heightInMeters)
+    }
+
+    fun calculateIdealWeight(userHeight: Float?): Float? {
+        val idealWeight = (userHeight?.minus(100))?.minus((0.1 * (userHeight - 100)))?.toFloat()
+        return idealWeight
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.telyu.nourimate.fragments
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -55,6 +56,10 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //supaya ilang dulu
+        binding.radioGroupMealtype.visibility = View.GONE
+        binding.searchBar.visibility = View.GONE
 
         setupRecyclerView()
         displayUserNameAndProfpic()
@@ -111,9 +116,14 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
                 else -> 0
             }
             viewModel.setSelectedMealType(mealId)
+
+            if(binding.buttonWeekly.isChecked) {
+                binding.searchBar.visibility = View.GONE
+            } else {
+                binding.searchBar.visibility = View.VISIBLE
+            }
         }
     }
-
 
     private fun selectMealTime() {
         binding.radioGroupMealtime.setOnCheckedChangeListener { _, checkedId ->
@@ -124,9 +134,17 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
             }
             viewModel.setSelectedMealTime(mealTime)
 
+            binding.radioGroupMealtype.visibility = View.VISIBLE
+
             when (checkedId) {
-                R.id.button_daily -> showDailyRecyclerView()
-                R.id.button_weekly -> showWeeklyRecyclerView()
+                R.id.button_daily -> {
+                    showDailyRecyclerView()
+                    binding.searchBar.visibility = View.GONE
+                }
+                R.id.button_weekly -> {
+                    showWeeklyRecyclerView()
+                    binding.searchBar.visibility = View.GONE
+                }
             }
         }
     }
@@ -243,56 +261,60 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
     }
 
     private fun fillDatabaseWithFakeData() {
+        val prefs = requireActivity().getSharedPreferences("AppPrefs", Activity.MODE_PRIVATE)
+        val isDataFilled = prefs.getBoolean("isDataFilled", false)
 
-        // Untuk isi database dengan fake data
-        val dao = FoodDatabase.getInstance(requireContext()).foodDao()
-        val fakeFoodData = FakeFoodData()
+        if (!isDataFilled) {
+            val dao = FoodDatabase.getInstance(requireContext()).foodDao()
+            val fakeFoodData = FakeFoodData()
 
-        val mappedRecipes = fakeFoodData.recipes.map { recipe ->
-            Recipe(
-                recipeId = recipe.recipeId,
-                name = recipe.name,
-                calories = recipe.calories,
-                carbs = recipe.carbs,
-                fat = recipe.fat,
-                protein = recipe.protein,
-                ingredients = recipe.ingredients,
-                cookingSteps = recipe.cookingSteps,
-                recipePictures = recipe.recipePictures,
-                mealType = recipe.mealType
-            )
-        }
-
-        val mappedRecommendations = fakeFoodData.recommendations.map { recommendation ->
-            Recommendation(
-                recommendationId = recommendation.recommendationId,
-                date = recommendation.date,
-                isSelected = recommendation.isSelected,
-                recipeId = recommendation.recipeId,
-            )
-        }
-
-        val mappedRecipeHistory = fakeFoodData.recipeHistory.map {recipeHistory ->
-            RecipeHistory(
-                id = recipeHistory.id,
-                recipeId = recipeHistory.recipeId,
-                consumedDate = recipeHistory.consumedDate,
-                userId = recipeHistory.userId,
-            )
-        }
-
-        // Insert data into database within coroutine scope
-        lifecycleScope.launch {
-            // Insert each recipe individually
-            mappedRecipes.forEach { recipe ->
-                dao.insertRecipe(recipe)
+            val mappedRecipes = fakeFoodData.recipes.map { recipe ->
+                Recipe(
+                    recipeId = recipe.recipeId,
+                    name = recipe.name,
+                    calories = recipe.calories,
+                    carbs = recipe.carbs,
+                    fat = recipe.fat,
+                    protein = recipe.protein,
+                    ingredients = recipe.ingredients,
+                    cookingSteps = recipe.cookingSteps,
+                    recipePictures = recipe.recipePictures,
+                    mealType = recipe.mealType
+                )
             }
-            mappedRecommendations.forEach { recommendation ->
-                dao.insertRecommendation(recommendation)
+
+            val mappedRecommendations = fakeFoodData.recommendations.map { recommendation ->
+                Recommendation(
+                    recommendationId = recommendation.recommendationId,
+                    date = recommendation.date,
+                    isSelected = recommendation.isSelected,
+                    recipeId = recommendation.recipeId,
+                )
             }
-            mappedRecipeHistory.forEach { recipeHistory ->
-                dao.insertRecipeHistory(recipeHistory)
+
+            val mappedRecipeHistory = fakeFoodData.recipeHistory.map { recipeHistory ->
+                RecipeHistory(
+                    id = recipeHistory.id,
+                    recipeId = recipeHistory.recipeId,
+                    consumedDate = recipeHistory.consumedDate,
+                    userId = recipeHistory.userId,
+                )
             }
+
+            // Insert data into database within coroutine scope
+            lifecycleScope.launch {
+                // Insert each recipe individually
+                mappedRecipes.forEach { recipe ->
+                    dao.insertRecipe(recipe)
+                }
+                mappedRecommendations.forEach { recommendation ->
+                    dao.insertRecommendation(recommendation)
+                }
+                mappedRecipeHistory.forEach { recipeHistory ->
+                    dao.insertRecipeHistory(recipeHistory)
+                }
+            }
+            prefs.edit().putBoolean("isDataFilled", true).apply()
         }
     }
 }

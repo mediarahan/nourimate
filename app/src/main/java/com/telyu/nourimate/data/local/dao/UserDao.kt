@@ -41,7 +41,7 @@ interface UserDao {
     suspend fun getUserDetailsById(id: Int): Detail?
 
     @Query("SELECT bmi FROM userDetails WHERE detailId = :id")
-    suspend fun getBMIById(id: Int?): Int?
+    suspend fun getBMIById(id: Int?): Float?
 
     @Update
     suspend fun updateUserProfile(detail: Detail)
@@ -74,11 +74,11 @@ interface UserDao {
     @Query("SELECT * FROM sleep_segments")
     fun getAllSleepSegments(): LiveData<List<SleepSegmentEventEntity>>
 
-    @Query("UPDATE users SET accountState = :state WHERE userId = :userId")
-    suspend fun updateAccountState(userId: Int, state: Int)
+//    @Query("UPDATE users SET accountState = :state WHERE userId = :userId")
+//    suspend fun updateAccountState(userId: Int, state: Int)
 
-    @Query("SELECT accountState FROM users WHERE userId = :userId")
-    suspend fun getAccountStateByUserId(userId: Int?): Int
+//    @Query("SELECT accountState FROM users WHERE userId = :userId")
+//    suspend fun getAccountStateByUserId(userId: Int?): Int
 
     //WeightEntry / SpecialProgram related queries
     //for inserting currentWeight
@@ -101,6 +101,13 @@ interface UserDao {
     AND userId = :userId
 """)
     suspend fun getLatestWeightEntryByUserId(userId: Int): WeightEntry
+
+    @Query("""
+    SELECT * FROM weight_entries 
+    WHERE date = (SELECT MAX(date) FROM weight_entries WHERE userId = :userId)
+    AND userId = :userId
+""")
+    fun getLatestWeightEntryByUserId2(userId: Int): LiveData<WeightEntry>
 
     //for displaying latest weight entry date of a particular user
     @Query("SELECT MAX(date) FROM weight_entries WHERE userId = :userId")
@@ -133,4 +140,10 @@ interface UserDao {
 
     @Query("SELECT * FROM history WHERE userId = :userId")
     suspend fun getHistory(userId: Int): List<History>
+
+    @Query("SELECT * FROM weight_entries ORDER BY date ASC")
+    fun getWeightEntriesLiveData(): LiveData<List<WeightEntry>>
+
+    @Query("SELECT * FROM history ORDER BY startDate DESC LIMIT 1")
+    suspend fun getLatestHistory(): History
 }

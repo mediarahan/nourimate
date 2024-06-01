@@ -55,6 +55,15 @@ class ViewModelFactory private constructor(
             modelClass.isAssignableFrom(HistoryViewModel::class.java) -> {
                 HistoryViewModel(repository) as T
             }
+            modelClass.isAssignableFrom(SplashScreenViewModel::class.java) -> {
+                SplashScreenViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(RecipeDetailViewModel::class.java) -> {
+                RecipeDetailViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(RecipeDetailViewModel::class.java) -> {
+                RecipeDetailViewModel(repository) as T
+            }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

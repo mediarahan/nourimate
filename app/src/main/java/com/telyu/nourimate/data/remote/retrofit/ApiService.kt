@@ -7,7 +7,7 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface ApiService {
-    @POST("recommend")
+    @POST("/api/rekomendasi")
     suspend fun getRecommendedRecipes(
         @Body requestData: RecommendationRequest
     ): RecommendationResponse
@@ -25,11 +25,13 @@ interface ApiService {
 
 data class RecommendationRequest(
     val tinggi_badan: Int,
+    val berat_badan: Int,
     val jenis_kelamin: String,
     val umur: Int,
     val penyakit: String,
     val alergi: String
 )
+
 
 data class RegisterRequest(
     val name: String,

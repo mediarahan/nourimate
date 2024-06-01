@@ -8,7 +8,10 @@ import android.view.ViewGroup
 import android.graphics.drawable.ColorDrawable
 import android.graphics.Color
 import android.graphics.Typeface
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
+import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import com.telyu.nourimate.databinding.ActivityEditProfileBinding
 import com.telyu.nourimate.databinding.DialogWeightPickerBinding
@@ -20,17 +23,24 @@ import com.telyu.nourimate.custom.WaistSizeRulerView
 import com.telyu.nourimate.adapter.date.HintArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointForward
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.telyu.nourimate.R
 import com.telyu.nourimate.custom.CustomDatePickerFragment
 import com.telyu.nourimate.custom.CustomDateStartProgramFragment
 import com.telyu.nourimate.data.local.models.Detail
+import com.telyu.nourimate.utils.InputValidator
 import com.telyu.nourimate.viewmodels.EditProfileViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 class EditProfileActivity : AppCompatActivity() {
 
@@ -39,19 +49,20 @@ class EditProfileActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.statusBarColor = ContextCompat.getColor(this, R.color.color2)
+        setStatusBarColor(resources.getColor(R.color.color2, theme))
 
         binding = ActivityEditProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         viewModel = obtainViewModel(this@EditProfileActivity)
 
+
         binding.editTextBirth.setOnClickListener {
             showDatePickerDialog()
         }
 
-        binding.editTextDateStartProgram.setOnClickListener {
-            showDateStartProgramDialog()
+        binding.editTextDateOfProgram.setOnClickListener {
+            showDateRangePicker()
         }
 
         binding.editTextWeight.setOnClickListener {
@@ -70,10 +81,14 @@ class EditProfileActivity : AppCompatActivity() {
         }
 
         val genderOptions = arrayOf("Gender", "Laki-laki", "Perempuan")
-        val genderAdapter =
-            HintArrayAdapter(this, android.R.layout.simple_spinner_item, genderOptions)
+        val genderAdapter = HintArrayAdapter(this, android.R.layout.simple_spinner_item, genderOptions)
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerGender.adapter = genderAdapter
+
+        val programOptions = arrayOf("-- Select Program --", "Maintain Weight", "Loss Weight", "Gain Weight")
+        val programAdapter = HintArrayAdapter(this, android.R.layout.simple_spinner_item, programOptions)
+        programAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerProgram.adapter = programAdapter
 
 
 
@@ -89,9 +104,25 @@ class EditProfileActivity : AppCompatActivity() {
         binding.buttonNext.setOnClickListener {
             insertUserDetails()
             setupObservers()
-            viewModel.setAccountStateAsCompleted()
+            validateInputs()
         }
 
+        validateInputs()
+        checkAllInputsValid()
+
+    }
+
+    private fun setStatusBarColor(color: Int) {
+        val window = window
+        val insetsController = WindowCompat.getInsetsController(window, window.decorView)
+
+        // Set to 'true' to ensure status bar icons are dark, useful for light status bar backgrounds
+        insetsController.isAppearanceLightStatusBars = true
+        // Set to 'true' to ensure navigation bar icons are dark, useful for light navigation bar backgrounds
+        insetsController.isAppearanceLightNavigationBars = true
+
+        // Set the status bar color
+        window.statusBarColor = color
     }
 
     private fun insertUserDetails() {
@@ -116,7 +147,7 @@ class EditProfileActivity : AppCompatActivity() {
         val bmi = calculateBMI(height, weight)?.toInt()
         val id = viewModel.userId.value
 
-        val detail = Detail(0, date, height, weight, waistSize, gender, allergies, disease, bmi)
+        val detail = Detail(0, date, height, weight, waistSize, gender, allergies, disease, bmi?.toFloat())
         viewModel.insertDetail(detail)
 
         openHomePage()
@@ -157,22 +188,46 @@ class EditProfileActivity : AppCompatActivity() {
         datePickerFragment.show(supportFragmentManager, "datePicker")
     }
 
-    private fun showDateStartProgramDialog() {
-        val datePickerFragment = CustomDateStartProgramFragment().apply {
-            setDateStartProgramDialogListener(object :
-                CustomDateStartProgramFragment.DateStartProgramDialogListener {
-                override fun onDateSet(year: Int, month: Int, dayOfMonth: Int) {
-                    val calendar = Calendar.getInstance().apply {
-                        set(year, month, dayOfMonth)
-                    }
-                    val format = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
-                    val formattedDate = format.format(calendar.time)
-                    binding.editTextDateStartProgram.setText(formattedDate)
-                }
-            })
+    private fun showDateRangePicker() {
+        // Build the date range picker
+        val builder = MaterialDatePicker.Builder.dateRangePicker()
+
+        // Set up calendar constraints
+        val constraintsBuilder = CalendarConstraints.Builder()
+        val today = Calendar.getInstance()
+
+        // Set the minimum date to today to prevent past dates from being selectable
+        constraintsBuilder.setStart(today.timeInMillis)
+        constraintsBuilder.setValidator(DateValidatorPointForward.from(today.timeInMillis))
+
+        builder.setCalendarConstraints(constraintsBuilder.build())
+        builder.setTitleText("Select Dates (min 28 days range)")
+
+
+        val dateRangePicker = builder.build()
+        dateRangePicker.addOnPositiveButtonClickListener { dateRange ->
+            // Ensure that the selected end date is at least 28 days after the selected start date
+            if (dateRange.second - dateRange.first >= TimeUnit.DAYS.toMillis(28)) {
+                val startDate = dateRange.first
+                val endDate = dateRange.second
+                val startDateString = formatDate(Date(startDate))
+                val endDateString = formatDate(Date(endDate))
+                val rangeString = "$startDateString to $endDateString"
+                // Save the valid date range to editTextDateOfProgram
+                binding.editTextDateOfProgram.setText(rangeString)
+            } else {
+                Toast.makeText(this, "The selected date range is not valid. The end date must be at least 28 days after the start date.", Toast.LENGTH_LONG).show()
+            }
         }
-        datePickerFragment.show(supportFragmentManager, "datePicker")
+
+        dateRangePicker.show(supportFragmentManager, dateRangePicker.toString())
     }
+
+    private fun formatDate(date: Date): String {
+        val format = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+        return format.format(date)
+    }
+
 
     private fun showWeightRulerPickerDialog(initialSelectedValue: Float) {
         val dialog = Dialog(this)
@@ -375,6 +430,101 @@ class EditProfileActivity : AppCompatActivity() {
         val displayMetrics = resources.displayMetrics
         val screenWidth = displayMetrics.widthPixels
         dialog.window?.setLayout((screenWidth * 0.85).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
+    }
+
+    private fun validateInputs() {
+        val dobLayout = binding.DateOfBirth
+
+        binding.editTextBirth.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                val birth= s.toString()
+                if (birth.isEmpty()) {
+                    dobLayout.error = "Minimum Age 20"
+                } else {
+                    dobLayout.error = null // Tidak ada error, bersihkan pesan
+                }
+                checkAllInputsValid()
+            }
+        })
+
+    }
+
+    private fun checkAllInputsValid() {
+        val isHeightValid = binding.editTextHeight.text.toString().toFloatOrNull()?.let { it > 0 } ?: false
+        val isWeightValid = binding.editTextWeight.text.toString().toFloatOrNull()?.let { it > 0 } ?: false
+        val isWaistSizeValid = binding.editTextWaist.text.toString().toFloatOrNull()?.let { it > 0 } ?: false
+        val isDobValid = validateDate(binding.editTextBirth.text.toString(), false) // Tanggal harus di masa lalu
+        val isDopValid = validateDateRange(binding.editTextDateOfProgram.text.toString())
+        val isGenderValid = binding.spinnerGender.selectedItemPosition > 0
+        val isProgramValid = binding.spinnerProgram.selectedItemPosition > 0
+
+        binding.DateOfProgram.error = if (isDopValid) null else "Date range must be at least 28 days"
+
+        val isAllValid = isHeightValid && isWeightValid && isWaistSizeValid && isDobValid && isDopValid && isGenderValid && isProgramValid
+
+        if (isAllValid) {
+            enableNextButton()
+        } else {
+            disableNextButton()
+        }
+    }
+
+    private fun validateDate(dateStr: String, allowFuture: Boolean): Boolean {
+        val sdf = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+        sdf.isLenient = false  // Set to false to prevent dates like February 30th from being parsed.
+        try {
+            val date = sdf.parse(dateStr)
+            return if (date != null) {
+                if (!allowFuture) {
+                    // Check if the date is in the past or today.
+                    val today = Calendar.getInstance()
+                    today.set(Calendar.HOUR_OF_DAY, 0)
+                    today.set(Calendar.MINUTE, 0)
+                    today.set(Calendar.SECOND, 0)
+                    today.set(Calendar.MILLISECOND, 0)
+                    !date.after(today.time)  // Returns true if the date is not after today.
+                } else {
+                    true  // If future dates are allowed, just the existence of a valid date is enough.
+                }
+            } else {
+                false
+            }
+        } catch (e: ParseException) {
+            // If the date couldn't be parsed, return false.
+            return false
+        }
+    }
+
+    private fun validateDateRange(dates: String): Boolean {
+        val dateRange = dates.split(" to ")
+        return if (dateRange.size == 2) {
+            val sdf = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+            sdf.isLenient = false
+            try {
+                val startDate = sdf.parse(dateRange[0])
+                val endDate = sdf.parse(dateRange[1])
+                startDate != null && endDate != null && !endDate.before(startDate) &&
+                        TimeUnit.MILLISECONDS.toDays(endDate.time - startDate.time) >= 28
+            } catch (e: ParseException) {
+                false
+            }
+        } else {
+            false
+        }
+    }
+
+    private fun disableNextButton() {
+        binding.buttonNext.isEnabled = false
+        binding.buttonNext.setBackground(ContextCompat.getDrawable(this, R.drawable.buttonlogin_background_with_shadow_disable))  // Menggunakan background untuk disabled
+        binding.buttonNext.setTextColor(ContextCompat.getColor(this, R.color.color26))
+    }
+
+    private fun enableNextButton() {
+        binding.buttonNext.isEnabled = true
+        binding.buttonNext.setBackground(ContextCompat.getDrawable(this, R.drawable.buttonlogin_background_with_shadow))  // Menggunakan background untuk enabled
+        binding.buttonNext.setTextColor(ContextCompat.getColor(this, R.color.color23))
     }
 
     private fun calculateBMI(height: Float?, weight: Float?): Float? {

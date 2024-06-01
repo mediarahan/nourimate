@@ -3,124 +3,171 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/historybackground">
 
     <ImageView
-        android:id="@+id/backButton"
-        android:layout_width="wrap_content"
+        android:id="@+id/wave_profile"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/back"
-        android:contentDescription="Back"
+        android:elevation="4dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/wave_profile"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:padding="30dp"/>
+        app:layout_constraintWidth_percent="1.2"/>
+
+    <ImageView
+        android:id="@+id/wave_profile_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:elevation="3dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/wave_profile_with_shadow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="1.2" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/backButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="-40dp"
+        app:icon="@drawable/back"
+        android:clickable="true"
+        app:iconSize="25dp"
+        app:iconGravity="textStart"
+        app:iconTint="@color/black"
+        app:backgroundTint="@null"
+        android:background="@drawable/button_background_profile_with_shadow"
+        style="@style/Widget.MaterialComponents.Button.Circle"
+        app:layout_constraintTop_toBottomOf="@+id/wave_profile_shadow"
+        app:iconPadding="0dp"
+        android:insetTop="0dp"
+        android:elevation="3dp"
+        android:insetBottom="0dp" />
 
     <TextView
         android:id="@+id/faqTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="FAQ"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:fontFamily="@font/alatsi"
+        android:textColor="#F18300"
+        android:textSize="33sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="100dp"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wave_profile_shadow"/>
 
     <ImageView
         android:id="@+id/rectanglefaqImageView"
-        android:layout_width="350dp"
-        android:layout_height="300dp"
-        android:background="@drawable/rectangle_profile_with_shadow"
+        android:layout_width="0dp"
+        android:layout_height="250dp"
+        android:background="@drawable/rectangle_settings_with_shadow"
         android:elevation="5dp"
+        app:layout_constraintWidth_percent="0.85"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/faqTextView"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="15dp"/>
 
     <ImageView
         android:id="@+id/rectangleisifaqImageView"
-        android:layout_width="300dp"
+        android:layout_width="0dp"
         android:layout_height="80dp"
         android:background="@drawable/rectangle_profile2"
         android:elevation="5dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/faqTextView"
-        android:layout_marginTop="40dp"/>
+        app:layout_constraintWidth_percent="0.75"
+        app:layout_constraintStart_toStartOf="@+id/rectanglefaqImageView"
+        app:layout_constraintEnd_toEndOf="@+id/rectanglefaqImageView"
+        app:layout_constraintTop_toTopOf="@+id/rectanglefaqImageView"
+        android:layout_marginTop="20dp"/>
 
     <TextView
         android:id="@+id/pertanyaanfaqTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Bagaimana jika saya lupa password?"
-        android:textSize="13sp"
-        android:textStyle="bold"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/alatsi"
         android:elevation="5dp"
         app:layout_constraintStart_toStartOf="@+id/rectangleisifaqImageView"
         app:layout_constraintTop_toTopOf="@+id/rectangleisifaqImageView"
         android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"/>
+        android:layout_marginStart="15dp"/>
 
     <TextView
         android:id="@+id/isifaqTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Anda dapat mengganti password pada\nlaman Account"
-        android:textSize="10sp"
+        android:text="Anda dapat mengganti password pada laman Account."
+        android:textSize="12sp"
         android:elevation="5dp"
-        app:layout_constraintStart_toStartOf="@+id/rectangleisifaqImageView"
+        android:textColor="@color/black"
+        android:fontFamily="@font/abel"
+        app:layout_constraintStart_toStartOf="@+id/pertanyaanfaqTextView"
         app:layout_constraintTop_toBottomOf="@+id/pertanyaanfaqTextView"
-        android:layout_marginTop="5dp"
-        android:layout_marginStart="10dp"/>
+        android:layout_marginTop="5dp"/>
 
     <ImageView
         android:id="@+id/rectangleisi2faqImageView"
-        android:layout_width="300dp"
-        android:layout_height="100dp"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
         android:background="@drawable/rectangle_profile2"
         android:elevation="5dp"
+        app:layout_constraintWidth_percent="0.75"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rectangleisifaqImageView"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="15dp"/>
 
     <TextView
         android:id="@+id/pertanyaan2faqTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Apakah saya bisa akses program sebelumnya?"
-        android:textSize="13sp"
-        android:textStyle="bold"
+        android:textSize="14sp"
         android:elevation="5dp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/alatsi"
         app:layout_constraintStart_toStartOf="@+id/rectangleisi2faqImageView"
         app:layout_constraintTop_toTopOf="@+id/rectangleisi2faqImageView"
         android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"/>
+        android:layout_marginStart="15dp"/>
 
     <TextView
         android:id="@+id/isi2faqTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Anda dapat melanjutkan program yang belum\nselesai pada bagian history program khusus"
-        android:textSize="10sp"
+        android:text="Anda dapat melihat history program sebelumnya pada\nlaman History."
+        android:textSize="12sp"
         android:elevation="5dp"
-        app:layout_constraintStart_toStartOf="@+id/rectangleisi2faqImageView"
+        android:textColor="@color/black"
+        android:fontFamily="@font/abel"
+        app:layout_constraintStart_toStartOf="@+id/pertanyaan2faqTextView"
         app:layout_constraintTop_toBottomOf="@+id/pertanyaan2faqTextView"
-        android:layout_marginTop="5dp"
-        android:layout_marginStart="10dp"/>
+        android:layout_marginTop="5dp"/>
 
     <TextView
         android:id="@+id/noresultfaqTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="-- No Results Found --"
-        android:textSize="10sp"
+        android:textSize="12sp"
         android:elevation="5dp"
+        android:textStyle="bold"
+        android:textColor="@color/color41"
+        android:fontFamily="@font/abel"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@+id/rectanglefaqImageView"
-        android:layout_marginBottom="15dp" />
+        android:layout_marginBottom="20dp" />
 
 
 

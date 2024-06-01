@@ -5,7 +5,7 @@
         <shape android:shape="oval">
             <solid android:color="#C5A857" />
             <padding
-                android:bottom="3dp"/>
+                android:bottom="1dp"/>
         </shape>
     </item>
     <item android:drawable="@drawable/button_background_profile" />

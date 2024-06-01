@@ -20,6 +20,7 @@ import com.telyu.nourimate.data.local.db.UserDatabase
 import com.telyu.nourimate.data.local.models.History
 import com.telyu.nourimate.data.local.models.WeightEntry
 import com.telyu.nourimate.databinding.FragmentProgramBinding
+import com.telyu.nourimate.databinding.PopupNotificationProgramkhususBinding
 import com.telyu.nourimate.databinding.PopupSettingProgramkhususBinding
 import com.telyu.nourimate.utils.Converters
 import com.telyu.nourimate.viewmodels.ProgramViewModel
@@ -45,7 +46,7 @@ class ProgramFragment : Fragment() {
         setCurrentFragment(ProgramEmptyFragment())
 
         //buat dummy
-        fillDatabaseWithFakeData()
+        //fillDatabaseWithFakeData()
 
         setupSideButtons()
 
@@ -114,18 +115,19 @@ class ProgramFragment : Fragment() {
     }
 
     private fun showNotificationSidebar() {
-        TODO("Not yet implemented")
+        setupNotificationPopup()
     }
 
     //For inputting final results of the program, and deleting relevant weight entries and track
     private fun finalizeProgramResults() {
+        Log.d("ProgramFragment", "Finalizing program results")
         viewModel.userWeightTrack.observe(viewLifecycleOwner) { weightTrack ->
             if (weightTrack != null) {
                 val programName = when (weightTrack.ongoingProgram) {
                     1 -> "Maintain Weight"
                     2 -> "Loss Weight"
                     3 -> "Gain Weight"
-                    else -> "invalid"
+                    else -> "Invalid Program"
                 }
 
                 val startDate = Converters().formatDateToString(weightTrack.startDate)
@@ -155,16 +157,20 @@ class ProgramFragment : Fragment() {
                                     userId = id
                                 )
                                 viewModel.insertHistory(history)
+                            } else {
+                                Log.e("ProgramFragment", "User ID is null, cannot insert history")
                             }
                         }
+                    } else {
+                        Log.e("ProgramFragment", "Nutrition sum is null, cannot proceed with history calculation")
                     }
                 }
             } else {
-                // Handle the case where weightTrack is null, perhaps log an error or notify the user
                 Log.e("ProgramFragment", "Weight track data is null, cannot finalize program results")
             }
         }
     }
+
 
     //===== Setting UI =====
     private fun setupSettingPopup() {
@@ -187,6 +193,25 @@ class ProgramFragment : Fragment() {
 
         binding.menuIcon.setOnClickListener {
             settingPopup.showAtLocation(binding.root, Gravity.START, 0, 0)
+        }
+    }
+
+    private fun setupNotificationPopup() {
+        val displayMetrics = Resources.getSystem().displayMetrics
+        val width = (displayMetrics.widthPixels * 0.75).toInt()
+        val notifPopupBinding = PopupNotificationProgramkhususBinding.inflate(layoutInflater)
+        val notifPopup = PopupWindow(
+            notifPopupBinding.root,
+            width,
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            true
+        ).apply {
+            isOutsideTouchable = true
+            setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }
+
+        binding.notificationIcon.setOnClickListener {
+            notifPopup.showAtLocation(binding.root, Gravity.END, 0, 0)
         }
     }
 

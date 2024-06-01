@@ -34,6 +34,14 @@ class ProgramFilledFragment : Fragment() {
     ): View {
         binding = FragmentProgramFilledBinding.inflate(inflater, container, false)
 
+        return binding.root
+    }
+
+    //========== Untuk setting tampilan history makanan ==========
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         setupMealHistory()                          // binding buat buka fragment meal history
         setupMealtimeCalories()                  // binding total kalori yang dikonsumsi
         setupInputCurrentWeight()             // setup input weight, gak ngapa2in kalau gak di klik
@@ -42,10 +50,7 @@ class ProgramFilledFragment : Fragment() {
         setupWeightEntryObservation()
         setupInputCurrentWeightButton()
 
-        return binding.root
     }
-
-    //========== Untuk setting tampilan history makanan ==========
 
     private fun setupMealHistory() {
         binding.apply {
@@ -89,18 +94,40 @@ class ProgramFilledFragment : Fragment() {
     }
 
     //===== Setting initial StartWeight dan CurrentWeight =====
-    private var isStartingWeightSet = false
 
     private fun setupCurrentAndStartWeight() {
-        viewModel.latestWeightEntry.observe(viewLifecycleOwner) { latestWeightEntryWeight ->
-            binding.textViewCurrentWeightMW.text = latestWeightEntryWeight.toString()
-            if (!isStartingWeightSet) {
-                binding.textViewStartingWeightMW.text = latestWeightEntryWeight.toString()
-                isStartingWeightSet = true
-            }
+        setupStartingWeight()
+
+//        viewModel.latestWeightEntry.observe(viewLifecycleOwner) { latestWeightEntryWeight ->
+//            binding.textViewCurrentWeightMW.text = latestWeightEntryWeight.toString()
+//        }
+
+        viewModel.userId.observe(viewLifecycleOwner) { id ->
+            viewModel.setLatestWeightEntryWeight(id)
+        }
+
+        viewModel.latestWeightEntryWeight.observe(viewLifecycleOwner) {weight ->
+            binding.textViewCurrentWeightMW.text = weight.toString()
         }
     }
 
+    private fun setupStartingWeight() {
+        viewModel.userWeightDetail.observe(viewLifecycleOwner) {currentWeight ->
+            binding.textViewStartingWeightMW.text = currentWeight?.toInt().toString()
+        }
+    }
+
+//    private fun setupCurrentAndStartWeight() {
+//        viewModel.latestWeightEntry.observe(viewLifecycleOwner) { latestWeightEntry ->
+//            latestWeightEntry?.let { weightEntry ->
+//                binding.textViewCurrentWeightMW.text = weightEntry.weight.toString()
+//                if (!isStartingWeightSet) {
+//                    binding.textViewStartingWeightMW.text = weightEntry.weight.toString()
+//                    isStartingWeightSet = true
+//                }
+//            }
+//        }
+//    }
 
     private fun setupInputCurrentWeight() {
         binding.iconeditweightMWImageView.setOnClickListener {

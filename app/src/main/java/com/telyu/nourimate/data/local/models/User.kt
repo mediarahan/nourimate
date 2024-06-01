@@ -25,7 +25,8 @@ data class User(
     val email: String,
     val phoneNumber: Long = 0,
     val password: String,
-    val accountState: Int = 0,
+    val isVerified: Boolean = false,
+    val isDetailFilled: Boolean = false,
 
 ) : Parcelable
 

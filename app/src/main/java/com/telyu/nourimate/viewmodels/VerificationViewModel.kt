@@ -16,33 +16,33 @@ class VerificationViewModel(private val repository: NourimateRepository): ViewMo
     val userEmail: LiveData<String> = repository.getUserEmail().asLiveData()
     val userId: LiveData<Int> = repository.getUserId().asLiveData()
 
-    fun setAccountStateAsVerified() {
-        viewModelScope.launch {
-            val email = repository.getUserEmail().firstOrNull() ?: ""
-            val userId = repository.getUserId().firstOrNull() ?: -1
+//    fun setAccountStateAsVerified() {
+//        viewModelScope.launch {
+//            val email = repository.getUserEmail().firstOrNull() ?: ""
+//            val userId = repository.getUserId().firstOrNull() ?: -1
+//
+//            if (userId != -1 && email.isNotEmpty()) {
+//                repository.changeAccountState(userId, email, 2)
+//                //repository.updateAccountState(userId, 2)
+//            } else {
+//                Log.e("ViewModel", "Invalid userId or email: userId=$userId, email=$email")
+//            }
+//        }
+//    }
 
-            if (userId != -1 && email.isNotEmpty()) {
-                repository.changeAccountState(userId, email, 2)
-                repository.updateAccountState(userId, 2)
-            } else {
-                Log.e("ViewModel", "Invalid userId or email: userId=$userId, email=$email")
-            }
-        }
-    }
-
-    fun setAccountStateAsLoggedIn() {
-        viewModelScope.launch {
-            val email = repository.getUserEmail().firstOrNull() ?: ""
-            val userId = repository.getUserId().firstOrNull() ?: -1
-
-            if (userId != -1 && email.isNotEmpty()) {
-                repository.changeAccountState(userId, email, 1)
-                repository.updateAccountState(userId, 1)
-                Log.d("ViewModel", "Account state changed to logged in")
-            } else {
-                Log.e("ViewModel", "Invalid userId or email: userId=$userId, email=$email")
-            }
-        }
-    }
+//    fun setAccountStateAsLoggedIn() {
+//        viewModelScope.launch {
+//            val email = repository.getUserEmail().firstOrNull() ?: ""
+//            val userId = repository.getUserId().firstOrNull() ?: -1
+//
+//            if (userId != -1 && email.isNotEmpty()) {
+//                repository.changeAccountState(userId, email, 1)
+//                repository.updateAccountState(userId, 1)
+//                Log.d("ViewModel", "Account state changed to logged in")
+//            } else {
+//                Log.e("ViewModel", "Invalid userId or email: userId=$userId, email=$email")
+//            }
+//        }
+//    }
 
 }

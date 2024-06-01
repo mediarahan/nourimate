@@ -149,9 +149,6 @@ class RecipeViewModel(private val repository: NourimateRepository) : ViewModel()
 
 //======================= FETCHING RECIPES =====================
 
-
-
-
     //Digunakan di Recipe Fragment dan com.telyu.nourimate.custom.RecipeDialogMeal
     //Bagian pertama untuk fitur add / remove resep dengan mendapatkan Recommendation yang di klik
     fun selectRecommendation(recommendation: Recommendation) {
@@ -326,6 +323,4 @@ class RecipeViewModel(private val repository: NourimateRepository) : ViewModel()
             _profilePicture.value = profpic
         }
     }
-
-
 }

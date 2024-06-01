@@ -5,25 +5,38 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
     <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
 
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
-        android:usesCleartextTraffic="true"
+        android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/iconcd"
         android:label="NOURIMATE"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:enableOnBackInvokedCallback="true"
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.NourimateTA"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".activities.ForgotPassword2Activity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ForgotPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ForgotPassword1Activity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.TransitionProgramActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.RecipeDetailActivity"
+            android:exported="false" />
         <activity
             android:name=".activities.VerificationCode3Activity"
             android:exported="false" />

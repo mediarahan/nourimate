@@ -87,9 +87,8 @@ class FakeFoodData {
                     "6 gram madu\n" +
                     "100 g quick cooking oatmeal\n" +
                     "50 g squeeze yoghurt",
-            cookingSteps = "Masukan semua bahan pada blender.\n" +
-                    "Setelah tercampur\n" +
-                    "bagi adonan ke dalam cetakan.\n" +
+            cookingSteps = "1. Masukan semua bahan pada blender.\n" +
+                    "Setelah tercampur, bagi adonan ke dalam cetakan.\n" +
                     "Panggang dengan suhu 175°C selama 25 menit.",
             recipePictures = "muffin_oat_pisang",
             mealType = 1
@@ -7281,27 +7280,27 @@ class FakeFoodData {
     val recipeHistory = listOf(
         RecipeHistory(
             id = 1,
-            recipeId = 1,
+            recipeId = 283,
             consumedDate = Date(System.currentTimeMillis()),
-            userId = 1,
+            userId = 99,
         ),
         RecipeHistory(
             id = 2,
-            recipeId = 2,
+            recipeId = 21,
             consumedDate = Date(System.currentTimeMillis()),
-            userId = 1,
+            userId = 99,
         ),
         RecipeHistory(
             id = 3,
-            recipeId = 3,
+            recipeId = 271,
             consumedDate = Date(System.currentTimeMillis() * 2),
-            userId = 1,
+            userId = 99,
         ),
         RecipeHistory(
-            id = 3,
-            recipeId = 4,
+            id = 4,
+            recipeId = 288,
             consumedDate = Date(System.currentTimeMillis() * 2),
-            userId = 1,
+            userId = 99,
         ),
     )
 
@@ -7457,7 +7456,7 @@ class FakeFoodData {
             recommendationId = 21,
             date = Date(System.currentTimeMillis()), // Today, now
             isSelected = 3,
-            recipeId = 30
+            recipeId = 31
         ),
         Recommendation(
             recommendationId = 22,
@@ -7467,9 +7466,15 @@ class FakeFoodData {
         ),
         Recommendation(
             recommendationId = 23,
-            date = Date(System.currentTimeMillis() + 86400000 * 2), // Day after tomorrow
+            date = Date(System.currentTimeMillis()), // Today, now
             isSelected = 3,
             recipeId = 305
+        ) ,
+        Recommendation(
+            recommendationId = 24,
+            date = Date(System.currentTimeMillis()), // Today, now
+            isSelected = 3,
+            recipeId = 271
         )
     )
 }

@@ -1,7 +1,6 @@
 package com.telyu.nourimate.data.local.models
 
 import android.os.Parcelable
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
@@ -26,6 +25,6 @@ data class Detail(
 
     val disease: String,
 
-    val bmi: Int?,
+    val bmi: Float?,
 
     ): Parcelable

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
 import com.telyu.nourimate.R
 import com.telyu.nourimate.databinding.ActivityVerificationCode1Binding
@@ -19,7 +20,7 @@ class VerificationCode1Activity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityVerificationCode1Binding.inflate(layoutInflater)
-        window.statusBarColor = ContextCompat.getColor(this, R.color.color25)
+        setStatusBarColor(resources.getColor(R.color.color25, theme))
         val view = binding.root
         setContentView(view)
 
@@ -47,7 +48,20 @@ class VerificationCode1Activity : AppCompatActivity() {
 
         // Tambahkan logika sign-up jika diperlukan
         initVerificationCode1()
-        viewModel.setAccountStateAsLoggedIn()
+        //viewModel.setAccountStateAsLoggedIn()
+    }
+
+    private fun setStatusBarColor(color: Int) {
+        val window = window
+        val insetsController = WindowCompat.getInsetsController(window, window.decorView)
+
+        // Set to 'true' to ensure status bar icons are dark, useful for light status bar backgrounds
+        insetsController.isAppearanceLightStatusBars = true
+        // Set to 'true' to ensure navigation bar icons are dark, useful for light navigation bar backgrounds
+        insetsController.isAppearanceLightNavigationBars = true
+
+        // Set the status bar color
+        window.statusBarColor = color
     }
 
     private fun initVerificationCode1() {

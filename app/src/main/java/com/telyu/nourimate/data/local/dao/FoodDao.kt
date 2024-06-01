@@ -228,4 +228,21 @@ interface FoodDao {
     )
     suspend fun getNutritionSumsForHistory(): NutritionSum
 
+    @Query("""
+        SELECT * FROM recipes
+        INNER JOIN recommendations ON recipes.recipeId = recommendations.recipe_id
+        WHERE mealType = :mealType AND isSelected = 2
+    """)
+    fun getSelectedRecipesByMealType(mealType: Int): LiveData<List<Recipe>>
+
+    @Query("SELECT * FROM recipes WHERE recipeId = :recipeId")
+    suspend fun getRecipeDetailByRecipeId(recipeId: Int): Recipe
+
+
+    @Query("SELECT * FROM recipes")
+    suspend fun getAllRecipe(): List<Recipe>
+
+    @Query("SELECT  * FROM recommendations WHERE isSelected = -1")
+    suspend fun getAllInactiveRecommendations(): List<Recommendation>
+
 }

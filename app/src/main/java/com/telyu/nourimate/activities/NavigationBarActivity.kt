@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
 import com.telyu.nourimate.fragments.ProfileFragment
 import com.telyu.nourimate.fragments.ProgramFragment
@@ -21,7 +22,7 @@ class NavigationBarActivity : AppCompatActivity() {
 
         // Menggunakan View Binding untuk menginflate layout
         binding = ActivityNavigationBarBinding.inflate(layoutInflater)
-        window.statusBarColor = ContextCompat.getColor(this, R.color.color16)
+        setStatusBarColor(resources.getColor(R.color.color16, theme))
         setContentView(binding.root)
 
         val homeFragment = HomeFragment()
@@ -38,6 +39,19 @@ class NavigationBarActivity : AppCompatActivity() {
         }
     }
 
+    private fun setStatusBarColor(color: Int) {
+        val window = window
+        val insetsController = WindowCompat.getInsetsController(window, window.decorView)
+
+        // Set to 'true' to ensure status bar icons are dark, useful for light status bar backgrounds
+        insetsController.isAppearanceLightStatusBars = true
+        // Set to 'true' to ensure navigation bar icons are dark, useful for light navigation bar backgrounds
+        insetsController.isAppearanceLightNavigationBars = true
+
+        // Set the status bar color
+        window.statusBarColor = color
+    }
+
     private fun setCurrentFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragmentContainer, fragment)
@@ -46,6 +60,7 @@ class NavigationBarActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        super.onBackPressed()
         val alertDialogBuilder = AlertDialog.Builder(this)
         alertDialogBuilder.setTitle("Exit App")
         alertDialogBuilder.setMessage("Are you sure you want to exit the app?")

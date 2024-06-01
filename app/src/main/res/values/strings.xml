@@ -7,5 +7,17 @@
     <string name="consumed_calories">Consumed calories: %1$d</string>
     <string name="calories_percentage">%1$d%%</string>
     <string name="water_intake_text">%1$d / 2000ml</string>
+    <string name="errorLengthPassword">Password Must Contains Minimum 8 Characters</string>
+    <string name="errorEmptyPassword">Input Your Password</string>
+    <string name="errorNumberPassword">Password Must Contain At Least One Number</string>
+    <string name="errorInvalidEmail">Your Email Invalid</string>
+    <string name="errorEmptyEmail">Input Your Email</string>
+    <string name="emptyDop">Date range must be at least 28 days</string>
+    <string name="errorDop">Select Start Date and End Date of Program</string>
+    <string name="errorLengthCode">Code Must Contains Minimum 6 Characters</string>
+    <string name="errorEmptyCode">Enter Code That Sent To Your Email</string>
+    <string name="errorLengthPhoneNumber">Phone Number Must Contains Minimum 10 Numbers</string>
+    <string name="errorEmptyPhoneNumber">Input Your Phone Number</string>
+    <string name="errorEmptyName">Input Your Name</string>
 
 </resources>

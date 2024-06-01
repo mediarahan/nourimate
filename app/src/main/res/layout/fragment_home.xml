@@ -21,7 +21,7 @@
             <ImageView
                 android:id="@+id/rectanglehomeImageView"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="125dp"
                 android:background="@drawable/rectangle_home"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -34,41 +34,69 @@
                 android:layout_height="wrap_content"
                 android:text="Good Morning,"
                 android:fontFamily="@font/concertone"
-                android:textSize="32dp"
+                android:textSize="30dp"
                 android:textColor="@color/color29"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="16dp"
-                android:layout_marginLeft="16dp"/>
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="15dp"/>
+
+            <TextView
+                android:id="@+id/usernameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Username😉"
+                android:textSize="30dp"
+                android:layout_marginTop="0dp"
+                android:textColor="@color/color29"
+                android:fontFamily="@font/concertone"
+                app:layout_constraintStart_toStartOf="@+id/greetingTextView"
+                app:layout_constraintTop_toBottomOf="@+id/greetingTextView" />
 
             <ImageView
                 android:id="@+id/profileImageView"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/baseline_person_24"
                 app:layout_constraintTop_toTopOf="@+id/rectanglehomeImageView"
-                app:layout_constraintBottom_toBottomOf="@+id/rectanglehomeImageView"
+                app:layout_constraintBottom_toTopOf="@+id/weightMessageTextView"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginRight="16dp"/>
+                android:layout_marginEnd="30dp"/>
+
 
             <TextView
                 android:id="@+id/weightMessageTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="You've ... 0 kg ...!"
-                android:textSize="17dp"
+                android:text="You've loss ...kg last week!"
+                android:textSize="15dp"
                 android:textStyle="bold"
                 android:fontFamily="@font/abel"
-                android:layout_marginTop="3dp"
-                app:layout_constraintTop_toBottomOf="@+id/greetingTextView"
+                android:layout_marginTop="5dp"
+                app:layout_constraintTop_toBottomOf="@+id/usernameTextView"
                 app:layout_constraintStart_toStartOf="@+id/greetingTextView"/>
 
 
+            <TextView
+                android:id="@+id/programMessageTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Weight Loss"
+                android:padding="5dp"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/rectangle_home2"
+                android:fontFamily="@font/abel"
+                app:layout_constraintTop_toBottomOf="@+id/profileImageView"
+                app:layout_constraintStart_toStartOf="@+id/profileImageView"
+                app:layout_constraintEnd_toEndOf="@+id/profileImageView"/>
 
 
             <ImageView
                 android:id="@+id/halfCircleImageView"
                 android:layout_width="350dp"
-                android:layout_height="200dp"
+                android:layout_height="290dp"
                 android:background="@drawable/shape_half_rectangle_with_shadow"
                 android:elevation="5dp"
                 app:layout_constraintTop_toBottomOf="@+id/rectanglehomeImageView"
@@ -89,9 +117,9 @@
 
             <ImageView
                 android:id="@+id/BurntImageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/fire"
+                android:layout_width="30dp"
+                android:layout_height="35dp"
+                android:background="@drawable/speed"
                 android:elevation="7dp"
                 app:layout_constraintBottom_toTopOf="@+id/BurntTextView"
                 app:layout_constraintStart_toStartOf="@+id/halfCircleImageView"
@@ -102,10 +130,11 @@
                 android:id="@+id/BurntTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Burnt"
+                android:text="Body Mass Index"
                 android:elevation="7dp"
                 android:textSize="15dp"
                 android:textColor="#173430"
+                android:layout_marginBottom="-5dp"
                 android:fontFamily="@font/zenkakugothicnewbold"
                 app:layout_constraintBottom_toTopOf="@+id/caloriesBurnedTextView"
                 app:layout_constraintStart_toStartOf="@+id/halfCircleImageView"
@@ -115,44 +144,79 @@
                 android:id="@+id/caloriesBurnedTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1739"
+                android:text="20.5"
                 android:elevation="7dp"
-                android:textSize="40dp"
+                android:textSize="38dp"
                 android:textColor="@color/color31"
                 android:fontFamily="@font/zenkakugothicnewbold"
                 app:layout_constraintBottom_toTopOf="@+id/speedTextView"
                 app:layout_constraintStart_toStartOf="@+id/halfCircleImageView"
-                app:layout_constraintEnd_toStartOf="@+id/caloriesTextView"
+                app:layout_constraintEnd_toEndOf="@+id/halfCircleImageView"
                 app:layout_constraintHorizontal_chainStyle="packed"/>
 
-            <TextView
-                android:id="@+id/caloriesTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="kcal"
-                android:elevation="7dp"
-                android:textSize="15dp"
-                android:textColor="@color/color31"
-                android:fontFamily="@font/zenkakugothicnewbold"
-                app:layout_constraintBottom_toTopOf="@+id/speedTextView"
-                app:layout_constraintStart_toEndOf="@+id/caloriesBurnedTextView"
-                app:layout_constraintEnd_toEndOf="@+id/halfCircleImageView"/>
 
             <TextView
                 android:id="@+id/speedTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="... mph"
+                android:text="Normal"
                 android:elevation="7dp"
+                android:background="@drawable/rectangle_green"
                 android:textSize="14dp"
-                android:textColor="@color/color31"
+                android:textStyle="bold"
+                android:padding="3dp"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
+                android:textColor="#173430"
                 android:fontFamily="@font/zenkakugothicnewbold"
-                android:layout_marginTop="45dp"
+                android:layout_marginTop="40dp"
                 app:layout_constraintBottom_toBottomOf="@+id/semiCircleProgressView"
                 app:layout_constraintTop_toTopOf="@+id/semiCircleProgressView"
                 app:layout_constraintStart_toStartOf="@+id/halfCircleImageView"
                 app:layout_constraintEnd_toEndOf="@+id/halfCircleImageView"/>
 
+
+            <LinearLayout
+                android:layout_width="290dp"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:elevation="5dp"
+                android:background="@drawable/rectangle_home5"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="18dp"
+                app:layout_constraintTop_toBottomOf="@+id/speedTextView"
+                app:layout_constraintStart_toStartOf="@+id/halfCircleImageView"
+                app:layout_constraintEnd_toEndOf="@+id/halfCircleImageView">
+
+                <TextView
+                    android:id="@+id/ageTextView"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:textColor="#173430"
+                    android:fontFamily="@font/robotomedium"
+                    android:text="Ideal Weight\n22 kg"
+                    android:gravity="center"
+                    android:textSize="15sp" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="fill_parent"
+                    android:background="#173430" />
+
+                <TextView
+                    android:id="@+id/heightTextView"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:textColor="#173430"
+                    android:fontFamily="@font/robotomedium"
+                    android:text="Waist Size\n165 cm"
+                    android:gravity="center"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
 
 
             <ImageView
@@ -204,7 +268,7 @@
                             android:layout_toEndOf="@+id/textViewTotalCalories"
                             android:fontFamily="@font/zenkakugothicnewbold"
                             android:paddingStart="3dp"
-                            android:text="g"
+                            android:text="kkal"
                             android:textColor="#173430"
                             android:textSize="12sp" />
                     </RelativeLayout>
@@ -235,12 +299,12 @@
                             android:id="@+id/tvCaloriesPercentage"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="-99%"
+                            android:text="28%"
                             android:textSize="12sp"
                             android:textColor="#173430"
                             android:fontFamily="@font/zenkakugothicnewbold" />
 
-                </LinearLayout>
+                    </LinearLayout>
 
                     <com.google.android.material.progressindicator.LinearProgressIndicator
                         android:id="@+id/linearProgressCaloriesIndicator"
@@ -325,7 +389,7 @@
                             android:id="@+id/tvCarbsPercentage"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="-99%"
+                            android:text="28%"
                             android:textSize="12sp"
                             android:textColor="#173430"
                             android:fontFamily="@font/zenkakugothicnewbold" />
@@ -415,7 +479,7 @@
                             android:id="@+id/tvFatPercentage"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="-99%"
+                            android:text="28%"
                             android:textSize="12sp"
                             android:textColor="#173430"
                             android:fontFamily="@font/zenkakugothicnewbold" />
@@ -505,7 +569,7 @@
                             android:id="@+id/tvProteinPercentage"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="-99%"
+                            android:text="28%"
                             android:textSize="12sp"
                             android:textColor="#173430"
                             android:fontFamily="@font/zenkakugothicnewbold" />
@@ -534,23 +598,8 @@
                 android:elevation="5dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rectanglehomeingredientsImageView"
+                app:layout_constraintTop_toBottomOf="@+id/rectanglehomewaterImageView"
                 android:layout_marginTop="15dp"/>
-
-            <TextView
-                android:id="@+id/sleepSubscribeButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Subscribe"
-                android:elevation="6dp"
-                android:textSize="16sp"
-                android:textColor="@color/color31"
-                android:fontFamily="@font/urbanistbold"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="16dp"
-                app:layout_constraintEnd_toEndOf="@+id/rectanglehomesleepImageView"
-                app:layout_constraintTop_toTopOf="@+id/rectanglehomesleepImageView"
-                />
 
             <TextView
                 android:id="@+id/textViewSleep"
@@ -581,7 +630,7 @@
                 android:id="@+id/time_in_sleep"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0h 00m"
+                android:text="6h 52m"
                 android:textSize="21sp"
                 android:textColor="@color/black"
                 android:fontFamily="@font/opensanssemibold"
@@ -647,7 +696,7 @@
                 android:elevation="5dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rectanglehomesleepImageView"
+                app:layout_constraintTop_toBottomOf="@+id/rectanglehomemealImageView"
                 android:layout_marginTop="15dp"/>
 
             <TextView
@@ -795,7 +844,7 @@
                 android:elevation="5dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rectanglehomewaterImageView"
+                app:layout_constraintTop_toBottomOf="@+id/rectanglehomeingredientsImageView"
                 android:layout_marginTop="15dp"/>
 
             <TextView
@@ -816,8 +865,8 @@
                 android:id="@+id/rectanglehomemealbreakfast"
                 android:layout_width="300dp"
                 android:layout_height="70dp"
-                android:background="@drawable/rectangle_signup"
-                android:elevation="5dp"
+                android:background="@drawable/rectangle_signup_with_shadow_white"
+                android:elevation="7dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewTodayMeal"
@@ -842,7 +891,7 @@
                 android:textSize="15sp"
                 android:textColor="#173430"
                 android:fontFamily="@font/zenkakugothicnewbold"
-                android:elevation="5dp"
+                android:elevation="7dp"
                 app:layout_constraintStart_toEndOf="@+id/imagebreakfast"
                 app:layout_constraintTop_toTopOf="@+id/imagebreakfast"
                 android:layout_marginTop="5dp"
@@ -856,7 +905,7 @@
                 android:textSize="12sp"
                 android:textColor="#173430"
                 android:fontFamily="@font/zenkakugothicnewregular"
-                android:elevation="5dp"
+                android:elevation="7dp"
                 app:layout_constraintStart_toEndOf="@+id/imagebreakfast"
                 app:layout_constraintTop_toBottomOf="@+id/TextView_breakfast"
                 android:layout_marginTop="2dp"
@@ -867,7 +916,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/space"
-                android:elevation="5dp"
+                android:elevation="7dp"
                 android:layout_marginTop="2dp"
                 app:layout_constraintStart_toEndOf="@+id/TextView_quantitybreakfast"
                 app:layout_constraintTop_toBottomOf="@+id/TextView_breakfast"/>
@@ -876,11 +925,11 @@
                 android:id="@+id/TextView_kcalbreakfast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="582 "
+                android:text="582 / "
                 android:textSize="12sp"
                 android:textColor="#173430"
                 android:fontFamily="@font/zenkakugothicnewregular"
-                android:elevation="5dp"
+                android:elevation="7dp"
                 android:layout_marginTop="2dp"
                 app:layout_constraintStart_toEndOf="@+id/spacebreakfast"
                 app:layout_constraintTop_toBottomOf="@+id/TextView_breakfast"/>
@@ -889,11 +938,11 @@
                 android:id="@+id/TextView_kcalbreakfastNeeds"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="/ 631 kcal"
+                android:text="631 kcal"
                 android:textSize="12sp"
                 android:textColor="#173430"
                 android:fontFamily="@font/zenkakugothicnewregular"
-                android:elevation="5dp"
+                android:elevation="7dp"
                 android:layout_marginTop="2dp"
                 app:layout_constraintStart_toEndOf="@+id/TextView_kcalbreakfast"
                 app:layout_constraintTop_toBottomOf="@+id/TextView_breakfast"/>
@@ -902,8 +951,8 @@
                 android:id="@+id/rectanglehomemeallunch"
                 android:layout_width="300dp"
                 android:layout_height="70dp"
-                android:background="@drawable/rectangle_signup"
-                android:elevation="5dp"
+                android:background="@drawable/rectangle_signup_with_shadow_white"
+                android:elevation="7dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rectanglehomemealbreakfast"
@@ -928,7 +977,7 @@
                 android:textSize="15sp"
                 android:textColor="#173430"
                 android:fontFamily="@font/zenkakugothicnewbold"
-                android:elevation="5dp"
+                android:elevation="7dp"
                 app:layout_constraintStart_toEndOf="@+id/imagelunch"
                 app:layout_constraintTop_toTopOf="@+id/imagelunch"
                 android:layout_marginTop="5dp"
@@ -942,7 +991,7 @@
                 android:textSize="12sp"
                 android:textColor="#173430"
                 android:fontFamily="@font/zenkakugothicnewregular"
-                android:elevation="5dp"
+                android:elevation="7dp"
                 app:layout_constraintStart_toEndOf="@+id/imagelunch"
                 app:layout_constraintTop_toBottomOf="@+id/TextView_lunch"
                 android:layout_marginTop="2dp"
@@ -953,7 +1002,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/space"
-                android:elevation="5dp"
+                android:elevation="7dp"
                 android:layout_marginTop="2dp"
                 app:layout_constraintStart_toEndOf="@+id/TextView_quantitylunch"
                 app:layout_constraintTop_toBottomOf="@+id/TextView_lunch"/>
@@ -962,11 +1011,11 @@
                 android:id="@+id/TextView_kcallunch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="582 "
+                android:text="582 / "
                 android:textSize="12sp"
                 android:textColor="#173430"
                 android:fontFamily="@font/zenkakugothicnewregular"
-                android:elevation="5dp"
+                android:elevation="7dp"
                 android:layout_marginTop="2dp"
                 app:layout_constraintStart_toEndOf="@+id/spacelunch"
                 app:layout_constraintTop_toBottomOf="@+id/TextView_lunch"/>
@@ -975,11 +1024,11 @@
                 android:id="@+id/TextView_kcallunchNeeds"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="/ 631 kcal"
+                android:text="631 kcal"
                 android:textSize="12sp"
                 android:textColor="#173430"
                 android:fontFamily="@font/zenkakugothicnewregular"
-                android:elevation="5dp"
+                android:elevation="7dp"
                 android:layout_marginTop="2dp"
                 app:layout_constraintStart_toEndOf="@+id/TextView_kcallunch"
                 app:layout_constraintTop_toBottomOf="@+id/TextView_lunch"/>
@@ -988,8 +1037,8 @@
                 android:id="@+id/rectanglehomemealdinner"
                 android:layout_width="300dp"
                 android:layout_height="70dp"
-                android:background="@drawable/rectangle_signup"
-                android:elevation="5dp"
+                android:background="@drawable/rectangle_signup_with_shadow_white"
+                android:elevation="7dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rectanglehomemeallunch"
@@ -1014,7 +1063,7 @@
                 android:textSize="15sp"
                 android:textColor="#173430"
                 android:fontFamily="@font/zenkakugothicnewbold"
-                android:elevation="5dp"
+                android:elevation="7dp"
                 app:layout_constraintStart_toEndOf="@+id/imagedinner"
                 app:layout_constraintTop_toTopOf="@+id/imagedinner"
                 android:layout_marginTop="5dp"
@@ -1028,7 +1077,7 @@
                 android:textSize="12sp"
                 android:textColor="#173430"
                 android:fontFamily="@font/zenkakugothicnewregular"
-                android:elevation="5dp"
+                android:elevation="7dp"
                 app:layout_constraintStart_toEndOf="@+id/imagedinner"
                 app:layout_constraintTop_toBottomOf="@+id/TextView_dinner"
                 android:layout_marginTop="2dp"
@@ -1039,7 +1088,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/space"
-                android:elevation="5dp"
+                android:elevation="7dp"
                 android:layout_marginTop="2dp"
                 app:layout_constraintStart_toEndOf="@+id/TextView_quantitydinner"
                 app:layout_constraintTop_toBottomOf="@+id/TextView_dinner"/>
@@ -1048,11 +1097,11 @@
                 android:id="@+id/TextView_kcaldinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="582 "
+                android:text="582 / "
                 android:textSize="12sp"
                 android:textColor="#173430"
                 android:fontFamily="@font/zenkakugothicnewregular"
-                android:elevation="5dp"
+                android:elevation="7dp"
                 android:layout_marginTop="2dp"
                 app:layout_constraintStart_toEndOf="@+id/spacedinner"
                 app:layout_constraintTop_toBottomOf="@+id/TextView_dinner"/>
@@ -1061,19 +1110,14 @@
                 android:id="@+id/TextView_kcaldinnerNeeds"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="/ 631 kcal"
+                android:text="631 kcal"
                 android:textSize="12sp"
                 android:textColor="#173430"
                 android:fontFamily="@font/zenkakugothicnewregular"
-                android:elevation="5dp"
+                android:elevation="7dp"
                 android:layout_marginTop="2dp"
                 app:layout_constraintStart_toEndOf="@+id/TextView_kcaldinner"
                 app:layout_constraintTop_toBottomOf="@+id/TextView_dinner"/>
-
-
-
-
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
