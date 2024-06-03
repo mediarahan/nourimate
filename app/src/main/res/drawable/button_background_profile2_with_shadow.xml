@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Shadow -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#C5A857" />
+            <padding
+                android:bottom="1dp"/>
+        </shape>
+    </item>
+    <item android:drawable="@drawable/button_background_profile2" />
+</layer-list>

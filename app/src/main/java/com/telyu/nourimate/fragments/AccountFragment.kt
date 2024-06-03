@@ -35,11 +35,11 @@ class AccountFragment : Fragment() {
             requireActivity().supportFragmentManager.popBackStack()
         }
 
-        binding.buttonChangePhoneNumber.setOnClickListener {
+        binding.changenumberIcon.setOnClickListener {
             onChangePhoneNumberClicked(view)
         }
 
-        binding.buttonChangePassword.setOnClickListener {
+        binding.changepwIcon.setOnClickListener {
             onChangePasswordClicked(view)
         }
     }

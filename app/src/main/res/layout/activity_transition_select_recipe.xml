@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center">
+
+    <ImageView
+        android:id="@+id/wave_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="3dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/wave_account"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="1.2"/>
+
+    <ImageView
+        android:id="@+id/congratsimage"
+        android:layout_width="130dp"
+        android:layout_height="150dp"
+        android:elevation="8dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/congrats"
+        android:layout_marginStart="0dp"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/wave_profile"/>
+
+    <ImageView
+        android:id="@+id/wave_profile_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="4dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/wave_white_account"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/wave_profile"
+        app:layout_constraintWidth_percent="1.2" />
+
+    <ImageView
+        android:id="@+id/wave_account_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="3dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/wave_white_account_with_shadow"
+        android:layout_marginBottom="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/wave_profile"
+        app:layout_constraintWidth_percent="1.2" />
+
+
+    <TextView
+        android:id="@+id/textViewGreetCongrats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="You've chosen the food!"
+        android:fontFamily="@font/abel"
+        android:textColor="@color/color29"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCongrats" />
+
+
+
+    <TextView
+        android:id="@+id/textViewCongrats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="YIPPIE"
+        android:fontFamily="@font/concertone"
+        android:textColor="@color/color29"
+        android:textSize="33sp"
+        android:elevation="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/congratsimage"/>
+
+
+
+    <TextView
+        android:id="@+id/textViewDetailCongrats"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Open Today's Meal on your Home Menu to see the recipe"
+        android:fontFamily="@font/alatsi"
+        android:textColor="#B36100"
+        android:textSize="20sp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:elevation="3dp"
+        android:background="@drawable/rectangle_signup1"
+        app:layout_constraintWidth_percent="0.85"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewGreetCongrats" />
+
+    <ImageView
+        android:id="@+id/clickimage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:elevation="8dp"
+        android:src="@drawable/click"
+        android:layout_marginEnd="-23dp"
+        android:layout_marginBottom="-23dp"
+        app:layout_constraintEnd_toEndOf="@+id/textViewDetailCongrats"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewDetailCongrats"/>
+
+    <CheckBox
+        android:id="@+id/checkboxDoNotShowAgain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/abel"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:text="Don't show this message again"
+        app:layout_constraintTop_toBottomOf="@+id/textViewDetailCongrats"
+        app:layout_constraintStart_toStartOf="@+id/textViewDetailCongrats" />
+
+    <TextView
+        android:id="@+id/buttonOk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onVerifEmailClicked"
+        android:text="Next"
+        android:background="@drawable/button_transition"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:fontFamily="@font/abel"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingEnd="20dp"
+        android:paddingStart="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/checkboxDoNotShowAgain"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

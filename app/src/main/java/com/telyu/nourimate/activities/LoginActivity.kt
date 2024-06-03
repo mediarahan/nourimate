@@ -99,7 +99,7 @@ class LoginActivity : AppCompatActivity() {
             finish()
         }
         binding.TextViewForgotPassword.setOnClickListener {
-            val intent = Intent(this, ForgotPasswordActivity::class.java)
+            val intent = Intent(this, EditProfileActivity::class.java)
             startActivity(intent)
             finish()
         }

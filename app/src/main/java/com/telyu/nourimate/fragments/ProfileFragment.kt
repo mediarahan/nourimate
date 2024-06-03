@@ -3,6 +3,7 @@ package com.telyu.nourimate.fragments
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +13,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.viewModels
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.telyu.nourimate.R
 import com.telyu.nourimate.activities.EditProfpicActivity
 import com.telyu.nourimate.activities.LoginActivity
-import com.telyu.nourimate.databinding.CustomLogoutDialogBinding
 import com.telyu.nourimate.viewmodels.ProfileViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
 
@@ -28,6 +29,11 @@ class ProfileFragment : Fragment() {
         ViewModelFactory.getInstance(
             requireContext().applicationContext
         )
+    }
+
+    companion object {
+        private const val REQUEST_IMAGE_CAPTURE = 1
+        private const val REQUEST_PICK_IMAGE = 2
     }
 
     override fun onCreateView(
@@ -49,8 +55,7 @@ class ProfileFragment : Fragment() {
         mapBMIAndName()
 
         binding.cardViewAddAvatar.setOnClickListener {
-            val intent = Intent(requireContext(), EditProfpicActivity::class.java)
-            startActivity(intent)
+            showImageSourceDialog()
         }
     }
 
@@ -64,33 +69,50 @@ class ProfileFragment : Fragment() {
         window.statusBarColor = color
     }
 
-    private fun showLogoutConfirmationDialog() {
-        // Inflate the custom layout using ViewBinding
-        val binding = CustomLogoutDialogBinding.inflate(layoutInflater)
-
-        // Create the AlertDialog using the builder
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setView(binding.root)
-
-        // Set the dialog message
-        binding.textViewMessage.text = "Are you sure you want to logout?"
-
-        // Configure the dialog buttons
-        builder.setPositiveButton("Logout") { _, _ ->
-            viewModel.onSignOutButtonClick()
-            viewModel.logout()
-            startActivity(Intent(requireContext(), LoginActivity::class.java))
-            requireActivity().finish()
-        }
-
-        builder.setNegativeButton("Cancel") { dialog, _ ->
-            dialog.dismiss()
-        }
-
-        // Create and show the dialog
-        builder.create().show()
+    private fun showImageSourceDialog() {
+        val options = arrayOf("Camera", "Galeri")
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Choose Image Source")
+            .setItems(options) { dialog, which ->
+                when (which) {
+                    0 -> dispatchTakePictureIntent()
+                    1 -> dispatchPickPictureIntent()
+                }
+            }
+            .show()
     }
 
+    private fun dispatchTakePictureIntent() {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            takePictureIntent.resolveActivity(requireContext().packageManager)?.also {
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+            }
+        }
+    }
+
+    private fun dispatchPickPictureIntent() {
+        val pickIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(pickIntent, REQUEST_PICK_IMAGE)
+    }
+
+
+    private fun showLogoutConfirmationDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Logout")
+            .setMessage("Are you sure you want to logout?")
+            .setPositiveButton("Logout") { _, _ ->
+                // Perform logout action, for example navigate to LoginActivity
+                viewModel.onSignOutButtonClick()
+                viewModel.logout()
+                startActivity(Intent(requireContext(), LoginActivity::class.java))
+                requireActivity().finish() // Finish current activity to prevent user from going back
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
+    }
 
     private fun getBMIAndName() {
         viewModel.userEmail.observe(viewLifecycleOwner) {userEmail ->
@@ -110,19 +132,9 @@ class ProfileFragment : Fragment() {
             binding.bmiResultTextView.text = "Body Mass Index: ${ userBMI.toString() }"
         }
 
-        viewModel.userName.observe(viewLifecycleOwner) { userName ->
-            userName?.let {
-                val truncatedUserName = truncateUserName(it, wordLimit = 1, maxChars = 8)
-                binding.nameTextView.text = truncatedUserName
-            }
+        viewModel.userName.observe(viewLifecycleOwner) {userName ->
+            binding.nameTextView.text = userName
         }
-    }
-
-    private fun truncateUserName(userName: String, wordLimit: Int = 1, maxChars: Int = 8): String {
-        // Memisahkan string menjadi kata-kata dan mengambil beberapa kata pertama berdasarkan wordLimit
-        val words = userName.split(" ").take(wordLimit).joinToString(" ")
-        // Memotong string jika panjangnya melebihi maxChars
-        return if (words.length > maxChars) words.substring(0, maxChars) else words
     }
 
     private fun displayImage() {
@@ -157,7 +169,7 @@ class ProfileFragment : Fragment() {
         }
 
         // Implementasi event click untuk tombol Profile
-        binding.profileIcon.setOnClickListener {
+        binding.profileButton.setOnClickListener {
             // Kode untuk menuju ke EditProfileFragment
             val editProfileFragment = UserDetailFragment()
             requireActivity().supportFragmentManager.beginTransaction().apply {
@@ -168,7 +180,7 @@ class ProfileFragment : Fragment() {
         }
 
         // Implementasi event click untuk tombol Account
-        binding.accountIcon.setOnClickListener {
+        binding.accountButton.setOnClickListener {
             // Kode untuk menuju ke AccountFragment
             val accountFragment = AccountFragment()
             requireActivity().supportFragmentManager.beginTransaction().apply {
@@ -179,7 +191,7 @@ class ProfileFragment : Fragment() {
         }
 
         // Implementasi event click untuk tombol History
-        binding.historyIcon.setOnClickListener {
+        binding.historyButton.setOnClickListener {
             // Kode untuk menuju ke AccountFragment
             val historyFragment = HistoryFragment()
             requireActivity().supportFragmentManager.beginTransaction().apply {
@@ -190,7 +202,7 @@ class ProfileFragment : Fragment() {
         }
 
         // Implementasi event click untuk tombol Community
-        binding.communityIcon.setOnClickListener {
+        binding.communityButton.setOnClickListener {
             // Kode untuk menuju ke CommunityFragment
             val communityFragment = CommunityFragment()
             requireActivity().supportFragmentManager.beginTransaction().apply {
@@ -201,7 +213,7 @@ class ProfileFragment : Fragment() {
         }
 
         // Implementasi event click untuk tombol FAQ
-        binding.faqIcon.setOnClickListener {
+        binding.faqButton.setOnClickListener {
             // Kode untuk menuju ke FaqFragment
             val faqFragment = FaqFragment()
             requireActivity().supportFragmentManager.beginTransaction().apply {

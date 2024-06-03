@@ -11,6 +11,8 @@ import android.graphics.Typeface
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import com.telyu.nourimate.databinding.ActivityEditProfileBinding
@@ -56,6 +58,8 @@ class EditProfileActivity : AppCompatActivity() {
 
         viewModel = obtainViewModel(this@EditProfileActivity)
 
+        setupSpinner()
+
 
         binding.editTextBirth.setOnClickListener {
             showDatePickerDialog()
@@ -80,16 +84,6 @@ class EditProfileActivity : AppCompatActivity() {
             showWaistRulerPickerDialog(initialSelectedValue)
         }
 
-        val genderOptions = arrayOf("Gender", "Laki-laki", "Perempuan")
-        val genderAdapter = HintArrayAdapter(this, android.R.layout.simple_spinner_item, genderOptions)
-        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinnerGender.adapter = genderAdapter
-
-        val programOptions = arrayOf("-- Select Program --", "Maintain Weight", "Loss Weight", "Gain Weight")
-        val programAdapter = HintArrayAdapter(this, android.R.layout.simple_spinner_item, programOptions)
-        programAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinnerProgram.adapter = programAdapter
-
 
 
         binding.editTextAllergies.setOnClickListener {
@@ -100,15 +94,13 @@ class EditProfileActivity : AppCompatActivity() {
             showDiseasesDialog()
         }
 
+        disableSelectButton()
+
         //setup submit data to database button
         binding.buttonNext.setOnClickListener {
             insertUserDetails()
             setupObservers()
-            validateInputs()
         }
-
-        validateInputs()
-        checkAllInputsValid()
 
     }
 
@@ -172,6 +164,34 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupSpinner() {
+        val genderOptions = arrayOf("Gender", "Laki-laki", "Perempuan")
+        val genderAdapter = HintArrayAdapter(this, android.R.layout.simple_spinner_item, genderOptions)
+        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerGender.adapter = genderAdapter
+
+        binding.spinnerGender.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                enableSelectButtonIfReady()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+        }
+
+        val programOptions = arrayOf("-- Select Your Program --","Maintain Weight", "Lose Weight", "Gain Weight")
+        val programAdapter = HintArrayAdapter(this, android.R.layout.simple_spinner_item, programOptions)
+        programAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerProgram.adapter = programAdapter
+
+        binding.spinnerProgram.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                enableSelectButtonIfReady()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+        }
+    }
+
     private fun showDatePickerDialog() {
         val datePickerFragment = CustomDatePickerFragment().apply {
             setDatePickerDialogListener(object : CustomDatePickerFragment.DatePickerDialogListener {
@@ -182,6 +202,7 @@ class EditProfileActivity : AppCompatActivity() {
                     val format = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
                     val formattedDate = format.format(calendar.time)
                     binding.editTextBirth.setText(formattedDate)
+                    enableSelectButtonIfReady()
                 }
             })
         }
@@ -215,6 +236,7 @@ class EditProfileActivity : AppCompatActivity() {
                 val rangeString = "$startDateString to $endDateString"
                 // Save the valid date range to editTextDateOfProgram
                 binding.editTextDateOfProgram.setText(rangeString)
+                enableSelectButtonIfReady()
             } else {
                 Toast.makeText(this, "The selected date range is not valid. The end date must be at least 28 days after the start date.", Toast.LENGTH_LONG).show()
             }
@@ -254,6 +276,7 @@ class EditProfileActivity : AppCompatActivity() {
                 dialogBinding.textViewNumber2.text = value.toInt().toString()
                 // Update EditText in real-time
                 binding.editTextWeight.setText(String.format("%d", value.toInt()))
+                enableSelectButtonIfReady()
             }
         }
 
@@ -291,6 +314,7 @@ class EditProfileActivity : AppCompatActivity() {
                     dialogBinding.textViewNumber.text = value.toInt().toString()
                     // Update EditText in real-time
                     binding.editTextHeight.setText(String.format("%d", value.toInt()))
+                    enableSelectButtonIfReady()
                 }
             }
 
@@ -327,6 +351,7 @@ class EditProfileActivity : AppCompatActivity() {
                 dialogBinding.textViewNumber1.text = value.toInt().toString()
                 // Update EditText in real-time
                 binding.editTextWaist.setText(String.format("%d", value.toInt()))
+                enableSelectButtonIfReady()
             }
         }
 
@@ -432,100 +457,125 @@ class EditProfileActivity : AppCompatActivity() {
         dialog.window?.setLayout((screenWidth * 0.85).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
-    private fun validateInputs() {
-        val dobLayout = binding.DateOfBirth
+//    private fun validateInputs() {
+//        val dobLayout = binding.DateOfBirth
+//
+//        binding.editTextBirth.addTextChangedListener(object : TextWatcher {
+//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+//            override fun afterTextChanged(s: Editable?) {
+//                val birth= s.toString()
+//                if (birth.isEmpty()) {
+//                    dobLayout.error = "Minimum Age 20"
+//                } else {
+//                    dobLayout.error = null // Tidak ada error, bersihkan pesan
+//                }
+//                checkAllInputsValid()
+//            }
+//        })
+//
+//    }
+//
+//    private fun checkAllInputsValid() {
+//        val isHeightValid = binding.editTextHeight.text.toString().toFloatOrNull()?.let { it > 0 } ?: false
+//        val isWeightValid = binding.editTextWeight.text.toString().toFloatOrNull()?.let { it > 0 } ?: false
+//        val isWaistSizeValid = binding.editTextWaist.text.toString().toFloatOrNull()?.let { it > 0 } ?: false
+//        val isDobValid = validateDate(binding.editTextBirth.text.toString(), false) // Tanggal harus di masa lalu
+//        val isDopValid = validateDateRange(binding.editTextDateOfProgram.text.toString())
+//        val isGenderValid = binding.spinnerGender.selectedItemPosition > 0
+//        val isProgramValid = binding.spinnerProgram.selectedItemPosition > 0
+//
+//        binding.DateOfProgram.error = if (isDopValid) null else "Date range must be at least 28 days"
+//
+//        val isAllValid = isHeightValid && isWeightValid && isWaistSizeValid && isDobValid && isDopValid && isGenderValid && isProgramValid
+//
+//        if (isAllValid) {
+//            enableNextButton()
+//        } else {
+//            disableNextButton()
+//        }
+//    }
+//
+//    private fun validateDate(dateStr: String, allowFuture: Boolean): Boolean {
+//        val sdf = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+//        sdf.isLenient = false  // Set to false to prevent dates like February 30th from being parsed.
+//        try {
+//            val date = sdf.parse(dateStr)
+//            return if (date != null) {
+//                if (!allowFuture) {
+//                    // Check if the date is in the past or today.
+//                    val today = Calendar.getInstance()
+//                    today.set(Calendar.HOUR_OF_DAY, 0)
+//                    today.set(Calendar.MINUTE, 0)
+//                    today.set(Calendar.SECOND, 0)
+//                    today.set(Calendar.MILLISECOND, 0)
+//                    !date.after(today.time)  // Returns true if the date is not after today.
+//                } else {
+//                    true  // If future dates are allowed, just the existence of a valid date is enough.
+//                }
+//            } else {
+//                false
+//            }
+//        } catch (e: ParseException) {
+//            // If the date couldn't be parsed, return false.
+//            return false
+//        }
+//    }
+//
+//    private fun validateDateRange(dates: String): Boolean {
+//        val dateRange = dates.split(" to ")
+//        return if (dateRange.size == 2) {
+//            val sdf = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+//            sdf.isLenient = false
+//            try {
+//                val startDate = sdf.parse(dateRange[0])
+//                val endDate = sdf.parse(dateRange[1])
+//                startDate != null && endDate != null && !endDate.before(startDate) &&
+//                        TimeUnit.MILLISECONDS.toDays(endDate.time - startDate.time) >= 28
+//            } catch (e: ParseException) {
+//                false
+//            }
+//        } else {
+//            false
+//        }
+//    }
 
-        binding.editTextBirth.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable?) {
-                val birth= s.toString()
-                if (birth.isEmpty()) {
-                    dobLayout.error = "Minimum Age 20"
-                } else {
-                    dobLayout.error = null // Tidak ada error, bersihkan pesan
-                }
-                checkAllInputsValid()
-            }
-        })
-
-    }
-
-    private fun checkAllInputsValid() {
-        val isHeightValid = binding.editTextHeight.text.toString().toFloatOrNull()?.let { it > 0 } ?: false
-        val isWeightValid = binding.editTextWeight.text.toString().toFloatOrNull()?.let { it > 0 } ?: false
-        val isWaistSizeValid = binding.editTextWaist.text.toString().toFloatOrNull()?.let { it > 0 } ?: false
-        val isDobValid = validateDate(binding.editTextBirth.text.toString(), false) // Tanggal harus di masa lalu
-        val isDopValid = validateDateRange(binding.editTextDateOfProgram.text.toString())
-        val isGenderValid = binding.spinnerGender.selectedItemPosition > 0
-        val isProgramValid = binding.spinnerProgram.selectedItemPosition > 0
-
-        binding.DateOfProgram.error = if (isDopValid) null else "Date range must be at least 28 days"
-
-        val isAllValid = isHeightValid && isWeightValid && isWaistSizeValid && isDobValid && isDopValid && isGenderValid && isProgramValid
-
-        if (isAllValid) {
-            enableNextButton()
-        } else {
-            disableNextButton()
-        }
-    }
-
-    private fun validateDate(dateStr: String, allowFuture: Boolean): Boolean {
-        val sdf = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
-        sdf.isLenient = false  // Set to false to prevent dates like February 30th from being parsed.
-        try {
-            val date = sdf.parse(dateStr)
-            return if (date != null) {
-                if (!allowFuture) {
-                    // Check if the date is in the past or today.
-                    val today = Calendar.getInstance()
-                    today.set(Calendar.HOUR_OF_DAY, 0)
-                    today.set(Calendar.MINUTE, 0)
-                    today.set(Calendar.SECOND, 0)
-                    today.set(Calendar.MILLISECOND, 0)
-                    !date.after(today.time)  // Returns true if the date is not after today.
-                } else {
-                    true  // If future dates are allowed, just the existence of a valid date is enough.
-                }
-            } else {
-                false
-            }
-        } catch (e: ParseException) {
-            // If the date couldn't be parsed, return false.
-            return false
-        }
-    }
-
-    private fun validateDateRange(dates: String): Boolean {
-        val dateRange = dates.split(" to ")
-        return if (dateRange.size == 2) {
-            val sdf = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
-            sdf.isLenient = false
-            try {
-                val startDate = sdf.parse(dateRange[0])
-                val endDate = sdf.parse(dateRange[1])
-                startDate != null && endDate != null && !endDate.before(startDate) &&
-                        TimeUnit.MILLISECONDS.toDays(endDate.time - startDate.time) >= 28
-            } catch (e: ParseException) {
-                false
-            }
-        } else {
-            false
-        }
-    }
-
-    private fun disableNextButton() {
+    private fun disableSelectButton() {
         binding.buttonNext.isEnabled = false
-        binding.buttonNext.setBackground(ContextCompat.getDrawable(this, R.drawable.buttonlogin_background_with_shadow_disable))  // Menggunakan background untuk disabled
+        binding.buttonNext.setBackground(ContextCompat.getDrawable(this, R.drawable.buttonlogin_background_with_shadow_disable))  // Menggunakan background untuk enabled
         binding.buttonNext.setTextColor(ContextCompat.getColor(this, R.color.color26))
     }
 
-    private fun enableNextButton() {
-        binding.buttonNext.isEnabled = true
-        binding.buttonNext.setBackground(ContextCompat.getDrawable(this, R.drawable.buttonlogin_background_with_shadow))  // Menggunakan background untuk enabled
-        binding.buttonNext.setTextColor(ContextCompat.getColor(this, R.color.color23))
+    private fun enableSelectButtonIfReady() {
+        val program = binding.spinnerProgram.selectedItem.toString()
+        val gender = binding.spinnerGender.selectedItem.toString()
+        val dateRange = binding.editTextDateOfProgram.text.toString()
+        val date = binding.editTextBirth.text.toString()
+        val weight = binding.editTextWeight.text.toString()
+        val height = binding.editTextHeight.text.toString()
+        val waist = binding.editTextWaist.text.toString()
+
+        binding.buttonNext.isEnabled = program != "-- Select Your Program --" && gender != "Gender" && dateRange.isNotEmpty() && date.isNotEmpty() && weight.isNotEmpty() && height.isNotEmpty() && waist.isNotEmpty()
+        if (binding.buttonNext.isEnabled) {
+            binding.buttonNext.setBackground(ContextCompat.getDrawable(this, R.drawable.buttonlogin_background_with_shadow))  // Menggunakan background untuk enabled
+            binding.buttonNext.setTextColor(ContextCompat.getColor(this, R.color.color23))
+        } else {
+            binding.buttonNext.setBackground(ContextCompat.getDrawable(this, R.drawable.buttonlogin_background_with_shadow_disable))  // Menggunakan background untuk enabled
+            binding.buttonNext.setTextColor(ContextCompat.getColor(this, R.color.color26))
+        }
     }
+
+//    private fun disableNextButton() {
+//        binding.buttonNext.isEnabled = false
+//        binding.buttonNext.setBackground(ContextCompat.getDrawable(this, R.drawable.buttonlogin_background_with_shadow_disable))  // Menggunakan background untuk disabled
+//        binding.buttonNext.setTextColor(ContextCompat.getColor(this, R.color.color26))
+//    }
+//
+//    private fun enableNextButton() {
+//        binding.buttonNext.isEnabled = true
+//        binding.buttonNext.setBackground(ContextCompat.getDrawable(this, R.drawable.buttonlogin_background_with_shadow))  // Menggunakan background untuk enabled
+//        binding.buttonNext.setTextColor(ContextCompat.getColor(this, R.color.color23))
+//    }
 
     private fun calculateBMI(height: Float?, weight: Float?): Float? {
         if (height == null || weight == null || height == 0f) {

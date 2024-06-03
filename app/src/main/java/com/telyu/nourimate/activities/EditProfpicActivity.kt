@@ -1,9 +1,12 @@
 package com.telyu.nourimate.activities
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.result.contract.ActivityResultContracts
@@ -28,7 +31,6 @@ class EditProfpicActivity : AppCompatActivity() {
         uri?.let {
             val internalUri = copyImageToInternalStorage(it)
             currentImageUri = internalUri
-            showImage(internalUri)
         } ?: Log.d("Photo Picker", "No media selected")
     }
 
@@ -39,14 +41,38 @@ class EditProfpicActivity : AppCompatActivity() {
 
         viewModel = obtainViewModel(this@EditProfpicActivity)
 
-        binding.galleryButton.setOnClickListener {
-            startGallery()
+
+        val imageUri = Uri.parse(intent.getStringExtra("imageUri"))
+        val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
+
+        binding.imageToCrop.setImageBitmap(bitmap)
+        binding.imageToCrop.setOnTouchListener { view, event ->
+            // Contoh sederhana, sebenarnya Anda perlu membuat logika untuk memilih area crop
+            true
         }
 
-        binding.uploadButton.setOnClickListener {
-            insertProfpic()
-            val intent = Intent(this, NavigationBarActivity::class.java)
-            startActivity(intent)
+        binding.buttonSaveCrop.setOnClickListener {
+            saveCroppedImage()
+        }
+    }
+
+    private fun saveCroppedImage() {
+        // Mendapatkan Bitmap dari ImageView
+        binding.imageToCrop.buildDrawingCache()
+        val croppedBitmap = Bitmap.createBitmap(binding.imageToCrop.drawingCache)
+
+        try {
+            // Simpan ke storage
+            val file = File(getExternalFilesDir(null), "cropped_image.jpg")
+            val fOut = FileOutputStream(file)
+            croppedBitmap.compress(Bitmap.CompressFormat.JPEG, 85, fOut)
+            fOut.flush()
+            fOut.close()
+
+            Toast.makeText(this, "Image Saved Successfully", Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(this, "Error Saving Image", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -70,9 +96,6 @@ class EditProfpicActivity : AppCompatActivity() {
         return File.createTempFile("profpic_", ".jpg", storageDir)
     }
 
-    private fun showImage(uri: Uri) {
-        binding.previewImageView.setImageURI(uri)
-    }
 
     private fun insertProfpic() {
         currentImageUri?.let { uri ->

@@ -112,7 +112,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/DateOfProgram"
             android:layout_width="0dp"
-            android:layout_height="65dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:background="@drawable/rectangle_signup1"
             android:clickable="true"
