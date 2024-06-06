@@ -1,5 +1,6 @@
 package com.telyu.nourimate.fragments
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -7,12 +8,14 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.telyu.nourimate.databinding.FragmentProfileBinding
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.viewModels
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.telyu.nourimate.R
 import com.telyu.nourimate.activities.EditProfpicActivity
@@ -34,6 +37,7 @@ class ProfileFragment : Fragment() {
     companion object {
         private const val REQUEST_IMAGE_CAPTURE = 1
         private const val REQUEST_PICK_IMAGE = 2
+        const val EDIT_PROFILE_PIC_REQUEST = 3
     }
 
     override fun onCreateView(
@@ -47,7 +51,7 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setStatusBarColor(ContextCompat.getColor(requireContext(), R.color.color20))
+        setStatusBarColor(ContextCompat.getColor(requireContext(), R.color.color52))
 
         displayImage()
         setupButtons()
@@ -70,30 +74,81 @@ class ProfileFragment : Fragment() {
     }
 
     private fun showImageSourceDialog() {
-        val options = arrayOf("Camera", "Galeri")
+        val options = arrayOf("Camera", "Gallery")
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Choose Image Source")
             .setItems(options) { dialog, which ->
                 when (which) {
-                    0 -> dispatchTakePictureIntent()
-                    1 -> dispatchPickPictureIntent()
+                    0 -> launchCamera()
+                    1 -> launchGallery()
                 }
             }
             .show()
     }
 
-    private fun dispatchTakePictureIntent() {
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-            takePictureIntent.resolveActivity(requireContext().packageManager)?.also {
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+    private fun launchCamera() {
+        ImagePicker.with(this)
+            .cameraOnly()
+            .crop()
+            .maxResultSize(1080, 1080)
+            .start(REQUEST_IMAGE_CAPTURE)
+    }
+
+    private fun launchGallery() {
+        ImagePicker.with(this)
+            .galleryOnly()
+            .crop()
+            .maxResultSize(1080, 1080)
+            .start(REQUEST_PICK_IMAGE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        // Handling results from camera capture or gallery pick
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                REQUEST_IMAGE_CAPTURE, REQUEST_PICK_IMAGE -> {
+                    data?.data?.let { uri ->
+                        openEditProfpicActivity(uri)
+                    }
+                }
+                EDIT_PROFILE_PIC_REQUEST -> {
+                    // This checks if the data returned from EditProfpicActivity is not null and updates the ImageView.
+                    data?.getStringExtra("imageUri")?.let { uriString ->
+                        val uri = Uri.parse(uriString)
+                        binding.imageViewAvatar.setImageURI(uri)
+                    }
+                }
+            }
+        } else if (resultCode == ImagePicker.RESULT_ERROR) {
+            // Handling error from image picking library
+            Toast.makeText(context, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+        } else {
+            // Handling cancellation
+            if (requestCode == REQUEST_IMAGE_CAPTURE || requestCode == REQUEST_PICK_IMAGE) {
+                Toast.makeText(context, "Task Cancelled", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun dispatchPickPictureIntent() {
-        val pickIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(pickIntent, REQUEST_PICK_IMAGE)
+    private fun openEditProfpicActivity(uri: Uri) {
+        val intent = Intent(context, EditProfpicActivity::class.java)
+        intent.putExtra("imageUri", uri.toString())
+        startActivityForResult(intent, EDIT_PROFILE_PIC_REQUEST)
     }
+
+    private fun refreshProfilePicture() {
+        viewModel.profilePicture.observe(viewLifecycleOwner) { uriString ->
+            uriString?.let { uriStr ->
+                val uri = Uri.parse(uriStr)
+                binding.imageViewAvatar.setImageURI(uri)
+            }
+        }
+    }
+
+
+
 
 
     private fun showLogoutConfirmationDialog() {
@@ -169,7 +224,7 @@ class ProfileFragment : Fragment() {
         }
 
         // Implementasi event click untuk tombol Profile
-        binding.profileButton.setOnClickListener {
+        binding.profileIcon.setOnClickListener {
             // Kode untuk menuju ke EditProfileFragment
             val editProfileFragment = UserDetailFragment()
             requireActivity().supportFragmentManager.beginTransaction().apply {
@@ -180,7 +235,7 @@ class ProfileFragment : Fragment() {
         }
 
         // Implementasi event click untuk tombol Account
-        binding.accountButton.setOnClickListener {
+        binding.accountIcon.setOnClickListener {
             // Kode untuk menuju ke AccountFragment
             val accountFragment = AccountFragment()
             requireActivity().supportFragmentManager.beginTransaction().apply {
@@ -191,7 +246,7 @@ class ProfileFragment : Fragment() {
         }
 
         // Implementasi event click untuk tombol History
-        binding.historyButton.setOnClickListener {
+        binding.historyIcon.setOnClickListener {
             // Kode untuk menuju ke AccountFragment
             val historyFragment = HistoryFragment()
             requireActivity().supportFragmentManager.beginTransaction().apply {
@@ -202,7 +257,7 @@ class ProfileFragment : Fragment() {
         }
 
         // Implementasi event click untuk tombol Community
-        binding.communityButton.setOnClickListener {
+        binding.communityIcon.setOnClickListener {
             // Kode untuk menuju ke CommunityFragment
             val communityFragment = CommunityFragment()
             requireActivity().supportFragmentManager.beginTransaction().apply {
@@ -213,7 +268,7 @@ class ProfileFragment : Fragment() {
         }
 
         // Implementasi event click untuk tombol FAQ
-        binding.faqButton.setOnClickListener {
+        binding.faqIcon.setOnClickListener {
             // Kode untuk menuju ke FaqFragment
             val faqFragment = FaqFragment()
             requireActivity().supportFragmentManager.beginTransaction().apply {

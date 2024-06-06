@@ -1,5 +1,6 @@
 package com.telyu.nourimate.fragments
 
+import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -11,8 +12,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.PopupWindow
+import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import com.telyu.nourimate.R
+import com.telyu.nourimate.databinding.DialogNameChangeBinding
 import com.telyu.nourimate.databinding.FragmentAccountBinding
 
 class AccountFragment : Fragment() {
@@ -29,6 +33,7 @@ class AccountFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setStatusBarColor(ContextCompat.getColor(requireContext(), R.color.color54))
 
         binding.backButton.setOnClickListener {
             // Navigasi kembali ke ProfileFragment
@@ -36,7 +41,7 @@ class AccountFragment : Fragment() {
         }
 
         binding.changenumberIcon.setOnClickListener {
-            onChangePhoneNumberClicked(view)
+            onChangePhoneNumberClicked()
         }
 
         binding.changepwIcon.setOnClickListener {
@@ -44,52 +49,28 @@ class AccountFragment : Fragment() {
         }
     }
 
-    private fun onChangePhoneNumberClicked(view: View) {
-        val inflater = requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val popupView = inflater.inflate(R.layout.popup_change_phone_number, null)
+    private fun setStatusBarColor(color: Int) {
+        val window = requireActivity().window
+        val insetsController = WindowInsetsControllerCompat(window, window.decorView)
 
-        val popupWindow = PopupWindow(
-            popupView,
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
+        insetsController.isAppearanceLightStatusBars =
+            true // Set true or false depending on the status bar icons' color
+        insetsController.isAppearanceLightNavigationBars =
+            true // Set true or false depending on the navigation bar icons' color
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            popupWindow.elevation = 20f
-        }
-
-        popupWindow.setBackgroundDrawable(ColorDrawable(Color.WHITE))
-
-        popupWindow.width = LinearLayout.LayoutParams.MATCH_PARENT
-        popupWindow.height = LinearLayout.LayoutParams.WRAP_CONTENT
-
-        popupWindow.isFocusable = true
-
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0)
+        window.statusBarColor = color
     }
 
+    private fun onChangePhoneNumberClicked() {
+        val dialogFragment = ChangeNumberProfileFragment.newInstance()
+        dialogFragment.show(parentFragmentManager, "changeNumberDialog") // or use childFragmentManager
+    }
+
+
+
     private fun onChangePasswordClicked(view: View) {
-        val inflater = requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val popupView = inflater.inflate(R.layout.popup_change_password, null)
-
-        val popupWindow = PopupWindow(
-            popupView,
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            popupWindow.elevation = 20f
-        }
-
-        popupWindow.setBackgroundDrawable(ColorDrawable(Color.WHITE))
-
-        popupWindow.width = LinearLayout.LayoutParams.MATCH_PARENT
-        popupWindow.height = LinearLayout.LayoutParams.WRAP_CONTENT
-
-        popupWindow.isFocusable = true
-
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0)
+        val dialogFragment = ChangePasswordProfileFragment.newInstance()
+        dialogFragment.show(parentFragmentManager, "changeNumberDialog") // or use childFragmentManager
     }
 
     override fun onDestroyView() {

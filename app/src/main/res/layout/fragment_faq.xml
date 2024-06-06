@@ -90,28 +90,35 @@
 
     <TextView
         android:id="@+id/pertanyaanfaqTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Bagaimana jika saya lupa password?"
         android:textSize="14sp"
         android:textColor="@color/black"
         android:fontFamily="@font/alatsi"
         android:elevation="5dp"
+        android:gravity="start"
         app:layout_constraintStart_toStartOf="@+id/rectangleisifaqImageView"
+        app:layout_constraintEnd_toEndOf="@+id/rectangleisifaqImageView"
         app:layout_constraintTop_toTopOf="@+id/rectangleisifaqImageView"
         android:layout_marginTop="10dp"
-        android:layout_marginStart="15dp"/>
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"/>
 
     <TextView
         android:id="@+id/isifaqTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Anda dapat mengganti password pada laman Account."
         android:textSize="12sp"
         android:elevation="5dp"
         android:textColor="@color/black"
         android:fontFamily="@font/abel"
-        app:layout_constraintStart_toStartOf="@+id/pertanyaanfaqTextView"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:gravity="start"
+        app:layout_constraintStart_toStartOf="@+id/rectangleisifaqImageView"
+        app:layout_constraintEnd_toEndOf="@+id/rectangleisifaqImageView"
         app:layout_constraintTop_toBottomOf="@+id/pertanyaanfaqTextView"
         android:layout_marginTop="5dp"/>
 
@@ -129,30 +136,35 @@
 
     <TextView
         android:id="@+id/pertanyaan2faqTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Apakah saya bisa akses program sebelumnya?"
         android:textSize="14sp"
         android:elevation="5dp"
         android:textColor="@color/black"
         android:fontFamily="@font/alatsi"
+        android:gravity="start"
         app:layout_constraintStart_toStartOf="@+id/rectangleisi2faqImageView"
         app:layout_constraintTop_toTopOf="@+id/rectangleisi2faqImageView"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
         android:layout_marginStart="15dp"/>
 
     <TextView
         android:id="@+id/isi2faqTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Anda dapat melihat history program sebelumnya pada\nlaman History."
+        android:text="Anda dapat melihat history program sebelumnya pada laman History."
         android:textSize="12sp"
         android:elevation="5dp"
         android:textColor="@color/black"
         android:fontFamily="@font/abel"
-        app:layout_constraintStart_toStartOf="@+id/pertanyaan2faqTextView"
         app:layout_constraintTop_toBottomOf="@+id/pertanyaan2faqTextView"
-        android:layout_marginTop="5dp"/>
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:gravity="start"
+        app:layout_constraintStart_toStartOf="@+id/rectangleisi2faqImageView"
+        app:layout_constraintEnd_toEndOf="@+id/rectangleisi2faqImageView"/>
 
     <TextView
         android:id="@+id/noresultfaqTextView"

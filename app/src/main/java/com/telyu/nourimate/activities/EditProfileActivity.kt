@@ -96,6 +96,7 @@ class EditProfileActivity : AppCompatActivity() {
 
         disableSelectButton()
 
+
         //setup submit data to database button
         binding.buttonNext.setOnClickListener {
             insertUserDetails()

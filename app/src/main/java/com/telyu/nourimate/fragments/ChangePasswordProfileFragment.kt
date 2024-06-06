@@ -46,4 +46,10 @@ class ChangePasswordProfileFragment : DialogFragment() {
         _binding = null
     }
 
+    companion object {
+        fun newInstance():ChangePasswordProfileFragment {
+            return ChangePasswordProfileFragment()
+        }
+    }
+
 }

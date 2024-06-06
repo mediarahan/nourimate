@@ -34,7 +34,9 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.app.AlertDialog
 import android.graphics.Typeface
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.telyu.nourimate.adapter.date.HintArrayAdapter
 import com.telyu.nourimate.custom.CustomDatePickerFragment
 
@@ -58,6 +60,8 @@ class UserDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setStatusBarColor(ContextCompat.getColor(requireContext(), R.color.color53))
 
         binding.backButton.setOnClickListener {
             // Navigasi kembali ke ProfileFragment
@@ -84,6 +88,18 @@ class UserDetailFragment : Fragment() {
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerGender.adapter = genderAdapter
 
+    }
+
+    private fun setStatusBarColor(color: Int) {
+        val window = requireActivity().window
+        val insetsController = WindowInsetsControllerCompat(window, window.decorView)
+
+        insetsController.isAppearanceLightStatusBars =
+            true // Set true or false depending on the status bar icons' color
+        insetsController.isAppearanceLightNavigationBars =
+            true // Set true or false depending on the navigation bar icons' color
+
+        window.statusBarColor = color
     }
 
     private fun getAllData() {
@@ -390,8 +406,8 @@ class UserDetailFragment : Fragment() {
     }
 
     private fun showAllergiesDialog() {
-        val allergies = arrayOf("Kacang, Gluten")
-        val checkedItems = booleanArrayOf(false, false)
+        val allergies = arrayOf("Nuts, Seafood, Eggs")
+        val checkedItems = booleanArrayOf(false, false, false)
         val selectedItems = mutableListOf<String>()
 
         val dialogBuilder = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog)
@@ -488,31 +504,30 @@ class UserDetailFragment : Fragment() {
     }
 
     private fun showNameChangeDialog() {
-        val dialog = Dialog(requireContext())
         val dialogBinding = DialogNameChangeBinding.inflate(layoutInflater)
-        dialog.setContentView(dialogBinding.root)
 
-        // Setting initial value
-        dialogBinding.editTextNameChange.setText(binding.editTextName.text.toString())
+        // Membuat dialog dengan custom view
+        val alertDialog = AlertDialog.Builder(requireContext())
+            .setView(dialogBinding.root)
+            .create()
 
-        // Configure the dialog width
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        // Tambahkan listener ke tombol saveChanges dalam layout custom
+        dialogBinding.buttonSave.setOnClickListener {
+            val newName = dialogBinding.editTextFullName.text.toString()
+            binding.editTextName.setText(newName)  // Anggap editTextName ada di binding utama fragment/activity Anda
+            alertDialog.dismiss()  // Tutup dialog setelah menyimpan
+        }
+
+        alertDialog.show()
+
+        // Configure the dialog width to be consistent with the other dialogs
         val displayMetrics = requireContext().resources.displayMetrics
         val screenWidth = displayMetrics.widthPixels
-        val dialogWidth = (screenWidth * 0.85).toInt()
-        dialog.window?.setLayout(dialogWidth, ViewGroup.LayoutParams.WRAP_CONTENT)
-
-        // Set actions for "Done" and "Cancel" buttons
-        dialogBinding.buttonDone.setOnClickListener {
-            val newName = dialogBinding.editTextNameChange.text.toString()
-            binding.editTextName.setText(newName)
-            dialog.dismiss()
-        }
-
-        dialogBinding.buttonCancel.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        dialog.show()
+        alertDialog.window?.setLayout((screenWidth * 0.85).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
     }
+
+
 
 }

@@ -64,24 +64,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/wave_profile_shadow"/>
 
-    <ImageView
-        android:id="@+id/rectanglesettingImageView"
-        android:layout_width="350dp"
-        android:layout_height="70dp"
-        android:background="@drawable/rectangle_settings_with_shadow"
-        android:elevation="7dp"
-        app:layout_constraintWidth_percent="0.85"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/settingTextView"
-        android:layout_marginTop="20dp"/>
 
     <TextView
         android:id="@+id/textViewThemes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@+id/rectanglesettingImageView"
-        app:layout_constraintStart_toStartOf="@+id/rectanglesettingImageView"
+        app:layout_constraintTop_toTopOf="@+id/spinnerThemes"
+        app:layout_constraintStart_toStartOf="@+id/spinnerThemes"
         android:layout_marginTop="10dp"
         android:layout_marginStart="15dp"
         android:text="Themes"
@@ -94,17 +83,23 @@
         android:id="@+id/spinnerThemes"
         android:layout_width="0dp"
         android:layout_height="65dp"
-        android:elevation="7dp"
-        android:textSize="14sp"
-        android:layout_marginTop="5dp"
-        android:textColor="@color/black"
-        android:fontFamily="@font/alatsi"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/rectangle_settings_with_shadow"
+        android:paddingTop="30dp"
+        android:paddingBottom="12dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="12dp"
+        android:elevation="3dp"
+        android:fontFamily="@font/abel"
+        android:textColor="@color/color41"
+        android:textSize="16sp"
         app:layout_constraintWidth_percent="0.85"
-        app:layout_constraintEnd_toEndOf="@+id/rectanglesettingImageView"
-        app:layout_constraintTop_toTopOf="@+id/textViewThemes"
-        app:layout_constraintStart_toStartOf="@+id/textViewThemes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settingTextView"
         android:spinnerMode="dropdown"
         android:popupBackground="@drawable/rectangle_signup1"/>
+
 
     <ImageView
         android:id="@+id/iconthemesImageView"
@@ -120,14 +115,14 @@
 
     <ImageView
         android:id="@+id/rectanglesetting2ImageView"
-        android:layout_width="350dp"
+        android:layout_width="0dp"
         android:layout_height="70dp"
         android:background="@drawable/rectangle_settings_with_shadow"
         android:elevation="7dp"
         app:layout_constraintWidth_percent="0.85"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rectanglesettingImageView"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerThemes"
         android:layout_marginTop="20dp"/>
 
     <TextView

@@ -1,5 +1,6 @@
 package com.telyu.nourimate.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
@@ -42,14 +43,12 @@ class EditProfpicActivity : AppCompatActivity() {
         viewModel = obtainViewModel(this@EditProfpicActivity)
 
 
-        val imageUri = Uri.parse(intent.getStringExtra("imageUri"))
-        val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
-
-        binding.imageToCrop.setImageBitmap(bitmap)
-        binding.imageToCrop.setOnTouchListener { view, event ->
-            // Contoh sederhana, sebenarnya Anda perlu membuat logika untuk memilih area crop
-            true
+        val imageUriString = intent.getStringExtra("imageUri")
+        imageUriString?.let {
+            val imageUri = Uri.parse(it)
+            binding.imageToCrop.setImageURI(imageUri)
         }
+
 
         binding.buttonSaveCrop.setOnClickListener {
             saveCroppedImage()
@@ -57,28 +56,42 @@ class EditProfpicActivity : AppCompatActivity() {
     }
 
     private fun saveCroppedImage() {
-        // Mendapatkan Bitmap dari ImageView
         binding.imageToCrop.buildDrawingCache()
         val croppedBitmap = Bitmap.createBitmap(binding.imageToCrop.drawingCache)
 
         try {
-            // Simpan ke storage
+            // Save to storage
             val file = File(getExternalFilesDir(null), "cropped_image.jpg")
             val fOut = FileOutputStream(file)
             croppedBitmap.compress(Bitmap.CompressFormat.JPEG, 85, fOut)
             fOut.flush()
             fOut.close()
 
+            // Update the URI to new saved image
+            currentImageUri = Uri.fromFile(file)
+
+            // Insert or update the profile picture in the database
+            insertProfpic()
+
             Toast.makeText(this, "Image Saved Successfully", Toast.LENGTH_SHORT).show()
+
+            // Navigate back to ProfileFragment
+            navigateBackWithResult()
+
         } catch (e: Exception) {
             e.printStackTrace()
             Toast.makeText(this, "Error Saving Image", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun startGallery() {
-        launcherGallery.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+    private fun navigateBackWithResult() {
+        val intent = Intent()
+        intent.putExtra("imageUri", currentImageUri.toString())
+        setResult(Activity.RESULT_OK, intent)
+        finish()
     }
+
+
 
 
     private fun copyImageToInternalStorage(uri: Uri): Uri {

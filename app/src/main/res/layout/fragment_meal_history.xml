@@ -13,7 +13,7 @@
         <ImageView
             android:id="@+id/rectangleprogramImageView"
             android:layout_width="match_parent"
-            android:layout_height="105dp"
+            android:layout_height="90dp"
             android:background="@drawable/rectangle_item_food_history"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -24,10 +24,10 @@
             android:text="Your Breakfast"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/alatsi"
             android:textColor="@color/black"
-            android:textSize="28sp"
+            android:textSize="25sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -42,7 +42,7 @@
             android:elevation="6dp"
             android:fontFamily="@font/abel"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:layout_constraintEnd_toStartOf="@+id/SeparatorTextView"
             app:layout_constraintTop_toBottomOf="@+id/ProgramTitle" />
 
@@ -55,7 +55,7 @@
             android:fontFamily="@font/abel"
             android:text="-"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ProgramTitle" />
@@ -70,7 +70,7 @@
             android:elevation="6dp"
             android:fontFamily="@font/abel"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@+id/SeparatorTextView"
             app:layout_constraintTop_toBottomOf="@+id/ProgramTitle" />
 
@@ -78,23 +78,31 @@
             android:id="@+id/recommendationRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="12dp"
+            android:layout_marginTop="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rectangleprogramImageView" />
 
-        <ImageView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/backButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/back"
-            android:contentDescription="Back"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:padding="30dp" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:layout_constraintStart_toStartOf="@+id/rectangleprogramImageView"
+            android:layout_marginStart="20dp"
+            app:icon="@drawable/back"
+            android:clickable="true"
+            app:iconSize="25dp"
+            app:iconGravity="textStart"
+            app:iconTint="@color/black"
+            app:backgroundTint="@null"
+            android:background="@drawable/button_background_profile_with_shadow"
+            style="@style/Widget.MaterialComponents.Button.Circle"
+            app:layout_constraintTop_toTopOf="@+id/rectangleprogramImageView"
+            app:layout_constraintBottom_toBottomOf="@+id/rectangleprogramImageView"
+            app:iconPadding="0dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:elevation="10dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

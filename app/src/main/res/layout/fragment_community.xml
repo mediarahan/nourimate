@@ -69,7 +69,7 @@
     <ImageView
         android:id="@+id/rectanglecommunityImageView"
         android:layout_width="0dp"
-        android:layout_height="200dp"
+        android:layout_height="180dp"
         android:background="@drawable/rectangle_settings_with_shadow"
         android:elevation="5dp"
         app:layout_constraintWidth_percent="0.85"
@@ -90,7 +90,7 @@
         android:fontFamily="@font/abel"
         app:layout_constraintStart_toStartOf="@+id/rectanglecommunityImageView"
         app:layout_constraintTop_toTopOf="@+id/rectanglecommunityImageView"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:layout_marginStart="20dp"/>
 
     <ImageView

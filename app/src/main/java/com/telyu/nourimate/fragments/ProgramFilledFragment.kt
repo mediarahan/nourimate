@@ -1,6 +1,9 @@
 package com.telyu.nourimate.fragments
 
 import android.app.AlertDialog
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
@@ -12,8 +15,10 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.telyu.nourimate.R
+import com.telyu.nourimate.custom.StraightRulerView
 import com.telyu.nourimate.data.local.models.WeightEntry
 import com.telyu.nourimate.data.local.models.WeightTrack
+import com.telyu.nourimate.databinding.DialogHeightPickerBinding
 import com.telyu.nourimate.databinding.FragmentProgramFilledBinding
 import com.telyu.nourimate.utils.Converters
 import com.telyu.nourimate.utils.GeneralUtil
@@ -131,26 +136,47 @@ class ProgramFilledFragment : Fragment() {
 
     private fun setupInputCurrentWeight() {
         binding.iconeditweightMWImageView.setOnClickListener {
-            val editText = EditText(context).apply {
-                inputType = InputType.TYPE_CLASS_NUMBER
-                setText(binding.textViewCurrentWeightMW.text.toString())
+            val currentWeight = binding.textViewCurrentWeightMW.text.toString().toFloatOrNull() ?: 0f
+            showHeightRulerPickerDialog(currentWeight)
+        }
+    }
+
+    private fun showHeightRulerPickerDialog(initialSelectedValue: Float) {
+        val dialog = Dialog(requireContext())
+        val dialogBinding = DialogHeightPickerBinding.inflate(layoutInflater)
+        dialog.setContentView(dialogBinding.root)
+
+        // Mengatur agar latar dialog transparan
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        // Mendapatkan ukuran layar
+        val displayMetrics = requireContext().resources.displayMetrics
+        val screenWidth = displayMetrics.widthPixels
+        // Mengatur lebar dialog menjadi 85% dari lebar layar
+        val dialogWidth = (screenWidth * 0.85).toInt()
+        dialog.window?.setLayout(dialogWidth, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+        // Set initial selected value
+        dialogBinding.straightRulerView.selectedValue = initialSelectedValue
+        dialogBinding.textViewNumber.text = initialSelectedValue.toInt().toString()
+
+        // Set listener untuk CurvedRulerView
+        dialogBinding.straightRulerView.listener =
+            object : StraightRulerView.OnValueChangeListener {
+                override fun onValueChanged(value: Float) {
+                    // Update selected value
+                    dialogBinding.textViewNumber.text = value.toInt().toString()
+                    // Update EditText in real-time
+                    binding.textViewCurrentWeightMW.setText(String.format("%d", value.toInt()))
+                }
             }
 
-            AlertDialog.Builder(requireContext()).apply {
-                setTitle("Update Current Weight")
-                setMessage("Enter the new weight:")
-                setView(editText)
-                setPositiveButton("OK") { dialog, _ ->
-                    val newWeight = editText.text.toString()
-                    if (newWeight.isNotEmpty()) {
-                        binding.textViewCurrentWeightMW.text = newWeight
-                    }
-                    dialog.dismiss()
-                }
-                setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
-                show()
-            }
+        // Set action for 'Done' button
+        dialogBinding.buttonDone.setOnClickListener {
+            dialog.dismiss()
         }
+
+        dialog.show()
     }
 
     private fun setupInputCurrentWeightButton() {

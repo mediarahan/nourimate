@@ -5,18 +5,18 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.DialogFragment
-import com.telyu.nourimate.databinding.FragmentChangeNumberProfileBinding
+import com.telyu.nourimate.databinding.FragmentChangeNameDialogBinding
 
-class ChangeNumberProfileFragment : DialogFragment() {
+class ChangeNameDialogFragment : DialogFragment() {
 
-    private var _binding: FragmentChangeNumberProfileBinding? = null
+    private var _binding: FragmentChangeNameDialogBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentChangeNumberProfileBinding.inflate(inflater, container, false)
+        _binding = FragmentChangeNameDialogBinding.inflate(inflater, container, false)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         return binding.root
     }
@@ -44,12 +44,6 @@ class ChangeNumberProfileFragment : DialogFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        fun newInstance():ChangeNumberProfileFragment {
-            return ChangeNumberProfileFragment()
-        }
     }
 
 }
