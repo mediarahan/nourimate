@@ -149,8 +149,6 @@ class ProfileFragment : Fragment() {
 
 
 
-
-
     private fun showLogoutConfirmationDialog() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Logout")

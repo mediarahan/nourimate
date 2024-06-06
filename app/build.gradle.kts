@@ -60,6 +60,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation ("androidx.fragment:fragment-ktx:1.2.5")
     implementation ("com.github.dhaval2404:imagepicker:2.1")
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
 
 
 

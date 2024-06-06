@@ -54,7 +54,7 @@
                 app:layout_constraintStart_toStartOf="@+id/greetingTextView"
                 app:layout_constraintTop_toBottomOf="@+id/greetingTextView" />
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profileImageView"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
@@ -62,8 +62,8 @@
                 app:layout_constraintTop_toTopOf="@+id/rectanglehomeImageView"
                 app:layout_constraintBottom_toTopOf="@+id/weightMessageTextView"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="30dp"/>
-
+                android:layout_marginEnd="30dp"
+                android:scaleType="centerCrop"/>
 
             <TextView
                 android:id="@+id/weightMessageTextView"
@@ -98,14 +98,14 @@
                 android:id="@+id/halfCircleImageView"
                 android:layout_width="0dp"
                 android:layout_height="370dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/shape_half_rectangle_with_shadow"
                 android:elevation="5dp"
-                app:layout_constraintTop_toBottomOf="@+id/rectanglehomeImageView"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintWidth_percent="0.85"
-                android:layout_marginTop="18dp"/>
-
+                app:layout_constraintHorizontal_bias="0.508"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rectanglehomeImageView"
+                app:layout_constraintWidth_percent="0.85" />
 
             <com.telyu.nourimate.custom.SemiCircleProgressView
                 android:id="@+id/semiCircleProgressView"

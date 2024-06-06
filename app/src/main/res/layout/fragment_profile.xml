@@ -29,21 +29,12 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/background_photo_profile">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardViewAvatar"
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageViewAvatar"
             android:layout_width="140dp"
             android:layout_height="140dp"
-            app:cardCornerRadius="75dp"
-            app:cardElevation="0dp">
-
-            <ImageView
-                android:id="@+id/imageViewAvatar"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/saul"
-                android:scaleType="centerCrop">
-            </ImageView>
-        </androidx.cardview.widget.CardView>
+            android:src="@drawable/saul"
+            android:scaleType="centerCrop" />
     </FrameLayout>
 
 

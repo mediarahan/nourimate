@@ -56,7 +56,7 @@
     <TextView
         android:id="@+id/buttonSave"
         android:layout_width="0dp"
-        android:layout_height="63dp"
+        android:layout_height="60dp"
         android:text="Save"
         android:textStyle="bold"
         android:background="@drawable/button_change_password"

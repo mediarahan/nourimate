@@ -12,6 +12,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.telyu.nourimate.R
@@ -42,10 +44,24 @@ class ProgramFilledFragment : Fragment() {
         return binding.root
     }
 
+    private fun setStatusBarColor(color: Int) {
+        val window = requireActivity().window
+        val insetsController = WindowInsetsControllerCompat(window, window.decorView)
+
+        insetsController.isAppearanceLightStatusBars =
+            true // Set true or false depending on the status bar icons' color
+        insetsController.isAppearanceLightNavigationBars =
+            true // Set true or false depending on the navigation bar icons' color
+
+        window.statusBarColor = color
+    }
+
     //========== Untuk setting tampilan history makanan ==========
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setStatusBarColor(ContextCompat.getColor(requireContext(), R.color.color47))
 
         setupMealHistory()                          // binding buat buka fragment meal history
         setupMealtimeCalories()                  // binding total kalori yang dikonsumsi

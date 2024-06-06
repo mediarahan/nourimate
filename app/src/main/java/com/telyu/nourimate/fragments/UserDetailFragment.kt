@@ -406,8 +406,8 @@ class UserDetailFragment : Fragment() {
     }
 
     private fun showAllergiesDialog() {
-        val allergies = arrayOf("Nuts, Seafood, Eggs")
-        val checkedItems = booleanArrayOf(false, false, false)
+        val allergies = arrayOf("Nuts", "Seafood", "Eggs")  // Memisahkan setiap item sebagai elemen terpisah
+        val checkedItems = booleanArrayOf(false, false, false)  // Menyesuaikan dengan jumlah alergi
         val selectedItems = mutableListOf<String>()
 
         val dialogBuilder = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog)
@@ -453,6 +453,7 @@ class UserDetailFragment : Fragment() {
         val screenWidth = displayMetrics.widthPixels
         dialog.window?.setLayout((screenWidth * 0.85).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
     }
+
 
     private fun showDiseasesDialog() {
         val diseases = arrayOf("Diabetes", "Kolesterol", "Hipertensi")
