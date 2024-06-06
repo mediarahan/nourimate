@@ -11,7 +11,9 @@ import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
+import com.telyu.nourimate.R
 import com.telyu.nourimate.data.local.models.Profpic
 import com.telyu.nourimate.databinding.ActivityEditProfpicBinding
 import com.telyu.nourimate.viewmodels.EditProfpicViewModel
@@ -39,6 +41,7 @@ class EditProfpicActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityEditProfpicBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setStatusBarColor(resources.getColor(R.color.color47, theme))
 
         viewModel = obtainViewModel(this@EditProfpicActivity)
 
@@ -53,6 +56,19 @@ class EditProfpicActivity : AppCompatActivity() {
         binding.buttonSaveCrop.setOnClickListener {
             saveCroppedImage()
         }
+    }
+
+    private fun setStatusBarColor(color: Int) {
+        val window = window
+        val insetsController = WindowCompat.getInsetsController(window, window.decorView)
+
+        // Set to 'true' to ensure status bar icons are dark, useful for light status bar backgrounds
+        insetsController.isAppearanceLightStatusBars = true
+        // Set to 'true' to ensure navigation bar icons are dark, useful for light navigation bar backgrounds
+        insetsController.isAppearanceLightNavigationBars = true
+
+        // Set the status bar color
+        window.statusBarColor = color
     }
 
     private fun saveCroppedImage() {

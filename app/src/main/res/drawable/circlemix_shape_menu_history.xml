@@ -1,0 +1,18 @@
+<!-- res/drawable/circle_with_sharp_edge.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background Circle -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#C3E1B9"/>
+            <size android:width="120dp" android:height="120dp"/>
+        </shape>
+    </item>
+    <!-- Overlay to create the sharp edge effect -->
+    <item> <!-- Negative right margin creates the sharp cut-out -->
+        <shape>
+            <solid android:color="#C3E1B9"/>
+            <corners android:bottomRightRadius="60dp" android:topRightRadius="32dp" android:topLeftRadius="60dp" android:bottomLeftRadius="60dp"/>
+            <size android:width="120dp" android:height="120dp"/>
+        </shape>
+    </item>
+</layer-list>

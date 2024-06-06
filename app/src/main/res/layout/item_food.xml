@@ -14,19 +14,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/viewCircleBackground"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:background="@drawable/circlemix_shape_menu_history"
+        app:layout_constraintEnd_toEndOf="@+id/viewBackground"
+        app:layout_constraintTop_toTopOf="@+id/viewBackground"/>
+
     <TextView
         android:id="@+id/tv_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Food Name"
         android:textColor="@color/black"
         android:fontFamily="@font/barlowcondensedsemibold"
-        android:textSize="18sp"
+        android:textSize="18dp"
         android:maxLines="1"
         android:layout_marginStart="20dp"
+        android:gravity="start"
         app:layout_constraintStart_toStartOf="@id/viewBackground"
+        app:layout_constraintEnd_toStartOf="@+id/viewCircleBackground"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="25dp" />
 
     <ImageView
         android:id="@+id/iv_recipe"
@@ -40,7 +50,7 @@
 
     <TextView
         android:id="@+id/tv_ingredients"
-        android:layout_width="140dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="bahan resep here"
         android:fontFamily="@font/alumnisans"
@@ -48,10 +58,11 @@
         android:maxLines="10"
         android:textColor="@color/black"
         android:layout_marginTop="4dp"
+        android:layout_marginStart="20dp"
+        android:gravity="start"
         app:layout_constraintTop_toBottomOf="@id/tv_name"
         app:layout_constraintStart_toStartOf="@id/viewBackground"
-        app:layout_constraintEnd_toStartOf="@id/iv_recipe"
-        app:layout_constrainedWidth="true" />
+        app:layout_constraintEnd_toStartOf="@+id/viewCircleBackground" />
 
     <TextView
         android:id="@+id/tv_calories"
@@ -59,7 +70,8 @@
         android:layout_height="wrap_content"
         android:text="calories"
         android:textSize="14sp"
-        android:layout_margin="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="10dp"
         android:fontFamily="@font/alumnisans"
         android:textColor="@color/black"
         app:layout_constraintTop_toTopOf="@id/viewBackground"
@@ -71,7 +83,8 @@
         android:layout_height="wrap_content"
         android:text="protein"
         android:textSize="14sp"
-        android:layout_margin="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="10dp"
         android:fontFamily="@font/alumnisans"
         android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@id/tv_calories"
@@ -83,7 +96,8 @@
         android:layout_height="wrap_content"
         android:text="carbs"
         android:textSize="14sp"
-        android:layout_margin="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="10dp"
         android:fontFamily="@font/alumnisans"
         android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@id/tv_protein"
@@ -95,7 +109,8 @@
         android:layout_height="wrap_content"
         android:text="fat"
         android:textSize="14sp"
-        android:layout_margin="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="10dp"
         android:fontFamily="@font/alumnisans"
         android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@id/tv_carbs"
