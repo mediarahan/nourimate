@@ -38,14 +38,23 @@ interface FoodDao {
     SELECT DISTINCT recipes.* FROM recipes
     INNER JOIN recommendations ON recipes.recipeId = recommendations.recipe_id
     WHERE recipes.mealType = :mealId
-    AND recommendations.date BETWEEN :startDate AND :endDate
-"""
+    """
     )
-    fun getRecipesByDateAndMealType(
-        mealId: Int,
-        startDate: Long,
-        endDate: Long
-    ): LiveData<List<Recipe>>
+    fun getRecipesByDateAndMealType(mealId: Int): LiveData<List<Recipe>>
+
+//    @Query(
+//        """
+//    SELECT DISTINCT recipes.* FROM recipes
+//    INNER JOIN recommendations ON recipes.recipeId = recommendations.recipe_id
+//    WHERE recipes.mealType = :mealId
+//    AND recommendations.date BETWEEN :startDate AND :endDate
+//"""
+//    )
+//    fun getRecipesByDateAndMealType(
+//        mealId: Int,
+//        startDate: Long,
+//        endDate: Long
+//    ): LiveData<List<Recipe>>
 
     //COBA COBA QUERY BUAT UPDATE RECOMMENDATION
     @Query(

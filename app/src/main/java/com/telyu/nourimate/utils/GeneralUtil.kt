@@ -3,8 +3,10 @@ package com.telyu.nourimate.utils
 import android.app.AlertDialog
 import android.content.Context
 import android.util.Log
+import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 
 object GeneralUtil {
     fun getDateToday(hour: Int, minute: Int, second: Int, milisecond: Int): Long {
@@ -229,6 +231,44 @@ object GeneralUtil {
     fun calculateIdealWeight(userHeight: Float?): Float? {
         val idealWeight = (userHeight?.minus(100))?.minus((0.1 * (userHeight - 100)))?.toFloat()
         return idealWeight
+    }
+
+    fun formatTime(milliseconds: Long): String {
+        var remainingTime = milliseconds / 1000
+
+        val days = remainingTime / (24 * 3600)
+        remainingTime %= (24 * 3600)
+        val hours = remainingTime / 3600
+        remainingTime %= 3600
+        val minutes = remainingTime / 60
+        val seconds = remainingTime % 60
+
+        return when {
+            days > 0 -> "$days days"
+            hours > 0 -> "$hours hours ${minutes} minutes"
+            minutes > 0 -> "$minutes minutes ${seconds} seconds"
+            else -> "$seconds seconds"
+        }
+    }
+
+
+    fun calculateDaysBetweenDates(startDateStr: String, endDateStr: String): Int {
+        val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+
+        // Parse the dates
+        val startDate = dateFormat.parse(startDateStr)
+        val endDate = dateFormat.parse(endDateStr)
+
+        // Check if parsing was successful
+        if (startDate == null || endDate == null) {
+            throw IllegalArgumentException("Invalid date format. Use 'YYYY/MM/DD'.")
+        }
+
+        // Calculate the difference in milliseconds
+        val diff = endDate.time - startDate.time
+
+        // Convert milliseconds to days
+        return (diff / (1000 * 60 * 60 * 24)).toInt()
     }
 
 }

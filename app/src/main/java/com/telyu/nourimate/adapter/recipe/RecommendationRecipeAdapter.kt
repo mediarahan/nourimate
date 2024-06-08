@@ -12,6 +12,7 @@ import com.telyu.nourimate.data.local.models.Recipe
 import com.telyu.nourimate.data.local.models.RecommendationRecipe
 import com.telyu.nourimate.databinding.ItemFoodBinding
 import com.telyu.nourimate.databinding.ItemDateBinding
+import com.telyu.nourimate.databinding.ItemFoodWeeklyBinding
 import com.telyu.nourimate.utils.Converters
 
 class RecommendationRecipeAdapter(private val listener: OnAddClickListener) :
@@ -29,7 +30,7 @@ class RecommendationRecipeAdapter(private val listener: OnAddClickListener) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder =
         when (viewType) {
             viewTypeChildren -> ChildViewHolder(
-                ItemFoodBinding.inflate(
+                ItemFoodWeeklyBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
@@ -66,7 +67,7 @@ class RecommendationRecipeAdapter(private val listener: OnAddClickListener) :
         }
     }
 
-    inner class ChildViewHolder(private val binding: ItemFoodBinding) : BaseViewHolder(binding) {
+    inner class ChildViewHolder(private val binding: ItemFoodWeeklyBinding) : BaseViewHolder(binding) {
         override fun bind(item: RecommendationRecipe) {
             item as RecommendationRecipe.RecipeItem
             with(binding) {
@@ -87,10 +88,6 @@ class RecommendationRecipeAdapter(private val listener: OnAddClickListener) :
                     )
                     .placeholder(R.drawable.capcay)
                     .into(ivRecipe)
-
-                fabaddmeal.setOnClickListener {
-                    listener.onAddClick(item.recipe)
-                }
             }
         }
     }

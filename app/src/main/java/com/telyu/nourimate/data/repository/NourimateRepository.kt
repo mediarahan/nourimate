@@ -31,6 +31,7 @@ import com.telyu.nourimate.data.remote.retrofit.LoginRequest
 import com.telyu.nourimate.data.remote.retrofit.RecommendationRequest
 import com.telyu.nourimate.data.remote.retrofit.RegisterRequest
 import com.telyu.nourimate.data.remote.retrofit.SignUpBody
+import com.telyu.nourimate.utils.SettingsPreference
 import com.telyu.nourimate.utils.UserModel
 import com.telyu.nourimate.utils.UserPreference
 import kotlinx.coroutines.delay
@@ -41,6 +42,7 @@ class NourimateRepository(
     private val apiService: ApiService,
     private val apiService2: ApiService2,
     private val userPreference: UserPreference,
+    private val settingsPreference: SettingsPreference,
     private val userDao: UserDao,
     private val foodDao: FoodDao,
     context: Context
@@ -272,12 +274,8 @@ class NourimateRepository(
     //=== QUERY FOOD ===
 
     //query weekly
-    fun getRecipesByDateAndMeal(
-        mealId: Int,
-        startDate: Long,
-        endDate: Long
-    ): LiveData<List<Recipe>> {
-        return foodDao.getRecipesByDateAndMealType(mealId, startDate, endDate)
+    fun getRecipesByDateAndMeal(mealId: Int): LiveData<List<Recipe>> {
+        return foodDao.getRecipesByDateAndMealType(mealId)
     }
 
     fun getRecommendationsByMealIdSortedAscending(mealId: Int): LiveData<List<Recommendation>> {
@@ -417,11 +415,11 @@ class NourimateRepository(
         userDao.insertWeightEntry(entry)
     }
 
-    suspend fun deleteWeightEntryById(entryId: Int) {
-        userDao.deleteWeightEntryById(entryId)
+    suspend fun deleteWeightEntriesById(entryId: Int) {
+        userDao.deleteWeightEntriesById(entryId)
     }
 
-    suspend fun getWeightEntriesByUserIdAsc(userId: Int): List<WeightEntry> {
+    fun getWeightEntriesByUserIdAsc(userId: Int): LiveData<List<WeightEntry>> {
         return userDao.getWeightEntriesByUserIdAsc(userId)
     }
 
@@ -509,8 +507,20 @@ class NourimateRepository(
         return userDao.getWeightEntriesLiveData()
     }
 
-    suspend fun getLatestHistory(): History {
-        return userDao.getLatestHistory()
+    suspend fun getLatestHistory(userId: Int): History {
+        return userDao.getLatestHistory(userId)
+    }
+
+    suspend fun getCooldownEndDate(userId: Int): Date {
+        return userDao.getEditCurrentWeightDate(userId)
+    }
+
+    suspend fun saveWaterIntake(newAmount: Int) {
+        settingsPreference.saveWaterIntake(newAmount)
+    }
+
+    suspend fun getWaterIntake(): Flow<Int> {
+        return settingsPreference.getWaterIntake()
     }
 
     companion object {
@@ -520,11 +530,12 @@ class NourimateRepository(
             apiService: ApiService,
             apiService2: ApiService2,
             pref: UserPreference,
+            pref2: SettingsPreference,
             userDao: UserDao,
             foodDao: FoodDao,
             context: Context
         ): NourimateRepository = instance ?: synchronized(this) {
-            instance ?: NourimateRepository(apiService, apiService2, pref, userDao, foodDao, context)
+            instance ?: NourimateRepository(apiService, apiService2, pref, pref2, userDao, foodDao, context)
         }.also { instance = it }
     }
 

@@ -10,17 +10,7 @@ import com.telyu.nourimate.utils.Converters
 import kotlinx.parcelize.Parcelize
 import java.util.Date
 
-@Entity(tableName = "recommendations",
-//    foreignKeys = [
-//        ForeignKey(
-//            entity = Recipe::class,
-//            parentColumns = ["recipeId"],
-//            childColumns = ["recipe_id"],
-//            onDelete = ForeignKey.CASCADE
-//        ),
-//    ]
-)
-
+@Entity(tableName = "recommendations")
 @Parcelize
 @TypeConverters(Converters::class)
 data class Recommendation(
@@ -30,4 +20,5 @@ data class Recommendation(
     var isSelected: Int = 0,
     @field:ColumnInfo(name = "recipe_id")
     val recipeId: Int,
+    val userId: Int,
 ) : Parcelable

@@ -57,7 +57,6 @@ class NavigationBarActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
         val alertDialogBuilder = AlertDialog.Builder(this)
         alertDialogBuilder.setTitle("Exit App")
         alertDialogBuilder.setMessage("Are you sure you want to exit the app?")
@@ -67,6 +66,8 @@ class NavigationBarActivity : AppCompatActivity() {
         alertDialogBuilder.setNegativeButton("No") { dialog, _ ->
             dialog.dismiss()
         }
+        alertDialogBuilder.setCancelable(false)
         alertDialogBuilder.show()
     }
+
 }

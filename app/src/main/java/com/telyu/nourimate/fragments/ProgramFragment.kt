@@ -99,15 +99,10 @@ class ProgramFragment : Fragment() {
             .setMessage("End the current program and save your results?")
             .setPositiveButton("Yes") { _, _ ->
                 setCurrentFragment(ProgramEmptyFragment())
-                viewModel.deleteWeightTrackByUserId()
                 binding.titleTextView.text = "Choose Program"
                 binding.subtitleTextView.text = "No programs registered"
 
-                val currentFragment =
-                    childFragmentManager.findFragmentById(R.id.programContentFrame)
-                if (currentFragment is ProgramEmptyFragment) {
-                    finalizeProgramResults()
-                }
+                finalizeProgramResults()
 
                 val intent = Intent(context, TransitionProgramActivity::class.java)
                 startActivity(intent)
@@ -125,8 +120,7 @@ class ProgramFragment : Fragment() {
     }
 
     //For inputting final results of the program, and deleting relevant weight entries and track
-    private fun finalizeProgramResults() {
-        Log.d("ProgramFragment", "Finalizing program results")
+    private fun finalizeProgramResults( ) {
         viewModel.userWeightTrack.observe(viewLifecycleOwner) { weightTrack ->
             val programName = when (weightTrack.ongoingProgram) {
                 1 -> "Maintain Weight"
@@ -147,26 +141,28 @@ class ProgramFragment : Fragment() {
                     val carbs = sum.totalCarbs.toInt()
 
                     viewModel.userId.observe(viewLifecycleOwner) { id ->
-                            val history = History(
-                                id = 0,
-                                programName = programName,
-                                startDate = startDate,
-                                endDate = endDate,
-                                calories = calories,
-                                protein = protein,
-                                fat = fat,
-                                carbs = carbs,
-                                startWeight = weightTrack.startWeight,
-                                endWeight = weightTrack.endWeight,
-                                userId = id
-                            )
-                            viewModel.insertHistory(history)
+                        val history = History(
+                            id = 0,
+                            programName = programName,
+                            startDate = startDate,
+                            endDate = endDate,
+                            calories = calories,
+                            protein = protein,
+                            fat = fat,
+                            carbs = carbs,
+                            startWeight = weightTrack.startWeight,
+                            endWeight = weightTrack.endWeight,
+                            userId = id,
+                            createdAt = System.currentTimeMillis()
+                        )
+                        viewModel.insertHistory(history)
+                        viewModel.deleteWeightTrackByUserId()
+                        viewModel.deleteWeightEntriesById()
                     }
                 }
             }
         }
     }
-
 
     //===== Setting UI =====
     private fun setupSettingPopup() {

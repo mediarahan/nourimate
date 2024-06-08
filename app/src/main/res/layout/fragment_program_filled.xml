@@ -225,6 +225,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rectanglemealprogramImageView" />
 
+            <TextView
+                android:id="@+id/timerRemainingInputCurrentWeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="10dp"
+                android:text="Next weight input happens in: "
+                android:textStyle="bold"
+                fontfamily="@font/zenkakugothicnewbold"
+                app:layout_constraintBottom_toTopOf="@+id/buttonInputWeight"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/startingweightMW" />
+
             <Button
                 android:id="@+id/buttonInputWeight"
                 android:layout_width="match_parent"
@@ -232,6 +245,7 @@
                 android:text="Input Current Weight"
                 android:layout_marginStart="48dp"
                 android:layout_marginEnd="48dp"
+                android:layout_marginTop="12dp"
                 android:backgroundTint="@color/color2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -102,8 +102,20 @@ class WeightChartView(context: Context, attrs: AttributeSet) : View(context, att
 
         val maxWeight = weights.maxOrNull() ?: return
         val minWeight = weights.minOrNull() ?: return
-        val deltaX = (width - 2 * horizontalPadding) / (weights.size - 1)
-        val deltaY = (height - 2 * verticalPadding - 60) / (maxWeight - minWeight)
+        val deltaX = (width - 2 * horizontalPadding) / (weights.size - 1).coerceAtLeast(1) // Avoid division by zero
+        val deltaY = if (maxWeight == minWeight) 1f else (height - 2 * verticalPadding - 60) / (maxWeight - minWeight)
+
+        if (weights.size == 1) {
+            // Draw a single point if there is only one weight
+            val x = horizontalPadding
+            val y = height - (weights[0] - minWeight) * deltaY - verticalPadding - 40
+            canvas.drawCircle(x, y, 15f, strokePaint)
+            canvas.drawCircle(x, y, 10f, linePaint)
+            canvas.drawRoundRect(x - 50, y - 50, x + 50, y - 10, 20f, 20f, textBackgroundPaint)
+            canvas.drawText("${weights[0]}kg", x - 25f, y - 20f, textPaint)
+            canvas.drawText(dates[0], x, height.toFloat() - verticalPadding + 5f, datePaint)
+            return
+        }
 
         var lastX = horizontalPadding
         var lastY = height - (weights[0] - minWeight) * deltaY - verticalPadding - 40
@@ -126,6 +138,7 @@ class WeightChartView(context: Context, attrs: AttributeSet) : View(context, att
             canvas.drawText(dates[i], x, height.toFloat() - verticalPadding + 5f, datePaint)
         }
     }
+
 
 
 

@@ -18,6 +18,7 @@ data class Detail(
     val gender: String,
     val allergen: String,
     val disease: String,
-    val bmi: Float?,
+    val bmi: Float,
+    val userId: Int,
 
     ): Parcelable

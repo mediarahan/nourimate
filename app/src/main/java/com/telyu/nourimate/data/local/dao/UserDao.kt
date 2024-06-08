@@ -86,13 +86,13 @@ interface UserDao {
     suspend fun insertWeightEntry(entry: WeightEntry)
 
     //for deleting a particular user's weight entries. Used in SpecialProgram's Restore Program
-    @Query("DELETE FROM weight_entries WHERE id = :entryId")
-    suspend fun deleteWeightEntryById(entryId: Int)
+    @Query("DELETE FROM weight_entries WHERE userId = :userId")
+    suspend fun deleteWeightEntriesById(userId: Int)
 
     //for displaying weight entries from earliest to latest of a particular user
     // used in displaying progress graph
     @Query("SELECT *  FROM weight_entries WHERE userId = :userId ORDER BY date ASC")
-    suspend fun getWeightEntriesByUserIdAsc(userId: Int): List<WeightEntry>
+    fun getWeightEntriesByUserIdAsc(userId: Int): LiveData<List<WeightEntry>>
 
     //for displaying latest weight entry of a particular user
     @Query("""
@@ -144,6 +144,9 @@ interface UserDao {
     @Query("SELECT * FROM weight_entries ORDER BY date ASC")
     fun getWeightEntriesLiveData(): LiveData<List<WeightEntry>>
 
-    @Query("SELECT * FROM history ORDER BY startDate DESC LIMIT 1")
-    suspend fun getLatestHistory(): History
+    @Query("SELECT * FROM history WHERE userId = :userId ORDER BY createdAt DESC LIMIT 1")
+    suspend fun getLatestHistory(userId: Int): History
+
+    @Query("SELECT editCurrentWeightDate FROM weight_tracks WHERE userId = :userId")
+    suspend fun getEditCurrentWeightDate(userId: Int): Date
 }

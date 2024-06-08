@@ -19,5 +19,6 @@ data class History(
     val carbs: Int,
     val startWeight: Int,
     val endWeight: Int,
-    val userId: Int
+    val userId: Int,
+    val createdAt: Long,
 ): Parcelable

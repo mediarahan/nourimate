@@ -10,6 +10,8 @@ import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.telyu.nourimate.data.local.models.Detail
 import com.telyu.nourimate.data.local.models.Recommendation
+import com.telyu.nourimate.data.local.models.WeightEntry
+import com.telyu.nourimate.data.local.models.WeightTrack
 import com.telyu.nourimate.data.remote.Result
 import com.telyu.nourimate.data.remote.retrofit.RecommendationRequest
 import com.telyu.nourimate.data.repository.NourimateRepository
@@ -21,13 +23,6 @@ import java.lang.Exception
 import java.util.Date
 
 class EditProfileViewModel(private val repository: NourimateRepository) : ViewModel() {
-
-    fun insertDetail(detail: Detail) {
-        viewModelScope.launch {
-            repository.insertDetail(detail)
-        }
-    }
-
 
     //BISMILLAH API ----------------------------------------------------------------------------------------
 
@@ -89,6 +84,7 @@ class EditProfileViewModel(private val repository: NourimateRepository) : ViewMo
                     date = date,
                     isSelected = 0,
                     recipeId = idSarapan[i],
+                    6
                 )
             )
 
@@ -98,6 +94,7 @@ class EditProfileViewModel(private val repository: NourimateRepository) : ViewMo
                     date = date,
                     isSelected = 0,
                     recipeId = idMakanSiang[i],
+                    6
                 )
             )
 
@@ -107,6 +104,7 @@ class EditProfileViewModel(private val repository: NourimateRepository) : ViewMo
                     date = date,
                     isSelected = 0,
                     recipeId = idMakanMalam[i],
+                    6
                 )
             )
         }
@@ -136,12 +134,36 @@ class EditProfileViewModel(private val repository: NourimateRepository) : ViewMo
             }
         }
 
+    fun insertDetail(detailId: Int, dob: Date?, height: Float?, weight: Float?, waistSize: Float?, gender: String, allergen: String, disease: String, bmi: Float) {
+        viewModelScope.launch {
+            val userId = repository.getUserId().firstOrNull() ?: -1
+            val detail = Detail(detailId, dob, height, weight, waistSize, gender, allergen, disease, bmi, userId)
+            repository.insertDetail(detail)
+        }
+    }
 
     fun insertRecommendations(recommendations: List<Recommendation>) {
         viewModelScope.launch {
             repository.insertRecommendations(recommendations)
         }
     }
+
+    fun insertWeightTrack(id: Int, ongoingProgram: Int, startDate: Date?, endDate: Date?, startWeight: Int, endWeight: Int, editCurrentWeightDate: Date) {
+        viewModelScope.launch {
+            val userId = repository.getUserId().firstOrNull() ?: -1
+            val weightTrack = WeightTrack(id, ongoingProgram, startDate, endDate, startWeight, endWeight, editCurrentWeightDate, userId)
+            repository.insertWeightTrack(weightTrack)
+        }
+    }
+
+    fun insertInitialWeightEntry(weight: Int, date: Date) {
+        viewModelScope.launch {
+            val userId = repository.getUserId().firstOrNull() ?: -1
+            val weightEntry = WeightEntry(0, weight, date, userId)
+            repository.insertWeightEntry(weightEntry)
+        }
+    }
+
     //BISMILLAH API ----------------------------------------------------------------------------------------
 
 }

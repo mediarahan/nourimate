@@ -12,12 +12,13 @@ import com.telyu.nourimate.data.repository.NourimateRepository
 object Injection {
     fun provideRepository(context: Context): NourimateRepository {
         val pref = UserPreference.getInstance(context.dataStore)
+        val pref2 = SettingsPreference.getInstance(context.dataStore)
         val apiService = ApiConfig.getApiService()
         val apiService2 = ApiConfig2.getApiService()
         val userDao = provideUserDao(context)
         val foodDao = provideFoodDao(context)
 
-        return NourimateRepository.getInstance(apiService, apiService2, pref, userDao, foodDao, context)
+        return NourimateRepository.getInstance(apiService, apiService2, pref, pref2, userDao, foodDao, context)
     }
     private fun provideUserDao(context: Context): UserDao {
         val db = UserDatabase.getInstance(context)

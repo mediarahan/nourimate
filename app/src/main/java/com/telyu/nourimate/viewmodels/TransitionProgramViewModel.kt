@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.telyu.nourimate.data.local.models.History
 import com.telyu.nourimate.data.repository.NourimateRepository
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
 class TransitionProgramViewModel(private val repository: NourimateRepository): ViewModel() {
@@ -15,7 +16,8 @@ class TransitionProgramViewModel(private val repository: NourimateRepository): V
 
     fun getLatestHistory() {
         viewModelScope.launch {
-            _history.value = repository.getLatestHistory()
+            val userId = repository.getUserId().firstOrNull() ?: -1
+            _history.value = repository.getLatestHistory(userId)
         }
     }
 }

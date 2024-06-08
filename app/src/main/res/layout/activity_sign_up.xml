@@ -19,273 +19,273 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/waveprofile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="fitXY"
-        app:layout_constraintWidth_percent="1.2"
-        android:src="@drawable/wave_editprofile"
-        android:elevation="4dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+            <ImageView
+                android:id="@+id/waveprofile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                app:layout_constraintWidth_percent="1.2"
+                android:src="@drawable/wave_editprofile"
+                android:elevation="4dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-    <ImageView
-        android:id="@+id/waveprofileshadow"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="fitXY"
-        app:layout_constraintWidth_percent="1.2"
-        android:src="@drawable/wave_editprofile_with_shadow"
-        android:elevation="3dp"
-        android:layout_marginTop="2dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-
-    <TextView
-        android:id="@+id/textSignUp1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/alatsi"
-        android:text="Sign Up"
-        android:textColor="#000000"
-        android:textSize="33sp"
-        android:elevation="6dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/waveprofileshadow"/>
-
-    <View
-        android:id="@+id/transparentRectangle"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/rectangle_signup_with_shadow"
-        app:layout_constraintTop_toBottomOf="@+id/textCreateAccount"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <TextView
-        android:id="@+id/textCreateAccount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/abel"
-        android:text="Create Your Account"
-        android:textColor="#000000"
-        android:textSize="20sp"
-        android:elevation="6dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textSignUp1"/>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/FullNameEditInputLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="55dp"
-        android:elevation="3dp"
-        android:background="@drawable/rectangle_signup1"
-        app:boxStrokeWidth="0dp"
-        app:boxStrokeWidthFocused="3dp"
-        app:boxCornerRadiusTopStart="10dp"
-        app:boxCornerRadiusTopEnd="10dp"
-        app:boxCornerRadiusBottomStart="10dp"
-        app:boxCornerRadiusBottomEnd="10dp"
-        app:startIconDrawable="@drawable/profile"
-        app:startIconTint="#FFD689"
-        app:layout_constraintWidth_percent="0.85"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textCreateAccount">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextFullName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Full Name"
-            android:fontFamily="@font/abel"
-            android:inputType="textPersonName" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/PhoneNumberEditInputLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:elevation="3dp"
-        android:background="@drawable/rectangle_signup1"
-        app:boxStrokeWidth="0dp"
-        app:boxStrokeWidthFocused="3dp"
-        app:boxCornerRadiusTopStart="10dp"
-        app:boxCornerRadiusTopEnd="10dp"
-        app:boxCornerRadiusBottomStart="10dp"
-        app:boxCornerRadiusBottomEnd="10dp"
-        app:startIconDrawable="@drawable/call"
-        app:startIconTint="#FFD689"
-        app:layout_constraintWidth_percent="0.85"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/FullNameEditInputLayout">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextPhone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Phone Number"
-            android:fontFamily="@font/abel"
-            android:inputType="phone" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/EmaileditInputLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:elevation="3dp"
-        android:background="@drawable/rectangle_signup1"
-        app:boxStrokeWidth="0dp"
-        app:boxStrokeWidthFocused="3dp"
-        app:boxCornerRadiusTopStart="10dp"
-        app:boxCornerRadiusTopEnd="10dp"
-        app:boxCornerRadiusBottomStart="10dp"
-        app:boxCornerRadiusBottomEnd="10dp"
-        app:startIconDrawable="@drawable/mail"
-        app:startIconTint="#FFD689"
-        app:layout_constraintWidth_percent="0.85"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/PhoneNumberEditInputLayout">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Email"
-            android:fontFamily="@font/abel"
-            android:inputType="textEmailAddress" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/passwordeditInputLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:elevation="3dp"
-        android:background="@drawable/rectangle_signup1"
-        app:boxStrokeWidth="0dp"
-        app:boxStrokeWidthFocused="3dp"
-        app:boxCornerRadiusTopStart="10dp"
-        app:boxCornerRadiusTopEnd="10dp"
-        app:boxCornerRadiusBottomStart="10dp"
-        app:boxCornerRadiusBottomEnd="10dp"
-        app:startIconDrawable="@drawable/lock"
-        app:startIconTint="#FFD689"
-        app:endIconMode="custom"
-        app:layout_constraintWidth_percent="0.85"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/EmaileditInputLayout">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Password"
-            android:fontFamily="@font/abel"
-            android:inputType="textPassword" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/confirmpasswordeditInputLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:elevation="3dp"
-        android:background="@drawable/rectangle_signup1"
-        app:boxStrokeWidth="0dp"
-        app:boxStrokeWidthFocused="3dp"
-        app:boxCornerRadiusTopStart="10dp"
-        app:boxCornerRadiusTopEnd="10dp"
-        app:boxCornerRadiusBottomStart="10dp"
-        app:boxCornerRadiusBottomEnd="10dp"
-        app:startIconDrawable="@drawable/lock"
-        app:startIconTint="#FFD689"
-        app:endIconMode="custom"
-        app:layout_constraintWidth_percent="0.85"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordeditInputLayout">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextConfirmPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Confirm Password"
-            android:fontFamily="@font/abel"
-            android:inputType="textPassword" />
-    </com.google.android.material.textfield.TextInputLayout>
+            <ImageView
+                android:id="@+id/waveprofileshadow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                app:layout_constraintWidth_percent="1.2"
+                android:src="@drawable/wave_editprofile_with_shadow"
+                android:elevation="3dp"
+                android:layout_marginTop="2dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
 
-    <Button
-        android:id="@+id/buttonRegister"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:onClick="onSignUpClicked"
-        android:text="Register"
-        android:textSize="23sp"
-        android:layout_marginTop="25dp"
-        android:elevation="6dp"
-        android:fontFamily="@font/alatsi"
-        app:layout_constraintWidth_percent="0.5"
-        android:background="@drawable/buttonlogin_background_with_shadow"
-        app:backgroundTint="@null"
-        android:textColor="@color/color23"
-        app:layout_constraintTop_toBottomOf="@+id/confirmpasswordeditInputLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+            <TextView
+                android:id="@+id/textSignUp1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/alatsi"
+                android:text="Sign Up"
+                android:textColor="#000000"
+                android:textSize="33sp"
+                android:elevation="6dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/waveprofileshadow"/>
 
-    <TextView
-        android:id="@+id/textViewhaveaccount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/abel"
-        android:text="Have an account? "
-        android:textColor="#000000"
-        android:elevation="6dp"
-        android:textSize="15sp"
-        android:layout_marginBottom="12dp"
-        app:layout_constraintBottom_toBottomOf="@+id/waveprofile2"
-        app:layout_constraintEnd_toStartOf="@id/TextViewSignIn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintHorizontal_chainStyle="packed" />
+            <View
+                android:id="@+id/transparentRectangle"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/rectangle_signup_with_shadow"
+                app:layout_constraintTop_toBottomOf="@+id/textCreateAccount"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-    <TextView
-        android:id="@+id/TextViewSignIn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=" Sign In"
-        android:fontFamily="@font/abel"
-        android:textSize="15sp"
-        android:elevation="6dp"
-        android:textColor="#B83405"
-        android:layout_marginBottom="12dp"
-        app:layout_constraintBottom_toBottomOf="@+id/waveprofile2"
-        app:layout_constraintStart_toEndOf="@+id/textViewhaveaccount"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+            <TextView
+                android:id="@+id/textCreateAccount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/abel"
+                android:text="Create Your Account"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:elevation="6dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textSignUp1"/>
 
-    <ImageView
-        android:id="@+id/waveprofile2"
-        android:layout_width="match_parent"
-        android:layout_height="85dp"
-        android:scaleType="fitXY"
-        app:layout_constraintWidth_percent="1.2"
-        android:src="@drawable/editprofile2"
-        android:elevation="0dp"
-        android:layout_marginTop="15dp"
-        app:layout_constraintTop_toBottomOf="@+id/buttonRegister"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/FullNameEditInputLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="55dp"
+                android:elevation="3dp"
+                android:background="@drawable/rectangle_signup1"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="3dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:startIconDrawable="@drawable/profile"
+                app:startIconTint="#FFD689"
+                app:layout_constraintWidth_percent="0.85"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textCreateAccount">
+                <com.telyu.nourimate.custom.CustomTextInputEditText
+                    android:id="@+id/editTextFullName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Full Name"
+                    android:fontFamily="@font/abel"
+                    android:inputType="textPersonName" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/PhoneNumberEditInputLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:elevation="3dp"
+                android:background="@drawable/rectangle_signup1"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="3dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:startIconDrawable="@drawable/call"
+                app:startIconTint="#FFD689"
+                app:layout_constraintWidth_percent="0.85"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/FullNameEditInputLayout">
+                <com.telyu.nourimate.custom.CustomTextInputEditText
+                    android:id="@+id/editTextPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Phone Number"
+                    android:fontFamily="@font/abel"
+                    android:inputType="phone" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/EmaileditInputLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:elevation="3dp"
+                android:background="@drawable/rectangle_signup1"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="3dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:startIconDrawable="@drawable/mail"
+                app:startIconTint="#FFD689"
+                app:layout_constraintWidth_percent="0.85"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/PhoneNumberEditInputLayout">
+                <com.telyu.nourimate.custom.CustomTextInputEditText
+                    android:id="@+id/editTextEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Email"
+                    android:fontFamily="@font/abel"
+                    android:inputType="textEmailAddress" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/passwordeditInputLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:elevation="3dp"
+                android:background="@drawable/rectangle_signup1"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="3dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:startIconDrawable="@drawable/lock"
+                app:startIconTint="#FFD689"
+                app:endIconMode="custom"
+                app:layout_constraintWidth_percent="0.85"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/EmaileditInputLayout">
+                <com.telyu.nourimate.custom.CustomTextInputEditText
+                    android:id="@+id/editTextPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Password"
+                    android:fontFamily="@font/abel"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/confirmpasswordeditInputLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:elevation="3dp"
+                android:background="@drawable/rectangle_signup1"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="3dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:startIconDrawable="@drawable/lock"
+                app:startIconTint="#FFD689"
+                app:endIconMode="custom"
+                app:layout_constraintWidth_percent="0.85"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/passwordeditInputLayout">
+                <com.telyu.nourimate.custom.CustomTextInputEditText
+                    android:id="@+id/editTextConfirmPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Confirm Password"
+                    android:fontFamily="@font/abel"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <Button
+                android:id="@+id/buttonRegister"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:onClick="onSignUpClicked"
+                android:text="Register"
+                android:textSize="23sp"
+                android:layout_marginTop="25dp"
+                android:elevation="6dp"
+                android:fontFamily="@font/alatsi"
+                app:layout_constraintWidth_percent="0.5"
+                android:background="@drawable/buttonlogin_background_with_shadow"
+                app:backgroundTint="@null"
+                android:textColor="@color/color23"
+                app:layout_constraintTop_toBottomOf="@+id/confirmpasswordeditInputLayout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/textViewhaveaccount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/abel"
+                android:text="Have an account? "
+                android:textColor="#000000"
+                android:elevation="6dp"
+                android:textSize="15sp"
+                android:layout_marginBottom="12dp"
+                app:layout_constraintBottom_toBottomOf="@+id/waveprofile2"
+                app:layout_constraintEnd_toStartOf="@id/TextViewSignIn"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/TextViewSignIn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" Sign In"
+                android:fontFamily="@font/abel"
+                android:textSize="15sp"
+                android:elevation="6dp"
+                android:textColor="#B83405"
+                android:layout_marginBottom="12dp"
+                app:layout_constraintBottom_toBottomOf="@+id/waveprofile2"
+                app:layout_constraintStart_toEndOf="@+id/textViewhaveaccount"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
+            <ImageView
+                android:id="@+id/waveprofile2"
+                android:layout_width="match_parent"
+                android:layout_height="85dp"
+                android:scaleType="fitXY"
+                app:layout_constraintWidth_percent="1.2"
+                android:src="@drawable/editprofile2"
+                android:elevation="0dp"
+                android:layout_marginTop="15dp"
+                app:layout_constraintTop_toBottomOf="@+id/buttonRegister"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

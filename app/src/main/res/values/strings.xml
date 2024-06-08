@@ -7,5 +7,30 @@
     <string name="consumed_calories">Consumed calories: %1$d</string>
     <string name="calories_percentage">%1$d%%</string>
     <string name="water_intake_text">%1$d / 2000ml</string>
+    <string name="errorLengthPassword">Password Must Contains Minimum 8 Characters</string>
+    <string name="errorEmptyPassword">Input Your Password</string>
+    <string name="errorNumberPassword">Password Must Contain At Least One Number</string>
+    <string name="errorInvalidEmail">Your Email Invalid</string>
+    <string name="errorEmptyEmail">Input Your Email</string>
+    <string name="emptyDop">Date range must be at least 28 days</string>
+    <string name="errorDop">Select Start Date and End Date of Program</string>
+    <string name="errorLengthCode">Code Must Contains Minimum 6 Characters</string>
+    <string name="errorEmptyCode">Enter Code That Sent To Your Email</string>
+    <string name="errorLengthPhoneNumber">Phone Number Must Contains Minimum 10 Numbers</string>
+    <string name="errorEmptyPhoneNumber">Input Your Phone Number</string>
+    <string name="errorEmptyName">Input Your Name</string>
+    <string name="protein_deficiency">Protein deficiency can lead to malnutrition, impaired muscle and immune function, and developmental issues, with severe cases like kwashiorkor and marasmus affecting children.</string>
+    <string name="excess_protein">Excessive protein intake can overburden the kidneys, increase osteoporosis risk due to calcium imbalance, and cause nutritional imbalances.</string>
+    <string name="balanced_protein">It is crucial to maintain a balanced protein intake with other nutrients to prevent health issues caused by dietary imbalances.</string>
+    <string name="carbs_deficiency">Low carbohydrate diets have the effect of slowing metabolism, accumulating fat storage and increasing the risk of fatigue, dehydration and muscle pain.</string>
+    <string name="excess_carbs">Excessive consumption of refined carbohydrates causes metabolic syndrome, a condition of increased blood sugar levels, high blood pressure, obesity, and increased levels of fat in the blood.</string>
+    <string name="calories_deficiency">Insufficient calorie intake can lead to energy deficiency, weight loss, muscle depletion, slowed metabolism, nutrient deficiencies.</string>
+    <string name="excess_calories">Long term consumption of high calorie diet produces obesity, initiates oxidative stress, and initiates neuroinflammation causing early onset of visceral and brain diseases.</string>
+    <string name="fat_deficiency">You are consuming too little fat</string>
+    <string name="excess_fat">You are consuming too much fat.</string>
+
+
+
+
 
 </resources>

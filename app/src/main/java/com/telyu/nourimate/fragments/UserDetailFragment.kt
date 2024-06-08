@@ -66,7 +66,7 @@ class UserDetailFragment : Fragment() {
 
         getAllData()
         mapAllDataToView()
-        setupSeekbar()
+        setupBMISeekbarAndText()
         bindEditTextButtons()
 
         binding.buttonSaveEditProfile.setOnClickListener {
@@ -135,20 +135,26 @@ class UserDetailFragment : Fragment() {
         }
     }
 
-    private fun setupSeekbar() {
+    private fun setupBMISeekbarAndText() {
         val seekBar = binding.seekBar
 
         val minValue = 15
         val maxValue = 40
         seekBar.max = maxValue - minValue
 
-        // Observe the BMI attribute of the Detail object
         viewModel.userDetails.observe(viewLifecycleOwner) { userDetails ->
             userDetails?.let { detail ->
-                val bmi = detail.bmi ?: 0.0
+                val bmi = detail.bmi
+                val bmiStatus = when {
+                    bmi in 0.0..18.4 -> "Underweight"  // Adjusted the upper boundary to 18.4
+                    bmi in 18.5..24.9 -> "Normal"
+                    bmi in 25.0..29.9 -> "Overweight"
+                    bmi >= 30.0 -> "Obese"
+                    else -> "Invalid BMI"
+                }
+                binding.textViewBmiCategory.text = bmiStatus
                 binding.textViewBmi.text = bmi.toString()
-                // Convert BMI to an integer value within the range of the SeekBar
-                val progress = max(0, min((maxValue - minValue), (bmi.toInt() - minValue)))
+                val progress = max(0, min((maxValue - minValue), ((bmi?.toInt() ?: -999) - minValue)))
                 seekBar.progress = progress
             }
         }
@@ -220,16 +226,6 @@ class UserDetailFragment : Fragment() {
         val allergen = binding.editTextAllergy.text.toString()
         val disease = binding.editTextDisease.text.toString()
 
-        // Logging variables before creating Detail object
-        Log.d(TAG, "Name: $name")
-        Log.d(TAG, "Date of Birth: $dob")
-        Log.d(TAG, "Height: $height")
-        Log.d(TAG, "Weight: $weight")
-        Log.d(TAG, "Waist Size: $waistSize")
-        Log.d(TAG, "Gender: $gender")
-        Log.d(TAG, "Allergen: $allergen")
-        Log.d(TAG, "Disease: $disease")
-
         val id = viewModel.userId.value
         Log.d("UserDetailFragment", "User ID: $id")
         val formattedDob = Converters().fromStringToDate(dob)
@@ -247,7 +243,8 @@ class UserDetailFragment : Fragment() {
                     gender = gender,
                     allergen = allergen,
                     disease = disease,
-                    bmi = bmi,
+                    bmi = bmi ?: 0f,
+                    userId = id
                 )
                 viewModel.userId.observe(viewLifecycleOwner) { userId ->
                     userId?.let {

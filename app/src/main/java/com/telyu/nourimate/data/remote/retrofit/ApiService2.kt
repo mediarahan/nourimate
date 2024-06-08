@@ -33,7 +33,7 @@ interface ApiService2 {
     @POST("auth/generate-id_token")
     suspend fun generateIdToken(@Body requestBody: IdTokenBody)
 
-    @POST("/api/rekomendasi")
+    @POST("rekomendasi")
     suspend fun getRecommendedRecipes(
         @Body requestData: RecommendationRequest
     ): RecommendationResponse

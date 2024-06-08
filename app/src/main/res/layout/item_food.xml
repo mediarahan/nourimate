@@ -102,45 +102,6 @@
         app:layout_constraintStart_toEndOf="@id/viewBackground" />
 
     <FrameLayout
-        android:id="@+id/buttonMealAdded"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rectangle_add_menu"
-        android:elevation="3dp"
-        android:layout_marginEnd="2dp"
-        android:layout_marginBottom="2dp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@id/viewBackground"
-        app:layout_constraintEnd_toEndOf="@id/viewBackground">
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabmealadded"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/baseline_check_circle_24"
-            app:tint="@null"
-            app:backgroundTint="@android:color/transparent"
-            app:elevation="0dp"
-            android:padding="0dp"
-            app:maxImageSize="30dp"
-            app:pressedTranslationZ="0dp"
-            android:layout_gravity="start|center_vertical" />
-
-        <TextView
-            android:id="@+id/addedTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Added"
-            android:textColor="@color/black"
-            android:textSize="17dp"
-            android:layout_gravity="end|center_vertical"
-            android:fontFamily="@font/alumnisanssemibold"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="15dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-    </FrameLayout>
-
-    <FrameLayout
         android:id="@+id/buttonAddMeal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

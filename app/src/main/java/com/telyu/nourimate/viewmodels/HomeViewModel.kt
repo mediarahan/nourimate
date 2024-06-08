@@ -13,7 +13,6 @@ import androidx.lifecycle.viewModelScope
 import com.telyu.nourimate.data.local.models.Detail
 import com.telyu.nourimate.data.local.models.NutritionSum
 import com.telyu.nourimate.data.local.models.Recipe
-import com.telyu.nourimate.data.local.models.RecipeHistoryData
 import com.telyu.nourimate.data.local.models.SleepSegmentEventEntity
 import com.telyu.nourimate.data.repository.NourimateRepository
 import com.telyu.nourimate.utils.GeneralUtil
@@ -43,16 +42,35 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
     private val _currentGlass = MutableLiveData(0)
     val currentGlass: LiveData<Int> get() = _currentGlass
 
+    init {
+        viewModelScope.launch {
+            repository.getWaterIntake().collect { amount ->
+                _waterIntake.value = amount
+                _currentGlass.value = amount / 250 // Each glass is assumed to be 250ml
+            }
+        }
+        updateGreetingMessage()
+    }
+
+    fun addWater(amount: Int) {
+        if ((_currentGlass.value ?: 0) < 8) { // Assuming there are 8 glasses
+            val newAmount = (_waterIntake.value ?: 0) + amount
+            _waterIntake.value = newAmount
+            viewModelScope.launch {
+                repository.saveWaterIntake(newAmount)
+            }
+        }
+    }
+
+    fun setCurrentGlass(glass: Int) {
+        _currentGlass.value = glass
+    }
 
     init {
         // Contoh untuk mengatur waktu tidur dan bangun
         // Dalam aplikasi nyata, ini mungkin akan diambil dari database atau API
         sleepTime.value = "7hr 52m" // Contoh waktu tidur
         wakeUpTime.value = "06:00 AM" // Contoh waktu bangun
-    }
-
-    init {
-        updateGreetingMessage()
     }
 
     private fun updateGreetingMessage() {
@@ -107,21 +125,34 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
         Log.d("UserBMI", "User ID: $id")
         liveData {
             val detail = repository.getUserDetailsById(id)
-            val weight = detail?.weight
-            val height = detail?.height
-            val bmi = GeneralUtil.calculateBMI(height, weight)
+            val bmi = detail?.bmi
+            Log.d("UserBMI", "BMI: $bmi")
             emit(bmi ?: -999f)
         }
     }
 
-    val weightValues: LiveData<Pair<Float?, Int?>> = usersId.switchMap { id ->
+    val currentValues: LiveData<Pair<Int?, Int?>> = usersId.switchMap { id ->
         liveData {
             val detail = repository.getUserDetailsById(id)
-            val idealWeight = GeneralUtil.calculateIdealWeight(detail?.height)
-            val waistSize = detail?.waistSize?.toInt()
-            emit(Pair(idealWeight, waistSize))
+            val currentWeight = detail?.weight?.toInt()?: 0
+            val currentWaist = detail?.waistSize?.toInt()?: 0
+            emit(Pair(currentWeight, currentWaist))
         }
     }
+
+    val idealValues: LiveData<Pair<Int?, Int?>> = usersId.switchMap { id ->
+        liveData {
+            val detail = repository.getUserDetailsById(id)
+            val idealWeight: Int? =
+                GeneralUtil.calculateIdealWeight(detail?.height)?.toInt()  // Allow null values
+            val idealWaist: Int? = when(detail?.gender) {
+                "Laki-laki" -> 90
+                else -> 80
+            }
+            emit(Pair(idealWeight, idealWaist))
+        }
+    }
+
 
     private val _selectedMealTime = MutableLiveData<Int>()
     val selectedMealTime: LiveData<Int> get() = _selectedMealTime
@@ -133,18 +164,6 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
 
     fun getSelectedRecipesByMealType(mealType: Int): LiveData<List<Recipe>> {
         return repository.getSelectedRecipesByMealType(mealType)
-    }
-
-
-    fun addWater(amount: Int) {
-        if ((_currentGlass.value ?: 0) < 8) { // Assuming there are 8 glasses
-            _waterIntake.value = (_waterIntake.value ?: 0) + amount
-            _currentGlass.value = (_currentGlass.value ?: 0) + 1
-        }
-    }
-
-    fun setCurrentGlass(glass: Int) {
-        _currentGlass.value = glass
     }
 
     //Today's Meal Related Functions
@@ -202,7 +221,7 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
     }
 
     //Step 3: Extract user's health details
-    private val maxNuritionsLiveData: LiveData<List<Int>> = userDetails.switchMap { detail ->
+    val maxNutritionLiveData: LiveData<List<Int>> = userDetails.switchMap { detail ->
         liveData {
             val gender =
                 if (detail.gender == "Laki-laki") true else if (detail.gender == "Perempuan") false else null
@@ -291,7 +310,7 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
             }
         }
 
-        addSource(maxNuritionsLiveData) { maxNutritions = it; update() }
+        addSource(maxNutritionLiveData) { maxNutritions = it; update() }
         addSource(_nutritionSums) { nutritionSum = it; update() }
     }
 

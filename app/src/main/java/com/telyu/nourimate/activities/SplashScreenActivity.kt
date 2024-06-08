@@ -100,8 +100,8 @@ class SplashScreenActivity : AppCompatActivity() {
         )
 
         val details = listOf(
-            Detail(5, Converters().fromTimestamp(1054628979000), 181f, 80f, 81f, "Laki-laki", "Nuts", "Diabetes", 24.4f),
-            Detail(6, Converters().fromTimestamp(1054628979000), 160f, 65f, 71f, "Laki-laki", "Shellfish", "Cholesterol", 25.4f)
+            Detail(5, Converters().fromTimestamp(1054628979000), 181f, 80f, 81f, "Laki-laki", "Nuts", "Diabetes", 24.4f, 5),
+            Detail(6, Converters().fromTimestamp(1054628979000), 160f, 65f, 71f, "Laki-laki", "Shellfish", "Cholesterol", 95.4f, 6)
         )
 
         users.forEachIndexed { index, user ->

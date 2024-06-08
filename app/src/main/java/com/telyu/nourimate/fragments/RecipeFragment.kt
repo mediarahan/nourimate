@@ -49,13 +49,12 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
     ): View {
         binding = FragmentRecipeBinding.inflate(inflater, container, false)
 
-        fillDatabaseWithFakeData()
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        fillDatabaseWithFakeData()
 
         //supaya ilang dulu
         binding.radioGroupMealtype.visibility = View.GONE
@@ -68,11 +67,6 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
 
         selectMealType()
         selectMealTime()
-
-        viewModel.dailyRecipes.observe(viewLifecycleOwner) { recipes ->
-            recipeAdapter.submitList(recipes)
-            Log.d("Debug", "RecyclerView data submitted: ${recipes.size}")
-        }
 
         viewModel.weeklyRecipes.observe(viewLifecycleOwner) { recipes ->
             weeklyRecipeAdapter.submitList(recipes)
@@ -109,13 +103,24 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
 
     private fun selectMealType() {
         binding.radioGroupMealtype.setOnCheckedChangeListener { _, checkedId ->
-            val mealId = when (checkedId) {
-                R.id.button_breakfast -> 1
-                R.id.button_lunch -> 2
-                R.id.button_dinner -> 3
-                else -> 0
+            when (checkedId) {
+                R.id.button_breakfast -> {
+                    viewModel.breakfastRecipes.observe(viewLifecycleOwner) { recipes ->
+                        recipeAdapter.submitList(recipes)
+                    }
+                }
+                R.id.button_lunch -> {
+                    viewModel.lunchRecipes.observe(viewLifecycleOwner) { recipes ->
+                        recipeAdapter.submitList(recipes)
+                    }
+                }
+                R.id.button_dinner -> {
+                    viewModel.dinnerRecipes.observe(viewLifecycleOwner) { recipes ->
+                        recipeAdapter.submitList(recipes)
+                    }
+                }
+                else -> recipeAdapter.submitList(emptyList())
             }
-            viewModel.setSelectedMealType(mealId)
 
             if(binding.buttonWeekly.isChecked) {
                 binding.searchBar.visibility = View.GONE
@@ -289,6 +294,7 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
                     date = recommendation.date,
                     isSelected = recommendation.isSelected,
                     recipeId = recommendation.recipeId,
+                    userId = recommendation.userId,
                 )
             }
 

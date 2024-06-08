@@ -6,56 +6,88 @@
     android:layout_height="match_parent"
     tools:context=".fragments.UserDetailFragment">
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageView
+            android:id="@+id/waveuserdetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-5dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/wave_user_detail"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="1.2" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/backButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="Back"
-            android:padding="30dp"
-            android:src="@drawable/back"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textViewProfile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:layout_constraintStart_toStartOf="@+id/rectanglebmiView"
             android:layout_marginTop="20dp"
-            android:text="Profile"
-            android:textSize="30sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:icon="@drawable/back"
+            android:clickable="true"
+            app:iconSize="25dp"
+            app:iconGravity="textStart"
+            app:iconTint="@color/black"
+            app:backgroundTint="@null"
+            android:background="@drawable/button_background_profile_with_shadow"
+            style="@style/Widget.MaterialComponents.Button.Circle"
+            app:layout_constraintTop_toTopOf="parent"
+            app:iconPadding="0dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:elevation="10dp" />
 
         <TextView
-            android:id="@+id/textViewEditProfile"
+            android:id="@+id/textProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Edit Your Profile"
-            android:textSize="15sp"
+            android:elevation="6dp"
+            android:fontFamily="@font/concertone"
+            android:text="Profile"
+            android:textColor="#000000"
+            android:textSize="33sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewProfile" />
+            app:layout_constraintTop_toTopOf="@+id/backButton" />
+
+        <TextView
+            android:id="@+id/editprofileTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="6dp"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/abel"
+            android:text="Edit Your Profile"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textProfile" />
 
         <View
             android:id="@+id/rectanglebmiView"
-            android:layout_width="380dp"
+            android:layout_width="0dp"
             android:layout_height="130dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/rectangle_profile_with_shadow"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewEditProfile" />
+            app:layout_constraintWidth_percent="0.85"
+            app:layout_constraintTop_toBottomOf="@+id/editprofileTextView" />
 
         <SeekBar
             android:id="@+id/seekBar"
             android:layout_width="0dp"
-            android:layout_height="4dp"
-            android:layout_marginBottom="16dp"
+            android:layout_height="15dp"
+            android:layout_marginBottom="25dp"
+            android:thumb="@drawable/arrow_drop"
             android:progressDrawable="@drawable/seekbar"
             app:layout_constraintBottom_toBottomOf="@id/redSegment"
             app:layout_constraintEnd_toEndOf="@id/redSegment"
@@ -66,18 +98,59 @@
             android:id="@+id/textViewBmi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_marginEnd="18dp"
+            android:layout_marginBottom="8dp"
             android:text="21.2"
             android:textSize="24dp"
             android:textStyle="bold"
+            android:fontFamily="@font/zenkakugothicnewbold"
             app:layout_constraintEnd_toEndOf="@id/rectanglebmiView"
+            app:layout_constraintBottom_toBottomOf="@+id/redSegment"
             app:layout_constraintTop_toTopOf="@id/rectanglebmiView" />
+
+        <ImageView
+            android:id="@+id/imagebmi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:elevation="2dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/timbangan"
+            app:layout_constraintStart_toStartOf="@+id/greenDarkSegment"
+            app:layout_constraintBottom_toTopOf="@+id/seekBar"/>
+
+        <TextView
+            android:id="@+id/textViewBmiTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="-5dp"
+            android:text="Your BMI Score"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:fontFamily="@font/zenkakugothicnewbold"
+            app:layout_constraintStart_toEndOf="@+id/imagebmi"
+            app:layout_constraintTop_toTopOf="@+id/imagebmi" />
+
+        <TextView
+            android:id="@+id/textViewBmiCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:text="Normal"
+            android:textSize="13dp"
+            android:textStyle="bold"
+            android:textColor="#617D79"
+            android:fontFamily="@font/zenkakugothicnewbold"
+            app:layout_constraintStart_toEndOf="@+id/imagebmi"
+            app:layout_constraintTop_toBottomOf="@+id/textViewBmiTitle"/>
 
         <View
             android:id="@+id/greenDarkSegment"
             android:layout_width="0dp"
-            android:layout_height="4dp"
-            android:layout_marginStart="12dp"
+            android:layout_height="7dp"
+            android:layout_marginTop="45dp"
+            android:layout_marginStart="18dp"
             android:background="#4CAF50"
             android:elevation="6dp"
             app:layout_constraintBottom_toBottomOf="@id/rectanglebmiView"
@@ -88,7 +161,8 @@
         <View
             android:id="@+id/greenLightSegment"
             android:layout_width="0dp"
-            android:layout_height="4dp"
+            android:layout_height="7dp"
+            android:layout_marginTop="45dp"
             android:layout_marginStart="4dp"
             android:background="#8BC34A"
             android:elevation="6dp"
@@ -100,7 +174,8 @@
         <View
             android:id="@+id/yellowSegment"
             android:layout_width="0dp"
-            android:layout_height="4dp"
+            android:layout_height="7dp"
+            android:layout_marginTop="45dp"
             android:layout_marginStart="4dp"
             android:background="#FFEB3B"
             android:elevation="6dp"
@@ -112,7 +187,8 @@
         <View
             android:id="@+id/orangeSegment"
             android:layout_width="0dp"
-            android:layout_height="4dp"
+            android:layout_height="7dp"
+            android:layout_marginTop="45dp"
             android:layout_marginStart="4dp"
             android:background="#FF9800"
             android:elevation="6dp"
@@ -124,9 +200,10 @@
         <View
             android:id="@+id/redSegment"
             android:layout_width="0dp"
-            android:layout_height="4dp"
+            android:layout_height="7dp"
+            android:layout_marginTop="45dp"
             android:layout_marginStart="4dp"
-            android:layout_marginEnd="12dp"
+            android:layout_marginEnd="18dp"
             android:background="#F44336"
             android:elevation="6dp"
             app:layout_constraintBottom_toBottomOf="@id/rectanglebmiView"
@@ -203,47 +280,42 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="Your Information"
-            android:textSize="30sp"
+            android:textSize="25sp"
+            android:fontFamily="@font/alatsi"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rectanglebmiView" />
 
-        <View
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/rectanglenameView"
-            android:layout_width="380dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/rectangle_profile_with_shadow"
-            android:elevation="5dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:elevation="3dp"
+            android:background="@drawable/rectangle_signup1"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="3dp"
+            app:boxCornerRadiusTopStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusBottomEnd="10dp"
+            app:startIconDrawable="@drawable/profile"
+            app:startIconTint="#FFC745"
+            android:clickable="false"
+            android:focusable="false"
+            app:layout_constraintWidth_percent="0.85"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewInformation" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewInformation">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Username"
+                android:fontFamily="@font/abel"
+                android:inputType="textPersonName" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/editTextName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:elevation="6dp"
-            android:text="Young Flint"
-            android:inputType="text"
-            android:maxLines="1"
-            android:textSize="20sp"
-            style="@style/DisabledEditTextStyle"
-            app:layout_constraintBottom_toBottomOf="@id/rectanglenameView"
-            app:layout_constraintStart_toStartOf="@id/rectanglenameView"
-            app:layout_constraintTop_toTopOf="@id/rectanglenameView" />
-
-        <ImageView
-            android:id="@+id/iconprofileImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:elevation="6dp"
-            android:src="@drawable/profile"
-            app:layout_constraintBottom_toBottomOf="@id/rectanglenameView"
-            app:layout_constraintStart_toStartOf="@id/rectanglenameView"
-            app:layout_constraintTop_toTopOf="@id/rectanglenameView" />
 
         <ImageView
             android:id="@+id/iconeditnameImageView"
@@ -256,43 +328,41 @@
             app:layout_constraintEnd_toEndOf="@id/rectanglenameView"
             app:layout_constraintTop_toTopOf="@id/rectanglenameView" />
 
-        <View
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/rectangledatebirthView"
-            android:layout_width="380dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/rectangle_profile_with_shadow"
-            android:elevation="5dp"
+            android:layout_width="0dp"
+            android:layout_height="65dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rectangle_signup1"
+            android:elevation="3dp"
+            app:boxCornerRadiusBottomEnd="10dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusTopStart="10dp"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="3dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="0.85"
+            android:clickable="true"
+            android:focusable="true"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rectanglenameView" />
+            app:layout_constraintTop_toBottomOf="@+id/rectanglenameView"
+            app:startIconDrawable="@drawable/dateofbirth"
+            app:startIconTint="#FFC745">
 
-        <EditText
-            android:id="@+id/editTextBirth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:elevation="6dp"
-            android:text="2000/02/13"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:inputType="text"
-            android:maxLines="1"
-            style="@style/DisabledEditTextStyle"
-            app:layout_constraintBottom_toBottomOf="@+id/rectangledatebirthView"
-            app:layout_constraintStart_toStartOf="@+id/rectangledatebirthView"
-            app:layout_constraintTop_toTopOf="@+id/rectangledatebirthView" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextBirth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/abel"
+                android:textColor="@color/black"
+                android:hint="Date of Birth"
+                android:textSize="16sp"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:inputType="none" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <ImageView
-            android:id="@+id/iconbirthImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:elevation="6dp"
-            android:src="@drawable/profile"
-            app:layout_constraintBottom_toBottomOf="@+id/rectangledatebirthView"
-            app:layout_constraintStart_toStartOf="@+id/rectangledatebirthView"
-            app:layout_constraintTop_toTopOf="@+id/rectangledatebirthView" />
 
         <ImageView
             android:id="@+id/iconeditbirthImageView"
@@ -305,199 +375,11 @@
             app:layout_constraintEnd_toEndOf="@+id/rectangledatebirthView"
             app:layout_constraintTop_toTopOf="@+id/rectangledatebirthView" />
 
-        <View
-            android:id="@+id/rectangleheightView"
-            android:layout_width="380dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/rectangle_profile_with_shadow"
-            android:elevation="5dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rectangledatebirthView" />
-
-        <EditText
-            android:id="@+id/editTextHeight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:elevation="6dp"
-            android:text="175"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:inputType="number"
-            android:maxLines="1"
-            style="@style/DisabledEditTextStyle"
-            app:layout_constraintBottom_toBottomOf="@+id/rectangleheightView"
-            app:layout_constraintStart_toStartOf="@+id/rectangleheightView"
-            app:layout_constraintTop_toTopOf="@+id/rectangleheightView" />
-
-        <TextView
-            android:id="@+id/textViewCm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:elevation="6dp"
-            android:text="cm"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            style="@style/DisabledEditTextStyle"
-            app:layout_constraintBottom_toBottomOf="@+id/rectangleheightView"
-            app:layout_constraintStart_toEndOf="@id/editTextHeight"
-            app:layout_constraintTop_toTopOf="@+id/rectangleheightView" />
-
-        <ImageView
-            android:id="@+id/iconheightImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:elevation="6dp"
-            android:src="@drawable/profile"
-            app:layout_constraintBottom_toBottomOf="@+id/rectangleheightView"
-            app:layout_constraintStart_toStartOf="@+id/rectangleheightView"
-            app:layout_constraintTop_toTopOf="@+id/rectangleheightView" />
-
-        <ImageView
-            android:id="@+id/iconeditheightImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:elevation="6dp"
-            android:src="@drawable/edit"
-            app:layout_constraintBottom_toBottomOf="@+id/rectangleheightView"
-            app:layout_constraintEnd_toEndOf="@+id/rectangleheightView"
-            app:layout_constraintTop_toTopOf="@+id/rectangleheightView" />
-
-        <View
-            android:id="@+id/rectangleweightView"
-            android:layout_width="175dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/rectangle_profile_with_shadow"
-            android:elevation="5dp"
-            app:layout_constraintStart_toStartOf="@+id/rectangleheightView"
-            app:layout_constraintTop_toBottomOf="@+id/rectangleheightView" />
-
-        <EditText
-            android:id="@+id/editTextWeight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:elevation="6dp"
-            android:text="60"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:inputType="number"
-            android:maxLines="1"
-            style="@style/DisabledEditTextStyle"
-            app:layout_constraintBottom_toBottomOf="@+id/rectangleweightView"
-            app:layout_constraintStart_toStartOf="@+id/rectangleweightView"
-            app:layout_constraintTop_toTopOf="@+id/rectangleweightView" />
-
-        <TextView
-            android:id="@+id/textViewKg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:elevation="6dp"
-            android:text="kg"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            style="@style/DisabledEditTextStyle"
-            app:layout_constraintBottom_toBottomOf="@+id/rectangleweightView"
-app:layout_constraintStart_toEndOf="@id/editTextWeight"
-            app:layout_constraintTop_toTopOf="@+id/rectangleweightView" />
-
-        <ImageView
-            android:id="@+id/iconweightImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:elevation="6dp"
-            android:src="@drawable/profile"
-            app:layout_constraintBottom_toBottomOf="@+id/rectangleweightView"
-            app:layout_constraintStart_toStartOf="@+id/rectangleweightView"
-            app:layout_constraintTop_toTopOf="@+id/rectangleweightView" />
-
-        <ImageView
-            android:id="@+id/iconeditweightImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:elevation="6dp"
-            android:src="@drawable/edit"
-            app:layout_constraintBottom_toBottomOf="@+id/rectangleweightView"
-            app:layout_constraintEnd_toEndOf="@+id/rectangleweightView"
-            app:layout_constraintTop_toTopOf="@+id/rectangleweightView" />
-
-        <View
-            android:id="@+id/rectanglewaistView"
-            android:layout_width="175dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/rectangle_profile_with_shadow"
-            android:elevation="5dp"
-            app:layout_constraintEnd_toEndOf="@+id/spinnerGender"
-            app:layout_constraintTop_toBottomOf="@+id/rectangleheightView" />
-
-        <EditText
-            android:id="@+id/editTextWaist"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:elevation="6dp"
-            android:text="85"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:inputType="number"
-            android:maxLines="1"
-            style="@style/DisabledEditTextStyle"
-            app:layout_constraintBottom_toBottomOf="@+id/rectanglewaistView"
-            app:layout_constraintStart_toStartOf="@+id/rectanglewaistView"
-            app:layout_constraintTop_toTopOf="@+id/rectanglewaistView" />
-
-        <TextView
-            android:id="@+id/textViewCm2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:elevation="6dp"
-            android:text="cm"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            style="@style/DisabledEditTextStyle"
-            app:layout_constraintBottom_toBottomOf="@+id/rectanglewaistView"
-            app:layout_constraintStart_toEndOf="@id/editTextWaist"
-            app:layout_constraintTop_toTopOf="@+id/rectanglewaistView" />
-
-        <ImageView
-            android:id="@+id/iconwaistImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:elevation="6dp"
-            android:src="@drawable/profile"
-            app:layout_constraintBottom_toBottomOf="@+id/rectanglewaistView"
-            app:layout_constraintStart_toStartOf="@+id/rectanglewaistView"
-            app:layout_constraintTop_toTopOf="@+id/rectanglewaistView" />
-
-        <ImageView
-            android:id="@+id/iconeditwaistImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:elevation="6dp"
-            android:src="@drawable/edit"
-            app:layout_constraintBottom_toBottomOf="@+id/rectanglewaistView"
-            app:layout_constraintEnd_toEndOf="@+id/rectanglewaistView"
-            app:layout_constraintTop_toTopOf="@+id/rectanglewaistView" />
-
-
         <Spinner
             android:id="@+id/spinnerGender"
-            android:layout_width="350dp"
+            android:layout_width="0dp"
             android:layout_height="65dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/rectangle_signup1"
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
@@ -505,26 +387,28 @@ app:layout_constraintStart_toEndOf="@id/editTextWeight"
             android:paddingEnd="12dp"
             android:elevation="3dp"
             android:fontFamily="@font/abel"
-            android:textColor="@color/black"
+            android:textColor="@color/color41"
             android:textSize="16sp"
-            android:text="Male"
-            android:inputType="text"
-            android:maxLines="1"
-            style="@style/DisabledEditTextStyle"
+            app:layout_constraintWidth_percent="0.85"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rectangleweightView" />
+            app:layout_constraintTop_toBottomOf="@+id/rectangledatebirthView"
+            android:spinnerMode="dropdown"
+            android:popupBackground="@drawable/rectangle_signup1"/>
+
 
         <ImageView
-            android:id="@+id/icongenderImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:elevation="6dp"
-            android:src="@drawable/profile"
-            app:layout_constraintBottom_toBottomOf="@+id/spinnerGender"
-            app:layout_constraintStart_toStartOf="@+id/spinnerGender"
-            app:layout_constraintTop_toTopOf="@+id/spinnerGender" />
+            android:id="@+id/icongenderImageView2"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="-6dp"
+            android:padding="8dp"
+            android:elevation="5dp"
+            app:layout_constraintStart_toStartOf="@id/spinnerGender"
+            app:layout_constraintTop_toTopOf="@id/spinnerGender"
+            app:layout_constraintBottom_toBottomOf="@id/spinnerGender"
+            android:src="@drawable/gender" />
+
 
         <ImageView
             android:id="@+id/iconeditgenderImageView"
@@ -537,43 +421,170 @@ app:layout_constraintStart_toEndOf="@id/editTextWeight"
             app:layout_constraintEnd_toEndOf="@+id/spinnerGender"
             app:layout_constraintTop_toTopOf="@+id/spinnerGender" />
 
-        <View
-            android:id="@+id/rectangleallergyView"
-            android:layout_width="380dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/rectangle_profile_with_shadow"
-            android:elevation="5dp"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/rectangleweightView"
+            android:layout_width="0dp"
+            android:layout_height="65dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rectangle_signup1"
+            android:elevation="3dp"
+            app:boxCornerRadiusBottomEnd="10dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusTopStart="10dp"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="3dp"
+            app:layout_constraintWidth_percent="0.85"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinnerGender" />
+            app:layout_constraintTop_toBottomOf="@+id/spinnerGender"
+            app:startIconDrawable="@drawable/weight"
+            app:startIconTint="#FFC745">
 
-        <EditText
-            android:id="@+id/editTextAllergy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:elevation="6dp"
-            android:text="Nuts"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:inputType="text"
-            android:maxLines="1"
-            style="@style/DisabledEditTextStyle"
-            app:layout_constraintBottom_toBottomOf="@+id/rectangleallergyView"
-            app:layout_constraintStart_toStartOf="@+id/rectangleallergyView"
-            app:layout_constraintTop_toTopOf="@+id/rectangleallergyView" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextWeight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:fontFamily="@font/abel"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:hint="Weight (kg)"
+                android:inputType="numberDecimal" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <ImageView
-            android:id="@+id/iconallergyImageView"
+            android:id="@+id/iconeditweightImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:elevation="6dp"
-            android:src="@drawable/profile"
-            app:layout_constraintBottom_toBottomOf="@+id/rectangleallergyView"
-            app:layout_constraintStart_toStartOf="@+id/rectangleallergyView"
-            app:layout_constraintTop_toTopOf="@+id/rectangleallergyView" />
+            android:src="@drawable/edit"
+            app:layout_constraintBottom_toBottomOf="@+id/rectangleweightView"
+            app:layout_constraintEnd_toEndOf="@+id/rectangleweightView"
+            app:layout_constraintTop_toTopOf="@+id/rectangleweightView" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/rectangleheightView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rectangle_signup1"
+            android:elevation="3dp"
+            app:boxCornerRadiusBottomEnd="10dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusTopStart="10dp"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="3dp"
+            app:layout_constraintWidth_percent="0.85"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rectangleweightView"
+            app:startIconDrawable="@drawable/height"
+            app:startIconTint="#FFC745">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextHeight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/abel"
+                android:focusable="false"
+                android:hint="Height (cm)"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <ImageView
+            android:id="@+id/iconeditheightImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:elevation="6dp"
+            android:src="@drawable/edit"
+            app:layout_constraintBottom_toBottomOf="@+id/rectangleheightView"
+            app:layout_constraintEnd_toEndOf="@+id/rectangleheightView"
+            app:layout_constraintTop_toTopOf="@+id/rectangleheightView" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/rectanglewaistView"
+            android:layout_width="0dp"
+            android:layout_height="65dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rectangle_signup1"
+            android:elevation="3dp"
+            app:boxCornerRadiusBottomEnd="10dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusTopStart="10dp"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="3dp"
+            app:layout_constraintWidth_percent="0.85"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rectangleheightView"
+            app:startIconDrawable="@drawable/waist"
+            app:startIconTint="#FFC745">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextWaist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/abel"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:focusable="false"
+                android:hint="Waist Size (cm)"
+                android:inputType="textPersonName" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <ImageView
+            android:id="@+id/iconeditwaistImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:elevation="6dp"
+            android:src="@drawable/edit"
+            app:layout_constraintBottom_toBottomOf="@+id/rectanglewaistView"
+            app:layout_constraintEnd_toEndOf="@+id/rectanglewaistView"
+            app:layout_constraintTop_toTopOf="@+id/rectanglewaistView" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/rectangleallergyView"
+            android:layout_width="0dp"
+            android:layout_height="65dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rectangle_signup1"
+            android:elevation="3dp"
+            app:boxCornerRadiusBottomEnd="10dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusTopStart="10dp"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="3dp"
+            app:layout_constraintWidth_percent="0.85"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rectanglediseaseView"
+            app:startIconDrawable="@drawable/allergy"
+            app:startIconTint="#FFC745">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextAllergy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Allergies"
+                android:fontFamily="@font/abel"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:focusable="false"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
 
         <ImageView
             android:id="@+id/iconeditallergyImageView"
@@ -586,43 +597,37 @@ app:layout_constraintStart_toEndOf="@id/editTextWeight"
             app:layout_constraintEnd_toEndOf="@+id/rectangleallergyView"
             app:layout_constraintTop_toTopOf="@+id/rectangleallergyView" />
 
-        <View
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/rectanglediseaseView"
-            android:layout_width="380dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/rectangle_profile_with_shadow"
-            android:elevation="5dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rectangle_signup1"
+            android:elevation="3dp"
+            app:boxCornerRadiusBottomEnd="10dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusTopStart="10dp"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="3dp"
+            app:layout_constraintWidth_percent="0.85"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rectangleallergyView" />
+            app:layout_constraintTop_toBottomOf="@+id/rectanglewaistView"
+            app:startIconDrawable="@drawable/disease"
+            app:startIconTint="#FFC745">
 
-        <EditText
-            android:id="@+id/editTextDisease"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:elevation="6dp"
-            android:text="Diabetes"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:inputType="text"
-            android:maxLines="1"
-            style="@style/DisabledEditTextStyle"
-            app:layout_constraintBottom_toBottomOf="@+id/rectanglediseaseView"
-            app:layout_constraintStart_toStartOf="@+id/rectanglediseaseView"
-            app:layout_constraintTop_toTopOf="@+id/rectanglediseaseView" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextDisease"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Diseases"
+                android:fontFamily="@font/abel"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:focusable="false"/>
 
-        <ImageView
-            android:id="@+id/icondiseaseImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:elevation="6dp"
-            android:src="@drawable/profile"
-            app:layout_constraintBottom_toBottomOf="@+id/rectanglediseaseView"
-            app:layout_constraintStart_toStartOf="@+id/rectanglediseaseView"
-            app:layout_constraintTop_toTopOf="@+id/rectanglediseaseView" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <ImageView
             android:id="@+id/iconeditdiseaseImageView"
@@ -637,15 +642,25 @@ app:layout_constraintStart_toEndOf="@id/editTextWeight"
 
         <Button
             android:id="@+id/buttonSaveEditProfile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="20dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_change_password"
+            android:elevation="6dp"
+            android:fontFamily="@font/alatsi"
+            android:onClick="onUserDetailClicked"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:backgroundTint="@null"
+            app:layout_constraintWidth_percent="0.5"
             android:text="Save"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rectanglediseaseView" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rectangleallergyView" />
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

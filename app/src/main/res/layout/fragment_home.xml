@@ -10,6 +10,7 @@
     </data>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollhome"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -53,7 +54,7 @@
                 app:layout_constraintStart_toStartOf="@+id/greetingTextView"
                 app:layout_constraintTop_toBottomOf="@+id/greetingTextView" />
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profileImageView"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
@@ -61,8 +62,8 @@
                 app:layout_constraintTop_toTopOf="@+id/rectanglehomeImageView"
                 app:layout_constraintBottom_toTopOf="@+id/weightMessageTextView"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="30dp"/>
-
+                android:layout_marginEnd="30dp"
+                android:scaleType="centerCrop"/>
 
             <TextView
                 android:id="@+id/weightMessageTextView"
@@ -95,22 +96,24 @@
 
             <ImageView
                 android:id="@+id/halfCircleImageView"
-                android:layout_width="350dp"
-                android:layout_height="290dp"
+                android:layout_width="0dp"
+                android:layout_height="370dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/shape_half_rectangle_with_shadow"
                 android:elevation="5dp"
-                app:layout_constraintTop_toBottomOf="@+id/rectanglehomeImageView"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="18dp"/>
-
+                app:layout_constraintHorizontal_bias="0.508"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rectanglehomeImageView"
+                app:layout_constraintWidth_percent="0.85" />
 
             <com.telyu.nourimate.custom.SemiCircleProgressView
                 android:id="@+id/semiCircleProgressView"
-                android:layout_width="290dp"
+                android:layout_width="0dp"
                 android:layout_height="260dp"
                 android:elevation="6dp"
                 android:layout_marginTop="20dp"
+                app:layout_constraintWidth_percent="0.7"
                 app:layout_constraintTop_toTopOf="@+id/halfCircleImageView"
                 app:layout_constraintStart_toStartOf="@+id/halfCircleImageView"
                 app:layout_constraintEnd_toEndOf="@+id/halfCircleImageView"/>
@@ -177,11 +180,13 @@
 
 
             <LinearLayout
-                android:layout_width="290dp"
+                android:id="@+id/userinfo"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:padding="15dp"
                 android:elevation="5dp"
                 android:background="@drawable/rectangle_home5"
+                app:layout_constraintWidth_percent="0.7"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:layout_marginTop="18dp"
@@ -190,7 +195,53 @@
                 app:layout_constraintEnd_toEndOf="@+id/halfCircleImageView">
 
                 <TextView
-                    android:id="@+id/ageTextView"
+                    android:id="@+id/weightCurrentTextView"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:textColor="#173430"
+                    android:fontFamily="@font/robotomedium"
+                    android:text="Current Weight\n22 kg"
+                    android:gravity="center"
+                    android:textSize="15sp" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="fill_parent"
+                    android:background="#173430" />
+
+                <TextView
+                    android:id="@+id/waistCurrentTextView"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:textColor="#173430"
+                    android:fontFamily="@font/robotomedium"
+                    android:text="Current Waist\n165 cm"
+                    android:gravity="center"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/userideal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:elevation="5dp"
+                android:background="@drawable/rectangle_home5"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                app:layout_constraintWidth_percent="0.7"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="13dp"
+                app:layout_constraintTop_toBottomOf="@+id/userinfo"
+                app:layout_constraintBottom_toBottomOf="@+id/halfCircleImageView"
+                app:layout_constraintStart_toStartOf="@+id/halfCircleImageView"
+                app:layout_constraintEnd_toEndOf="@+id/halfCircleImageView">
+
+                <TextView
+                    android:id="@+id/weightIdealTextView"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
@@ -206,25 +257,25 @@
                     android:background="#173430" />
 
                 <TextView
-                    android:id="@+id/heightTextView"
+                    android:id="@+id/waistIdealTextView"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:textColor="#173430"
                     android:fontFamily="@font/robotomedium"
-                    android:text="Waist Size\n165 cm"
+                    android:text="Ideal Waist\n165 cm"
                     android:gravity="center"
                     android:textSize="15sp" />
 
             </LinearLayout>
 
-
             <ImageView
                 android:id="@+id/rectanglehomeingredientsImageView"
-                android:layout_width="350dp"
-                android:layout_height="200dp"
+                android:layout_width="0dp"
+                android:layout_height="210dp"
                 android:background="@drawable/rectangle_home2_with_shadow"
                 android:elevation="5dp"
+                app:layout_constraintWidth_percent="0.85"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/halfCircleImageView"
@@ -235,7 +286,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:elevation="6dp"
-                android:paddingStart="30dp"
+                android:paddingStart="20dp"
                 android:paddingTop="20dp"
                 app:layout_constraintStart_toStartOf="@+id/rectanglehomeingredientsImageView"
                 app:layout_constraintTop_toTopOf="@+id/rectanglehomeingredientsImageView" >
@@ -261,16 +312,35 @@
                             android:fontFamily="@font/zenkakugothicnewbold"/>
 
                         <TextView
-                            android:id="@+id/textViewQuantifierCalories"
+                            android:id="@+id/textViewGoalCalories"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignBaseline="@+id/textViewTotalCalories"
                             android:layout_toEndOf="@+id/textViewTotalCalories"
                             android:fontFamily="@font/zenkakugothicnewbold"
-                            android:paddingStart="3dp"
-                            android:text="kkal"
+                            android:text="/3000"
                             android:textColor="#173430"
                             android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/textViewQuantifierCalories"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@+id/textViewGoalCalories"
+                            android:layout_toEndOf="@+id/textViewGoalCalories"
+                            android:fontFamily="@font/zenkakugothicnewbold"
+                            android:paddingStart="3dp"
+                            android:text="kcal"
+                            android:textColor="#173430"
+                            android:textSize="12sp" />
+
+                        <ImageView
+                            android:id="@+id/imageInfoCalories"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentTop="true"
+                            android:src="@drawable/info"/>
                     </RelativeLayout>
 
 
@@ -325,7 +395,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:elevation="6dp"
-                android:paddingEnd="30dp"
+                android:paddingEnd="20dp"
                 android:paddingTop="20dp"
                 app:layout_constraintEnd_toEndOf="@+id/rectanglehomeingredientsImageView"
                 app:layout_constraintTop_toTopOf="@+id/rectanglehomeingredientsImageView">
@@ -351,16 +421,35 @@
                             android:fontFamily="@font/zenkakugothicnewbold"/>
 
                         <TextView
-                            android:id="@+id/textViewQuantifierCarbs"
+                            android:id="@+id/textViewGoalCarbs"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingStart="3dp"
-                            android:text="g"
+                            android:text="/200"
                             android:textSize="12sp"
                             android:textColor="#173430"
                             android:fontFamily="@font/zenkakugothicnewbold"
                             android:layout_toEndOf="@+id/textViewTotalCarbs"
                             android:layout_alignBaseline="@+id/textViewTotalCarbs"/>
+
+                        <TextView
+                            android:id="@+id/textViewQuantifierCarbs"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@+id/textViewGoalCarbs"
+                            android:layout_toEndOf="@+id/textViewGoalCarbs"
+                            android:fontFamily="@font/zenkakugothicnewbold"
+                            android:paddingStart="3dp"
+                            android:text="g"
+                            android:textColor="#173430"
+                            android:textSize="12sp" />
+
+                        <ImageView
+                            android:id="@+id/imageInfoCarbs"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentTop="true"
+                            android:src="@drawable/info"/>
                     </RelativeLayout>
 
 
@@ -415,7 +504,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:elevation="6dp"
-                android:paddingStart="30dp"
+                android:paddingStart="20dp"
                 android:paddingBottom="25dp"
                 app:layout_constraintStart_toStartOf="@+id/rectanglehomeingredientsImageView"
                 app:layout_constraintBottom_toBottomOf="@+id/rectanglehomeingredientsImageView" >
@@ -441,16 +530,35 @@
                             android:fontFamily="@font/zenkakugothicnewbold"/>
 
                         <TextView
-                            android:id="@+id/textViewQuantifierFat"
+                            android:id="@+id/textViewGoalFat"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingStart="3dp"
-                            android:text="g"
+                            android:text="/200"
                             android:textSize="12sp"
                             android:textColor="#173430"
                             android:fontFamily="@font/zenkakugothicnewbold"
                             android:layout_toEndOf="@+id/textViewTotalFat"
                             android:layout_alignBaseline="@+id/textViewTotalFat"/>
+
+                        <TextView
+                            android:id="@+id/textViewQuantifierFat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@+id/textViewGoalFat"
+                            android:layout_toEndOf="@+id/textViewGoalFat"
+                            android:fontFamily="@font/zenkakugothicnewbold"
+                            android:paddingStart="3dp"
+                            android:text="g"
+                            android:textColor="#173430"
+                            android:textSize="12sp" />
+
+                        <ImageView
+                            android:id="@+id/imageInfoFat"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentTop="true"
+                            android:src="@drawable/info"/>
                     </RelativeLayout>
 
 
@@ -505,7 +613,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:elevation="6dp"
-                android:paddingEnd="30dp"
+                android:paddingEnd="20dp"
                 android:paddingBottom="25dp"
                 app:layout_constraintEnd_toEndOf="@+id/rectanglehomeingredientsImageView"
                 app:layout_constraintBottom_toBottomOf="@+id/rectanglehomeingredientsImageView" >
@@ -531,16 +639,35 @@
                             android:fontFamily="@font/zenkakugothicnewbold"/>
 
                         <TextView
-                            android:id="@+id/textViewQuantifierProtein"
+                            android:id="@+id/textViewGoalProtein"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingStart="3dp"
-                            android:text="g"
+                            android:text="/200"
                             android:textSize="12sp"
                             android:textColor="#173430"
                             android:fontFamily="@font/zenkakugothicnewbold"
                             android:layout_toEndOf="@+id/textViewTotalProtein"
                             android:layout_alignBaseline="@+id/textViewTotalProtein"/>
+
+                        <TextView
+                            android:id="@+id/textViewQuantifierProtein"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@+id/textViewGoalProtein"
+                            android:layout_toEndOf="@+id/textViewGoalProtein"
+                            android:fontFamily="@font/zenkakugothicnewbold"
+                            android:paddingStart="3dp"
+                            android:text="g"
+                            android:textColor="#173430"
+                            android:textSize="12sp" />
+
+                        <ImageView
+                            android:id="@+id/imageInfoProtein"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentTop="true"
+                            android:src="@drawable/info"/>
                     </RelativeLayout>
 
 
@@ -592,10 +719,11 @@
 
             <ImageView
                 android:id="@+id/rectanglehomesleepImageView"
-                android:layout_width="350dp"
+                android:layout_width="0dp"
                 android:layout_height="120dp"
                 android:background="@drawable/rectangle_home2_with_shadow"
                 android:elevation="5dp"
+                app:layout_constraintWidth_percent="0.85"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rectanglehomewaterImageView"
@@ -621,9 +749,8 @@
                 android:layout_height="40dp"
                 android:src="@drawable/night"
                 android:elevation="6dp"
-                app:layout_constraintStart_toStartOf="@+id/rectanglehomesleepImageView"
+                app:layout_constraintStart_toStartOf="@+id/textViewSleep"
                 app:layout_constraintTop_toBottomOf="@+id/textViewSleep"
-                android:layout_marginStart="25dp"
                 android:layout_marginTop="10dp"/>
 
             <TextView
@@ -660,7 +787,7 @@
                 android:elevation="6dp"
                 app:layout_constraintStart_toEndOf="@+id/TextView_time_in_sleep"
                 app:layout_constraintTop_toTopOf="@+id/sleep_icon"
-                android:layout_marginStart="35dp"/>
+                android:layout_marginStart="30dp"/>
 
             <TextView
                 android:id="@+id/wake_up_time"
@@ -690,14 +817,26 @@
 
             <ImageView
                 android:id="@+id/rectanglehomewaterImageView"
-                android:layout_width="350dp"
+                android:layout_width="0dp"
                 android:layout_height="120dp"
                 android:background="@drawable/rectangle_home2_with_shadow"
                 android:elevation="5dp"
+                app:layout_constraintWidth_percent="0.85"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rectanglehomemealImageView"
                 android:layout_marginTop="15dp"/>
+
+            <ImageView
+                android:id="@+id/infowaterImageView"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:elevation="5dp"
+                android:src="@drawable/info"
+                app:layout_constraintEnd_toEndOf="@+id/rectanglehomewaterImageView"
+                app:layout_constraintTop_toTopOf="@+id/rectanglehomewaterImageView"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"/>
 
             <TextView
                 android:id="@+id/textViewWater"
@@ -715,7 +854,7 @@
 
             <ImageView
                 android:id="@+id/water1"
-                android:layout_width="44dp"
+                android:layout_width="40dp"
                 android:layout_height="52dp"
                 android:background="@drawable/water_selector"
                 android:elevation="6dp"
@@ -728,7 +867,7 @@
 
             <ImageView
                 android:id="@+id/water2"
-                android:layout_width="44dp"
+                android:layout_width="40dp"
                 android:layout_height="52dp"
                 android:background="@drawable/water_selector"
                 android:elevation="6dp"
@@ -740,7 +879,7 @@
 
             <ImageView
                 android:id="@+id/water3"
-                android:layout_width="44dp"
+                android:layout_width="40dp"
                 android:layout_height="52dp"
                 android:background="@drawable/water_selector"
                 android:elevation="6dp"
@@ -764,7 +903,7 @@
 
             <ImageView
                 android:id="@+id/water5"
-                android:layout_width="44dp"
+                android:layout_width="40dp"
                 android:layout_height="52dp"
                 android:background="@drawable/water_selector"
                 android:elevation="6dp"
@@ -776,7 +915,7 @@
 
             <ImageView
                 android:id="@+id/water6"
-                android:layout_width="44dp"
+                android:layout_width="40dp"
                 android:layout_height="52dp"
                 android:background="@drawable/water_selector"
                 android:elevation="6dp"
@@ -788,7 +927,7 @@
 
             <ImageView
                 android:id="@+id/water7"
-                android:layout_width="44dp"
+                android:layout_width="40dp"
                 android:layout_height="52dp"
                 android:background="@drawable/water_selector"
                 android:elevation="6dp"
@@ -800,7 +939,7 @@
 
             <ImageView
                 android:id="@+id/water8"
-                android:layout_width="44dp"
+                android:layout_width="40dp"
                 android:layout_height="52dp"
                 android:background="@drawable/water_selector"
                 android:elevation="6dp"
@@ -838,10 +977,11 @@
 
             <ImageView
                 android:id="@+id/rectanglehomemealImageView"
-                android:layout_width="350dp"
+                android:layout_width="0dp"
                 android:layout_height="320dp"
                 android:background="@drawable/rectangle_home2_with_shadow"
                 android:elevation="5dp"
+                app:layout_constraintWidth_percent="0.85"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rectanglehomeingredientsImageView"
@@ -863,12 +1003,13 @@
 
             <ImageView
                 android:id="@+id/rectanglehomemealbreakfast"
-                android:layout_width="300dp"
+                android:layout_width="0dp"
                 android:layout_height="70dp"
                 android:background="@drawable/rectangle_signup_with_shadow_white"
                 android:elevation="7dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintWidth_percent="0.7"
+                app:layout_constraintEnd_toEndOf="@+id/rectanglehomemealImageView"
+                app:layout_constraintStart_toStartOf="@+id/rectanglehomemealImageView"
                 app:layout_constraintTop_toBottomOf="@+id/textViewTodayMeal"
                 android:layout_marginTop="15dp"/>
 
@@ -949,12 +1090,13 @@
 
             <ImageView
                 android:id="@+id/rectanglehomemeallunch"
-                android:layout_width="300dp"
+                android:layout_width="0dp"
                 android:layout_height="70dp"
                 android:background="@drawable/rectangle_signup_with_shadow_white"
                 android:elevation="7dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintWidth_percent="0.7"
+                app:layout_constraintEnd_toEndOf="@+id/rectanglehomemealImageView"
+                app:layout_constraintStart_toStartOf="@+id/rectanglehomemealImageView"
                 app:layout_constraintTop_toBottomOf="@+id/rectanglehomemealbreakfast"
                 android:layout_marginTop="15dp"/>
 
@@ -1035,12 +1177,13 @@
 
             <ImageView
                 android:id="@+id/rectanglehomemealdinner"
-                android:layout_width="300dp"
+                android:layout_width="0dp"
                 android:layout_height="70dp"
                 android:background="@drawable/rectangle_signup_with_shadow_white"
                 android:elevation="7dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintWidth_percent="0.7"
+                app:layout_constraintEnd_toEndOf="@+id/rectanglehomemealImageView"
+                app:layout_constraintStart_toStartOf="@+id/rectanglehomemealImageView"
                 app:layout_constraintTop_toBottomOf="@+id/rectanglehomemeallunch"
                 android:layout_marginTop="15dp"/>
 

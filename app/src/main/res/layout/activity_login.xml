@@ -25,7 +25,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <com.telyu.nourimate.custom.CustomTextInputEditText
             android:id="@+id/emailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
         android:layout_marginTop="5dp"
         app:layout_constraintTop_toBottomOf="@+id/emailInputLayout">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <com.telyu.nourimate.custom.CustomTextInputEditText
             android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -238,10 +238,12 @@
         android:layout_height="150dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="-30dp"
-        android:rotation="-8"
         android:elevation="4dp"
+        android:rotation="-8"
         android:src="@drawable/login"
-        app:layout_constraintTop_toTopOf="@+id/wavelogin"/>
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/wavelogin" />
 
     <ProgressBar
         android:id="@+id/progressBar"

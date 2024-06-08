@@ -1,19 +1,24 @@
 package com.telyu.nourimate.fragments
 
 import android.app.AlertDialog
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.telyu.nourimate.R
+import com.telyu.nourimate.custom.WeightRulerView
 import com.telyu.nourimate.data.local.models.WeightEntry
 import com.telyu.nourimate.data.local.models.WeightTrack
+import com.telyu.nourimate.databinding.DialogWeightPickerBinding
 import com.telyu.nourimate.databinding.FragmentProgramFilledBinding
 import com.telyu.nourimate.utils.Converters
 import com.telyu.nourimate.utils.GeneralUtil
@@ -41,6 +46,8 @@ class ProgramFilledFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.fetchCooldownTime()
+        setupWeeklyWeightInput()
 
         setupMealHistory()                          // binding buat buka fragment meal history
         setupMealtimeCalories()                  // binding total kalori yang dikonsumsi
@@ -49,7 +56,6 @@ class ProgramFilledFragment : Fragment() {
 
         setupWeightEntryObservation()
         setupInputCurrentWeightButton()
-
     }
 
     private fun setupMealHistory() {
@@ -106,13 +112,13 @@ class ProgramFilledFragment : Fragment() {
             viewModel.setLatestWeightEntryWeight(id)
         }
 
-        viewModel.latestWeightEntryWeight.observe(viewLifecycleOwner) {weight ->
+        viewModel.latestWeightEntryWeight.observe(viewLifecycleOwner) { weight ->
             binding.textViewCurrentWeightMW.text = weight.toString()
         }
     }
 
     private fun setupStartingWeight() {
-        viewModel.userWeightDetail.observe(viewLifecycleOwner) {currentWeight ->
+        viewModel.userWeightDetail.observe(viewLifecycleOwner) { currentWeight ->
             binding.textViewStartingWeightMW.text = currentWeight?.toInt().toString()
         }
     }
@@ -131,25 +137,7 @@ class ProgramFilledFragment : Fragment() {
 
     private fun setupInputCurrentWeight() {
         binding.iconeditweightMWImageView.setOnClickListener {
-            val editText = EditText(context).apply {
-                inputType = InputType.TYPE_CLASS_NUMBER
-                setText(binding.textViewCurrentWeightMW.text.toString())
-            }
-
-            AlertDialog.Builder(requireContext()).apply {
-                setTitle("Update Current Weight")
-                setMessage("Enter the new weight:")
-                setView(editText)
-                setPositiveButton("OK") { dialog, _ ->
-                    val newWeight = editText.text.toString()
-                    if (newWeight.isNotEmpty()) {
-                        binding.textViewCurrentWeightMW.text = newWeight
-                    }
-                    dialog.dismiss()
-                }
-                setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
-                show()
-            }
+            showWeightRulerPickerDialog(0f)
         }
     }
 
@@ -159,8 +147,8 @@ class ProgramFilledFragment : Fragment() {
             val weight = weightText.toInt()
 
             //date next week
-         //   val midnightNextWeek = Converters().dateFromTimestamp(GeneralUtil.calculateNextWeekMidnight())
-            val midnightNextWeek = Converters().dateFromTimestamp(GeneralUtil.calculateOneMinuteLaterTimestamp())
+               val midnightNextWeek = Converters().dateFromTimestamp(GeneralUtil.calculateNextWeekMidnight())
+//            val midnightNextWeek = Converters().dateFromTimestamp(GeneralUtil.calculateOneMinuteLaterTimestamp())
             val today = Converters().dateFromTimestamp(System.currentTimeMillis())
 
             val builder = AlertDialog.Builder(requireContext())
@@ -174,11 +162,12 @@ class ProgramFilledFragment : Fragment() {
                     viewModel.userWeightTrack.observe(viewLifecycleOwner) {
                         val weightTrack = WeightTrack(
                             it.id, it.ongoingProgram, it.startDate, it.endDate,
-                            it.startWeight, weight, midnightNextWeek, it.userId)
+                            it.startWeight, weight, midnightNextWeek, it.userId
+                        )
                         viewModel.insertWeightTrack(weightTrack)
 
                         //insert to weight entry for graph view
-                        val weightEntry  = WeightEntry(0, weight, today, it.userId)
+                        val weightEntry = WeightEntry(0, weight, today, it.userId)
                         viewModel.insertWeightEntry(weightEntry)
                     }
                 }
@@ -204,7 +193,6 @@ class ProgramFilledFragment : Fragment() {
         limitDialog.show()
     }
 
-
     //===== For Graph =====
     private fun setupWeightEntryObservation() {
         viewModel.weightEntries.observe(viewLifecycleOwner) { weightEntries ->
@@ -218,6 +206,79 @@ class ProgramFilledFragment : Fragment() {
             binding.weightChart.setWeights(weightList)
             binding.weightChart.setDates(dateList)
         }
+    }
+
+    //=============== Setup Input Weight 1 minggu sekali ===============
+    private fun setupWeeklyWeightInput() {
+        viewModel.remainingTime.observe(viewLifecycleOwner) { remaining ->
+            if (remaining > 0) {
+                startCountdown(remaining)
+            } else {
+                binding.apply {
+                    buttonInputWeight.isEnabled = true
+                    buttonInputWeight.alpha = 1f
+                    timerRemainingInputCurrentWeight.text = "Your weekly weight input is available."
+                }
+            }
+        }
+    }
+
+    private fun startCountdown(timeInMillis: Long) {
+        binding.apply {
+            val timer = object : CountDownTimer(timeInMillis, 1000) {
+                override fun onTick(millisUntilFinished: Long) {
+                    buttonInputWeight.isEnabled = false
+                    buttonInputWeight.alpha = 0.3f
+                    timerRemainingInputCurrentWeight.text = "Next weight input happens in: ${GeneralUtil.formatTime(millisUntilFinished)}"
+                }
+
+                override fun onFinish() {
+                    buttonInputWeight.isEnabled = true
+                    buttonInputWeight.alpha = 1f
+                    timerRemainingInputCurrentWeight.text = "Your weekly weight input is available."
+                }
+            }
+            timer.start()
+        }
+
+    }
+
+    //========== Setup WeightPicker untuk Input CurrentWeight ==========
+
+    private fun showWeightRulerPickerDialog(initialSelectedValue: Float) {
+        val dialog = Dialog(requireContext())
+        val dialogBinding = DialogWeightPickerBinding.inflate(layoutInflater)
+        dialog.setContentView(dialogBinding.root)
+
+        // Mengatur agar latar dialog transparan
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        // Mendapatkan ukuran layar
+        val displayMetrics = resources.displayMetrics
+        val screenWidth = displayMetrics.widthPixels
+        // Mengatur lebar dialog menjadi 85% dari lebar layar
+        val dialogWidth = (screenWidth * 0.85).toInt()
+        dialog.window?.setLayout(dialogWidth, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+        // Set initial selected value
+        dialogBinding.weightRulerView.selectedValue = initialSelectedValue
+        dialogBinding.textViewNumber2.text = initialSelectedValue.toInt().toString()
+
+        // Set listener untuk CurvedRulerView
+        dialogBinding.weightRulerView.listener = object : WeightRulerView.OnValueChangeListener {
+            override fun onValueChanged(value: Float) {
+                // Update selected value
+                dialogBinding.textViewNumber2.text = value.toInt().toString()
+                // Update EditText in real-time
+                binding.textViewCurrentWeightMW.text = String.format("%d", value.toInt())
+            }
+        }
+
+        // Set action for 'Done' button
+        dialogBinding.buttonDone.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
 //    private fun setupChangeRecipe() {

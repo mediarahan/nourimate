@@ -9,7 +9,6 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
-import com.telyu.nourimate.data.local.models.Detail
 import com.telyu.nourimate.data.local.models.History
 import com.telyu.nourimate.data.local.models.NutritionSum
 import com.telyu.nourimate.data.local.models.Recipe
@@ -18,6 +17,7 @@ import com.telyu.nourimate.data.local.models.RecipeHistoryData
 import com.telyu.nourimate.data.local.models.WeightEntry
 import com.telyu.nourimate.data.local.models.WeightTrack
 import com.telyu.nourimate.data.repository.NourimateRepository
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
 class ProgramViewModel(private val repository: NourimateRepository) : ViewModel() {
@@ -153,20 +153,15 @@ class ProgramViewModel(private val repository: NourimateRepository) : ViewModel(
 
     //===== Untuk grafik =====
 
-//    val weightEntries: LiveData<List<WeightEntry>> = userId.switchMap { id ->
-//        liveData {
-//            val weightEntries = repository.getWeightEntriesByUserIdAsc(id)
-//            if (weightEntries.isNotEmpty()) {
-//                emit(weightEntries)
-//            } else {
-//                Log.d("ProgramViewModel", "Weight entries not found")
-//            }
-//        }
-//    }
-
-    val weightEntries: LiveData<List<WeightEntry>> = liveData {
-        emitSource(repository.getWeightEntriesLiveData())
+    val weightEntries: LiveData<List<WeightEntry>> = userId.switchMap { id ->
+        repository.getWeightEntriesByUserIdAsc(id)
     }
+
+
+
+//    val weightEntries: LiveData<List<WeightEntry>> = liveData {
+//        emitSource(repository.getWeightEntriesLiveData())
+//    }
 
 //    private var _weightEntries: MutableLiveData<List<WeightEntry>> = MutableLiveData()
 //    val weightEntries: LiveData<List<WeightEntry>> = _weightEntries
@@ -217,9 +212,31 @@ class ProgramViewModel(private val repository: NourimateRepository) : ViewModel(
     fun insertWeightTrack(weightTrack: WeightTrack) {
         viewModelScope.launch {
             repository.insertWeightTrack(weightTrack)
+            fetchCooldownTime()
         }
     }
 
+    //===== Setup Input Weight 1 minggu sekali =====
+    private val _remainingTime = MutableLiveData<Long>()
+    val remainingTime: LiveData<Long> = _remainingTime
+
+    fun fetchCooldownTime() {
+        viewModelScope.launch {
+            val userId = repository.getUserId().firstOrNull() ?: -1
+            val endDate = repository.getCooldownEndDate(userId)
+            endDate.let {
+                val remaining = it.time - System.currentTimeMillis()
+                _remainingTime.value = if (remaining > 0) remaining else 0
+            }
+        }
+    }
+
+    fun deleteWeightEntriesById() {
+        viewModelScope.launch {
+            val userId = repository.getUserId().firstOrNull() ?: -1
+            repository.deleteWeightEntriesById(userId)
+        }
+    }
 
 }
 

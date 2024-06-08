@@ -142,43 +142,28 @@ class LoginActivity : AppCompatActivity() {
 //    }
 
     private fun loginWithBackend() {
-        binding.buttonLogin.setOnClickListener {
-            val email = binding.emailEditText.text.toString()
-            val password = binding.passwordEditText.text.toString()
+        val email = binding.emailEditText.text.toString()
+        val password = binding.passwordEditText.text.toString()
 
-            if (email == "admin2@gmail.com" && password == "admin124") {
-                showLoading(true)
-                handleSpecialLogin2(email)
-            }
-
-            if (email == "admin1@gmail.com" && password == "admin123") {
-                showLoading(true)
-                handleSpecialLogin(email)
-            } else {
-                loginViewModel.loginBackend(email, password).observe(this@LoginActivity) { result ->
-                    if (result != null) {
-                        when (result) {
-                            is Result.Loading -> {
-                                showLoading(true)
-                            }
-
-                            is Result.Success -> {
-                                showLoading(false)
-                                //observeLoginStatusBackend()
-                                Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show()
-
-
-                                val intent =
-                                    Intent(this@LoginActivity, EditProfileActivity::class.java)
-                                startActivity(intent)
-                                finish()
-                            }
-
-                            is Result.Error -> {
-                                showLoading(false)
-                                Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show()
-                            }
-                        }
+        if (email == "admin2@gmail.com" && password == "admin124") {
+            showLoading(true)
+            handleSpecialLogin2(email)
+        } else if (email == "admin1@gmail.com" && password == "admin123") {
+            showLoading(true)
+            handleSpecialLogin(email)
+        } else {
+            loginViewModel.loginBackend(email, password).observe(this@LoginActivity) { result ->
+                when (result) {
+                    is Result.Loading -> showLoading(true)
+                    is Result.Success -> {
+                        showLoading(false)
+                        Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this@LoginActivity, EditProfileActivity::class.java))
+                        finish()
+                    }
+                    is Result.Error -> {
+                        showLoading(false)
+                        Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -187,7 +172,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun handleSpecialLogin(email: String) {
         val userModel = UserModel(
-            id = 6,
+            id = 5,
             email = email,
             accessToken = "fakeAccessToken",
             refreshToken = "fakeRefreshToken",
@@ -209,7 +194,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun handleSpecialLogin2(email: String) {
         val userModel = UserModel(
-            id = 7,
+            id = 6,
             email = email,
             accessToken = "fakeAccessToken",
             refreshToken = "fakeRefreshToken",
@@ -270,6 +255,7 @@ class LoginActivity : AppCompatActivity() {
                         }
                     }
                 }
+
                 false -> {
                     showVerificationNeededDialog()
                 }

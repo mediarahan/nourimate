@@ -71,15 +71,17 @@ class RecipeViewModel(private val repository: NourimateRepository) : ViewModel()
         _mealTime.value = mealTime
     }
 
-    val dailyRecipes: LiveData<List<Recipe>> = _mealType.switchMap { mealType ->
-        if (mealType != 0) {
-            val startDate: Long = GeneralUtil.getDateToday(0, 0, 0, 0)
-            val endDate: Long = GeneralUtil.getDateToday(23, 59, 59, 999)
-            repository.getRecipesByDateAndMeal(mealType, startDate, endDate)
+    private fun getRecipesLiveData(mealType: Int): LiveData<List<Recipe>> {
+        return if (mealType != 0) {
+            repository.getRecipesByDateAndMeal(mealType)
         } else {
             MutableLiveData(emptyList())
         }
     }
+
+    val breakfastRecipes: LiveData<List<Recipe>> = getRecipesLiveData(1)
+    val lunchRecipes: LiveData<List<Recipe>> = getRecipesLiveData(2)
+    val dinnerRecipes: LiveData<List<Recipe>> = getRecipesLiveData(3)
 
     private val _recommendationRecipes = MediatorLiveData<List<RecommendationRecipe>>()
     val weeklyRecipes: LiveData<List<RecommendationRecipe>> = _recommendationRecipes
@@ -91,13 +93,12 @@ class RecipeViewModel(private val repository: NourimateRepository) : ViewModel()
         }
     }
 
-
     private fun loadData(mealTypeId: Int) {
         val startDate: Long = GeneralUtil.getDateToday(0, 0, 0, 0)
         val endDate: Long = GeneralUtil.getDateNextWeek()
         Log.d("Debug", "Loading data for Meal Type: $mealTypeId from $startDate to $endDate")
 
-        val recipesLiveData = repository.getRecipesByDateAndMeal(mealTypeId, startDate, endDate)
+        val recipesLiveData = repository.getRecipesByDateAndMeal(mealTypeId)
         val recommendationsLiveData = repository.getRecommendationsByMealIdSortedAscending(mealTypeId)
 
         _recommendationRecipes.apply {

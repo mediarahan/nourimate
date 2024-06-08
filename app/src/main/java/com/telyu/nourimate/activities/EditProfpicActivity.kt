@@ -1,13 +1,19 @@
 package com.telyu.nourimate.activities
 
+import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
+import com.telyu.nourimate.R
 import com.telyu.nourimate.data.local.models.Profpic
 import com.telyu.nourimate.databinding.ActivityEditProfpicBinding
 import com.telyu.nourimate.viewmodels.EditProfpicViewModel
@@ -28,7 +34,6 @@ class EditProfpicActivity : AppCompatActivity() {
         uri?.let {
             val internalUri = copyImageToInternalStorage(it)
             currentImageUri = internalUri
-            showImage(internalUri)
         } ?: Log.d("Photo Picker", "No media selected")
     }
 
@@ -36,23 +41,73 @@ class EditProfpicActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityEditProfpicBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setStatusBarColor(resources.getColor(R.color.color46, theme))
 
         viewModel = obtainViewModel(this@EditProfpicActivity)
 
-        binding.galleryButton.setOnClickListener {
-            startGallery()
+
+        val imageUriString = intent.getStringExtra("imageUri")
+        imageUriString?.let {
+            val imageUri = Uri.parse(it)
+            binding.imageToCrop.setImageURI(imageUri)
         }
 
-        binding.uploadButton.setOnClickListener {
+
+        binding.buttonSaveCrop.setOnClickListener {
+            saveCroppedImage()
+        }
+    }
+
+    private fun setStatusBarColor(color: Int) {
+        val window = window
+        val insetsController = WindowCompat.getInsetsController(window, window.decorView)
+
+        // Set to 'true' to ensure status bar icons are dark, useful for light status bar backgrounds
+        insetsController.isAppearanceLightStatusBars = true
+        // Set to 'true' to ensure navigation bar icons are dark, useful for light navigation bar backgrounds
+        insetsController.isAppearanceLightNavigationBars = true
+
+        // Set the status bar color
+        window.statusBarColor = color
+    }
+
+    private fun saveCroppedImage() {
+        binding.imageToCrop.buildDrawingCache()
+        val croppedBitmap = Bitmap.createBitmap(binding.imageToCrop.drawingCache)
+
+        try {
+            // Save to storage
+            val file = File(getExternalFilesDir(null), "cropped_image.jpg")
+            val fOut = FileOutputStream(file)
+            croppedBitmap.compress(Bitmap.CompressFormat.JPEG, 85, fOut)
+            fOut.flush()
+            fOut.close()
+
+            // Update the URI to new saved image
+            currentImageUri = Uri.fromFile(file)
+
+            // Insert or update the profile picture in the database
             insertProfpic()
-            val intent = Intent(this, NavigationBarActivity::class.java)
-            startActivity(intent)
+
+            Toast.makeText(this, "Image Saved Successfully", Toast.LENGTH_SHORT).show()
+
+            // Navigate back to ProfileFragment
+            navigateBackWithResult()
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(this, "Error Saving Image", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun startGallery() {
-        launcherGallery.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+    private fun navigateBackWithResult() {
+        val intent = Intent()
+        intent.putExtra("imageUri", currentImageUri.toString())
+        setResult(Activity.RESULT_OK, intent)
+        finish()
     }
+
+
 
 
     private fun copyImageToInternalStorage(uri: Uri): Uri {
@@ -70,9 +125,6 @@ class EditProfpicActivity : AppCompatActivity() {
         return File.createTempFile("profpic_", ".jpg", storageDir)
     }
 
-    private fun showImage(uri: Uri) {
-        binding.previewImageView.setImageURI(uri)
-    }
 
     private fun insertProfpic() {
         currentImageUri?.let { uri ->
