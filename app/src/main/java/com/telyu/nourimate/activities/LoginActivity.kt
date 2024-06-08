@@ -192,7 +192,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun handleSpecialLogin(email: String) {
         val userModel = UserModel(
-            id = 6,
+            id = 5,
             email = email,
             accessToken = "fakeAccessToken",
             refreshToken = "fakeRefreshToken",
@@ -214,7 +214,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun handleSpecialLogin2(email: String) {
         val userModel = UserModel(
-            id = 7,
+            id = 6,
             email = email,
             accessToken = "fakeAccessToken",
             refreshToken = "fakeRefreshToken",

@@ -26,8 +26,8 @@
     <string name="excess_carbs">Excessive consumption of refined carbohydrates causes metabolic syndrome, a condition of increased blood sugar levels, high blood pressure, obesity, and increased levels of fat in the blood.</string>
     <string name="calories_deficiency">Insufficient calorie intake can lead to energy deficiency, weight loss, muscle depletion, slowed metabolism, nutrient deficiencies.</string>
     <string name="excess_calories">Long term consumption of high calorie diet produces obesity, initiates oxidative stress, and initiates neuroinflammation causing early onset of visceral and brain diseases.</string>
-
-
+    <string name="fat_deficiency">Fat deficiency can lead to decreased energy availability, protein catabolism, weight loss, impaired growth, and skin abnormalities.</string>
+    <string name="excess_fat">Excess fat can lead obesity, increase cholesterol in the blood, and damage arteries, increasing the risk of cardiovascular disease, hypertension, diabetes, and problems with the brain and kidneys.</string>
 
 
 

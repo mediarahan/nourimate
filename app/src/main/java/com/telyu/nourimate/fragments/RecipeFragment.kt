@@ -10,6 +10,8 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -57,6 +59,8 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setStatusBarColor(ContextCompat.getColor(requireContext(), R.color.color16))
+
         //supaya ilang dulu
         binding.radioGroupMealtype.visibility = View.GONE
         binding.searchBar.visibility = View.GONE
@@ -83,6 +87,19 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
             recipeAdapter.submitList(recipes)
         }
     }
+
+    private fun setStatusBarColor(color: Int) {
+        val window = requireActivity().window
+        val insetsController = WindowInsetsControllerCompat(window, window.decorView)
+
+        insetsController.isAppearanceLightStatusBars =
+            true // Set true or false depending on the status bar icons' color
+        insetsController.isAppearanceLightNavigationBars =
+            true // Set true or false depending on the navigation bar icons' color
+
+        window.statusBarColor = color
+    }
+
 
     override fun onAddClick(recipe: Recipe) {
         CoroutineScope(Dispatchers.Main).launch {

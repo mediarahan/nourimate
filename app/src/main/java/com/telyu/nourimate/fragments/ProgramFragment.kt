@@ -47,7 +47,7 @@ class ProgramFragment : Fragment() {
         binding = FragmentProgramBinding.inflate(inflater, container, false)
         setCurrentFragment(ProgramEmptyFragment())
 
-        setStatusBarColor(ContextCompat.getColor(requireContext(), R.color.color47))
+        setStatusBarColor(ContextCompat.getColor(requireContext(), R.color.color16))
 
         //buat dummy
         //fillDatabaseWithFakeData()

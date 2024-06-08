@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -14,9 +15,17 @@
 
     <Button
         android:id="@+id/buttonSaveCrop"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Selesai"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/button_change_password"
+        android:elevation="6dp"
+        android:fontFamily="@font/alatsi"
+        android:onClick="onUserDetailClicked"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:text="Save"
+        app:backgroundTint="@null"
+        android:textStyle="bold" />
 </LinearLayout>
