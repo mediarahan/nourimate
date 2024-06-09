@@ -70,15 +70,15 @@ class RecipeDialog : DialogFragment() {
     private fun setupMealButtons() {
         var selectedMeal: Int
 
-        binding.breakfastTextView.setOnClickListener {
+        binding.breakfastImageView.setOnClickListener {
             selectedMeal = 1
             showSecondDialog(selectedMeal)
         }
-        binding.lunchTextView.setOnClickListener {
+        binding.lunchImageView.setOnClickListener {
             selectedMeal = 2
             showSecondDialog(selectedMeal)
         }
-        binding.dinnerTextView.setOnClickListener {
+        binding.dinnerImageView.setOnClickListener {
             selectedMeal = 3
             showSecondDialog(selectedMeal)
         }

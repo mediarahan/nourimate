@@ -33,6 +33,7 @@ class ProgramEmptyFragment : Fragment() {
         binding.buttonChooseProgram.setOnClickListener {
             startActivity(Intent(requireContext(), ChooseProgramActivity::class.java))
         }
+
     }
 
     private fun setStatusBarColor(color: Int) {

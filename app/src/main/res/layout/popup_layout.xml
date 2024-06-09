@@ -75,6 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
             android:layout_marginEnd="25dp"
             android:background="@drawable/rectangle_profile"
             android:clickable="true"
@@ -86,7 +87,8 @@
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/breakfastButton"
+            app:layout_constraintBottom_toBottomOf="@+id/breakfastButton"/>
 
         <ImageView
             android:id="@+id/breakfastImageView"
@@ -117,7 +119,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
             android:layout_marginEnd="25dp"
             android:background="@drawable/rectangle_profile"
             android:clickable="true"
@@ -129,7 +132,8 @@
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/lunchButton"
+            app:layout_constraintBottom_toBottomOf="@+id/lunchButton"/>
 
         <ImageView
             android:id="@+id/lunchImageView"
@@ -162,8 +166,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="25dp"
+            android:layout_marginBottom="5dp"
             android:background="@drawable/rectangle_profile"
             android:clickable="true"
             android:elevation="5dp"
@@ -174,7 +179,8 @@
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/dinnerButton"
+            app:layout_constraintBottom_toBottomOf="@+id/dinnerButton"/>
 
         <ImageView
             android:id="@+id/dinnerImageView"

@@ -1,5 +1,6 @@
 package com.telyu.nourimate.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -50,6 +51,10 @@ class ChooseProgramActivity : AppCompatActivity() {
         binding.buttonSelectProgram.setOnClickListener {
             Log.d("ChooseProgramActivity", "Click!")
             insertProgramDetails()
+        }
+
+        binding.backButton.setOnClickListener {
+            onBackPressed()
         }
     }
 
@@ -200,6 +205,15 @@ class ChooseProgramActivity : AppCompatActivity() {
     private fun obtainViewModel(activity: AppCompatActivity): ChooseProgramViewModel {
         val factory = ViewModelFactory.getInstance(activity.application)
         return ViewModelProvider(activity, factory)[ChooseProgramViewModel::class.java]
+    }
+
+    override fun onBackPressed() {
+        // Intent untuk membuka NavigationBarActivity dengan informasi fragment yang spesifik
+        val intent = Intent(this, NavigationBarActivity::class.java).apply {
+            putExtra("openFragment", "ProgramEmptyFragment")
+        }
+        startActivity(intent)
+        finish()
     }
 
 }

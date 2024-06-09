@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- res/drawable/rectangle_home2_with_shadow.xml -->
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -12,7 +11,7 @@
     </item>
 
     <!-- Shadow layer (diluar shape) -->
-    <item  android:bottom="10dp"  android:drawable="@drawable/radio_selected">
+    <item  android:bottom="10dp"  android:drawable="@drawable/radio_selected_without_stroke">
         <shape android:shape="rectangle">
             <corners android:topLeftRadius="22dp" android:topRightRadius="22dp"/>
             <solid android:color="#D4CDBA" />

@@ -12,10 +12,13 @@ import com.telyu.nourimate.R
 import com.telyu.nourimate.databinding.ActivityNavigationBarBinding
 import com.telyu.nourimate.fragments.RecipeFragment
 import com.telyu.nourimate.fragments.HomeFragment
+import com.telyu.nourimate.fragments.HomeMealHistoryFragment
+import com.telyu.nourimate.fragments.ProgramEmptyFragment
 
 class NavigationBarActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityNavigationBarBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,9 +28,21 @@ class NavigationBarActivity : AppCompatActivity() {
         setStatusBarColor(resources.getColor(R.color.color16, theme))
         setContentView(binding.root)
 
-        val homeFragment = HomeFragment()
-        setCurrentFragment(homeFragment)
+        if (intent.hasExtra("openFragment")) {
+            when (intent.getStringExtra("openFragment")) {
+                "HomeMealHistoryFragment" -> setCurrentFragment(HomeMealHistoryFragment())
+                "ProgramEmptyFragment" -> setCurrentFragment(ProgramEmptyFragment())
+            }
+        } else {
+            // Fragment default ketika aplikasi dibuka
+            setCurrentFragment(HomeFragment())
+        }
 
+        setupBottomNavigationView()
+
+    }
+
+    private fun setupBottomNavigationView() {
         binding.bottomNavigationView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.nav_home -> setCurrentFragment(HomeFragment())
@@ -38,6 +53,7 @@ class NavigationBarActivity : AppCompatActivity() {
             true
         }
     }
+
 
     private fun setStatusBarColor(color: Int) {
         val window = window
@@ -55,9 +71,12 @@ class NavigationBarActivity : AppCompatActivity() {
     private fun setCurrentFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragmentContainer, fragment)
+            addToBackStack(null)  // Menambahkan transaksi ini ke back stack
             commit()
         }
     }
+
+
 
     override fun onBackPressed() {
         super.onBackPressed()
@@ -72,4 +91,5 @@ class NavigationBarActivity : AppCompatActivity() {
         }
         alertDialogBuilder.show()
     }
+
 }

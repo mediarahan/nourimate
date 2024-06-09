@@ -9,8 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
         android:background="@drawable/shape_menu_history"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +40,10 @@
         app:layout_constraintStart_toStartOf="@id/viewBackground"
         app:layout_constraintEnd_toStartOf="@+id/viewCircleBackground"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="25dp" />
+        android:layout_marginTop="25dp"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeMaxTextSize="18sp"/>
 
     <ImageView
         android:id="@+id/iv_recipe"
