@@ -31,7 +31,7 @@ class NavigationBarActivity : AppCompatActivity() {
         if (intent.hasExtra("openFragment")) {
             when (intent.getStringExtra("openFragment")) {
                 "HomeMealHistoryFragment" -> setCurrentFragment(HomeMealHistoryFragment())
-                "ProgramEmptyFragment" -> setCurrentFragment(ProgramEmptyFragment())
+                "ProgramEmptyFragment" -> setCurrentFragment(ProgramFragment())
             }
         } else {
             // Fragment default ketika aplikasi dibuka

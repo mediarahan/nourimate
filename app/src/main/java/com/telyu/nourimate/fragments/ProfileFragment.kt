@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.telyu.nourimate.R
@@ -89,7 +90,7 @@ class ProfileFragment : Fragment() {
     private fun launchCamera() {
         ImagePicker.with(this)
             .cameraOnly()
-            .crop()
+            .crop(1f, 1f)  // Set crop aspect ratio to 1:1
             .maxResultSize(1080, 1080)
             .start(REQUEST_IMAGE_CAPTURE)
     }
@@ -97,7 +98,7 @@ class ProfileFragment : Fragment() {
     private fun launchGallery() {
         ImagePicker.with(this)
             .galleryOnly()
-            .crop()
+            .crop(1f, 1f)  // Set crop aspect ratio to 1:1
             .maxResultSize(1080, 1080)
             .start(REQUEST_PICK_IMAGE)
     }
@@ -110,6 +111,12 @@ class ProfileFragment : Fragment() {
             when (requestCode) {
                 REQUEST_IMAGE_CAPTURE, REQUEST_PICK_IMAGE -> {
                     data?.data?.let { uri ->
+                        // Gunakan Glide untuk memuat gambar dengan crop pusat
+                        Glide.with(this)
+                            .load(uri)
+                            .centerCrop()  // Memastikan gambar mengisi CircleImageView sepenuhnya
+                            .into(binding.imageViewAvatar)
+
                         openEditProfpicActivity(uri)
                     }
                 }

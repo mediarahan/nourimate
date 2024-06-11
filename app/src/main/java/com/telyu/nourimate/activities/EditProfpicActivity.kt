@@ -72,14 +72,16 @@ class EditProfpicActivity : AppCompatActivity() {
     }
 
     private fun saveCroppedImage() {
+        binding.imageToCrop.isDrawingCacheEnabled = true
         binding.imageToCrop.buildDrawingCache()
         val croppedBitmap = Bitmap.createBitmap(binding.imageToCrop.drawingCache)
+        binding.imageToCrop.isDrawingCacheEnabled = false
 
         try {
             // Save to storage
-            val file = File(getExternalFilesDir(null), "cropped_image.jpg")
+            val file = File(getExternalFilesDir(null), "cropped_image.png")
             val fOut = FileOutputStream(file)
-            croppedBitmap.compress(Bitmap.CompressFormat.JPEG, 85, fOut)
+            croppedBitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut)
             fOut.flush()
             fOut.close()
 
@@ -91,7 +93,7 @@ class EditProfpicActivity : AppCompatActivity() {
 
             Toast.makeText(this, "Image Saved Successfully", Toast.LENGTH_SHORT).show()
 
-            // Navigate back to ProfileFragment
+            // Navigate back to ProfileFragment with result
             navigateBackWithResult()
 
         } catch (e: Exception) {

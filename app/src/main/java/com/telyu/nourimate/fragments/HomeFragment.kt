@@ -123,8 +123,8 @@ class HomeFragment : Fragment() {
 
     private fun bindIdealWeightAndSize() {
         viewModel.weightValues.observe(viewLifecycleOwner) {values ->
-            binding.weightIdealTextView.text = values.first.toString() + " kg" + "\nIdeal Weight"
-            binding.waistIdealTextView.text = values.second.toString() + " cm"+ "\nWaist Size"
+            binding.weightIdealTextView.text = "Ideal Weight\n" + values.first.toString() + " kg"
+            binding.waistIdealTextView.text = "Ideal Waist\n" + values.second.toString() + " cm"
         }
     }
 
