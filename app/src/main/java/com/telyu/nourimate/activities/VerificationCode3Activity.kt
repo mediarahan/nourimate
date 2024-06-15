@@ -6,9 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.telyu.nourimate.databinding.ActivityVerificationCode3Binding
 import android.app.Activity
 import android.graphics.drawable.GradientDrawable
+import android.view.View
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.telyu.nourimate.R
+import com.telyu.nourimate.data.remote.Result
 import com.telyu.nourimate.viewmodels.VerificationViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
 
@@ -26,6 +29,7 @@ class VerificationCode3Activity : AppCompatActivity() {
         setContentView(view)
 
         viewModel = obtainViewModel(this@VerificationCode3Activity)
+        viewModel.sendPhoneVerification()
 
         val gradientColors = intArrayOf(
             getColor(R.color.color25),
@@ -53,12 +57,20 @@ class VerificationCode3Activity : AppCompatActivity() {
 
         binding.buttonVerify.setOnClickListener {
             val verificationCode = binding.verifyEditText.text.toString()
-
-            when (verificationCode) {
-                "1" -> navigateToProfile()
-                "2" -> navigateToNavBar()
-                "3" -> navigateToPasswordPopupPage()
-                else -> setResult(Activity.RESULT_OK)
+            viewModel.verifyPhone(verificationCode).observe(this) {result ->
+                when (result) {
+                    is Result.Loading -> showLoading(true)
+                    is Result.Success -> {
+                        showLoading(false)
+                        Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this@VerificationCode3Activity, EditProfileActivity::class.java))
+                        finish()
+                    }
+                    is Result.Error -> {
+                        showLoading(false)
+                        Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
     }
@@ -85,6 +97,10 @@ class VerificationCode3Activity : AppCompatActivity() {
         // Buat Intent untuk membuka VerificationActivity
         val intent = Intent(this, PasswordPopupActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     private fun obtainViewModel(activity: AppCompatActivity): VerificationViewModel {

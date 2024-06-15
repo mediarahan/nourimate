@@ -28,7 +28,9 @@ class ProgramViewModel(private val repository: NourimateRepository) : ViewModel(
         Log.d("ProgramViewModel", "userWeightTrack: $id")
         liveData {
             val weightTrack = repository.getWeightTrackById(id)
-            emit(weightTrack)
+            if (weightTrack != null) {
+                emit(weightTrack)
+            }
         }
     }
 
@@ -199,7 +201,7 @@ class ProgramViewModel(private val repository: NourimateRepository) : ViewModel(
     }
 
 
-    val userWeightDetail: LiveData<Float?> = userId.switchMap { id ->
+    val userWeightDetail: LiveData<Int> = userId.switchMap { id ->
         liveData {
             val detail = repository.getUserDetailsById(id)
             if (detail != null) {

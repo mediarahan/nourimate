@@ -59,14 +59,14 @@ class EditProfileActivity : AppCompatActivity() {
         setupSpinner()
     }
 
-    private fun insertUserDetails() {
+    private fun insertUserDetailsToLocalAndBackend() {
         //all input
         val heightString = binding.editTextHeight.text.toString()
         val weightString = binding.editTextWeight.text.toString()
         val waistSizeString = binding.editTextWaist.text.toString()
-        val height = heightString.toFloatOrNull()
-        val weight = weightString.toFloatOrNull()
-        val waistSize = waistSizeString.toFloatOrNull()
+        val height = heightString.toInt()
+        val weight = weightString.toInt()
+        val waistSize = waistSizeString.toInt()
 
         val gender = binding.spinnerGender.selectedItem.toString()
         val allergies = binding.editTextAllergies.text.toString()
@@ -78,7 +78,8 @@ class EditProfileActivity : AppCompatActivity() {
         val date: Date? = dateFormatter.parse(dob)
 
         // Calculate BMI
-        val bmi = calculateBMI(height, weight)?.toInt()
+        val bmi = calculateBMI(height, weight)
+        viewModel.insertDetailToBackend(dob, height, weight, waistSize, gender, allergies, disease)
         viewModel.insertDetail(0, date, height, weight, waistSize, gender, allergies, disease, bmi?.toFloat() ?: -999f)
 
         val intent = Intent(this, NavigationBarActivity::class.java)
@@ -98,7 +99,7 @@ class EditProfileActivity : AppCompatActivity() {
         val startDateFormatted = Converters().fromStringToDate(startDate)
         val endDateFormatted = Converters().fromStringToDate(endDate)
         val dateNow = Converters().dateFromTimestamp(System.currentTimeMillis())
-        val nextWeek = Converters().dateFromTimestamp(GeneralUtil.getDateNextWeek())
+        val nextWeek = Converters().dateFromTimestamp(GeneralUtil.calculateOneMinuteLaterTimestamp())
 
         val programCode = when (program) {
             "Maintain Weight" -> 1
@@ -116,12 +117,8 @@ class EditProfileActivity : AppCompatActivity() {
     //API Related
     private fun fetchDataFromMachineLearning() {
         viewModel.recommendationsLiveData.observe(this) { recommendations ->
-            if (recommendations.isNotEmpty()) {
-                Log.d("ML", "Recommendation from ML successfully inserted")
-                viewModel.insertRecommendations(recommendations)
-            } else {
-                Log.d("ML", "No recommendations received or list is empty")
-            }
+            viewModel.insertRecommendations(recommendations)
+            Log.d("Recommendations", recommendations.toString())
         }
     }
 
@@ -295,14 +292,26 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun showAllergiesDialog() {
-        val allergies = arrayOf("Nuts", "Eggs", "Seafood")
-        val checkedItems = booleanArrayOf(false, false, false)
+        val allergies = arrayOf("None", "Nuts", "Eggs", "Seafood")
+        val checkedItems = booleanArrayOf(false, false, false, false)
         val selectedItems = mutableListOf<String>()
 
         val dialogBuilder = AlertDialog.Builder(this, R.style.CustomAlertDialog)
             .setTitle("Select Allergies")
-            .setMultiChoiceItems(allergies, checkedItems) { _, which, isChecked ->
-                if (isChecked) {
+            .setMultiChoiceItems(allergies, checkedItems) { dialog, which, isChecked ->
+                if (which == 0 && isChecked) {  // "None" is at position 0
+                    // Deselect all other checkboxes if "None" is selected
+                    selectedItems.clear()
+                    selectedItems.add(allergies[0])
+                    allergies.indices.forEach { index ->
+                        if (index != 0) {
+                            (dialog as AlertDialog).listView.setItemChecked(index, false)
+                        }
+                    }
+                } else if (isChecked) {
+                    // Remove "None" if any other item is selected
+                    selectedItems.remove(allergies[0])
+                    (dialog as AlertDialog).listView.setItemChecked(0, false)
                     selectedItems.add(allergies[which])
                 } else {
                     selectedItems.remove(allergies[which])
@@ -311,7 +320,7 @@ class EditProfileActivity : AppCompatActivity() {
             .setPositiveButton("Done") { dialog, _ ->
                 // Update the EditText with selected items when "Done" is clicked
                 val selectedText = selectedItems.joinToString(", ")
-                binding.editTextAllergies.setText(selectedText)  // Menggunakan ViewBinding untuk mengupdate view
+                binding.editTextAllergies.setText(selectedText)  // Using ViewBinding to update view
                 dialog.dismiss()
             }
             .setNegativeButton("Cancel", null)
@@ -319,13 +328,13 @@ class EditProfileActivity : AppCompatActivity() {
         val dialog = dialogBuilder.create()
         dialog.show()
 
-        // Mengubah tombol OK dan Cancel agar tidak menggunakan huruf kapital
+// Modify the OK and Cancel buttons to not use all caps
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).isAllCaps = false
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).isAllCaps = false
 
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).apply {
-            setTextColor(Color.BLACK)  // Mengeset warna secara langsung
-            textSize = 16f            // Mengeset ukuran teks
+            setTextColor(Color.BLACK)  // Set color directly
+            textSize = 16f             // Set text size
             typeface =
                 Typeface.create(ResourcesCompat.getFont(context, R.font.abel), Typeface.NORMAL)
         }
@@ -335,22 +344,30 @@ class EditProfileActivity : AppCompatActivity() {
             typeface =
                 Typeface.create(ResourcesCompat.getFont(context, R.font.abel), Typeface.NORMAL)
         }
-
-        // Set dialog width to 85% of the screen width
-        val displayMetrics = resources.displayMetrics
-        val screenWidth = displayMetrics.widthPixels
-        dialog.window?.setLayout((screenWidth * 0.85).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
-    private fun showDiseasesDialog() {
-        val diseases = arrayOf("Diabetes", "Hipertensi", "Kolesterol")
-        val checkedItems = booleanArrayOf(false, false, false)
+
+        private fun showDiseasesDialog() {
+        val diseases = arrayOf("None","Diabetes", "Hipertensi", "Kolesterol")
+        val checkedItems = booleanArrayOf(false, false, false, false)
         val selectedItems = mutableListOf<String>()
 
         val dialogBuilder = AlertDialog.Builder(this, R.style.CustomAlertDialog)
             .setTitle("Select Diseases")
-            .setMultiChoiceItems(diseases, checkedItems) { _, which, isChecked ->
-                if (isChecked) {
+            .setMultiChoiceItems(diseases, checkedItems) { dialog, which, isChecked ->
+                if (which == 0 && isChecked) {  // "None" is at position 0
+                    // Deselect all other checkboxes if "None" is selected
+                    selectedItems.clear()
+                    selectedItems.add(diseases[0])
+                    diseases.indices.forEach { index ->
+                        if (index != 0) {
+                            (dialog as AlertDialog).listView.setItemChecked(index, false)
+                        }
+                    }
+                } else if (isChecked) {
+                    // Remove "None" if any other item is selected
+                    selectedItems.remove(diseases[0])
+                    (dialog as AlertDialog).listView.setItemChecked(0, false)
                     selectedItems.add(diseases[which])
                 } else {
                     selectedItems.remove(diseases[which])
@@ -416,7 +433,7 @@ class EditProfileActivity : AppCompatActivity() {
             // Setup submit data to database button
             buttonNext.setOnClickListener {
                 insertProgram()
-                insertUserDetails()
+                insertUserDetailsToLocalAndBackend()
                 fetchDataFromMachineLearning()
             }
         }

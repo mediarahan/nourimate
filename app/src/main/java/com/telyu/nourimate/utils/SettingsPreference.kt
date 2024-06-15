@@ -18,7 +18,7 @@ class SettingsPreference private constructor(private val dataStore: DataStore<Pr
         dataStore.edit { preferences ->
             preferences[NIGHT_MODE_KEY] = settings.isNightModeEnabled
             preferences[NOTIFICATIONS_ENABLED_KEY] = settings.areNotificationsEnabled
-            preferences[TEXT_SIZE_KEY] = settings.textSize
+            preferences[RECIPE_TRANSITION_KEY] = settings.isRecipeTransition
         }
     }
 
@@ -27,7 +27,7 @@ class SettingsPreference private constructor(private val dataStore: DataStore<Pr
             SettingsModel(
                 preferences[NIGHT_MODE_KEY] ?: false,
                 preferences[NOTIFICATIONS_ENABLED_KEY] ?: true,
-                preferences[TEXT_SIZE_KEY] ?: 14 // Default text size
+                preferences[RECIPE_TRANSITION_KEY] ?: true // Default text size
             )
         }
     }
@@ -56,13 +56,25 @@ class SettingsPreference private constructor(private val dataStore: DataStore<Pr
         }
     }
 
+    suspend fun setRecipeTransitionPreference(showTransition: Boolean) {
+        dataStore.edit {preferences ->
+            preferences[RECIPE_TRANSITION_KEY] = showTransition
+        }
+    }
+
+    fun getRecipeTransitionPreference(): Flow<Boolean> {
+        return dataStore.data.map { preferences ->
+            preferences[RECIPE_TRANSITION_KEY] ?: true
+        }
+    }
+
     companion object {
         @Volatile
         private var INSTANCE: SettingsPreference? = null
 
         private val NIGHT_MODE_KEY = booleanPreferencesKey("nightMode")
         private val NOTIFICATIONS_ENABLED_KEY = booleanPreferencesKey("notificationsEnabled")
-        private val TEXT_SIZE_KEY = intPreferencesKey("textSize")
+        private val RECIPE_TRANSITION_KEY = booleanPreferencesKey("recipeTransition")
 
         private val WATER_INTAKE_KEY = intPreferencesKey("water_intake")
 
@@ -80,5 +92,5 @@ class SettingsPreference private constructor(private val dataStore: DataStore<Pr
 data class SettingsModel(
     val isNightModeEnabled: Boolean,
     val areNotificationsEnabled: Boolean,
-    val textSize: Int
+    val isRecipeTransition: Boolean,
 )

@@ -115,12 +115,12 @@ class HomeFragment : Fragment() {
     private fun bindIdealWeightAndSize() {
         viewModel.currentValues.observe(viewLifecycleOwner) {values ->
             binding.weightCurrentTextView.text = "Current Weight\n" + values.first.toString() + "kg"
-            binding.waistCurrentTextView.text = "Current Size\n" + values.second.toString() + "cm"
+            binding.waistCurrentTextView.text = "Current Waist\n" + values.second.toString() + "cm"
         }
 
         viewModel.idealValues.observe(viewLifecycleOwner) { values ->
             binding.weightIdealTextView.text = "Ideal Weight\n" + values.first.toString() + "kg"
-            binding.waistIdealTextView.text = "Waist Size\n"+ values.second.toString() + "cm"
+            binding.waistIdealTextView.text = "Max Waist\n"+ values.second.toString() + "cm"
 
         }
     }
@@ -230,7 +230,11 @@ class HomeFragment : Fragment() {
 
     //========== Dialog Informasi Nutrisi ==========
     enum class UserNutritionStatus {
-        EXCESS, DEFICIT, NORMAL
+        EXCESS, DEFICIT
+    }
+
+    enum class WaterIntakeStatus {
+        DEFICIT, EXCESS
     }
 
     private fun getCurrentMealTime(): String {
@@ -245,11 +249,15 @@ class HomeFragment : Fragment() {
 
     private fun checkNutrientStatus(currentNutrientValue: Int, requiredNutrientValue: Int): UserNutritionStatus {
         return when {
-            currentNutrientValue < requiredNutrientValue * 0.8 -> UserNutritionStatus.DEFICIT
-            currentNutrientValue <= requiredNutrientValue -> UserNutritionStatus.NORMAL
+            currentNutrientValue < requiredNutrientValue -> UserNutritionStatus.DEFICIT
             else -> UserNutritionStatus.EXCESS
         }
     }
+
+    private fun checkWaterIntakeStatus(consumedWater: Int): WaterIntakeStatus {
+        return if (consumedWater < 1500) WaterIntakeStatus.DEFICIT else WaterIntakeStatus.EXCESS
+    }
+
 
     private var nutrientStatusMap = mutableMapOf<String, UserNutritionStatus>()
 
@@ -263,8 +271,8 @@ class HomeFragment : Fragment() {
         val drawableResId = when {
             status == UserNutritionStatus.DEFICIT && isCriticalTime -> R.drawable.infored
             status == UserNutritionStatus.EXCESS -> R.drawable.infored
-            status == UserNutritionStatus.NORMAL -> R.drawable.infogreen
-            else -> R.drawable.info
+            status == UserNutritionStatus.DEFICIT -> R.drawable.info
+            else -> R.drawable.infogreen
         }
 
         imageView.setImageResource(drawableResId)
@@ -285,6 +293,9 @@ class HomeFragment : Fragment() {
             imageInfoCarbs.setOnClickListener {
                 showNutritionDialog("Carbs")
             }
+            infowaterImageView.setOnClickListener {
+                showNutritionDialog("Water")
+            }
         }
     }
 
@@ -296,6 +307,15 @@ class HomeFragment : Fragment() {
                 updateButton(imageInfoFat, "Fat", nutritionSum.totalFat.toInt(), maxNutritions[2])
                 updateButton(imageInfoCarbs, "Carbs", nutritionSum.totalCarbs.toInt(), maxNutritions[3])
             }
+        }
+
+        viewModel.waterIntake.observe(viewLifecycleOwner) { waterIntake ->
+            val waterStatus = checkWaterIntakeStatus(waterIntake)
+            binding.infowaterImageView.setImageResource(
+                when (waterStatus) {
+                    WaterIntakeStatus.DEFICIT -> R.drawable.infored
+                    WaterIntakeStatus.EXCESS -> R.drawable.info
+                } )
         }
     }
 

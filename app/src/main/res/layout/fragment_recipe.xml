@@ -48,51 +48,42 @@
                 android:id="@+id/recipeAskTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:fontFamily="@font/alumnisans"
+                android:layout_marginStart="27dp"
+                android:fontFamily="@font/abel"
                 android:text="Do you want to cook something?"
-                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/recipeGreetingTextView" />
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardViewAvatar"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginTop="28dp"
-                android:layout_marginEnd="28dp"
-                app:cardCornerRadius="150dp"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/recipeProfileImageView"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="25dp"
+                android:src="@drawable/baseline_person_24"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:id="@+id/recipeProfileImageView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/baseline_person_24" />
-
-
-            </androidx.cardview.widget.CardView>
-
+                android:scaleType="centerCrop" />
 
             <RadioGroup
                 android:id="@+id/radio_group_mealtime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="20dp"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recipeAskTextView">
+                app:layout_constraintTop_toBottomOf="@+id/recipeProfileImageView">
 
                 <RadioButton
                     android:id="@+id/button_daily"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
+                    android:minHeight="40dp"
+                    android:minWidth="0dp"
+                    android:layout_marginTop="15dp"
                     android:layout_marginEnd="10dp"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
@@ -104,15 +95,17 @@
                     android:paddingRight="24dp"
                     android:text="Daily"
                     android:textAlignment="center"
-                    android:textColor="@drawable/text_color"
-                    android:textSize="20dp"
+                    android:textColor="@color/black"
+                    android:textSize="17dp"
                     app:backgroundTint="@null" />
 
                 <RadioButton
                     android:id="@+id/button_weekly"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
+                    android:minHeight="40dp"
+                    android:minWidth="0dp"
+                    android:layout_marginTop="15dp"
                     android:layout_marginEnd="10dp"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
@@ -124,8 +117,8 @@
                     android:paddingRight="24dp"
                     android:text="Weekly"
                     android:textAlignment="center"
-                    android:textColor="@drawable/text_color"
-                    android:textSize="20dp"
+                    android:textColor="@color/black"
+                    android:textSize="17dp"
                     app:backgroundTint="@null" />
 
             </RadioGroup>
@@ -143,7 +136,9 @@
                     android:id="@+id/button_breakfast"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
+                    android:minHeight="40dp"
+                    android:minWidth="0dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
@@ -155,15 +150,17 @@
                     android:paddingRight="12dp"
                     android:text="Breakfast"
                     android:textAlignment="center"
-                    android:textColor="@drawable/text_color"
-                    android:textSize="20dp"
+                    android:textColor="@color/black"
+                    android:textSize="17dp"
                     app:backgroundTint="@null" />
 
                 <RadioButton
                     android:id="@+id/button_lunch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
+                    android:minHeight="40dp"
+                    android:minWidth="0dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
@@ -175,15 +172,17 @@
                     android:paddingRight="12dp"
                     android:text="Lunch"
                     android:textAlignment="center"
-                    android:textColor="@drawable/text_color"
-                    android:textSize="20dp"
+                    android:textColor="@color/black"
+                    android:textSize="17dp"
                     app:backgroundTint="@null" />
 
                 <RadioButton
                     android:id="@+id/button_dinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
+                    android:minHeight="40dp"
+                    android:minWidth="0dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
@@ -195,36 +194,87 @@
                     android:paddingRight="12dp"
                     android:text="Dinner"
                     android:textAlignment="center"
-                    android:textColor="@drawable/text_color"
-                    android:textSize="20dp"
+                    android:textColor="@color/black"
+                    android:textSize="17dp"
                     app:backgroundTint="@null" />
 
             </RadioGroup>
 
+            <TextView
+                android:id="@+id/chooseFoodTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/concertone"
+                android:text="Choose The Food"
+                android:textSize="25sp"
+                android:textColor="@color/black"
+                android:gravity="center"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/radio_group_mealtype" />
+
+            <TextView
+                android:id="@+id/noteTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/abel"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:text="Nutritional Information Provided Per Single Serving"
+                android:textSize="12sp"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/chooseFoodTextView" />
+
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recommendationRecyclerView"
+                android:id="@+id/breakfastRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="12dp"
                 android:layout_marginBottom="12dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/radio_group_mealtype" />
+                app:layout_constraintTop_toBottomOf="@+id/noteTextView" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/lunchRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="12dp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/noteTextView" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/dinnerRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="12dp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/noteTextView" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/weeklyRecommendationRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginBottom="12dp"
+                android:layout_margin="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/radio_group_mealtype" />
+                app:layout_constraintTop_toBottomOf="@+id/noteTextView" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

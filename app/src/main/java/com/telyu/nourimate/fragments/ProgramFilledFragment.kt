@@ -147,8 +147,8 @@ class ProgramFilledFragment : Fragment() {
             val weight = weightText.toInt()
 
             //date next week
-               val midnightNextWeek = Converters().dateFromTimestamp(GeneralUtil.calculateNextWeekMidnight())
-//            val midnightNextWeek = Converters().dateFromTimestamp(GeneralUtil.calculateOneMinuteLaterTimestamp())
+//               val midnightNextWeek = Converters().dateFromTimestamp(GeneralUtil.calculateNextWeekMidnight())
+            val midnightNextWeek = Converters().dateFromTimestamp(GeneralUtil.calculateOneMinuteLaterTimestamp())
             val today = Converters().dateFromTimestamp(System.currentTimeMillis())
 
             val builder = AlertDialog.Builder(requireContext())
@@ -210,6 +210,7 @@ class ProgramFilledFragment : Fragment() {
 
     //=============== Setup Input Weight 1 minggu sekali ===============
     private fun setupWeeklyWeightInput() {
+
         viewModel.remainingTime.observe(viewLifecycleOwner) { remaining ->
             if (remaining > 0) {
                 startCountdown(remaining)

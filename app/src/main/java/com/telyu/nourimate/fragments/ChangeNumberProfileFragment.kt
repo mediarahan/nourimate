@@ -1,16 +1,30 @@
 package com.telyu.nourimate.fragments
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
+import com.telyu.nourimate.activities.EditProfileActivity
+import com.telyu.nourimate.data.remote.Result
 import com.telyu.nourimate.databinding.FragmentChangeNumberProfileBinding
+import com.telyu.nourimate.viewmodels.DetailChangeViewModel
+import com.telyu.nourimate.viewmodels.RecipeViewModel
+import com.telyu.nourimate.viewmodels.ViewModelFactory
 
 class ChangeNumberProfileFragment : DialogFragment() {
 
     private var _binding: FragmentChangeNumberProfileBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel by viewModels<DetailChangeViewModel> {
+        ViewModelFactory.getInstance(
+            requireContext().applicationContext
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -18,8 +32,34 @@ class ChangeNumberProfileFragment : DialogFragment() {
     ): View {
         _binding = FragmentChangeNumberProfileBinding.inflate(inflater, container, false)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        binding.buttonSave.setOnClickListener {
+            changePhoneNumber()
+        }
+
         return binding.root
     }
+
+    private fun changePhoneNumber() {
+        val phoneNumber = binding.editTextCurrentNumber.text.toString()
+        val confirmPhoneNumber = binding.editTextConfirmNewNumber.text.toString()
+        viewModel.changePhoneNumber(phoneNumber, confirmPhoneNumber).observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is Result.Loading -> showLoading(true)
+                is Result.Success -> {
+                    showLoading(false)
+                    Toast.makeText(requireContext(), "Login Success", Toast.LENGTH_SHORT).show()
+                    dismiss()
+                }
+                is Result.Error -> {
+                    showLoading(false)
+                    Toast.makeText(requireContext(), "Login Failed", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+
 
     override fun onStart() {
         super.onStart()
@@ -45,6 +85,11 @@ class ChangeNumberProfileFragment : DialogFragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
 
     companion object {
         fun newInstance():ChangeNumberProfileFragment {

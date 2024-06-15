@@ -130,7 +130,9 @@ class ProgramFragment : Fragment() {
             }
 
             val startDate = Converters().formatDateToString(weightTrack.startDate)
-            val endDate = Converters().formatDateToString(weightTrack.endDate)
+           // val endDate = Converters().formatDateToString(weightTrack.endDate)
+            val todayDate = Converters().dateFromTimestamp(System.currentTimeMillis())
+            val todayDateString = Converters().formatDateToString(todayDate)
 
             viewModel.getNutritionSumsForHistory()
             viewModel.historyNutritionSum.observe(viewLifecycleOwner) { sum ->
@@ -145,7 +147,7 @@ class ProgramFragment : Fragment() {
                             id = 0,
                             programName = programName,
                             startDate = startDate,
-                            endDate = endDate,
+                            endDate = todayDateString,
                             calories = calories,
                             protein = protein,
                             fat = fat,

@@ -26,14 +26,11 @@ class EditProfileViewModel(private val repository: NourimateRepository) : ViewMo
 
     //BISMILLAH API ----------------------------------------------------------------------------------------
 
-    private val userEmail: LiveData<String> = repository.getUserEmail().asLiveData()
+    private val userId: LiveData<Int> = repository.getUserId().asLiveData()
 
-    private val userDetails: LiveData<Detail> = userEmail.switchMap { email ->
+    private val userDetails: LiveData<Detail> = userId.switchMap { id ->
         liveData {
-            val usersId = repository.getUserId().firstOrNull() ?: -1
-            Log.d("Debug", "Fetching user details for id: $usersId")
-            val detail = repository.getUserDetailsById(usersId)
-            Log.d("Debug", "User details fetched: $detail")
+            val detail = repository.getUserDetailsById(id)
             if (detail != null) {
                 emit(detail)
             }
@@ -68,73 +65,89 @@ class EditProfileViewModel(private val repository: NourimateRepository) : ViewMo
     private fun mapFetchedIdsToRecommendationEntity(
         idSarapan: List<Int>,
         idMakanSiang: List<Int>,
-        idMakanMalam: List<Int>
+        idMakanMalam: List<Int>,
+        userId: Int
     ): List<Recommendation> {
         val recommendations = mutableListOf<Recommendation>()
         val startDate = Date()
 
-        val numDays = minOf(idSarapan.size, idMakanSiang.size, idMakanMalam.size)
+        val numDays = maxOf(idSarapan.size, idMakanSiang.size, idMakanMalam.size) / 3  // Assuming each list has 3 times the IDs needed per day
 
         for (i in 0 until numDays) {
             val date = Date(startDate.time + i * 86400000)
 
-            recommendations.add(
-                Recommendation(
-                    recommendationId = recommendations.size + 1,
-                    date = date,
-                    isSelected = 0,
-                    recipeId = idSarapan[i],
-                    6
-                )
-            )
+            // Assigning three breakfast recommendations
+            for (j in 0 until 3) {
+                val index = i * 3 + j
+                if (index < idSarapan.size) {
+                    recommendations.add(Recommendation(
+                        recommendationId = recommendations.size + 1,
+                        date = date,
+                        isSelected = 0,
+                        recipeId = idSarapan[index],
+                        userId = userId
+                    ))
+                }
+            }
 
-            recommendations.add(
-                Recommendation(
-                    recommendationId = recommendations.size + 1,
-                    date = date,
-                    isSelected = 0,
-                    recipeId = idMakanSiang[i],
-                    6
-                )
-            )
+            // Assigning three lunch recommendations
+            for (j in 0 until 3) {
+                val index = i * 3 + j
+                if (index < idMakanSiang.size) {
+                    recommendations.add(Recommendation(
+                        recommendationId = recommendations.size + 1,
+                        date = date,
+                        isSelected = 0,
+                        recipeId = idMakanSiang[index],
+                        userId = userId
+                    ))
+                }
+            }
 
-            recommendations.add(
-                Recommendation(
-                    recommendationId = recommendations.size + 1,
-                    date = date,
-                    isSelected = 0,
-                    recipeId = idMakanMalam[i],
-                    6
-                )
-            )
+            // Assigning three dinner recommendations
+            for (j in 0 until 3) {
+                val index = i * 3 + j
+                if (index < idMakanMalam.size) {
+                    recommendations.add(Recommendation(
+                        recommendationId = recommendations.size + 1,
+                        date = date,
+                        isSelected = 0,
+                        recipeId = idMakanMalam[index],
+                        userId = userId
+                    ))
+                }
+            }
         }
         return recommendations
     }
 
+
     val recommendationsLiveData: LiveData<List<Recommendation>> =
         recommendationData.switchMap { result ->
-            MutableLiveData<List<Recommendation>>().apply {
-                value = when (result) {
+            liveData {
+                val userId = repository.getUserId().firstOrNull() ?: -1  // Fetch the user ID here
+                emit(when (result) {
                     is Result.Success -> {
                         val recommendations = mapFetchedIdsToRecommendationEntity(
                             result.data.recipeIdsSarapan,
                             result.data.recipeIdsMakanSiang,
-                            result.data.recipeIdsMakanMalam
+                            result.data.recipeIdsMakanMalam,
+                            userId
                         )
                         Log.d("Debug", "Mapped recommendations: $recommendations")
                         recommendations
                     }
-
                     is Result.Loading -> listOf()
                     is Result.Error -> {
-                        Log.e("Error", "Error in recommendation result: ")
+                        Log.e("Error", "Error in recommendation result.")
                         listOf()
                     }
-                }
+                })
             }
         }
 
-    fun insertDetail(detailId: Int, dob: Date?, height: Float?, weight: Float?, waistSize: Float?, gender: String, allergen: String, disease: String, bmi: Float) {
+
+    fun insertDetail(detailId: Int, dob: Date?, height: Int, weight: Int, waistSize: Int, gender: String, allergen: String, disease: String, bmi: Float) {
         viewModelScope.launch {
             val userId = repository.getUserId().firstOrNull() ?: -1
             val detail = Detail(detailId, dob, height, weight, waistSize, gender, allergen, disease, bmi, userId)
@@ -161,6 +174,13 @@ class EditProfileViewModel(private val repository: NourimateRepository) : ViewMo
             val userId = repository.getUserId().firstOrNull() ?: -1
             val weightEntry = WeightEntry(0, weight, date, userId)
             repository.insertWeightEntry(weightEntry)
+        }
+    }
+
+    fun insertDetailToBackend(dob: String, height: Int, weight: Int, waistSize: Int, gender: String, allergen: String, disease: String) {
+        viewModelScope.launch {
+            val userId = repository.getUserId().firstOrNull() ?: -1
+            repository.postUserDetails(userId, dob, height, weight, waistSize, gender, allergen, disease)
         }
     }
 

@@ -6,113 +6,251 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/backButton"
-        android:layout_width="wrap_content"
+        android:id="@+id/wave_profile"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/back"
-        android:contentDescription="Back"
+        android:scaleType="fitXY"
+        android:layout_marginTop="-5dp"
+        android:src="@drawable/wave_account"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:padding="30dp"/>
+        app:layout_constraintWidth_percent="1.2"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/backButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintStart_toStartOf="@+id/EmaileditInputLayout"
+        android:layout_marginTop="20dp"
+        app:icon="@drawable/back"
+        android:clickable="true"
+        app:iconSize="25dp"
+        app:iconGravity="textStart"
+        app:iconTint="@color/black"
+        app:backgroundTint="@null"
+        android:background="@drawable/button_background_profile_with_shadow"
+        style="@style/Widget.MaterialComponents.Button.Circle"
+        app:layout_constraintTop_toTopOf="parent"
+        app:iconPadding="0dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:elevation="10dp" />
+
+
+    <ImageView
+        android:id="@+id/securityimage"
+        android:layout_width="130dp"
+        android:layout_height="150dp"
+        android:elevation="3dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/security"
+        android:layout_marginBottom="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/wave_profile"/>
+
+    <ImageView
+        android:id="@+id/wave_profile_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="4dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/wave_white_account"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/wave_profile"
+        app:layout_constraintWidth_percent="1.2" />
+
+    <ImageView
+        android:id="@+id/wave_account_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="3dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/wave_white_account_with_shadow"
+        android:layout_marginBottom="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/wave_profile"
+        app:layout_constraintWidth_percent="1.2" />
+
+
+
 
     <TextView
         android:id="@+id/textViewAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Account"
-        android:textSize="30sp"
+        android:fontFamily="@font/concertone"
+        android:textColor="#B36100"
+        android:textSize="33sp"
+        android:elevation="5dp"
+        android:layout_marginTop="-30dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="20dp"/>
+        app:layout_constraintTop_toBottomOf="@+id/wave_profile_shadow"/>
+
 
     <TextView
         android:id="@+id/textViewEditAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Edit Your Account"
-        android:textSize="15sp"
+        android:fontFamily="@font/abel"
+        android:textColor="#B36100"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewAccount" />
 
-    <View
-        android:id="@+id/rectanglemailView"
-        android:layout_width="380dp"
-        android:layout_height="50dp"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/EmaileditInputLayout"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/rectangle_profile"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="3dp"
+        app:boxCornerRadiusTopStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusBottomEnd="10dp"
+        app:endIconDrawable="@drawable/mail"
+        app:endIconTint="#FFD689"
+        app:layout_constraintWidth_percent="0.85"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewEditAccount"
-        android:layout_marginTop="30dp" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewEditAccount">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email"
+            android:fontFamily="@font/zenkakugothicnewbold"
+            android:inputType="textEmailAddress" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/textViewMail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="youngflint@gmail.com"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@id/rectanglemailView"
-        app:layout_constraintTop_toTopOf="@id/rectanglemailView"
-        app:layout_constraintBottom_toBottomOf="@id/rectanglemailView"
-        android:layout_marginStart="20dp"/>
-
-    <View
-        android:id="@+id/rectanglenumberView"
-        android:layout_width="380dp"
-        android:layout_height="50dp"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/PhoneNumberEditInputLayout"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="15dp"
         android:background="@drawable/rectangle_profile"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="3dp"
+        app:boxCornerRadiusTopStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusBottomEnd="10dp"
+        app:endIconDrawable="@drawable/call"
+        app:endIconTint="#FFD689"
+        app:layout_constraintWidth_percent="0.85"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rectanglemailView"
+        app:layout_constraintTop_toBottomOf="@+id/EmaileditInputLayout">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Phone Number"
+            android:fontFamily="@font/zenkakugothicnewbold"
+            android:inputType="phone" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/changenumberButton"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:elevation="5dp"
+        android:clickable="true"
+        android:text=" Change Phone Number"
+        app:cornerRadius="10dp"
+        android:paddingStart="10dp"
+        android:gravity="start|center_vertical"
+        app:iconSize="40dp"
+        android:textSize="16sp"
+        android:fontFamily="@font/zenkakugothicnewbold"
+        android:background="@drawable/rectangle_profile"
+        app:backgroundTint="@null"
+        android:textColor="@color/black"
+        app:iconGravity="textStart"
+        app:layout_constraintWidth_percent="0.85"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/PhoneNumberEditInputLayout"
         android:layout_marginTop="20dp"/>
 
+    <ImageView
+        android:id="@+id/changenumberIcon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:clickable="true"
+        android:src="@drawable/expand_circle"
+        android:elevation="5dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/changenumberButton"
+        app:layout_constraintTop_toTopOf="@+id/changenumberButton"
+        app:layout_constraintBottom_toBottomOf="@+id/changenumberButton"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/changepwButton"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:elevation="5dp"
+        android:clickable="true"
+        android:text=" Change Password"
+        app:cornerRadius="10dp"
+        android:paddingStart="10dp"
+        android:gravity="start|center_vertical"
+        app:iconSize="40dp"
+        android:textSize="16sp"
+        android:fontFamily="@font/zenkakugothicnewbold"
+        android:background="@drawable/rectangle_profile"
+        app:backgroundTint="@null"
+        android:textColor="@color/black"
+        app:iconGravity="textStart"
+        app:layout_constraintWidth_percent="0.85"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/changenumberButton"
+        android:layout_marginTop="20dp"/>
+
+    <ImageView
+        android:id="@+id/changepwIcon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:clickable="true"
+        android:src="@drawable/expand_circle"
+        android:elevation="5dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/changepwButton"
+        app:layout_constraintTop_toTopOf="@+id/changepwButton"
+        app:layout_constraintBottom_toBottomOf="@+id/changepwButton"/>
+
     <TextView
-        android:id="@+id/textViewNumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="08127839****"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/rectanglenumberView"
-        app:layout_constraintTop_toTopOf="@+id/rectanglenumberView"
-        app:layout_constraintBottom_toBottomOf="@+id/rectanglenumberView"
-        android:layout_marginStart="20dp"/>
-
-    <Button
-        android:id="@+id/buttonChangePhoneNumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Change Phone Number"
-        android:background="@drawable/rectangle_profile"
-        app:layout_constraintTop_toBottomOf="@+id/rectanglenumberView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="20dp"
-        android:onClick="onChangePhoneNumberClicked"/>
-
-    <Button
-        android:id="@+id/buttonChangePassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Change Password"
-        android:background="@drawable/rectangle_profile"
-        app:layout_constraintTop_toBottomOf="@+id/buttonChangePhoneNumber"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="20dp"
-        android:onClick="onChangePasswordClicked"/>
-
-    <Button
-        android:id="@+id/buttonSaveEditProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onSaveEditAccountClicked"
-        android:text="Save"
+        android:id="@+id/buttonChangeAccount"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:text="Save Changes"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/buttonChangePassword"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/button_change_password"
+        android:elevation="3dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:fontFamily="@font/zenkakugothicnewbold"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="50dp"/>
+        app:layout_constraintWidth_percent="0.45"
+        app:layout_constraintTop_toBottomOf="@+id/changepwButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

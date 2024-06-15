@@ -39,17 +39,28 @@ class TransitionProgramActivity : AppCompatActivity() {
     private fun setupHistoryData() {
         viewModel.history.observe(this) { history ->
             val status = if (history.startWeight < history.endWeight) "gained" else "lost"
-            Log.d("TAG", "$status = ${history.startWeight} - ${history.endWeight}")
-            val weight = history.endWeight - history.startWeight
+            val weightChange = history.endWeight - history.startWeight
             val dayDiff = GeneralUtil.calculateDaysBetweenDates(history.startDate, history.endDate)
-            binding.textViewGreetCongrats.text = "You've $status $weight kg over $dayDiff days"
 
+            // Logging various details
+            Log.d("HistoryData", "Status: $status")
+            Log.d("HistoryData", "Weight change: $weightChange kg")
+            Log.d("HistoryData", "Duration: $dayDiff days")
+            Log.d("HistoryData", "Start Weight: ${history.startWeight} kg, End Weight: ${history.endWeight} kg")
+            Log.d("HistoryData", "Total Calories: ${history.calories}")
+            Log.d("HistoryData", "Total Fat: ${history.fat}")
+            Log.d("HistoryData", "Total Protein: ${history.protein}")
+            Log.d("HistoryData", "Total Carbs: ${history.carbs}")
+
+            // Updating UI
+            binding.textViewGreetCongrats.text = "You've $status $weightChange kg over $dayDiff days"
             binding.TotalCalories.text = history.calories.toString()
             binding.TotalFat.text = history.fat.toString()
             binding.TotalProtein.text = history.protein.toString()
             binding.TotalCarbs.text = history.carbs.toString()
         }
     }
+
 
     private fun setStatusBarColor(color: Int) {
         val window = window

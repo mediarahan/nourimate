@@ -211,25 +211,25 @@ object GeneralUtil {
     fun calculateOneMinuteLaterTimestamp(): Long {
         val calendar = Calendar.getInstance() // Get the current date and time
 
-        calendar.add(Calendar.MINUTE, 1)
+        calendar.add(Calendar.SECOND, 7)
 
         return calendar.timeInMillis
     }
 
-    fun calculateBMI(height: Float?, weight: Float?): Float? {
-        if (height == null || weight == null || height == 0f) {
+    fun calculateBMI(height: Int?, weight: Int?): Float? {
+        if (height == null || weight == null || height == 0) {
             return null
         }
 
         // Convert height from cm to meters
-        val heightInMeters = height / 100
+        val heightInMeters = height / 100f
 
         // Calculate BMI
         return weight / (heightInMeters * heightInMeters)
     }
 
-    fun calculateIdealWeight(userHeight: Float?): Float? {
-        val idealWeight = (userHeight?.minus(100))?.minus((0.1 * (userHeight - 100)))?.toFloat()
+    fun calculateIdealWeight(userHeight: Int?): Int? {
+        val idealWeight = (userHeight?.minus(100))?.minus((0.1 * (userHeight - 100)))?.toInt()
         return idealWeight
     }
 
@@ -269,6 +269,24 @@ object GeneralUtil {
 
         // Convert milliseconds to days
         return (diff / (1000 * 60 * 60 * 24)).toInt()
+    }
+
+    fun getYesterdayTimestamp(): Long {
+        val cal = Calendar.getInstance()
+        cal.add(Calendar.DAY_OF_YEAR, -1)
+        return cal.timeInMillis
+    }
+
+    fun calculateInitialDelayForMidnight(): Long {
+        val calendar = Calendar.getInstance()
+        val now = calendar.timeInMillis
+        calendar.add(Calendar.DAY_OF_YEAR, 1)
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+        val midnight = calendar.timeInMillis
+        return midnight - now
     }
 
 }

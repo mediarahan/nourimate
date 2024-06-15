@@ -21,21 +21,39 @@ import com.telyu.nourimate.data.local.models.User
 import com.telyu.nourimate.data.local.models.WeightEntry
 import com.telyu.nourimate.data.local.models.WeightTrack
 import com.telyu.nourimate.data.remote.Result
-import com.telyu.nourimate.data.remote.response.LoginResponse
+import com.telyu.nourimate.data.remote.response.GetAllUserProgramResponse
+import com.telyu.nourimate.data.remote.response.GetUserDetailResponse
+import com.telyu.nourimate.data.remote.response.InsertUserDetailResponse
 import com.telyu.nourimate.data.remote.response.RecommendationResponse
-import com.telyu.nourimate.data.remote.response.RegisterResponse
+import com.telyu.nourimate.data.remote.response.SendEmailVerificationResponse
+import com.telyu.nourimate.data.remote.response.SigninResponse
+import com.telyu.nourimate.data.remote.response.SignupResponse
 import com.telyu.nourimate.data.remote.retrofit.ApiService
 import com.telyu.nourimate.data.remote.retrofit.ApiService2
-import com.telyu.nourimate.data.remote.retrofit.EmailVerificationBody
-import com.telyu.nourimate.data.remote.retrofit.LoginRequest
+import com.telyu.nourimate.data.remote.retrofit.ChangePasswordRequest
+import com.telyu.nourimate.data.remote.retrofit.ChangePhoneRequest
+import com.telyu.nourimate.data.remote.retrofit.CreateNewProgramRequest
+import com.telyu.nourimate.data.remote.retrofit.EmailVerificationRequest
+import com.telyu.nourimate.data.remote.retrofit.InsertDetailUserRequest
+import com.telyu.nourimate.data.remote.retrofit.PhoneVerificationRequest
 import com.telyu.nourimate.data.remote.retrofit.RecommendationRequest
-import com.telyu.nourimate.data.remote.retrofit.RegisterRequest
-import com.telyu.nourimate.data.remote.retrofit.SignUpBody
+import com.telyu.nourimate.data.remote.retrofit.ResetPasswordRequest
+import com.telyu.nourimate.data.remote.retrofit.SendEmailVerificationRequest
+import com.telyu.nourimate.data.remote.retrofit.SendForgotPasswordRequest
+import com.telyu.nourimate.data.remote.retrofit.SendPhoneVerificationRequest
+import com.telyu.nourimate.data.remote.retrofit.SigninRequest
+import com.telyu.nourimate.data.remote.retrofit.SignupRequest
+import com.telyu.nourimate.data.remote.retrofit.UpdateDetailUserRequest
+import com.telyu.nourimate.utils.Converters
+import com.telyu.nourimate.utils.GeneralUtil
+import com.telyu.nourimate.utils.SettingsModel
 import com.telyu.nourimate.utils.SettingsPreference
 import com.telyu.nourimate.utils.UserModel
 import com.telyu.nourimate.utils.UserPreference
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import java.util.Date
 
 class NourimateRepository(
@@ -82,16 +100,16 @@ class NourimateRepository(
 //        }
 //    }
 
-        fun registerBackend(
+    fun registerBackend(
         name: String,
         phoneNumber: String,
         email: String,
         password: String
-    ): LiveData<Result<RegisterResponse>> = liveData {
+    ): LiveData<Result<SignupResponse>> = liveData {
         emit(Result.Loading)
         try {
-            val registerRequest = RegisterRequest(name, phoneNumber, email, password)
-            val requestBody = apiService.register(registerRequest)
+            val signupRequest = SignupRequest(name, email, password, phoneNumber)
+            val requestBody = apiService.signup(signupRequest)
 
             delay(2000)
             emit(Result.Success(requestBody))
@@ -102,50 +120,24 @@ class NourimateRepository(
         }
     }
 
-    fun sendVerifyEmail(userId: Int, email: String): LiveData<Result<Unit>> = liveData {
+    fun loginBackend(email: String, password: String): LiveData<Result<SigninResponse>> = liveData {
         emit(Result.Loading)
         try {
-            val verifyRequest = EmailVerificationBody(userId, email)
-            val requestBody = apiService2.sendEmailVerification(verifyRequest)
-            delay(2000)
-            emit(Result.Success(requestBody))
-
-        } catch (e: java.lang.Exception) {
-            Log.d("UserRepository", "register:${e.message.toString()}")
-            emit(Result.Error(e.message.toString()))
-        }
-    }
-
-    fun verifyEmail(userId: Int, email: String): LiveData<Result<Unit>> = liveData {
-        emit(Result.Loading)
-        try {
-            val verifyRequest = EmailVerificationBody(userId, email)
-            val requestBody = apiService2.verifyEmail(verifyRequest)
-            delay(2000)
-            emit(Result.Success(requestBody))
-        } catch (e: java.lang.Exception) {
-            Log.d("UserRepository", "register:${e.message.toString()}")
-            emit(Result.Error(e.message.toString()))
-        }
-    }
-
-    fun postDetails(detailId:Int, dob: String, height: Int, waistSize: Int, gender: String, allergen: String, disease: String, userId: Int): LiveData<Result<Unit>> = liveData {
-       emit(Result.Loading)
-
-    }
-
-    fun loginBackend(email: String, password: String): LiveData<Result<LoginResponse>> = liveData {
-        emit(Result.Loading)
-        try {
-            val loginRequest = LoginRequest(email, password)
-            val requestBody = apiService.login(loginRequest)
-            val id = requestBody.user.userId
-            val isVerified = requestBody.user.emailVerified
+            val signinRequest = SigninRequest(email, password)
+            val response = apiService.signin(signinRequest)
+            val id = response.user.userId
+            val isVerified = response.user.isVerified
             val isVerifiedBoolean = isVerified == 1
-            val isDetailFilled = requestBody.user.phoneVerified
+            Log.d("LoginProcess", "id: $id, isVerified: $isVerified")
+            Log.d("LoginProcess", "id: $id, isVerified: $isVerifiedBoolean")
+            val isDetailFilled = response.user.isDetailFilled
             val isDetailFilledBoolean = isDetailFilled == 1
-            val accessToken = requestBody.accessToken
-            val refreshToken = requestBody.refreshToken
+            Log.d("LoginProcess", "isDetailFilled: $isDetailFilled")
+            Log.d("LoginProcess", "isDetailFilled: $isDetailFilledBoolean")
+            val accessToken = response.accessToken
+            val refreshToken = response.refreshToken
+            val name = response.user.name
+            val phoneNumber = response.user.phoneNumber
 
             val userModel = UserModel(
                 id,
@@ -153,20 +145,247 @@ class NourimateRepository(
                 accessToken,
                 refreshToken,
                 true,
+                isVerifiedBoolean,
                 isDetailFilledBoolean,
-                isVerifiedBoolean
+                name,
+                phoneNumber,
             )
             userPreference.saveSession(userModel)
+            Log.d("LoginProcess", "UserModel: $userModel")
 
             delay(2000)
-            emit(Result.Success(requestBody))
+            emit(Result.Success(response))
         } catch (e: java.lang.Exception) {
             emit(Result.Error(e.message.toString()))
         }
     }
 
+    suspend fun sendVerifyEmail() {
+        try {
+            val userPreferences = getUserEmail().combine(getUserId()) { email, userId ->
+                Pair(email, userId)
+            }.first()
+            val requestBody =
+                SendEmailVerificationRequest(userPreferences.second, userPreferences.first)
+            val response = apiService.sendEmailVerification(requestBody)
+            Log.d("UserRepository", "Email sent successfully")
+        } catch (e: Exception) {
+            Log.d("UserRepository", "Error sending verification email: ${e.message}")
+        }
+    }
+
+    fun verifyEmail(emailToken: String): LiveData<Result<Unit>> = liveData {
+        emit(Result.Loading)
+        try {
+            val userId = getUserId().first()
+            val requestBody = EmailVerificationRequest(userId, emailToken)
+            val response = apiService.verifyEmail(requestBody)
+            delay(2000)
+            emit(Result.Success(response))
+        } catch (e: Exception) {
+            Log.d("UserRepository", "Error in email verification: ${e.message}")
+            emit(Result.Error(e.message.toString()))
+        }
+    }
+
+    suspend fun sendVerifyPhone(phoneNumber: Int) {
+        try {
+            val userId = getUserId().first()
+            val requestBody = SendPhoneVerificationRequest(userId, phoneNumber)
+            val response = apiService.sendPhoneVerification(requestBody)
+            Log.d("UserRepository", "SMS sent successfully")
+        } catch (e: Exception) {
+            Log.d("UserRepository", "Error sending verification SMS: ${e.message}")
+        }
+    }
+
+    fun verifyPhone(smsToken: String): LiveData<Result<Unit>> = liveData {
+        emit(Result.Loading)
+        try {
+            val userId = getUserId().first()
+            val requestBody = PhoneVerificationRequest(userId, smsToken)
+            val response = apiService.verifyPhone(requestBody)
+            delay(2000)
+            emit(Result.Success(response))
+        } catch (e: Exception) {
+            Log.d("UserRepository", "Error in phone verification: ${e.message}")
+            emit(Result.Error(e.message.toString()))
+        }
+    }
+
+    suspend fun sendForgotPassword(email: String) {
+        try {
+            val requestBody = SendForgotPasswordRequest(email)
+            val response = apiService.sendForgotPassword(requestBody)
+            Log.d("UserRepository", "Forgot password email sent successfully")
+        } catch (e: Exception) {
+            Log.d("UserRepository", "Error sending forgot password email: ${e.message}")
+        }
+    }
+
+    fun forgotPassword(
+        password: String,
+        token: String
+    ): LiveData<Result<SendEmailVerificationResponse>> = liveData {
+        emit(Result.Loading)
+        try {
+            val email = getUserEmail().first()
+            val requestBody = ResetPasswordRequest(email, password)
+            val response = apiService.resetPassword(token, requestBody)
+            delay(2000)
+            emit(Result.Success(response))
+        } catch (e: Exception) {
+            Log.d("UserRepository", "Error in forgot password: ${e.message}")
+        }
+    }
+
+    fun changePassword(
+        oldPassword: String,
+        password: String,
+        confirmPassword: String
+    ): LiveData<Result<SendEmailVerificationResponse>> = liveData {
+        emit(Result.Loading)
+        try {
+            val userId = getUserId().first()
+            val requestBody = ChangePasswordRequest(userId, oldPassword, password, confirmPassword)
+            val response = apiService.changePassword(requestBody)
+            delay(2000)
+            emit(Result.Success(response))
+        } catch (e: Exception) {
+            Log.d("UserRepository", "Error in change password: ${e.message}")
+        }
+    }
+
+    fun changePhoneNumber(
+        phoneNumber: String,
+        confirmPhoneNumber: String
+    ): LiveData<Result<SendEmailVerificationResponse>> = liveData {
+        emit(Result.Loading)
+        try {
+            val userId = getUserId().first()
+            val requestBody = ChangePhoneRequest(userId, phoneNumber, confirmPhoneNumber)
+            val response = apiService.changePhoneNumber(requestBody)
+            delay(2000)
+            emit(Result.Success(response))
+        } catch (e: Exception) {
+            Log.d("UserRepository", "Error in change phone number: ${e.message}")
+        }
+    }
+
+    suspend fun postUserDetails(
+        userId: Int,
+        dob: String,
+        height: Int,
+        waistSize: Int,
+        weight: Int,
+        gender: String,
+        allergen: String,
+        disease: String
+    ) {
+        try {
+            val requestBody = InsertDetailUserRequest(
+                dob = dob,
+                height = height,
+                waistSize = waistSize,
+                weight = weight,
+                gender = gender,
+                allergen = allergen,
+                disease = disease
+            )
+            val response = apiService.insertDetailUser(userId, requestBody)
+            Log.d("UserDetailRepository", "User details posted successfully")
+        } catch (e: Exception) {
+            Log.d("UserDetailRepository", "Error posting user details: ${e.message}")
+        }
+    }
+
+    suspend fun updateUserProfileToBackend(
+        userId: Int,
+        dob: String,
+        height: Int,
+        waistSize: Int,
+        weight: Int,
+        gender: String,
+        allergen: String,
+        disease: String
+    ) {
+        val requestBody = UpdateDetailUserRequest(
+            dob = dob,
+            height = height,
+            waistSize = waistSize,
+            weight = weight,
+            gender = gender,
+            allergen = allergen,
+            disease = disease
+        )
+        val response = apiService.updateDetailUser(userId, requestBody)
+    }
+
+    suspend fun fetchUserDetails(userId: Int): GetUserDetailResponse? {
+        return try {
+            val response = apiService.getDetailUser(userId)
+            val bmi = GeneralUtil.calculateBMI(response.weight, response.height)
+            val formattedDate = Converters().fromStringToDate(response.dob)
+            val detail = Detail(
+                0,
+                formattedDate,
+                response.height,
+                response.waistSize,
+                response.weight,
+                response.gender,
+                response.allergen,
+                response.disease,
+                bmi ?: -999f,
+                response.userId
+            )
+            insertDetail(detail)
+            Log.d("UserRepository", "User details fetched successfully")
+            response
+        } catch (e: Exception) {
+            Log.e("UserRepository", "Error fetching user details: ${e.message}")
+            null
+        }
+    }
+
+    suspend fun fetchAllUserProgram(): GetAllUserProgramResponse {
+        return try {
+            val response = apiService.getAllUserProgram()
+            Log.d("UserRepository", "All user program fetched successfully")
+            response
+        } catch (e: Exception) {
+            Log.e("UserRepository", "Error fetching all user program: ${e.message}")
+            throw e
+        }
+    }
+
+    fun createNewProgram(ongoingProgram: Int, startDate: String, endDate: String, startWeight: Int, endWeight: Int, editCurrentWeightDate: String): LiveData<Result<SendEmailVerificationResponse>> = liveData {
+        emit(Result.Loading)
+        try {
+            val userId = getUserId().first()
+            val requestBody = CreateNewProgramRequest(ongoingProgram, startDate, endDate, startWeight, endWeight, editCurrentWeightDate, userId)
+            val response = apiService.createNewProgram(requestBody)
+            delay(2000)
+            emit(Result.Success(response))
+        } catch (e: Exception) {
+            Log.d("UserRepository", "Error in create new program: ${e.message}")
+        }
+    }
+
+
     suspend fun saveSession(userModel: UserModel) {
         userPreference.saveSession(userModel)
+    }
+
+    suspend fun saveSettingsPreferences(settingsModel: SettingsModel) {
+        settingsPreference.saveSettings(settingsModel)
+    }
+
+    suspend fun setRecipeTransitionPreference(showTransition: Boolean) {
+        settingsPreference.setRecipeTransitionPreference(showTransition)
+    }
+
+    fun getRecipeTransitionPreference(): Flow<Boolean> {
+        return settingsPreference.getRecipeTransitionPreference()
     }
 
 
@@ -232,6 +451,16 @@ class NourimateRepository(
         return userPreference.getUserId()
     }
 
+
+
+    fun getEmailAndPhoneNumber(): Flow<Pair<String, String>> {
+        return userPreference.getEmailAndPhoneNumber()
+    }
+
+    fun getUsername(): Flow<String> {
+        return userPreference.getUsername()
+    }
+
     fun getUserLoginState(): Flow<Boolean> {
         return userPreference.getUserLoginState()
     }
@@ -242,7 +471,10 @@ class NourimateRepository(
 
     fun getUserDetailFilled(): Flow<Boolean> {
         return userPreference.getUserDetailFilled()
+    }
 
+    fun getSettingsPreferences(): Flow<SettingsModel> {
+        return settingsPreference.getSettings()
     }
 
     suspend fun getUserDetailsByEmail(email: String): Detail {
@@ -274,8 +506,8 @@ class NourimateRepository(
     //=== QUERY FOOD ===
 
     //query weekly
-    fun getRecipesByDateAndMeal(mealId: Int): LiveData<List<Recipe>> {
-        return foodDao.getRecipesByDateAndMealType(mealId)
+    fun getRecipesByMealType(mealId: Int): LiveData<List<Recipe>> {
+        return foodDao.getRecipesByMealType(mealId)
     }
 
     fun getRecommendationsByMealIdSortedAscending(mealId: Int): LiveData<List<Recommendation>> {
@@ -288,20 +520,20 @@ class NourimateRepository(
 
     //Query buat home fragment
 
-    suspend fun getCaloriesByMealType(mealType: Int): Int {
-        return foodDao.getTotalCaloriesByMealType(mealType)
+    suspend fun getCaloriesByMealType(mealType: Int, userId: Int): Int {
+        return foodDao.getTotalCaloriesByMealType(mealType, userId)
     }
 
-    suspend fun getNutritionSums(): NutritionSum {
-        return foodDao.getNutritionSums()
+    suspend fun getNutritionSums(userId: Int): NutritionSum {
+        return foodDao.getNutritionSums(userId)
     }
 
     suspend fun getNutritionSumsInBasketAndHomePerMealType(mealType: Int): NutritionSum {
         return foodDao.getNutritionSumsInBasketAndHomePerMealType(mealType)
     }
 
-    suspend fun getSelectedRecipeCountUsingMealType(mealType: Int): Int {
-        return foodDao.getSelectedRecipeCountUsingMealType(mealType)
+    suspend fun getSelectedRecipeCountUsingMealType(mealType: Int, userId: Int): Int {
+        return foodDao.getSelectedRecipeCountUsingMealType(mealType, userId)
     }
 
     //query utama
@@ -381,18 +613,18 @@ class NourimateRepository(
     //========== Sleep API Related ==========
     private val activityRecognitionClient = ActivityRecognition.getClient(context)
 
-    fun subscribeToSleepData(pendingIntent: PendingIntent) {
-        val request = SleepSegmentRequest.getDefaultSleepSegmentRequest()
-        activityRecognitionClient.requestSleepSegmentUpdates(pendingIntent, request)
-            .addOnSuccessListener { Log.d("Sleep", "Subscribed to sleep data updates") }
-            .addOnFailureListener { e ->
-                Log.e(
-                    "Sleep",
-                    "Failed to subscribe to sleep data updates",
-                    e
-                )
-            }
-    }
+//    fun subscribeToSleepData(pendingIntent: PendingIntent) {
+//        val request = SleepSegmentRequest.getDefaultSleepSegmentRequest()
+//        activityRecognitionClient.requestSleepSegmentUpdates(pendingIntent, request)
+//            .addOnSuccessListener { Log.d("Sleep", "Subscribed to sleep data updates") }
+//            .addOnFailureListener { e ->
+//                Log.e(
+//                    "Sleep",
+//                    "Failed to subscribe to sleep data updates",
+//                    e
+//                )
+//            }
+//    }
 
     fun unsubscribeToSleepData(pendingIntent: PendingIntent) {
         activityRecognitionClient.removeSleepSegmentUpdates(pendingIntent)
@@ -443,7 +675,7 @@ class NourimateRepository(
         userDao.updateWeight(detailId, weight)
     }
 
-    suspend fun getWeightTrackById(id: Int): WeightTrack {
+    suspend fun getWeightTrackById(id: Int): WeightTrack? {
         return userDao.getWeightTrackById(id)
     }
 
@@ -523,6 +755,34 @@ class NourimateRepository(
         return settingsPreference.getWaterIntake()
     }
 
+    suspend fun getRecipeIdsByMealType(mealType: Int): List<Int> {
+        return foodDao.getRecipeIdsByMealType(mealType)
+    }
+
+    suspend fun getRecommendationById(id: Int): Recommendation? {
+        return foodDao.getRecommendationById(id)
+    }
+
+    fun getRecommendationsByUserId(userId: Int): LiveData<List<Recommendation>> {
+        return foodDao.getRecommendationsByUserId(userId)
+    }
+
+    fun getAllRecipes(): LiveData<List<Recipe>> {
+        return foodDao.getAllRecipes()
+    }
+
+    suspend fun checkUserDetailExists(userId: Int): Boolean {
+        return userDao.checkUserDetailExists(userId) > 0
+    }
+
+    suspend fun getRecipesByNameAndMealType(query: String, mealType: Int): List<Recipe> {
+        return foodDao.getRecipesByNameAndMealType(query, mealType)
+    }
+
+    suspend fun getRecommendationsByMealId(mealType: Int): List<Recommendation> {
+        return foodDao.getRecommendationsByMealId(mealType)
+    }
+
     companion object {
         @Volatile
         private var instance: NourimateRepository? = null
@@ -535,7 +795,15 @@ class NourimateRepository(
             foodDao: FoodDao,
             context: Context
         ): NourimateRepository = instance ?: synchronized(this) {
-            instance ?: NourimateRepository(apiService, apiService2, pref, pref2, userDao, foodDao, context)
+            instance ?: NourimateRepository(
+                apiService,
+                apiService2,
+                pref,
+                pref2,
+                userDao,
+                foodDao,
+                context
+            )
         }.also { instance = it }
     }
 

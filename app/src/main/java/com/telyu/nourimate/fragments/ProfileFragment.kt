@@ -17,8 +17,10 @@ import androidx.fragment.app.viewModels
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.telyu.nourimate.R
+import com.telyu.nourimate.activities.ChooseProgramActivity
 import com.telyu.nourimate.activities.EditProfpicActivity
 import com.telyu.nourimate.activities.LoginActivity
+import com.telyu.nourimate.activities.SettingActivity
 import com.telyu.nourimate.viewmodels.ProfileViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
 
@@ -224,12 +226,7 @@ class ProfileFragment : Fragment() {
     private fun setupButtons() {
         // Handle click on settings icon
         binding.settingsIcon.setOnClickListener {
-            val settingFragment = SettingFragment()
-            requireActivity().supportFragmentManager.beginTransaction().apply {
-                replace(R.id.fragmentContainer, settingFragment)
-                addToBackStack(null)
-                commit()
-            }
+            startActivity(Intent(requireContext(), SettingActivity::class.java))
         }
 
         // Handle click on logout icon
@@ -238,7 +235,7 @@ class ProfileFragment : Fragment() {
         }
 
         // Implementasi event click untuk tombol Profile
-        binding.profileIcon.setOnClickListener {
+        binding.profileButton.setOnClickListener {
             // Kode untuk menuju ke EditProfileFragment
             val editProfileFragment = UserDetailFragment()
             requireActivity().supportFragmentManager.beginTransaction().apply {
@@ -249,7 +246,7 @@ class ProfileFragment : Fragment() {
         }
 
         // Implementasi event click untuk tombol Account
-        binding.accountIcon.setOnClickListener {
+        binding.accountButton.setOnClickListener {
             // Kode untuk menuju ke AccountFragment
             val accountFragment = AccountFragment()
             requireActivity().supportFragmentManager.beginTransaction().apply {
@@ -260,7 +257,7 @@ class ProfileFragment : Fragment() {
         }
 
         // Implementasi event click untuk tombol History
-        binding.historyIcon.setOnClickListener {
+        binding.historyButton.setOnClickListener {
             // Kode untuk menuju ke AccountFragment
             val historyFragment = HistoryFragment()
             requireActivity().supportFragmentManager.beginTransaction().apply {
@@ -271,7 +268,7 @@ class ProfileFragment : Fragment() {
         }
 
         // Implementasi event click untuk tombol Community
-        binding.communityIcon.setOnClickListener {
+        binding.communityButton.setOnClickListener {
             // Kode untuk menuju ke CommunityFragment
             val communityFragment = CommunityFragment()
             requireActivity().supportFragmentManager.beginTransaction().apply {
@@ -282,7 +279,7 @@ class ProfileFragment : Fragment() {
         }
 
         // Implementasi event click untuk tombol FAQ
-        binding.faqIcon.setOnClickListener {
+        binding.faqButton.setOnClickListener {
             // Kode untuk menuju ke FaqFragment
             val faqFragment = FaqFragment()
             requireActivity().supportFragmentManager.beginTransaction().apply {

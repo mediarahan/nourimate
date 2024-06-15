@@ -1,42 +1,41 @@
 package com.telyu.nourimate.fragments
 
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.ContentValues.TAG
+import android.graphics.Color
+import android.graphics.Typeface
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.SeekBar
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.telyu.nourimate.R
-import com.telyu.nourimate.data.local.models.Detail
-import com.telyu.nourimate.databinding.FragmentUserDetailBinding
-import com.telyu.nourimate.utils.Converters
-import com.telyu.nourimate.viewmodels.UserDetailViewModel
-import com.telyu.nourimate.viewmodels.ViewModelFactory
-import com.telyu.nourimate.databinding.DialogWeightPickerBinding
-import com.telyu.nourimate.databinding.DialogHeightPickerBinding
-import com.telyu.nourimate.databinding.DialogWaistSizePickerBinding
-import com.telyu.nourimate.databinding.DialogNameChangeBinding
-import com.telyu.nourimate.custom.WeightRulerView
+import com.telyu.nourimate.adapter.date.HintArrayAdapter
+import com.telyu.nourimate.custom.CustomDatePickerFragment
 import com.telyu.nourimate.custom.StraightRulerView
 import com.telyu.nourimate.custom.WaistSizeRulerView
+import com.telyu.nourimate.custom.WeightRulerView
+import com.telyu.nourimate.databinding.DialogHeightPickerBinding
+import com.telyu.nourimate.databinding.DialogNameChangeBinding
+import com.telyu.nourimate.databinding.DialogWaistSizePickerBinding
+import com.telyu.nourimate.databinding.DialogWeightPickerBinding
+import com.telyu.nourimate.databinding.FragmentUserDetailBinding
+import com.telyu.nourimate.utils.Converters
+import com.telyu.nourimate.utils.GeneralUtil
+import com.telyu.nourimate.viewmodels.UserDetailViewModel
+import com.telyu.nourimate.viewmodels.ViewModelFactory
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import kotlin.math.max
 import kotlin.math.min
-import android.app.Dialog
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.app.AlertDialog
-import android.graphics.Typeface
-import androidx.core.content.res.ResourcesCompat
-import com.telyu.nourimate.adapter.date.HintArrayAdapter
-import com.telyu.nourimate.custom.CustomDatePickerFragment
 
 
 class UserDetailFragment : Fragment() {
@@ -64,15 +63,26 @@ class UserDetailFragment : Fragment() {
             requireActivity().supportFragmentManager.popBackStack()
         }
 
-        getAllData()
         mapAllDataToView()
         setupBMISeekbarAndText()
         bindEditTextButtons()
 
         binding.buttonSaveEditProfile.setOnClickListener {
-            updateUserProfile()
-            requireActivity().supportFragmentManager.popBackStack()
+            AlertDialog.Builder(requireContext())
+                .setTitle("Save Changes")
+                .setMessage("Are you sure you want to update your profile? This will refresh your recipe recommendations based on the new details.")
+                .setPositiveButton("Yes") { dialog, _ ->
+                    updateUserProfile()
+                    fetchDataFromMachineLearning()
+                    requireActivity().supportFragmentManager.popBackStack()
+                    dialog.dismiss()
+                }
+                .setNegativeButton("No") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
         }
+
 
         // Inisialisasi genderSpinner menggunakan View Binding
         binding = FragmentUserDetailBinding.bind(view)
@@ -83,25 +93,12 @@ class UserDetailFragment : Fragment() {
             HintArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, genderOptions)
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerGender.adapter = genderAdapter
-
     }
 
-    private fun getAllData() {
-        //dapatkan value email dari user preference
-        //gunakan email untuk mendapatkan id pengguna di database
-        //gunakan email untuk mendapatkan nama pengguna di database
-        //, dipisah karena entity nya pun terpisan
-        viewModel.userEmail.observe(viewLifecycleOwner) { userEmail ->
-            userEmail?.let {
-                viewModel.getUserIdByEmail(it)
-                viewModel.getUserNameByEmail(it)
-            }
-        }
-
-        //gunakan id pengguna untuk mendapatkan detail pengguna dari database
-        viewModel.userId.observe(viewLifecycleOwner) { userId ->
-            if (userId != null)
-                viewModel.getUserDetailsById(userId)
+    private fun fetchDataFromMachineLearning() {
+        viewModel.recommendationsLiveData.observe(requireActivity()) { recommendations ->
+            viewModel.insertRecommendations(recommendations)
+            Log.d("Recommendations", recommendations.toString())
         }
     }
 
@@ -111,9 +108,9 @@ class UserDetailFragment : Fragment() {
             userDetails?.let { detail ->
                 val formattedDate = Converters().formatDateToString(detail.dob)
                 binding.editTextBirth.setText(formattedDate)
-                binding.editTextHeight.setText(detail.height?.toInt().toString())
-                binding.editTextWeight.setText(detail.weight?.toInt().toString())
-                binding.editTextWaist.setText(detail.waistSize?.toInt().toString())
+                binding.editTextHeight.setText(detail.height.toString())
+                binding.editTextWeight.setText(detail.weight.toString())
+                binding.editTextWaist.setText(detail.waistSize.toString())
 
                 // Jika genderAdapter telah diinisialisasi, lakukan seleksi
                 if (::genderAdapter.isInitialized) {
@@ -154,7 +151,8 @@ class UserDetailFragment : Fragment() {
                 }
                 binding.textViewBmiCategory.text = bmiStatus
                 binding.textViewBmi.text = bmi.toString()
-                val progress = max(0, min((maxValue - minValue), ((bmi?.toInt() ?: -999) - minValue)))
+                val progress =
+                    max(0, min((maxValue - minValue), (bmi.toInt() - minValue)))
                 seekBar.progress = progress
             }
         }
@@ -212,49 +210,40 @@ class UserDetailFragment : Fragment() {
 
     }
 
-    private fun requestFocusOnEditText(editText: EditText) {
-        editText.requestFocus()
-    }
-
     private fun updateUserProfile() {
         val name = binding.editTextName.text.toString()
-        val dob = binding.editTextBirth.text.toString() // Assuming this is a String representation of the date
-        val height = binding.editTextHeight.text.toString().toFloatOrNull()
-        val weight = binding.editTextWeight.text.toString().toFloatOrNull()
-        val waistSize = binding.editTextWaist.text.toString().toFloatOrNull()
+        val dob =
+            binding.editTextBirth.text.toString() // Assuming this is a String representation of the date
+        val height = binding.editTextHeight.text.toString().toInt()
+        val weight = binding.editTextWeight.text.toString().toInt()
+        val waistSize = binding.editTextWaist.text.toString().toInt()
         val gender = binding.spinnerGender.selectedItem.toString()
         val allergen = binding.editTextAllergy.text.toString()
         val disease = binding.editTextDisease.text.toString()
 
-        val id = viewModel.userId.value
-        Log.d("UserDetailFragment", "User ID: $id")
         val formattedDob = Converters().fromStringToDate(dob)
-        val heightInMeters = height?.div(100)
-        val bmi = weight?.div((heightInMeters?.times(heightInMeters)!!))
+        val bmi = GeneralUtil.calculateBMI(height, weight)
+        Log.d(TAG, "updateUserProfile: $bmi")
 
         viewModel.userDetails.observe(viewLifecycleOwner) { userDetails ->
-            if (id != null) {
-                val detail = Detail(
-                    detailId = userDetails?.detailId ?: -999,
-                    dob = formattedDob,
-                    height = height,
-                    weight = weight,
-                    waistSize = waistSize,
-                    gender = gender,
-                    allergen = allergen,
-                    disease = disease,
-                    bmi = bmi ?: 0f,
-                    userId = id
-                )
-                viewModel.userId.observe(viewLifecycleOwner) { userId ->
-                    userId?.let {
-                        viewModel.updateUserName(it, name)
-                        viewModel.updateUserProfile(detail)
-                    }
-                }
-            }
+            viewModel.updateUserProfile(
+                userDetails.detailId,
+                formattedDob,
+                height,
+                weight,
+                waistSize,
+                gender,
+                allergen,
+                disease,
+                bmi ?: -999f
+            )
+
+            viewModel.updateUserName(name)
+            viewModel.updateUserProfileToBackend(dob, height, waistSize,  weight,  gender, allergen, disease)
         }
     }
+
+
 
 
     //retrieve date of birth
@@ -387,14 +376,26 @@ class UserDetailFragment : Fragment() {
     }
 
     private fun showAllergiesDialog() {
-        val allergies = arrayOf("Kacang, Gluten")
-        val checkedItems = booleanArrayOf(false, false)
+        val allergies = arrayOf("None", "Nuts", "Eggs", "Seafood")
+        val checkedItems = booleanArrayOf(false, false, false, false)
         val selectedItems = mutableListOf<String>()
 
         val dialogBuilder = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog)
             .setTitle("Select Allergies")
-            .setMultiChoiceItems(allergies, checkedItems) { _, which, isChecked ->
-                if (isChecked) {
+            .setMultiChoiceItems(allergies, checkedItems) { dialog, which, isChecked ->
+                if (which == 0 && isChecked) {  // "None" is at position 0
+                    // Deselect all other checkboxes if "None" is selected
+                    selectedItems.clear()
+                    selectedItems.add(allergies[0])
+                    allergies.indices.forEach { index ->
+                        if (index != 0) {
+                            (dialog as AlertDialog).listView.setItemChecked(index, false)
+                        }
+                    }
+                } else if (isChecked) {
+                    // Remove "None" if any other item is selected
+                    selectedItems.remove(allergies[0])
+                    (dialog as AlertDialog).listView.setItemChecked(0, false)
                     selectedItems.add(allergies[which])
                 } else {
                     selectedItems.remove(allergies[which])
@@ -436,14 +437,24 @@ class UserDetailFragment : Fragment() {
     }
 
     private fun showDiseasesDialog() {
-        val diseases = arrayOf("Diabetes", "Kolesterol", "Hipertensi")
-        val checkedItems = booleanArrayOf(false, false, false)
+        val diseases = arrayOf("None","Diabetes", "Hipertensi", "Kolesterol")
+        val checkedItems = booleanArrayOf(false, false, false, false)
         val selectedItems = mutableListOf<String>()
 
         val dialogBuilder = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog)
             .setTitle("Select Diseases")
-            .setMultiChoiceItems(diseases, checkedItems) { _, which, isChecked ->
-                if (isChecked) {
+            .setMultiChoiceItems(diseases, checkedItems) { dialog, which, isChecked ->
+                if (which == 0 && isChecked) {
+                    selectedItems.clear()
+                    selectedItems.add(diseases[0])
+                    diseases.indices.forEach { index ->
+                        if (index != 0) {
+                            (dialog as AlertDialog).listView.setItemChecked(index, false)
+                        }
+                    }
+                } else if (isChecked) {
+                    selectedItems.remove(diseases[0])
+                    (dialog as AlertDialog).listView.setItemChecked(0, false)
                     selectedItems.add(diseases[which])
                 } else {
                     selectedItems.remove(diseases[which])
@@ -511,5 +522,8 @@ class UserDetailFragment : Fragment() {
 
         dialog.show()
     }
+
+
+
 
 }

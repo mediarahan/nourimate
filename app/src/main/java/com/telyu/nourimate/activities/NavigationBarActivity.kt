@@ -1,6 +1,7 @@
 package com.telyu.nourimate.activities
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -12,6 +13,7 @@ import com.telyu.nourimate.databinding.ActivityNavigationBarBinding
 import com.telyu.nourimate.fragments.HistoryFragment
 import com.telyu.nourimate.fragments.RecipeFragment
 import com.telyu.nourimate.fragments.HomeFragment
+import com.telyu.nourimate.fragments.HomeMealHistoryFragment
 
 class NavigationBarActivity : AppCompatActivity() {
 
@@ -20,33 +22,57 @@ class NavigationBarActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Menggunakan View Binding untuk menginflate layout
+        // Using View Binding to inflate layout
         binding = ActivityNavigationBarBinding.inflate(layoutInflater)
         window.statusBarColor = ContextCompat.getColor(this, R.color.color16)
         setContentView(binding.root)
 
-        val homeFragment = HomeFragment()
-        setCurrentFragment(homeFragment)
+        // Check the action of the intent
+        Log.d("intent", intent.action.toString())
 
-        if (intent.getStringExtra("loadFragment") == "HistoryFragment") {
-            val historyFragment = HistoryFragment()
-            supportFragmentManager.beginTransaction().apply {
-                replace(R.id.fragmentContainer, historyFragment)
-                addToBackStack(null)
-                commit()
+        if (intent.action == "ACTION_SHOW_MEAL_HISTORY") {
+            val selectedMeal = intent.getIntExtra("selectedMeal", -1)
+            if (selectedMeal != -1) {
+                displayMealHistoryFragment(selectedMeal)
+            } else {
+                setCurrentFragment(HomeFragment())  // Ensure default home fragment if no meal selected
             }
+        } else {
+            handleDefaultFragmentLoading()
         }
 
+        setupBottomNavigationView()
+    }
 
-        binding.bottomNavigationView.setOnNavigationItemSelectedListener {
-            when (it.itemId) {
-                R.id.nav_home -> setCurrentFragment(HomeFragment())
-                R.id.nav_recipe -> setCurrentFragment(RecipeFragment())
-                R.id.nav_program -> setCurrentFragment(ProgramFragment())
-                R.id.nav_profile -> setCurrentFragment(ProfileFragment())
-            }
-            true
+    private fun handleDefaultFragmentLoading() {
+        val loadFragment = intent.getStringExtra("loadFragment")
+        when (loadFragment) {
+            "HistoryFragment" -> setCurrentFragment(HistoryFragment())
+            else -> setCurrentFragment(HomeFragment())
         }
+    }
+
+    private fun setupBottomNavigationView() {
+        binding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
+            val fragment = when (menuItem.itemId) {
+                R.id.nav_home -> HomeFragment()
+                R.id.nav_recipe -> RecipeFragment()
+                R.id.nav_program -> ProgramFragment()
+                R.id.nav_profile -> ProfileFragment()
+                else -> null
+            }
+            fragment?.let { setCurrentFragment(it) }
+            true  // Always return true to denote the item selection was successful
+        }
+    }
+
+    private fun displayMealHistoryFragment(mealTime: Int) {
+        val fragment = HomeMealHistoryFragment().apply {
+            arguments = Bundle().apply {
+                putInt("mealTime", mealTime)
+            }
+        }
+        setCurrentFragment(fragment)
     }
 
     private fun setCurrentFragment(fragment: Fragment) {

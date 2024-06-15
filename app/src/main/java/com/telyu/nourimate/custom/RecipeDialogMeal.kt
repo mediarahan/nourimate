@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.Gravity
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,8 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.telyu.nourimate.R
+import com.telyu.nourimate.activities.NavigationBarActivity
+import com.telyu.nourimate.activities.TransitionSelectRecipeActivity
 import com.telyu.nourimate.adapter.recipe.DialogRecipeAdapter
 import com.telyu.nourimate.data.local.models.Recipe
 import com.telyu.nourimate.databinding.PopupLayoutMealBinding
@@ -159,7 +162,20 @@ class RecipeDialogMeal : DialogFragment(), DialogRecipeAdapter.DialogOnAddClickL
             title = "Confirm",
             message = "Are you sure you want to add these meals to your basket?",
             onYes = {
-                    observeIfNutritionExceeds()
+                viewModel.updateSelectedRecommendationsPerMealType(selectedMeal)
+                viewModel.getRecipeTransitionPreference()
+
+                viewModel.recipeTransitionPreference.observe(viewLifecycleOwner) { preference ->
+                    if (preference) {
+                        val intent = Intent(requireContext(), TransitionSelectRecipeActivity::class.java)
+                        intent.putExtra("selectedMeal", selectedMeal)
+                        startActivity(intent)
+                    } else {
+                        //ga ngapa2in
+                    }
+                }
+
+                //observeIfNutritionExceeds()
             },
             onNo =  {
                 dialog?.dismiss()

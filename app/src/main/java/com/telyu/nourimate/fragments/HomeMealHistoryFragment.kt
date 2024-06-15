@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.telyu.nourimate.R
 import com.telyu.nourimate.adapter.history.RecipeHistoryAdapter
 import com.telyu.nourimate.adapter.recipe.DialogRecipeTutorialAdapter
 import com.telyu.nourimate.adapter.recipe.RecipeAdapter
@@ -19,7 +20,6 @@ import com.telyu.nourimate.viewmodels.ProgramViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
 
 class HomeMealHistoryFragment : Fragment() {
-
     private lateinit var binding: LayoutRecipeHistoryHomeBinding
     private val adapter = DialogRecipeTutorialAdapter()
 
@@ -27,38 +27,49 @@ class HomeMealHistoryFragment : Fragment() {
         ViewModelFactory.getInstance(requireActivity().applicationContext)
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         binding = LayoutRecipeHistoryHomeBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupRecyclerView()
 
+        val mealTime = arguments?.getInt("mealTime", -1) ?: -1
+        if (mealTime != -1) {
+            viewModel.selectMealTime(mealTime)
+        }
+
         binding.backIcon.setOnClickListener {
-            requireActivity().supportFragmentManager.popBackStack()
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fragmentContainer, HomeFragment())
+                addToBackStack(null)
+                commit()
+            }
         }
     }
 
     private fun setupRecyclerView() {
-        Log.d("HomeMealHistoryFragment", "HUHAHHH")
         binding.recommendationRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recommendationRecyclerView.adapter = adapter
 
         viewModel.selectedMealTime.observe(viewLifecycleOwner) { mealTime ->
             Log.d("HomeMealHistoryFragment", "mealTime: $mealTime")
-            viewModel.getSelectedRecipesByMealType(mealTime)
-                .observe(viewLifecycleOwner) { recipes ->
-                    adapter.submitList(recipes)
-                }
+
+            binding.mealtimetitle.text = when(mealTime) {
+                1 -> "Your Breakfast"
+                2 -> "Your Lunch"
+                3 -> "Your Dinner"
+                else -> "Your.."
+            }
+
+            viewModel.getSelectedRecipesByMealType(mealTime).observe(viewLifecycleOwner) { recipes ->
+                adapter.submitList(recipes)
+            }
         }
     }
 }

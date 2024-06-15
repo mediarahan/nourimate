@@ -95,13 +95,13 @@ class SplashScreenActivity : AppCompatActivity() {
 
     private fun insertAdminAccounts() {
         val users = listOf(
-            User(5, "Admin1", "admin1@gmail.com", 123, "admin123", true, true),
-            User(6, "Admin2", "admin2@gmail.com", 124, "admin124", true, false)
+            User(1, "Admin1", "admin1@gmail.com", 123, "admin123", true, true),
+            User(2, "Admin2", "admin2@gmail.com", 124, "admin124", true, false)
         )
 
         val details = listOf(
-            Detail(5, Converters().fromTimestamp(1054628979000), 181f, 80f, 81f, "Laki-laki", "Nuts", "Diabetes", 24.4f, 5),
-            Detail(6, Converters().fromTimestamp(1054628979000), 160f, 65f, 71f, "Laki-laki", "Shellfish", "Cholesterol", 95.4f, 6)
+            Detail(1, Converters().fromTimestamp(1054628979000), 181, 80, 81, "Laki-laki", "Nuts", "Diabetes", 24.4f, 1),
+            Detail(2, Converters().fromTimestamp(1054628979000), 160, 65, 71, "Laki-laki", "Seafood", "Kolesterol", 25.3f, 2)
         )
 
         users.forEachIndexed { index, user ->

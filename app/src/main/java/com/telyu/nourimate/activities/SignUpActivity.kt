@@ -77,29 +77,29 @@ class SignUpActivity : AppCompatActivity() {
             return //return disini maksudnya lebih mirip ke break / pass kalau di Python. Untuk flow control, bukan returnnya fungsi
         }
 
-        val user = User(0, fullName, email, phoneNumber, password)
+        //val user = User(0, fullName, email, phoneNumber, password)
 
-        signUpViewModel.uiState.observe(this) { result ->
-            when (result) {
-                is Result.Loading -> {
-                    showLoading(true)
-                }
-                is Result.Success -> {
-                    showLoading(false)
-                    val intent = Intent(this, LoginActivity::class.java)
-                    startActivity(intent)
-                    //Perlu pakai finish supaya user tidak dapat kembali ke menu register setelah mengisi data
-                    finish()
-                    Toast.makeText(this, "Signed Up Successfully", Toast.LENGTH_SHORT).show()
-                }
-                is Result.Error -> {
-                    showLoading(false)
-                    Toast.makeText(this, "Failed to Sign Up", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
+//        signUpViewModel.uiState.observe(this) { result ->
+//            when (result) {
+//                is Result.Loading -> {
+//                    showLoading(true)
+//                }
+//                is Result.Success -> {
+//                    showLoading(false)
+//                    val intent = Intent(this, LoginActivity::class.java)
+//                    startActivity(intent)
+//                    //Perlu pakai finish supaya user tidak dapat kembali ke menu register setelah mengisi data
+//                    finish()
+//                    Toast.makeText(this, "Signed Up Successfully", Toast.LENGTH_SHORT).show()
+//                }
+//                is Result.Error -> {
+//                    showLoading(false)
+//                    Toast.makeText(this, "Failed to Sign Up", Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//        }
 
-        signUpViewModel.signup(password, confirmPassword, user)
+       // signUpViewModel.signup(password, confirmPassword, user)
     }
 
     //=============== Signup w/ Backend ===============
@@ -120,7 +120,7 @@ class SignUpActivity : AppCompatActivity() {
                         Toast.makeText(this, "Signed Up Successfully", Toast.LENGTH_SHORT).show()
                         showLoading(false)
 
-                        val intent = Intent(this, EditProfileActivity::class.java)
+                        val intent = Intent(this, VerificationCode1Activity::class.java)
                         startActivity(intent)
                         finish()
                     }

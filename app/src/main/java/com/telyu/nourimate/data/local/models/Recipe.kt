@@ -22,5 +22,9 @@ data class Recipe (
     val cookingSteps: String,
     val recipePictures: String,
     val mealType: Int,
+    val cookTime: String,
+    val prepTime: String,
+    val totalTime: String,
+    val portion: Int,
 
 ) : Parcelable

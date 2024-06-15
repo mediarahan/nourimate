@@ -13,7 +13,7 @@ object Injection {
     fun provideRepository(context: Context): NourimateRepository {
         val pref = UserPreference.getInstance(context.dataStore)
         val pref2 = SettingsPreference.getInstance(context.dataStore)
-        val apiService = ApiConfig.getApiService()
+        val apiService = ApiConfig.getApiService(context)
         val apiService2 = ApiConfig2.getApiService()
         val userDao = provideUserDao(context)
         val foodDao = provideFoodDao(context)

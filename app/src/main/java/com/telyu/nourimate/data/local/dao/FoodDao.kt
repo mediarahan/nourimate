@@ -27,6 +27,11 @@ interface FoodDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRecommendations(recommendations: List<Recommendation>)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertRecipeHistory(recipeHistory: RecipeHistory)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertRecipeHistories(listOfRecipeHistory: List<RecipeHistory>)
 
     //2 Query utama untuk nampilin Resep di RecipeFragment
 
@@ -40,7 +45,15 @@ interface FoodDao {
     WHERE recipes.mealType = :mealId
     """
     )
-    fun getRecipesByDateAndMealType(mealId: Int): LiveData<List<Recipe>>
+    fun getRecipesByMealType(mealId: Int): LiveData<List<Recipe>>
+
+    @Query(
+        """
+    SELECT DISTINCT recipes.* FROM recipes
+    INNER JOIN recommendations ON recipes.recipeId = recommendations.recipe_id
+    """
+    )
+    fun getAllRecipes(): LiveData<List<Recipe>>
 
 //    @Query(
 //        """
@@ -139,9 +152,9 @@ interface FoodDao {
             SELECT SUM(calories) FROM recipes
             INNER JOIN recommendations ON recipes.recipeId = recommendations.recipe_id 
             WHERE mealType = :mealType 
-            AND isSelected = 2"""
+            AND isSelected = 2 AND userId = :userId"""
     )
-    suspend fun getTotalCaloriesByMealType(mealType: Int): Int
+    suspend fun getTotalCaloriesByMealType(mealType: Int, userId: Int): Int
 
     //Query untuk menentukan jumlah rekomendasi yang dipilih berdasarkan meal type (Yang bener)
     //Kalau ada waktu, ubah yang di Dialog2 untuk pakai query ini juga
@@ -149,8 +162,9 @@ interface FoodDao {
         SELECT COUNT(*) FROM recommendations 
         INNER JOIN recipes ON recommendations.recipe_id = recipes.recipeId
         WHERE isSelected = 2 AND mealType = :mealType
+        AND userId = :userId
     """)
-    suspend fun getSelectedRecipeCountUsingMealType(mealType: Int): Int
+    suspend fun getSelectedRecipeCountUsingMealType(mealType: Int, userId: Int): Int
 
     @Query(
         """
@@ -162,9 +176,10 @@ interface FoodDao {
         FROM recipes
         INNER JOIN recommendations ON recipes.recipeId = recommendations.recipe_id
         WHERE recommendations.isSelected = 2
+        AND userId = :userId
         """
     )
-    suspend fun getNutritionSums(): NutritionSum
+    suspend fun getNutritionSums(userId: Int): NutritionSum
 
     @Query(
         """
@@ -206,9 +221,6 @@ interface FoodDao {
         WHERE mealType = :mealType AND isSelected = 3
     """)
     fun getConsumedRecipesByMealType(mealType: Int): LiveData<List<Recipe>>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertRecipeHistory(recipeHistory: RecipeHistory)
 
     @Query("SELECT * FROM consumed_recipes ORDER BY consumed_date DESC")
     fun getRecipeHistorySortedAscending(): LiveData<List<RecipeHistory>>
@@ -253,5 +265,31 @@ interface FoodDao {
 
     @Query("SELECT  * FROM recommendations WHERE isSelected = -1")
     suspend fun getAllInactiveRecommendations(): List<Recommendation>
+
+    @Query("SELECT recipeId FROM recipes WHERE mealType = :mealType")
+    suspend fun getRecipeIdsByMealType(mealType: Int): List<Int>
+
+    @Query("SELECT * FROM recommendations WHERE recommendationId = :recommendationId")
+    suspend fun getRecommendationById(recommendationId: Int): Recommendation?
+
+    @Query("SELECT * FROM recommendations WHERE userId = :userId")
+    fun getRecommendationsByUserId(userId: Int): LiveData<List<Recommendation>>
+
+    @Query("SELECT * FROM recipes WHERE name LIKE '%' || :name || '%' AND mealType = :mealType")
+    suspend fun getRecipesByNameAndMealType(name: String, mealType: Int): List<Recipe>
+
+    @Query("""
+    SELECT recommendations.* FROM recommendations
+    JOIN recipes ON recommendations.recipe_id = recipes.recipeId
+    WHERE recipes.mealType = :mealType
+""")
+    suspend fun getRecommendationsByMealId(mealType: Int): List<Recommendation>
+
+    @Query("""
+        SELECT recipe_id FROM recipes
+        INNER JOIN recommendations ON recipes.recipeId = recommendations.recipe_id
+        WHERE  isSelected = 2
+    """)
+    suspend fun getAllSelectedRecipeIds(): List<Int>
 
 }

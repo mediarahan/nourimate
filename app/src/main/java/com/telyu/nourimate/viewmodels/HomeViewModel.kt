@@ -22,6 +22,7 @@ import com.telyu.nourimate.utils.GeneralUtil.calculateBreakfastNutrition
 import com.telyu.nourimate.utils.GeneralUtil.calculateDinnerNutrition
 import com.telyu.nourimate.utils.GeneralUtil.calculateLunchNutrition
 import com.telyu.nourimate.utils.GeneralUtil.convertConditionToCode
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.util.Calendar
@@ -66,6 +67,8 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
         _currentGlass.value = glass
     }
 
+
+
     init {
         // Contoh untuk mengatur waktu tidur dan bangun
         // Dalam aplikasi nyata, ini mungkin akan diambil dari database atau API
@@ -73,22 +76,23 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
         wakeUpTime.value = "06:00 AM" // Contoh waktu bangun
     }
 
-    private fun updateGreetingMessage() {
-        val calendar = Calendar.getInstance()
-        val hourOfDay = calendar.get(Calendar.HOUR_OF_DAY)
+        private fun updateGreetingMessage() {
+            val calendar = Calendar.getInstance()
+            val hourOfDay = calendar.get(Calendar.HOUR_OF_DAY)
 
-        val greeting = when {
-            hourOfDay < 12 -> "Good morning,"
-            hourOfDay < 18 -> "Good afternoon,"
-            else -> "Good evening,"
+            val greeting = when {
+                hourOfDay < 12 -> "Good morning,"
+                hourOfDay < 18 -> "Good afternoon,"
+                else -> "Good evening,"
+            }
+
+            _greetingMessage.value = greeting
         }
-
-        _greetingMessage.value = greeting
-    }
 
     private val usersId = repository.getUserId().asLiveData()
 
     val userOngoingProgramAndMessage: LiveData<Pair<String, String>> = usersId.switchMap { id ->
+        Log.d("NGECEK USER ID", "User ID: $id")
         liveData {
             val weightTrack = repository.getWeightTrackById(id)
             val programStatus = weightTrack?.ongoingProgram ?: 0
@@ -99,7 +103,7 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
                 else -> "No Program"
             }
 
-            //kasus khusus maintain
+            // For cases where weightTrack is not null
             val weightDifference = weightTrack?.let {
                 val difference = it.endWeight - it.startWeight
                 when {
@@ -109,11 +113,10 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
                 }
             } ?: "Weight data unavailable."
 
-            // Kasus untuk lost / gain weight
             val messageText = when (programStatus) {
                 1 -> weightDifference
-                2 -> if (weightTrack != null) "You've lost ${-(weightTrack.endWeight - weightTrack.startWeight)} kg since last week." else "Weight data unavailable."
-                3 -> if (weightTrack != null) "You've gained ${weightTrack.endWeight - weightTrack.startWeight} kg since last week." else "Weight data unavailable."
+                2 -> weightTrack?.let { "You've lost ${-(it.endWeight - it.startWeight)} kg since last week." } ?: "Weight data unavailable."
+                3 -> weightTrack?.let { "You've gained ${it.endWeight - it.startWeight} kg since last week." } ?: "Weight data unavailable."
                 else -> "Please choose a program."
             }
 
@@ -121,21 +124,22 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
         }
     }
 
+
     val userBMI: LiveData<Float> = usersId.switchMap { id ->
-        Log.d("UserBMI", "User ID: $id")
         liveData {
             val detail = repository.getUserDetailsById(id)
-            val bmi = detail?.bmi
-            Log.d("UserBMI", "BMI: $bmi")
-            emit(bmi ?: -999f)
+            val bmi = GeneralUtil.calculateBMI(detail?.height, detail?.weight)
+            if (bmi != null) {
+                emit(bmi)
+            }
         }
     }
 
     val currentValues: LiveData<Pair<Int?, Int?>> = usersId.switchMap { id ->
         liveData {
             val detail = repository.getUserDetailsById(id)
-            val currentWeight = detail?.weight?.toInt()?: 0
-            val currentWaist = detail?.waistSize?.toInt()?: 0
+            val currentWeight = detail?.weight ?: 0
+            val currentWaist = detail?.waistSize ?: 0
             emit(Pair(currentWeight, currentWaist))
         }
     }
@@ -143,8 +147,7 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
     val idealValues: LiveData<Pair<Int?, Int?>> = usersId.switchMap { id ->
         liveData {
             val detail = repository.getUserDetailsById(id)
-            val idealWeight: Int? =
-                GeneralUtil.calculateIdealWeight(detail?.height)?.toInt()  // Allow null values
+            val idealWeight: Int? = GeneralUtil.calculateIdealWeight(detail?.height)?.toInt()  // Allow null values
             val idealWaist: Int? = when(detail?.gender) {
                 "Laki-laki" -> 90
                 else -> 80
@@ -181,7 +184,8 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
 
     fun getCaloriesByMealType(mealType: Int) {
         viewModelScope.launch {
-            val calories = repository.getCaloriesByMealType(mealType)
+            val userId = repository.getUserId().first()
+            val calories = repository.getCaloriesByMealType(mealType, userId)
             when (mealType) {
                 1 -> _breakfastCalories.value = calories
                 2 -> _lunchCalories.value = calories
@@ -193,15 +197,13 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
     //Part 2 of getting each nutrition percentage Values
     //Fetching the user's personal health details
 
-    // Step 1: Fetch user's email
-    val userEmail: LiveData<String> = repository.getUserEmail().asLiveData()
+    val userEmail = repository.getUserEmail().asLiveData()
 
     // Step 2: Fetch user's details based on email
-    private val userDetails: LiveData<Detail> = userEmail.switchMap { email ->
+    private val userDetails: LiveData<Detail> = usersId.switchMap { id ->
         liveData {
-            val usersId = repository.getUserId().firstOrNull() ?: -1
-            Log.d("Debug", "Fetching user details for id: $usersId")
-            val detail = repository.getUserDetailsById(usersId)
+            val detail = repository.getUserDetailsById(id)
+            Log.d("Debug", "User id fetched: $id")
             Log.d("Debug", "User details fetched: $detail")
             if (detail != null) {
                 emit(detail)
@@ -214,7 +216,8 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
 
     fun getNutritionSums() {
         viewModelScope.launch {
-            val nutritionSums = repository.getNutritionSums()
+            val userId = repository.getUserId().first()
+            val nutritionSums = repository.getNutritionSums(userId)
             Log.d("NutritionSums", "Fetched Nutrition Sums: $nutritionSums")
             _nutritionSums.value = nutritionSums
         }
@@ -227,7 +230,7 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
                 if (detail.gender == "Laki-laki") true else if (detail.gender == "Perempuan") false else null
             val age = calculateAge(detail.dob)
 
-            val akei = calculateAKEi(detail.height?.toInt() ?: 9999, gender, age)
+            val akei = calculateAKEi(detail.height, gender, age)
             val conditionCode = convertConditionToCode(detail.disease)
 
             val breakfastNutrition = calculateBreakfastNutrition(akei, conditionCode)
@@ -326,7 +329,8 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
 
     fun getSelectedRecipeCountUsingMealType(mealType: Int) {
         viewModelScope.launch {
-            val selectedRecipeCount = repository.getSelectedRecipeCountUsingMealType(mealType)
+            val userId = repository.getUserId().first()
+            val selectedRecipeCount = repository.getSelectedRecipeCountUsingMealType(mealType,userId)
             when (mealType) {
                 1 -> _breakfastCount.value = selectedRecipeCount
                 2 -> _lunchCount.value = selectedRecipeCount
@@ -340,17 +344,17 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
     private val _isSubscribed = MutableLiveData<Boolean>()
     val isSubscribed: LiveData<Boolean> get() = _isSubscribed
 
-    fun toggleSleepDataSubscription(pendingIntent: PendingIntent) {
-        if (_isSubscribed.value == true) {
-            repository.unsubscribeToSleepData(pendingIntent)
-            Log.d("SleepDataSubscription", "Unsubscribed.")
-            _isSubscribed.value = false
-        } else {
-            repository.subscribeToSleepData(pendingIntent)
-            Log.d("SleepDataSubscription", "Subscribed.")
-            _isSubscribed.value = true
-        }
-    }
+//    fun toggleSleepDataSubscription(pendingIntent: PendingIntent) {
+//        if (_isSubscribed.value == true) {
+//            repository.unsubscribeToSleepData(pendingIntent)
+//            Log.d("SleepDataSubscription", "Unsubscribed.")
+//            _isSubscribed.value = false
+//        } else {
+//            repository.subscribeToSleepData(pendingIntent)
+//            Log.d("SleepDataSubscription", "Subscribed.")
+//            _isSubscribed.value = true
+//        }
+//    }
 
     //Untuk nampilin nama dan profpic
     private val _userId = MutableLiveData<Int?>()

@@ -67,6 +67,21 @@ class ViewModelFactory private constructor(
             modelClass.isAssignableFrom(TransitionProgramViewModel::class.java) -> {
                 TransitionProgramViewModel(repository) as T
             }
+            modelClass.isAssignableFrom(ForgotPasswordViewModel::class.java) -> {
+                ForgotPasswordViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(DetailChangeViewModel::class.java) -> {
+                DetailChangeViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(AccountViewModel::class.java) -> {
+                AccountViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(TransitionRecipeViewModel::class.java) -> {
+                TransitionRecipeViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(SettingViewModel::class.java) -> {
+                SettingViewModel(repository) as T
+            }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

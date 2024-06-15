@@ -8,18 +8,27 @@ import android.text.Editable
 import android.text.TextWatcher
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.ViewModelProvider
 import com.telyu.nourimate.R
 import com.telyu.nourimate.databinding.ActivityForgotPassword1Binding
 import com.telyu.nourimate.fragments.ChangePasswordDialogFragment
+import com.telyu.nourimate.viewmodels.ForgotPasswordViewModel
+import com.telyu.nourimate.viewmodels.VerificationViewModel
+import com.telyu.nourimate.viewmodels.ViewModelFactory
 
 class ForgotPassword1Activity : AppCompatActivity() {
     private lateinit var binding: ActivityForgotPassword1Binding
+    private lateinit var viewModel: ForgotPasswordViewModel
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityForgotPassword1Binding.inflate(layoutInflater)
         setStatusBarColor(resources.getColor(R.color.color25, theme))
         val view = binding.root
         setContentView(view)
+
+        viewModel = obtainViewModel(this@ForgotPassword1Activity)
 
         val gradientColors = intArrayOf(
             getColor(R.color.color25),
@@ -64,7 +73,9 @@ class ForgotPassword1Activity : AppCompatActivity() {
             openForgotPasswordPage()
         }
         binding.buttonNext.setOnClickListener {
-            openChangePasswordPage()
+            val email = binding.verifyEmailEditText.text.toString()
+            viewModel.sendEmailVerification(email)
+            startActivity(Intent(this, ResetPasswordActivity::class.java))
         }
 
         setupTextWatchers()
@@ -118,4 +129,10 @@ class ForgotPassword1Activity : AppCompatActivity() {
         val dialogFragment = ChangePasswordDialogFragment.newInstance()
         dialogFragment.show(supportFragmentManager, "changePasswordDialog")
     }
+
+    private fun obtainViewModel(activity: AppCompatActivity): ForgotPasswordViewModel {
+        val factory = ViewModelFactory.getInstance(activity.application)
+        return ViewModelProvider(activity, factory)[ForgotPasswordViewModel::class.java]
+    }
+
 }

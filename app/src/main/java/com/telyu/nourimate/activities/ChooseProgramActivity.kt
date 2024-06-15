@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
@@ -49,6 +50,10 @@ class ChooseProgramActivity : AppCompatActivity() {
         binding.buttonSelectProgram.setOnClickListener {
             Log.d("ChooseProgramActivity", "Click!")
             insertProgramDetails()
+        }
+
+        binding.backButton.setOnClickListener {
+            finish()
         }
     }
 
@@ -117,7 +122,7 @@ class ChooseProgramActivity : AppCompatActivity() {
     }
 
     private fun setupSpinner() {
-        val programOptions = arrayOf("-- Select Your Program --","Maintain Weight", "Lose Weight", "Gain Weight")
+        val programOptions = arrayOf("-- Select Your Program --", "Maintain Weight", "Lose Weight", "Gain Weight")
         val programAdapter = HintArrayAdapter(this, android.R.layout.simple_spinner_item, programOptions)
         programAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerProgram.adapter = programAdapter
@@ -127,7 +132,9 @@ class ChooseProgramActivity : AppCompatActivity() {
                 enableSelectButtonIfReady()
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>) {}
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                enableSelectButtonIfReady()
+            }
         }
     }
 
@@ -138,17 +145,21 @@ class ChooseProgramActivity : AppCompatActivity() {
         binding.buttonSelectProgram.setTextColor(ContextCompat.getColor(this, R.color.white))
     }
 
-    @SuppressLint("ResourceAsColor")
     private fun enableSelectButtonIfReady() {
         val program = binding.spinnerProgram.selectedItem.toString()
         val dateRange = binding.editTextDateOfProgram.text.toString()
         binding.buttonSelectProgram.isEnabled = program != "-- Select Your Program --" && dateRange.isNotEmpty()
+        updateButtonAppearance()
+    }
+
+
+    private fun updateButtonAppearance() {
         if (binding.buttonSelectProgram.isEnabled) {
-            val colorInt = Color.parseColor("#FFBA38")
+            val colorInt = Color.parseColor("#FFBA38") // Active button color
             binding.buttonSelectProgram.setBackgroundColor(colorInt)
             binding.buttonSelectProgram.setTextColor(ContextCompat.getColor(this, R.color.white))
         } else {
-            binding.buttonSelectProgram.setBackgroundColor(R.color.color26)
+            binding.buttonSelectProgram.setBackgroundColor(ContextCompat.getColor(this, R.color.color26)) // Disabled button color
             binding.buttonSelectProgram.setTextColor(ContextCompat.getColor(this, R.color.white))
         }
     }
@@ -156,6 +167,9 @@ class ChooseProgramActivity : AppCompatActivity() {
     private fun setupDateEditText() {
         binding.editTextDateOfProgram.setOnClickListener {
             showDateRangePicker()
+        }
+        binding.editTextDateOfProgram.addTextChangedListener {
+            enableSelectButtonIfReady()
         }
     }
 

@@ -4,11 +4,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
 
     <application
         android:allowBackup="true"
@@ -22,6 +20,32 @@
         android:theme="@style/Base.Theme.NourimateTA"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".activities.DebugActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.SettingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.TransitionSelectRecipeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ResetPasswordActivity"
+            android:exported="true"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="reset"
+                    android:pathPrefix="/password/token"
+                    android:scheme="nourimateapp" />
+            </intent-filter>
+            <meta-data
+                android:name="androidx.core.app.PARENT_ACTIVITY"
+                android:value=".activities.LoginActivity" />
+        </activity>
         <activity
             android:name=".activities.ForgotPasswordActivity"
             android:exported="false" />

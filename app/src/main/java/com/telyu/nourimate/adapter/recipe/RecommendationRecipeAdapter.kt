@@ -15,16 +15,11 @@ import com.telyu.nourimate.databinding.ItemDateBinding
 import com.telyu.nourimate.databinding.ItemFoodWeeklyBinding
 import com.telyu.nourimate.utils.Converters
 
-class RecommendationRecipeAdapter(private val listener: OnAddClickListener) :
-    ListAdapter<RecommendationRecipe, RecommendationRecipeAdapter.BaseViewHolder>(DiffUtilCallback()) {
+class RecommendationRecipeAdapter : ListAdapter<RecommendationRecipe, RecommendationRecipeAdapter.BaseViewHolder>(DiffUtilCallback()) {
 
     override fun getItemViewType(position: Int): Int = when (getItem(position)) {
         is RecommendationRecipe.RecipeItem -> viewTypeChildren
         is RecommendationRecipe.RecommendationItem -> viewTypeParent
-    }
-
-    interface OnAddClickListener {
-        fun onAddClick(recipe: Recipe)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder =

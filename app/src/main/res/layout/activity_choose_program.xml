@@ -154,7 +154,7 @@
             android:elevation="6dp"
             android:focusable="true"
             android:gravity="center"
-            android:onClick="onVerifEmailClicked"
+            android:onClick="insertProgramDetails"
             android:text="Select"
             android:textColor="@color/white"
             android:textSize="20sp"
