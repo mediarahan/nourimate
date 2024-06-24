@@ -93,44 +93,71 @@ object GeneralUtil {
 
 
     //Step 1: Menghitung BB Ideal + faktor usia
+//    fun calculateAKEi(
+//        userHeight: Int,
+//        userGender: Boolean?,
+//        userAge: Int
+//    ): Int {
+//        val idealWeight = (userHeight - 100) - (0.1 * (userHeight - 100))
+//
+//        val AKEi = when {
+//            userAge in 20..29 -> if (userGender == true) ((15.3 * idealWeight + 679) * 1.78).toInt()
+//            else ((14.7 * idealWeight + 496) * 1.64).toInt()
+//
+//            userAge in 30..59 -> if (userGender == true) ((11.6 * idealWeight + 879) * 1.78).toInt()
+//            else ((8.7 * idealWeight + 829) * 1.64).toInt()
+//
+//            userAge >= 60 -> if (userGender == true) ((13.5 * idealWeight + 487) * 1.78).toInt()
+//            else ((13.5 * idealWeight + 596) * 1.64).toInt()
+//
+//            else -> -999
+//        }
+//
+//        return (AKEi)
+//    }
+
     fun calculateAKEi(
         userHeight: Int,
-        userGender: Boolean?,
+        userGender: Boolean?, // True for male, False for female
         userAge: Int
     ): Int {
         val idealWeight = (userHeight - 100) - (0.1 * (userHeight - 100))
-
-        val AKEi = when {
-            userAge in 20..29 -> if (userGender == true) ((15.3 * idealWeight + 679) * 1.78).toInt()
-            else ((14.7 * idealWeight + 496) * 1.64).toInt()
-
-            userAge in 30..59 -> if (userGender == true) ((11.6 * idealWeight + 879) * 1.78).toInt()
-            else ((8.7 * idealWeight + 829) * 1.64).toInt()
-
-            userAge >= 60 -> if (userGender == true) ((13.5 * idealWeight + 487) * 1.78).toInt()
-            else ((13.5 * idealWeight + 596) * 1.64).toInt()
-
-            else -> -999
-        }
-
-        return (AKEi)
+        val baseCalorie = if (userGender == true) 5 else -161
+        val AKEi = (10 * idealWeight + 6.25 * userHeight - 5 * userAge + baseCalorie).toInt()
+        return AKEi
     }
+
+//    private fun calculateMealNutrition(akei: Int, conditionCode: Int, mealProportion: Double): Nutrition {
+//        val dailyCalories = mealProportion * akei
+//        val (carbMultiplier, protMultiplier, fatMultiplier) = multipliers[conditionCode] ?: Triple(0.55, 0.125, 0.2)
+//        val nutritionCalculator = if (conditionCode == K) {
+//            // Special handling for Cholesterol
+//            { multiplier: Double -> multiplier * akei }
+//        } else {
+//            { multiplier: Double -> multiplier * dailyCalories }
+//        }
+//
+//        return Nutrition(
+//            calories = dailyCalories,
+//            carbohydrates = nutritionCalculator(carbMultiplier) / 4,
+//            protein = nutritionCalculator(protMultiplier) / 4,
+//            fat = nutritionCalculator(fatMultiplier) / 9
+//        )
+//    }
 
     private fun calculateMealNutrition(akei: Int, conditionCode: Int, mealProportion: Double): Nutrition {
         val dailyCalories = mealProportion * akei
         val (carbMultiplier, protMultiplier, fatMultiplier) = multipliers[conditionCode] ?: Triple(0.55, 0.125, 0.2)
-        val nutritionCalculator = if (conditionCode == K) {
-            // Special handling for Cholesterol
-            { multiplier: Double -> multiplier * akei }
-        } else {
-            { multiplier: Double -> multiplier * dailyCalories }
-        }
+        val calories = dailyCalories
+        val carbohydrates = calories * carbMultiplier / 4
+        val protein = calories * protMultiplier / 4
+        val fat = calories * fatMultiplier / 9
 
         return Nutrition(
-            calories = dailyCalories,
-            carbohydrates = nutritionCalculator(carbMultiplier) / 4, 
-            protein = nutritionCalculator(protMultiplier) / 4,
-            fat = nutritionCalculator(fatMultiplier) / 9
+            calories = calories,
+            carbohydrates = carbohydrates,
+            protein = protein,
+            fat = fat
         )
     }
 
@@ -156,9 +183,9 @@ object GeneralUtil {
             "Hypertension" -> H
             "Cholesterol" -> K
             "Hypertension, Cholesterol" -> HK
-            "Diabetes, Cholesterol" -> DK
-            "Diabetes, Hypertension" -> DH
-            "Diabetes, Hypertension, Cholesterol" -> DHK
+            "Diabetes,Kolesterol" -> DK
+            "Diabetes,Hypertension" -> DH
+            "Diabetes,Hypertension,Cholesterol" -> DHK
             else -> -1
         }
     }
@@ -207,6 +234,18 @@ object GeneralUtil {
 
         return calendar.timeInMillis
     }
+    fun calculateTodayMidnight(): Long {
+        val calendar = Calendar.getInstance()
+
+        // Set the time to the beginning of the day
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+
+        return calendar.timeInMillis
+    }
+
 
     fun calculateOneMinuteLaterTimestamp(): Long {
         val calendar = Calendar.getInstance() // Get the current date and time

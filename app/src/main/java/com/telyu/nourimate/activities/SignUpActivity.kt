@@ -36,12 +36,9 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun setupButtons() {
-        //daftar pake lokal
+        //daftar pake backend
         binding.buttonRegister.setOnClickListener {
-            //Backend
             registerWithBackend()
-            //Lokal
-            //signup()
         }
 
         binding.TextViewSignIn.setOnClickListener {
@@ -60,46 +57,6 @@ class SignUpActivity : AppCompatActivity() {
         insetsController.isAppearanceLightNavigationBars = true
 
         window.statusBarColor = color
-    }
-
-    //=============== Regular Signup ===============
-
-    private fun signup() {
-        //call signup function from viewmodel here
-        val fullName = binding.editTextFullName.text.toString()
-        val phoneNumber = binding.editTextPhone.text.toString().toLong()
-        val email = binding.editTextEmail.text.toString()
-        val password = binding.editTextPassword.text.toString()
-        val confirmPassword = binding.editTextConfirmPassword.text.toString()
-
-        if (!InputValidator.isValidEmail(email) || !InputValidator.isValidPassword(password)) {
-            Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show()
-            return //return disini maksudnya lebih mirip ke break / pass kalau di Python. Untuk flow control, bukan returnnya fungsi
-        }
-
-        //val user = User(0, fullName, email, phoneNumber, password)
-
-//        signUpViewModel.uiState.observe(this) { result ->
-//            when (result) {
-//                is Result.Loading -> {
-//                    showLoading(true)
-//                }
-//                is Result.Success -> {
-//                    showLoading(false)
-//                    val intent = Intent(this, LoginActivity::class.java)
-//                    startActivity(intent)
-//                    //Perlu pakai finish supaya user tidak dapat kembali ke menu register setelah mengisi data
-//                    finish()
-//                    Toast.makeText(this, "Signed Up Successfully", Toast.LENGTH_SHORT).show()
-//                }
-//                is Result.Error -> {
-//                    showLoading(false)
-//                    Toast.makeText(this, "Failed to Sign Up", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//        }
-
-       // signUpViewModel.signup(password, confirmPassword, user)
     }
 
     //=============== Signup w/ Backend ===============

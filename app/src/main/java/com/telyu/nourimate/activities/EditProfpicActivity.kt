@@ -108,8 +108,6 @@ class EditProfpicActivity : AppCompatActivity() {
     }
 
 
-
-
     private fun copyImageToInternalStorage(uri: Uri): Uri {
         val inputStream = contentResolver.openInputStream(uri) ?: return Uri.EMPTY
         val file = createCustomTempFile()
@@ -128,13 +126,7 @@ class EditProfpicActivity : AppCompatActivity() {
 
     private fun insertProfpic() {
         currentImageUri?.let { uri ->
-            viewModel.userEmail.observe(this) { userEmail ->
-                viewModel.getUserIdByEmail(userEmail)
-            }
-            viewModel.userId.observe(this) { userId ->
-                val profpic = Profpic(userId, uri.toString())
-                viewModel.insertProfpic(profpic)
-            }
+            viewModel.insertProfpic(uri.toString())
         } ?: Log.e("EditProfpicActivity", "No image selected")
     }
 

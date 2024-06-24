@@ -20,6 +20,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.lang.Exception
+import java.text.SimpleDateFormat
 import java.util.Date
 
 class EditProfileViewModel(private val repository: NourimateRepository) : ViewModel() {
@@ -42,8 +43,8 @@ class EditProfileViewModel(private val repository: NourimateRepository) : ViewMo
             val age = GeneralUtil.calculateAge(detail.dob)
 
             val recommendationRequest = RecommendationRequest(
-                tinggi_badan = detail.height?.toInt() ?: 9999,
-                berat_badan = detail.weight?.toInt() ?: 9999,
+                tinggi_badan = detail.height,
+                berat_badan = detail.weight,
                 jenis_kelamin = detail.gender,
                 umur = age,
                 penyakit = detail.disease,
@@ -71,55 +72,59 @@ class EditProfileViewModel(private val repository: NourimateRepository) : ViewMo
         val recommendations = mutableListOf<Recommendation>()
         val startDate = Date()
 
-        val numDays = maxOf(idSarapan.size, idMakanSiang.size, idMakanMalam.size) / 3  // Assuming each list has 3 times the IDs needed per day
+        // Calculate the maximum number of days based on the longest list
+        val numDays = maxOf(idSarapan.size, idMakanSiang.size, idMakanMalam.size) / 3
 
         for (i in 0 until numDays) {
             val date = Date(startDate.time + i * 86400000)
+            val dateFormat = SimpleDateFormat("yyyy/MM/dd")
+            val dateString = dateFormat.format(date)
 
-            // Assigning three breakfast recommendations
-            for (j in 0 until 3) {
-                val index = i * 3 + j
-                if (index < idSarapan.size) {
-                    recommendations.add(Recommendation(
-                        recommendationId = recommendations.size + 1,
-                        date = date,
-                        isSelected = 0,
-                        recipeId = idSarapan[index],
-                        userId = userId
-                    ))
+            // Function to add recommendations
+            fun addRecommendations(ids: List<Int>, startIdx: Int) {
+                for (j in 0 until 3) {
+                    val index = startIdx * 3 + j
+                    if (index < ids.size) {
+                        recommendations.add(Recommendation(
+                            recommendationId = recommendations.size + 1,
+                            date = dateString,
+                            isSelected = 0,
+                            recipeId = ids[index],
+                            userId = userId
+                        ))
+                    }
                 }
             }
 
-            // Assigning three lunch recommendations
-            for (j in 0 until 3) {
-                val index = i * 3 + j
-                if (index < idMakanSiang.size) {
-                    recommendations.add(Recommendation(
-                        recommendationId = recommendations.size + 1,
-                        date = date,
-                        isSelected = 0,
-                        recipeId = idMakanSiang[index],
-                        userId = userId
-                    ))
-                }
-            }
+            // Assign breakfast, lunch, and dinner recommendations
+            addRecommendations(idSarapan, i)
+            addRecommendations(idMakanSiang, i)
+            addRecommendations(idMakanMalam, i)
+        }
 
-            // Assigning three dinner recommendations
-            for (j in 0 until 3) {
-                val index = i * 3 + j
-                if (index < idMakanMalam.size) {
-                    recommendations.add(Recommendation(
-                        recommendationId = recommendations.size + 1,
-                        date = date,
-                        isSelected = 0,
-                        recipeId = idMakanMalam[index],
-                        userId = userId
-                    ))
-                }
+        // Handle any remaining recipes that didn't fit into full days
+        val maxDaysHandled = numDays * 3
+        fun handleLeftovers(ids: List<Int>, mealType: String) {
+            for (index in maxDaysHandled until ids.size) {
+                val date = Date(startDate.time + (numDays * 86400000)) // Additional days beyond numDays
+                val dateString = SimpleDateFormat("yyyy/MM/dd").format(date)
+                recommendations.add(Recommendation(
+                    recommendationId = recommendations.size + 1,
+                    date = dateString,
+                    isSelected = 0,
+                    recipeId = ids[index],
+                    userId = userId
+                ))
             }
         }
+
+        handleLeftovers(idSarapan, "Breakfast")
+        handleLeftovers(idMakanSiang, "Lunch")
+        handleLeftovers(idMakanMalam, "Dinner")
+
         return recommendations
     }
+
 
 
     val recommendationsLiveData: LiveData<List<Recommendation>> =

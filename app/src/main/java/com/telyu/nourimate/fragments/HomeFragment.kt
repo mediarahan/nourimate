@@ -59,6 +59,10 @@ class HomeFragment : Fragment() {
         // Call updateGlassesUI initially to set the '+' on the first glass
         updateGlassesUI(viewModel.currentGlass.value ?: 0)
 
+        binding.buttonFinalizeRecipes.setOnClickListener {
+            insertSelectedRecipesToMealHistory()
+        }
+
         bindIdealWeightAndSize()
         setupBMIListener()
         bindBMI()
@@ -70,8 +74,6 @@ class HomeFragment : Fragment() {
         viewModel.getNutritionSums()
         displayProfpic()
         setupMealHistory()
-
-
     }
 
     //=============== Kotak UI Pertama ===============
@@ -408,38 +410,41 @@ class HomeFragment : Fragment() {
         }
     }
 
+    //===== Masukkan resep ke MealHistory =====
+    private fun insertSelectedRecipesToMealHistory() {
+        viewModel.addRecipeToMealHistory()
+        viewModel.deselectSelectedRecipes()
+    }
+
     //=============== Display User Related Interfaces ===============
 
     //Untuk nampilin nama dan profpic
     private fun displayProfpic() {
-        viewModel.userEmail.observe(viewLifecycleOwner) { userEmail ->
-            userEmail.let {
-                viewModel.getUserIdByEmail(it)
+
+        viewModel.getUsername()
+        viewModel.username.observe(viewLifecycleOwner) { name ->
+            name?.let {
+                val truncatedUserName = truncateUserName(it, wordLimit = 1, maxChars = 8)
+                binding.usernameTextView.text = truncatedUserName
             }
         }
 
-        viewModel.userId.observe(viewLifecycleOwner) { userId ->
-            if (userId != null) {
-                viewModel.getProfpicById(userId)
-                viewModel.getUserNameById(userId)
-            }
-        }
-
-        viewModel.profilePicture.observe(viewLifecycleOwner) { uriString ->
+        viewModel.profpic.observe(viewLifecycleOwner) { uriString ->
             uriString?.let { uriStr ->
                 val uri = Uri.parse(uriStr)
                 binding.profileImageView.setImageURI(uri)
             }
-
-            viewModel.userName.observe(viewLifecycleOwner) { userName ->
-                binding.usernameTextView.text = userName + "!"
-            }
+        }
 
             viewModel.userOngoingProgramAndMessage.observe(viewLifecycleOwner) { programMessages ->
                 binding.programMessageTextView.text = programMessages.first
                 binding.weightMessageTextView.text = programMessages.second
             }
         }
+
+    private fun truncateUserName(userName: String, wordLimit: Int = 1, maxChars: Int = 8): String {
+        val words = userName.split(" ").take(wordLimit).joinToString(" ")
+        return if (words.length > maxChars) words.substring(0, maxChars) else words
     }
 
     private fun setStatusBarColor(color: Int) {

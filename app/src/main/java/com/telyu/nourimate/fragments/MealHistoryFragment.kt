@@ -22,7 +22,6 @@ class MealHistoryFragment : Fragment() {
         ViewModelFactory.getInstance(requireActivity().applicationContext)
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

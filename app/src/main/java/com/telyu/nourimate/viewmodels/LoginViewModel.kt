@@ -15,16 +15,8 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel(private val repository: NourimateRepository) : ViewModel() {
 
-    private val _userLoginState = MutableLiveData<Int>()
-    val userLoginState: LiveData<Int> = _userLoginState
-
-    val isUserVerified: LiveData<Boolean> = repository.getUserVerificationState().asLiveData()
-    val isDetailFilled: LiveData<Boolean> = repository.getUserDetailFilled().asLiveData()
-
-    private val _detailExists = MutableLiveData<Boolean>()
-    val detailExists: LiveData<Boolean> = _detailExists
-
     fun loginBackend(email: String, password: String) = repository.loginBackend(email, password)
+    fun googleSignIn(email: String) = repository.performGoogleSignIn(email)
 
     fun checkUserExists() {
         viewModelScope.launch {
@@ -43,4 +35,13 @@ class LoginViewModel(private val repository: NourimateRepository) : ViewModel() 
             repository.saveSession(userModel)
         }
     }
+
+    private val _userLoginState = MutableLiveData<Int>()
+    val userLoginState: LiveData<Int> = _userLoginState
+
+    val isUserVerified: LiveData<Boolean> = repository.getUserVerificationState().asLiveData()
+    val isDetailFilled: LiveData<Boolean> = repository.getUserDetailFilled().asLiveData()
+
+    private val _detailExists = MutableLiveData<Boolean>()
+    val detailExists: LiveData<Boolean> = _detailExists
 }

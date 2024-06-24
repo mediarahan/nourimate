@@ -1,6 +1,8 @@
 package com.telyu.nourimate.activities
 
+import android.content.Intent
 import android.os.Bundle
+import android.os.Debug
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -32,6 +34,11 @@ class SettingActivity : AppCompatActivity() {
             saveSettingsPreferences()
             finish()
         }
+
+        binding.settingTextView.setOnClickListener {
+            startActivity(Intent(this@SettingActivity, DebugActivity::class.java))
+        }
+
 
         val themesOptions = arrayOf("Themes", "Bright", "Dark")
         themesAdapter = HintArrayAdapter(this, android.R.layout.simple_spinner_item, themesOptions)

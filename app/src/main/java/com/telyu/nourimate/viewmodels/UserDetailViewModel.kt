@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.lang.Exception
+import java.text.SimpleDateFormat
 import java.util.Date
 
 class UserDetailViewModel(private val repository: NourimateRepository) : ViewModel() {
@@ -34,22 +35,15 @@ class UserDetailViewModel(private val repository: NourimateRepository) : ViewMod
         }
     }
 
-    val userName: LiveData<String> = userId.switchMap {
-        liveData {
-            val name = repository.getUserNameById(it)
-            if (name != null) {
-                emit(name)
-            }
-        }
-    }
+    private var _username = MutableLiveData<String>()
+    val username: LiveData<String> = _username
 
-    fun updateUserName(name: String) {
+    fun getUsername() {
         viewModelScope.launch {
-            val userId = repository.getUserId().first()
-            repository.updateUserName(userId, name)
+            val username = repository.getUsername().first()
+            _username.value = username
         }
     }
-
 
     fun updateUserProfile(
         detailId: Int,
@@ -95,29 +89,13 @@ class UserDetailViewModel(private val repository: NourimateRepository) : ViewMod
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     private val recommendationData: LiveData<Result<NourimateRepository.ListOfIds>> =
         userDetails.switchMap { detail ->
             val age = GeneralUtil.calculateAge(detail.dob)
 
             val recommendationRequest = RecommendationRequest(
-                tinggi_badan = detail.height?.toInt() ?: 9999,
-                berat_badan = detail.weight?.toInt() ?: 9999,
+                tinggi_badan = detail.height,
+                berat_badan = detail.weight,
                 jenis_kelamin = detail.gender,
                 umur = age,
                 penyakit = detail.disease,
@@ -149,6 +127,8 @@ class UserDetailViewModel(private val repository: NourimateRepository) : ViewMod
 
         for (i in 0 until numDays) {
             val date = Date(startDate.time + i * 86400000)
+            val dateFormat = SimpleDateFormat("yyyy/MM/dd")
+            val dateString = dateFormat.format(date)
 
             // Assigning three breakfast recommendations
             for (j in 0 until 3) {
@@ -157,7 +137,7 @@ class UserDetailViewModel(private val repository: NourimateRepository) : ViewMod
                     recommendations.add(
                         Recommendation(
                         recommendationId = recommendations.size + 1,
-                        date = date,
+                        date = dateString,
                         isSelected = 0,
                         recipeId = idSarapan[index],
                         userId = userId
@@ -173,7 +153,7 @@ class UserDetailViewModel(private val repository: NourimateRepository) : ViewMod
                     recommendations.add(
                         Recommendation(
                         recommendationId = recommendations.size + 1,
-                        date = date,
+                        date = dateString,
                         isSelected = 0,
                         recipeId = idMakanSiang[index],
                         userId = userId
@@ -189,7 +169,7 @@ class UserDetailViewModel(private val repository: NourimateRepository) : ViewMod
                     recommendations.add(
                         Recommendation(
                         recommendationId = recommendations.size + 1,
-                        date = date,
+                        date = dateString,
                         isSelected = 0,
                         recipeId = idMakanMalam[index],
                         userId = userId

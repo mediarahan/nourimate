@@ -147,7 +147,6 @@ class HomeFragmentTest {
 
     @Test
     fun testNutritionValuesSwitchingUsers() {
-        onView(withId(R.id.nav_home)).perform(click())
 
         val userTests = listOf(
             UserTest(1, NutritionSum(200.0, 10.0, 15.0, 30.0), NutritionSum(300.0, 20.0, 25.0, 40.0)),

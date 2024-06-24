@@ -57,6 +57,7 @@ class LoginActivity : AppCompatActivity() {
 
         createGradientBackground()
 
+        //loginViewModel.logout()
         setupListeners()
         configureGoogleSignIn()
     }
@@ -115,33 +116,6 @@ class LoginActivity : AppCompatActivity() {
         // Set the status bar color
         window.statusBarColor = color
     }
-
-//    private fun login() {
-//        val email = binding.emailEditText.text.toString()
-//        val password = binding.passwordEditText.text.toString()
-//
-//        if (InputValidator.isValidEmail(email) && InputValidator.isValidPassword(password)) {
-//            loginViewModel.uiState.observe(this) { result ->
-//                when (result) {
-//                    is Result.Loading ->
-//                        showLoading(true)
-//
-//                    is Result.Success -> {
-//                        showLoading(false)
-//                        //observeLoginStatus()
-//                    }
-//
-//                    is Result.Error -> {
-//                        showLoading(false)
-//                        Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show()
-//                    }
-//                }
-//            }
-//            loginViewModel.login(email, password)
-//        } else {
-//            Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show()
-//        }
-//    }
 
     private fun loginWithBackend() {
         val email = binding.emailEditText.text.toString()
@@ -221,28 +195,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     //=============== Login State Observation ===============
-
-    private fun observeLoginStatus() {
-        loginViewModel.userLoginState.observe(this) { state ->
-            when (state) {
-                1 -> {
-                    startActivity(Intent(this, VerificationCode1Activity::class.java))
-                    finish()
-                }
-
-                2 -> showDetailsNeededDialog()
-                3 -> {
-                    startActivity(Intent(this, VerificationCode1Activity::class.java))
-                    finish()
-                }
-
-                else -> {
-                    // Handle initial state or re-enter credentials
-                    Toast.makeText(this, "Please enter your credentials", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
 
     private fun observeLoginStatusBackend() {
         loginViewModel.isUserVerified.observe(this) { isVerified ->
@@ -357,6 +309,19 @@ class LoginActivity : AppCompatActivity() {
             // Here, implement your API call to the backend with the obtained email and token
             // Example: yourApi.loginWithGoogle(email, idToken)
 
+            loginViewModel.googleSignIn(email).observe(this) {result ->
+                when (result) {
+                    is Result.Loading -> showLoading(true)
+                    is Result.Success -> {
+                        showLoading(false)
+                        startActivity(Intent(this@LoginActivity, NavigationBarActivity::class.java))
+                    }
+                    is Result.Error -> {
+                        showLoading(false)
+                        Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
             //berarti login with google harus apa aja??
         } else {
             // Handle case where email or token is null
@@ -429,7 +394,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     //================ Skejuled Tasks ===============
-    fun scheduleMidnightRecipeUpdate(context: Context) {
+    private fun scheduleMidnightRecipeUpdate(context: Context) {
         val constraints = Constraints.Builder()
             .setRequiresBatteryNotLow(true)
             .build()

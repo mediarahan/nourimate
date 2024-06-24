@@ -13,6 +13,7 @@ import com.telyu.nourimate.data.remote.Result
 import com.telyu.nourimate.databinding.ActivityResetPasswordBinding
 import com.telyu.nourimate.viewmodels.ForgotPasswordViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
+import android.net.Uri
 
 class ResetPasswordActivity : AppCompatActivity() {
     private lateinit var binding: ActivityResetPasswordBinding
@@ -32,6 +33,8 @@ class ResetPasswordActivity : AppCompatActivity() {
         val data = intent?.data
         val token = data?.getQueryParameter("token")
 
+        binding.tokenvaluetextview.text = "Token yang didapat: $token"
+
         binding.buttonNext.setOnClickListener {
             if(token != null)
             {
@@ -41,7 +44,7 @@ class ResetPasswordActivity : AppCompatActivity() {
                         is Result.Loading -> showLoading(true)
                         is Result.Success -> {
                             showLoading(false)
-                            Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "Reset Password Success", Toast.LENGTH_SHORT).show()
                             startActivity(Intent(this@ResetPasswordActivity, LoginActivity::class.java))
                             finish()
                         }
@@ -54,6 +57,10 @@ class ResetPasswordActivity : AppCompatActivity() {
             }
         }
 
+        // ATTENTION: This was auto-generated to handle app links.
+        val appLinkIntent: Intent = intent
+        val appLinkAction: String? = appLinkIntent.action
+        val appLinkData: Uri? = appLinkIntent.data
     }
 
     private fun setStatusBarColor(color: Int) {

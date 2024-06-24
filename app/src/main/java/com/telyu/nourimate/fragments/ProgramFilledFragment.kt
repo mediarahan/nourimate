@@ -201,7 +201,7 @@ class ProgramFilledFragment : Fragment() {
 
             weightEntries.forEach { entry ->
                 weightList.add(entry.weight)
-                dateList.add(Converters().formatDateToString(entry.date))
+                dateList.add(Converters().formatDateToStringShort(entry.date))
             }
             binding.weightChart.setWeights(weightList)
             binding.weightChart.setDates(dateList)
@@ -282,12 +282,7 @@ class ProgramFilledFragment : Fragment() {
         dialog.show()
     }
 
-//    private fun setupChangeRecipe() {
-//        binding.changeRecipeButton.setOnClickListener {
-//            viewModel.changeRecommendationFromConsumedToExpired()
-//            Toast.makeText(context, "Recipes Modified", Toast.LENGTH_SHORT).show()
-//        }
-//    }
+
 
 
 }

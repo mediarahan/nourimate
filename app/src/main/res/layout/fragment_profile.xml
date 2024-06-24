@@ -40,7 +40,7 @@
                 android:id="@+id/imageViewAvatar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/saul"
+                android:src="@drawable/splash"
                 android:scaleType="centerCrop">
             </ImageView>
         </androidx.cardview.widget.CardView>
@@ -71,7 +71,7 @@
         android:id="@+id/nameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Saul Goodman"
+        android:text="Nourimate User"
         android:textSize="32sp"
         android:fontFamily="@font/concertone"
         android:textStyle="bold"

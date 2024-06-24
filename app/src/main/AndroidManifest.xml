@@ -32,15 +32,15 @@
         <activity
             android:name=".activities.ResetPasswordActivity"
             android:exported="true"
-            android:launchMode="singleTop">
-            <intent-filter>
+            android:launchMode="singleTask">
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
-                    android:host="reset"
-                    android:pathPrefix="/password/token"
-                    android:scheme="nourimateapp" />
+                    android:scheme="https"
+                    android:host="nourimate-ta.web.app"
+                    android:pathPattern="/reset/password/.*" />
             </intent-filter>
             <meta-data
                 android:name="androidx.core.app.PARENT_ACTIVITY"

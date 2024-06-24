@@ -58,7 +58,7 @@ class RecommendationRecipeAdapter : ListAdapter<RecommendationRecipe, Recommenda
     inner class ParentViewHolder(private val binding: ItemDateBinding) : BaseViewHolder(binding) {
         override fun bind(item: RecommendationRecipe) {
             item as RecommendationRecipe.RecommendationItem
-            binding.textViewDate.text = Converters().formatDayDateToString(item.recommendation.date)
+            binding.textViewDate.text = item.recommendation.date
         }
     }
 

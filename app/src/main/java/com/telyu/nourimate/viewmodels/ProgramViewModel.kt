@@ -17,6 +17,8 @@ import com.telyu.nourimate.data.local.models.RecipeHistoryData
 import com.telyu.nourimate.data.local.models.WeightEntry
 import com.telyu.nourimate.data.local.models.WeightTrack
 import com.telyu.nourimate.data.repository.NourimateRepository
+import com.telyu.nourimate.utils.Converters
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
@@ -30,6 +32,16 @@ class ProgramViewModel(private val repository: NourimateRepository) : ViewModel(
             val weightTrack = repository.getWeightTrackById(id)
             if (weightTrack != null) {
                 emit(weightTrack)
+            }
+        }
+    }
+
+    val userEndDate: LiveData<Long> = userId.switchMap { id ->
+        liveData {
+            val weightTrack = repository.getWeightTrackById(id)
+            val endDate = Converters().dateToTimestamp(weightTrack?.endDate)
+            if (endDate != null) {
+                emit(endDate)
             }
         }
     }
@@ -73,40 +85,47 @@ class ProgramViewModel(private val repository: NourimateRepository) : ViewModel(
     }
 
     private fun fetchRecipeAndHistoryLiveData(mealTime: Int) {
+        viewModelScope.launch {
+            val userId = repository.getUserId().first()
 
-        val recipesLiveData = repository.getConsumedRecipesByMealType(mealTime)
-        val historyLiveData = repository.getRecipeHistorySortedAscending()
+            val recipesLiveData = repository.getAllRecipesByMealType(mealTime)
+            val historyLiveData = repository.getRecipeHistorySortedAscending(userId)
 
-        _recipeHistoryData.apply {
-            removeSource(recipesLiveData)
-            removeSource(historyLiveData)
-            addSource(recipesLiveData) { recipes ->
-                Log.d("Debug", "Recipes loaded: ${recipes.size}")
-                combineLatestData(recipes, historyLiveData.value)
-            }
-            addSource(historyLiveData) { history ->
-                Log.d("Debug", "RecipeHistories loaded: ${history.size}")
-                combineLatestData(recipesLiveData.value, history)
+            _recipeHistoryData.apply {
+                removeSource(recipesLiveData)
+                removeSource(historyLiveData)
+                addSource(recipesLiveData) { recipes ->
+                    Log.d("MealHistory", "Recipes loaded: ${recipes.size}")
+                    combineLatestData(recipes, historyLiveData.value)
+                }
+                addSource(historyLiveData) { history ->
+                    Log.d("MealHistory", "RecipeHistories loaded: ${history.size}")
+                    combineLatestData(recipesLiveData.value, history)
+                }
             }
         }
     }
 
     private fun combineLatestData(recipes: List<Recipe>?, history: List<RecipeHistory>?) {
         if (recipes == null || history == null) {
-            Log.d(
-                "Debug",
-                "One of the lists is null -> Recipes: $recipes, Recommendations: $history"
-            )
+            Log.d("MealHistory", "One of the lists is null -> Recipes: $recipes, Recommendations: $history")
             return
         }
-        Log.d(
-            "Debug",
-            "Combining data: Recipes (${recipes.size}), Recommendations (${history.size})"
-        )
-        val recipeHistoryData = mutableListOf<RecipeHistoryData>()
-        val groupByDate = recipes.groupBy { recipe ->
+
+        // Filter recipes to include only those with a corresponding history entry
+        val filteredRecipes = recipes.filter { recipe ->
+            history.any { it.recipeId == recipe.recipeId }
+        }.sortedBy { recipe ->
             history.find { it.recipeId == recipe.recipeId }?.consumedDate
         }
+
+        // Group by consumed date after filtering and sorting
+        val groupByDate = filteredRecipes.groupBy { recipe ->
+            history.find { it.recipeId == recipe.recipeId }?.consumedDate
+        }
+
+        val recipeHistoryData = mutableListOf<RecipeHistoryData>()
+
         for ((date, groupedRecipes) in groupByDate) {
             val recipeHistory = history.find { it.consumedDate == date }
             if (recipeHistory != null) {
@@ -116,9 +135,11 @@ class ProgramViewModel(private val repository: NourimateRepository) : ViewModel(
                 recipeHistoryData.add(RecipeHistoryData.RecipeItem(recipe))
             }
         }
+
         _recipeHistoryData.value = recipeHistoryData
-        Log.d("Debug", "Combined list size: ${recipeHistoryData.size}")
+        Log.d("MealHistory", "Combined list size: ${recipeHistoryData.size}")
     }
+
 
     //=============== ProgramFilledFragment ===============
     private val _breakfastCalories = MutableLiveData<Int>()
@@ -132,7 +153,8 @@ class ProgramViewModel(private val repository: NourimateRepository) : ViewModel(
 
     fun getTotalCaloriesByMealTypeHistory(mealType: Int) {
         viewModelScope.launch {
-            val calories = repository.getTotalCaloriesByMealTypeHistory(mealType)
+            val userId = repository.getUserId().first()
+            val calories = repository.getTotalCaloriesByMealTypeHistory(mealType, userId)
             when (mealType) {
                 1 -> _breakfastCalories.value = calories
                 2 -> _lunchCalories.value = calories
@@ -224,7 +246,7 @@ class ProgramViewModel(private val repository: NourimateRepository) : ViewModel(
 
     fun fetchCooldownTime() {
         viewModelScope.launch {
-            val userId = repository.getUserId().firstOrNull() ?: -1
+            val userId = repository.getUserId().first()
             val endDate = repository.getCooldownEndDate(userId)
             endDate.let {
                 val remaining = it.time - System.currentTimeMillis()

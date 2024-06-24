@@ -1,5 +1,6 @@
 package com.telyu.nourimate.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
@@ -11,7 +12,12 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.telyu.nourimate.R
+import com.telyu.nourimate.data.local.FakeFoodData
+import com.telyu.nourimate.data.local.db.FoodDatabase
 import com.telyu.nourimate.data.local.models.Detail
+import com.telyu.nourimate.data.local.models.Recipe
+import com.telyu.nourimate.data.local.models.RecipeHistory
+import com.telyu.nourimate.data.local.models.Recommendation
 import com.telyu.nourimate.data.local.models.User
 import com.telyu.nourimate.databinding.ActivitySplashScreenBinding
 import com.telyu.nourimate.utils.Converters
@@ -39,6 +45,19 @@ class SplashScreenActivity : AppCompatActivity() {
         userPreference = UserPreference.getInstance(dataStore)
 
         insertAdminAccounts()
+
+        viewModel.recipeCount.observe(this) {
+            if (it == true) insertDummyRecipes() else {
+            //do nothing
+            }
+        }
+
+        viewModel.recommendationCount.observe(this) {
+            if (it == true) insertDummyRecommendation() else {
+                //do nothing
+            }
+        }
+
         createGradientBackground()
 
         // Delay to display the splash screen, after which we check the login status
@@ -100,14 +119,90 @@ class SplashScreenActivity : AppCompatActivity() {
         )
 
         val details = listOf(
-            Detail(1, Converters().fromTimestamp(1054628979000), 181, 80, 81, "Laki-laki", "Nuts", "Diabetes", 24.4f, 1),
-            Detail(2, Converters().fromTimestamp(1054628979000), 160, 65, 71, "Laki-laki", "Seafood", "Kolesterol", 25.3f, 2)
+            Detail(
+                1,
+                Converters().fromTimestamp(1054628979000),
+                181,
+                80,
+                81,
+                "Laki-laki",
+                "Nuts",
+                "Diabetes",
+                24.4f,
+                1
+            ),
+            Detail(
+                2,
+                Converters().fromTimestamp(1054628979000),
+                160,
+                80,
+                71,
+                "Laki-laki",
+                "Seafood",
+                "Kolesterol",
+                25.3f,
+                2
+            )
         )
 
         users.forEachIndexed { index, user ->
             viewModel.insertUser(user)
             viewModel.insertDetail(details[index])
         }
+    }
+
+    private fun insertDummyRecipes() {
+        val dao = FoodDatabase.getInstance(this).foodDao()
+        val fakeFoodData = FakeFoodData()
+
+        val mappedRecipes = fakeFoodData.recipes.map { recipe ->
+            Recipe(
+                recipeId = recipe.recipeId,
+                name = recipe.name,
+                calories = recipe.calories,
+                carbs = recipe.carbs,
+                fat = recipe.fat,
+                protein = recipe.protein,
+                ingredients = recipe.ingredients,
+                cookingSteps = recipe.cookingSteps,
+                recipePictures = recipe.recipePictures,
+                mealType = recipe.mealType,
+                cookTime = recipe.cookTime,
+                prepTime = recipe.prepTime,
+                portion = recipe.portion,
+            )
+        }
+
+        // Insert data into database within coroutine scope
+        lifecycleScope.launch {
+            // Insert each recipe individually
+            mappedRecipes.forEach { recipe ->
+                dao.insertRecipe(recipe)
+            }
+
+        }
+    }
+
+
+    private fun insertDummyRecommendation() {
+        val dao = FoodDatabase.getInstance(this).foodDao()
+        val fakeFoodData = FakeFoodData()
+
+        val mappedRecommendations = fakeFoodData.recommendations.map { recommendation ->
+            Recommendation(
+                recommendationId = recommendation.recommendationId,
+                date = recommendation.date,
+                isSelected = recommendation.isSelected,
+                recipeId = recommendation.recipeId,
+                userId = recommendation.userId,
+            )
+        }
+
+            lifecycleScope.launch {
+                mappedRecommendations.forEach { recommendation ->
+                    dao.insertRecommendation(recommendation)
+                }
+            }
     }
 
 

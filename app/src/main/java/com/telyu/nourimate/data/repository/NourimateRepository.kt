@@ -1,12 +1,9 @@
 package com.telyu.nourimate.data.repository
 
-import android.app.PendingIntent
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
-import com.google.android.gms.location.ActivityRecognition
-import com.google.android.gms.location.SleepSegmentRequest
 import com.telyu.nourimate.data.local.dao.FoodDao
 import com.telyu.nourimate.data.local.dao.UserDao
 import com.telyu.nourimate.data.local.models.Detail
@@ -16,30 +13,33 @@ import com.telyu.nourimate.data.local.models.Profpic
 import com.telyu.nourimate.data.local.models.Recipe
 import com.telyu.nourimate.data.local.models.RecipeHistory
 import com.telyu.nourimate.data.local.models.Recommendation
-import com.telyu.nourimate.data.local.models.SleepSegmentEventEntity
 import com.telyu.nourimate.data.local.models.User
 import com.telyu.nourimate.data.local.models.WeightEntry
 import com.telyu.nourimate.data.local.models.WeightTrack
 import com.telyu.nourimate.data.remote.Result
 import com.telyu.nourimate.data.remote.response.GetAllUserProgramResponse
 import com.telyu.nourimate.data.remote.response.GetUserDetailResponse
-import com.telyu.nourimate.data.remote.response.InsertUserDetailResponse
+import com.telyu.nourimate.data.remote.response.GoogleSigninStep1Response
+import com.telyu.nourimate.data.remote.response.GoogleSigninStep3Response
 import com.telyu.nourimate.data.remote.response.RecommendationResponse
 import com.telyu.nourimate.data.remote.response.SendEmailVerificationResponse
 import com.telyu.nourimate.data.remote.response.SigninResponse
-import com.telyu.nourimate.data.remote.response.SignupResponse
 import com.telyu.nourimate.data.remote.retrofit.ApiService
 import com.telyu.nourimate.data.remote.retrofit.ApiService2
 import com.telyu.nourimate.data.remote.retrofit.ChangePasswordRequest
 import com.telyu.nourimate.data.remote.retrofit.ChangePhoneRequest
 import com.telyu.nourimate.data.remote.retrofit.CreateNewProgramRequest
+import com.telyu.nourimate.data.remote.retrofit.CustomTokenRequest
 import com.telyu.nourimate.data.remote.retrofit.EmailVerificationRequest
+import com.telyu.nourimate.data.remote.retrofit.GoogleApiService
+import com.telyu.nourimate.data.remote.retrofit.GoogleSigninTokenRequest
 import com.telyu.nourimate.data.remote.retrofit.InsertDetailUserRequest
 import com.telyu.nourimate.data.remote.retrofit.PhoneVerificationRequest
 import com.telyu.nourimate.data.remote.retrofit.RecommendationRequest
 import com.telyu.nourimate.data.remote.retrofit.ResetPasswordRequest
 import com.telyu.nourimate.data.remote.retrofit.SendEmailVerificationRequest
 import com.telyu.nourimate.data.remote.retrofit.SendForgotPasswordRequest
+import com.telyu.nourimate.data.remote.retrofit.SendGoogleSigninVerificationRequest
 import com.telyu.nourimate.data.remote.retrofit.SendPhoneVerificationRequest
 import com.telyu.nourimate.data.remote.retrofit.SigninRequest
 import com.telyu.nourimate.data.remote.retrofit.SignupRequest
@@ -50,6 +50,9 @@ import com.telyu.nourimate.utils.SettingsModel
 import com.telyu.nourimate.utils.SettingsPreference
 import com.telyu.nourimate.utils.UserModel
 import com.telyu.nourimate.utils.UserPreference
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -59,6 +62,7 @@ import java.util.Date
 class NourimateRepository(
     private val apiService: ApiService,
     private val apiService2: ApiService2,
+    private val googleApiService: GoogleApiService,
     private val userPreference: UserPreference,
     private val settingsPreference: SettingsPreference,
     private val userDao: UserDao,
@@ -80,40 +84,39 @@ class NourimateRepository(
 
     // === AUTHENTICATION RELATED QUERIES ===
 
-//    fun register(
-//        name: String,
-//        phoneNumber: String,
-//        email: String,
-//        password: String
-//    ): LiveData<Result<Unit>> = liveData {
-//        emit(Result.Loading)
-//        try {
-//            val registerRequest = SignUpBody(name, phoneNumber, email, password)
-//            val requestBody = apiService2.signup(registerRequest)
-//
-//            delay(2000)
-//            emit(Result.Success(requestBody))
-//
-//        } catch (e: java.lang.Exception) {
-//            Log.d("UserRepository", "register:${e.message.toString()}")
-//            emit(Result.Error(e.message.toString()))
-//        }
-//    }
-
     fun registerBackend(
         name: String,
         phoneNumber: String,
         email: String,
         password: String
-    ): LiveData<Result<SignupResponse>> = liveData {
+    ): LiveData<Result<SigninResponse>> = liveData {
         emit(Result.Loading)
         try {
-            val signupRequest = SignupRequest(name, email, password, phoneNumber)
-            val requestBody = apiService.signup(signupRequest)
+            val requestBody = SignupRequest(name, email, password, phoneNumber)
+            val response = apiService.signup(requestBody)
 
-            delay(2000)
-            emit(Result.Success(requestBody))
-
+            if (response.message == "User registered successfully") {
+                delay(1000) // Optional: delay to mimic network latency
+                emit(Result.Loading) // Notify observers we are now logging in
+                // Automatically call login after successful registration
+                val signinRequest = SigninRequest(email, password)
+                val loginResponse = apiService.signin(signinRequest)
+                val userModel = UserModel(
+                    loginResponse.user.userId,
+                    email,
+                    loginResponse.accessToken,
+                    loginResponse.refreshToken,
+                    true,
+                    loginResponse.user.isVerified == 1,
+                    loginResponse.user.isDetailFilled == 1,
+                    loginResponse.user.name,
+                    loginResponse.user.phoneNumber
+                )
+                userPreference.saveSession(userModel)
+                emit(Result.Success(loginResponse))
+            } else {
+                emit(Result.Error("Signup failed"))
+            }
         } catch (e: java.lang.Exception) {
             Log.d("UserRepository", "register:${e.message.toString()}")
             emit(Result.Error(e.message.toString()))
@@ -139,6 +142,54 @@ class NourimateRepository(
             val name = response.user.name
             val phoneNumber = response.user.phoneNumber
 
+            val userModel = UserModel(id, email, accessToken, refreshToken, true, isVerifiedBoolean,
+                isDetailFilledBoolean,
+                name,
+                phoneNumber,
+            )
+            userPreference.saveSession(userModel)
+            Log.d("LoginProcess", "UserModel: $userModel")
+
+            delay(2000)
+            emit(Result.Success(response))
+        } catch (e: java.lang.Exception) {
+            emit(Result.Error(e.message.toString()))
+        }
+    }
+
+    //login google part 1
+    fun googleSigninToken(uid: String): LiveData<Result<GoogleSigninStep1Response>> = liveData {
+        emit(Result.Loading)
+        try {
+            val requestBody = GoogleSigninTokenRequest(uid)
+            val response = apiService.googleSigninToken(requestBody)
+
+            delay(2000)
+            emit(Result.Success(response))
+        } catch (e: Exception) {
+            emit(Result.Error(e.message.toString()))
+        }
+    }
+
+    // login part 3
+    fun loginWithGoogle(
+        email: String,
+        idToken: String
+    ): LiveData<Result<GoogleSigninStep3Response>> = liveData {
+        emit(Result.Loading)
+        try {
+            val requestBody = SendGoogleSigninVerificationRequest(idToken)
+            val response = apiService.sendGoogleSigninVerification(requestBody)
+            val id = response.user.userId
+            val isVerified = response.user.isVerified
+            val isVerifiedBoolean = isVerified == 1
+            val isDetailFilled = response.user.isDetailFilled
+            val isDetailFilledBoolean = isDetailFilled == 1
+            val accessToken = response.accessToken
+            val refreshToken = response.refreshToken
+            val name = "Nourimate User" //response.user.name
+            val phoneNumber = response.user.phoneNumber
+
             val userModel = UserModel(
                 id,
                 email,
@@ -155,7 +206,61 @@ class NourimateRepository(
 
             delay(2000)
             emit(Result.Success(response))
-        } catch (e: java.lang.Exception) {
+        } catch (e: Exception) {
+            emit(Result.Error(e.message.toString()))
+        }
+    }
+
+    fun performGoogleSignIn(token: String): LiveData<Result<GoogleSigninStep3Response>> = liveData(
+        Dispatchers.IO
+    ) {
+        emit(Result.Loading)
+        try {
+            coroutineScope {
+                // First API call
+                val step1Response =
+                    async { apiService.googleSigninToken(GoogleSigninTokenRequest(token)) }.await()
+                val customToken = step1Response.customToken
+
+                // Second API call
+                val apiKey = "apikey"//"AIzaSyBzel3r3JpwL4ghphSEVZr35Nm2Ok_z7qc"
+                val step2Response = async {
+                    googleApiService.signInWithCustomToken(
+                        apiKey,
+                        CustomTokenRequest(customToken, true)
+                    )
+                }.await()
+                val idToken = step2Response.idToken
+
+                // Third API call
+                val response = async {
+                    apiService.sendGoogleSigninVerification(
+                        SendGoogleSigninVerificationRequest(
+                            idToken
+                        )
+                    )
+                }.await()
+                val userModel = UserModel(
+                    response.user.userId,
+                    token,  // Assuming token is still needed here
+                    response.accessToken,
+                    response.refreshToken,
+                    true,
+                    response.user.isVerified == 1,
+                    response.user.isDetailFilled == 1,
+                    "Nourimate User",  // or response.user.name if available
+                    response.user.phoneNumber
+                )
+
+                // Save the user model to your DataStore or preference
+                userPreference.saveSession(userModel)
+                Log.d("LoginProcess", "UserModel: $userModel")
+
+                // Emitting success result
+                emit(Result.Success(response))
+            }
+        } catch (e: Exception) {
+            Log.e("LoginProcess", "Error in Google sign-in", e)
             emit(Result.Error(e.message.toString()))
         }
     }
@@ -358,11 +463,26 @@ class NourimateRepository(
         }
     }
 
-    fun createNewProgram(ongoingProgram: Int, startDate: String, endDate: String, startWeight: Int, endWeight: Int, editCurrentWeightDate: String): LiveData<Result<SendEmailVerificationResponse>> = liveData {
+    fun createNewProgram(
+        ongoingProgram: Int,
+        startDate: String,
+        endDate: String,
+        startWeight: Int,
+        endWeight: Int,
+        editCurrentWeightDate: String
+    ): LiveData<Result<SendEmailVerificationResponse>> = liveData {
         emit(Result.Loading)
         try {
             val userId = getUserId().first()
-            val requestBody = CreateNewProgramRequest(ongoingProgram, startDate, endDate, startWeight, endWeight, editCurrentWeightDate, userId)
+            val requestBody = CreateNewProgramRequest(
+                ongoingProgram,
+                startDate,
+                endDate,
+                startWeight,
+                endWeight,
+                editCurrentWeightDate,
+                userId
+            )
             val response = apiService.createNewProgram(requestBody)
             delay(2000)
             emit(Result.Success(response))
@@ -451,15 +571,14 @@ class NourimateRepository(
         return userPreference.getUserId()
     }
 
-
+    fun getUsername(): Flow<String> {
+        return userPreference.getUsername()
+    }
 
     fun getEmailAndPhoneNumber(): Flow<Pair<String, String>> {
         return userPreference.getEmailAndPhoneNumber()
     }
 
-    fun getUsername(): Flow<String> {
-        return userPreference.getUsername()
-    }
 
     fun getUserLoginState(): Flow<Boolean> {
         return userPreference.getUserLoginState()
@@ -491,9 +610,6 @@ class NourimateRepository(
         return userDao.updateUserName(id, name)
     }
 
-    suspend fun updateRecommendation(recommendation: Recommendation) {
-        foodDao.updateRecommendation(recommendation)
-    }
 
     suspend fun updateSelectedRecommendationsPerMealType(mealType: Int) {
         foodDao.updateSelectedRecommendationsPerMealType(mealType)
@@ -506,13 +622,13 @@ class NourimateRepository(
     //=== QUERY FOOD ===
 
     //query weekly
-    fun getRecipesByMealType(mealId: Int): LiveData<List<Recipe>> {
-        return foodDao.getRecipesByMealType(mealId)
+
+
+    fun getAllRecipesByMealType(mealId: Int): LiveData<List<Recipe>> {
+        return foodDao.getAllRecipesByMealType(mealId)
     }
 
-    fun getRecommendationsByMealIdSortedAscending(mealId: Int): LiveData<List<Recommendation>> {
-        return foodDao.getRecommendationsByMealIdSortedAscending(mealId)
-    }
+
 
     suspend fun getRecommendationByRecipeAndMealId(recipeId: Int, mealId: Int): Recommendation? {
         return foodDao.getRecommendationByRecipeAndMealId(recipeId, mealId)
@@ -550,13 +666,7 @@ class NourimateRepository(
         return foodDao.getAllConfirmedRecommendationIdsByMealId(mealType)
     }
 
-    //query utama
-    suspend fun getRecommendationByRecipeIdAndMealType(
-        recipeId: Int,
-        mealType: Int
-    ): Recommendation? {
-        return foodDao.getRecommendationByRecipeIdAndMealType(recipeId, mealType)
-    }
+
 
     fun getSelectedRecipeCount(): LiveData<Int> {
         return foodDao.getSelectedRecipeCount()
@@ -609,38 +719,6 @@ class NourimateRepository(
     }
 
     //RecipeViewModel and HomeViewModel related
-
-    //========== Sleep API Related ==========
-    private val activityRecognitionClient = ActivityRecognition.getClient(context)
-
-//    fun subscribeToSleepData(pendingIntent: PendingIntent) {
-//        val request = SleepSegmentRequest.getDefaultSleepSegmentRequest()
-//        activityRecognitionClient.requestSleepSegmentUpdates(pendingIntent, request)
-//            .addOnSuccessListener { Log.d("Sleep", "Subscribed to sleep data updates") }
-//            .addOnFailureListener { e ->
-//                Log.e(
-//                    "Sleep",
-//                    "Failed to subscribe to sleep data updates",
-//                    e
-//                )
-//            }
-//    }
-
-    fun unsubscribeToSleepData(pendingIntent: PendingIntent) {
-        activityRecognitionClient.removeSleepSegmentUpdates(pendingIntent)
-            .addOnSuccessListener { Log.d("SleepRepository", "Unsubscribed from sleep data.") }
-            .addOnFailureListener { exception ->
-                Log.e(
-                    "SleepRepository",
-                    "Failed to unsubscribe.",
-                    exception
-                )
-            }
-    }
-
-    fun getAllSleepSegments(): LiveData<List<SleepSegmentEventEntity>> {
-        return userDao.getAllSleepSegments()
-    }
 
     //special program related
     suspend fun insertWeightEntry(entry: WeightEntry) {
@@ -695,12 +773,12 @@ class NourimateRepository(
         return foodDao.getConsumedRecipesByMealType(mealType)
     }
 
-    fun getRecipeHistorySortedAscending(): LiveData<List<RecipeHistory>> {
-        return foodDao.getRecipeHistorySortedAscending()
+    fun getRecipeHistorySortedAscending(userId: Int): LiveData<List<RecipeHistory>> {
+        return foodDao.getRecipeHistorySortedAscending(userId)
     }
 
-    suspend fun getTotalCaloriesByMealTypeHistory(mealType: Int): Int {
-        return foodDao.getTotalCaloriesByMealTypeHistory(mealType)
+    suspend fun getTotalCaloriesByMealTypeHistory(mealType: Int, userId: Int): Int {
+        return foodDao.getTotalCaloriesByMealTypeHistory(mealType, userId)
     }
 
     suspend fun deleteWeightTrackByUserId(userId: Int?) {
@@ -759,17 +837,6 @@ class NourimateRepository(
         return foodDao.getRecipeIdsByMealType(mealType)
     }
 
-    suspend fun getRecommendationById(id: Int): Recommendation? {
-        return foodDao.getRecommendationById(id)
-    }
-
-    fun getRecommendationsByUserId(userId: Int): LiveData<List<Recommendation>> {
-        return foodDao.getRecommendationsByUserId(userId)
-    }
-
-    fun getAllRecipes(): LiveData<List<Recipe>> {
-        return foodDao.getAllRecipes()
-    }
 
     suspend fun checkUserDetailExists(userId: Int): Boolean {
         return userDao.checkUserDetailExists(userId) > 0
@@ -783,12 +850,77 @@ class NourimateRepository(
         return foodDao.getRecommendationsByMealId(mealType)
     }
 
+    suspend fun getAllSelectedRecipeIds(): List<Int> {
+        return foodDao.getAllSelectedRecipeIds()
+    }
+
+    suspend fun insertMealHistories(histories: List<RecipeHistory>) {
+        return foodDao.insertRecipeHistories(histories)
+    }
+
+    suspend fun deselectSelectedRecipes() {
+        foodDao.deselectSelectedRecipes()
+    }
+
+    suspend fun checkIfRecipeDatabaseIsFilled(): Int {
+        return foodDao.checkIfRecipeDatabaseIsFilled()
+    }
+
+    suspend fun checkIfRecommendationDatabaseIsFilled(): Int {
+        return foodDao.checkIfRecommendationDatabaseIsFilled()
+    }
+
+    // ========== Query untuk menampilkan resep di RecipeFragment ==========
+
+    //Daily
+    fun getAllRecipes(): LiveData<List<Recipe>> {
+        return foodDao.getAllRecipes()
+    }
+
+    fun getRecommendationsByUserId(userId: Int): LiveData<List<Recommendation>> {
+        return foodDao.getRecommendationsByUserId(userId)
+    }
+
+    //Weekly
+    fun getRecipesByMealType(mealId: Int): LiveData<List<Recipe>> {
+        return foodDao.getRecipesByMealType(mealId)
+    }
+
+    fun getRecommendationsByMealIdSortedAscending(
+        mealId: Int,
+        userId: Int
+    ): LiveData<List<Recommendation>> {
+        return foodDao.getRecommendationsByMealIdSortedAscending(mealId, userId)
+    }
+
+    //Pilih Resep
+    //Dapatkan Rekomendasinya berdasarkan id resep dan mealType
+    suspend fun getRecommendationByRecipeIdAndMealType(
+        recipeId: Int,
+        mealType: Int
+    ): Recommendation? {
+        return foodDao.getRecommendationByRecipeIdAndMealType(recipeId, mealType)
+    }
+
+    //Berdasarkan id nya, dapetin keseluruhan row rekomendasinya
+    suspend fun getRecommendationById(id: Int): Recommendation? {
+        return foodDao.getRecommendationById(id)
+    }
+
+    //Update rekomendasi yang didapat berdasarkan query sebelumnya
+    suspend fun updateRecommendation(recommendation: Recommendation) {
+        foodDao.updateRecommendation(recommendation)
+    }
+
+
+
     companion object {
         @Volatile
         private var instance: NourimateRepository? = null
         fun getInstance(
             apiService: ApiService,
             apiService2: ApiService2,
+            googleApiService: GoogleApiService,
             pref: UserPreference,
             pref2: SettingsPreference,
             userDao: UserDao,
@@ -798,6 +930,7 @@ class NourimateRepository(
             instance ?: NourimateRepository(
                 apiService,
                 apiService2,
+                googleApiService,
                 pref,
                 pref2,
                 userDao,

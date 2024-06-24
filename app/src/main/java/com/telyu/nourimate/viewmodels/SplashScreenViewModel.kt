@@ -1,6 +1,9 @@
 package com.telyu.nourimate.viewmodels
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.telyu.nourimate.data.local.models.Detail
 import com.telyu.nourimate.data.local.models.User
@@ -21,4 +24,25 @@ class SplashScreenViewModel(private val repository: NourimateRepository): ViewMo
             repository.insertDetail(detail)
         }
     }
+
+    val recipeCount: LiveData<Boolean> = liveData {
+        val rCount = repository.checkIfRecipeDatabaseIsFilled()
+        if (rCount == 0) {
+            emit(true)
+        }
+        else {
+            emit(false)
+        }
+    }
+
+    val recommendationCount: LiveData<Boolean> = liveData {
+        val rCount = repository.checkIfRecommendationDatabaseIsFilled()
+        if (rCount == 0) {
+            emit(true)
+        }
+        else {
+            emit(false)
+        }
+    }
+
 }

@@ -20,10 +20,11 @@ class MidnightWorkManager(appContext: Context, workerParams: WorkerParameters) :
         val userId = userPreference.getUserId().first()
 
         val selectedRecipeIds = foodDao.getAllSelectedRecipeIds()
-        val consumedDate = Converters().dateFromTimestamp(GeneralUtil.getYesterdayTimestamp())
+        val consumedTime = Converters().dateFromTimestamp(GeneralUtil.getYesterdayTimestamp())
+        val consumedDate = Converters().formatDateToString(consumedTime)
 
         val listOfMealHistory = selectedRecipeIds.map { recipeId ->
-            RecipeHistory(0, recipeId, consumedDate, userId)
+            RecipeHistory(0, recipeId, consumedTime, consumedDate, userId)
         }
 
         foodDao.insertRecipeHistories(listOfMealHistory)

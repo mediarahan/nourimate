@@ -56,7 +56,6 @@ class ProfileFragment : Fragment() {
 
         displayImage()
         setupButtons()
-        getBMIAndName()
         mapBMIAndName()
 
         binding.cardViewAddAvatar.setOnClickListener {
@@ -131,19 +130,10 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun openEditProfpicActivity(uri: Uri) {
+    fun openEditProfpicActivity(uri: Uri) {
         val intent = Intent(context, EditProfpicActivity::class.java)
         intent.putExtra("imageUri", uri.toString())
         startActivityForResult(intent, EDIT_PROFILE_PIC_REQUEST)
-    }
-
-    private fun refreshProfilePicture() {
-        viewModel.profilePicture.observe(viewLifecycleOwner) { uriString ->
-            uriString?.let { uriStr ->
-                val uri = Uri.parse(uriStr)
-                binding.imageViewAvatar.setImageURI(uri)
-            }
-        }
     }
 
     private fun showLogoutConfirmationDialog() {
@@ -164,19 +154,6 @@ class ProfileFragment : Fragment() {
             .show()
     }
 
-    private fun getBMIAndName() {
-        viewModel.userEmail.observe(viewLifecycleOwner) {userEmail ->
-            userEmail?.let {
-                viewModel.getUserIdByEmail(it)
-                viewModel.getUserNameByEmail(it)
-            }
-        }
-
-        viewModel.userId.observe(viewLifecycleOwner) {userId ->
-            viewModel.getBMIById(userId)
-        }
-    }
-
     private fun getBmiBackgroundResource(bmi: Int): Int {
         return when {
             bmi < 18.5 -> R.drawable.rectangle_light_green
@@ -195,8 +172,10 @@ class ProfileFragment : Fragment() {
                 binding.bmiResultTextView.setBackgroundResource(bmiBackground)
             }
         }
-        viewModel.userName.observe(viewLifecycleOwner) { userName ->
-            userName?.let {
+
+        viewModel.getUsername()
+        viewModel.username.observe(viewLifecycleOwner) { name ->
+            name?.let {
                 val truncatedUserName = truncateUserName(it, wordLimit = 1, maxChars = 8)
                 binding.nameTextView.text = truncatedUserName
             }
@@ -209,13 +188,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun displayImage() {
-        viewModel.userId.observe(viewLifecycleOwner) {userId ->
-            if (userId != null) {
-                viewModel.getProfpicById(userId)
-            }
-        }
-
-        viewModel.profilePicture.observe(viewLifecycleOwner) { uriString ->
+        viewModel.profpic.observe(viewLifecycleOwner) { uriString ->
             uriString?.let { uriStr ->
                 val uri = Uri.parse(uriStr)
                 binding.imageViewAvatar.setImageURI(uri)

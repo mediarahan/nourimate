@@ -721,15 +721,14 @@
                 android:id="@+id/rectanglehomewaterImageView"
                 android:layout_width="0dp"
                 android:layout_height="120dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="12dp"
                 android:background="@drawable/rectangle_home2_with_shadow"
                 android:elevation="5dp"
-                app:layout_constraintWidth_percent="0.85"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-               app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rectanglehomemealImageView"
-                android:layout_marginBottom="12dp"
-                android:layout_marginTop="15dp"/>
+                app:layout_constraintWidth_percent="0.85" />
 
             <ImageView
                 android:id="@+id/infowaterImageView"
@@ -1165,6 +1164,17 @@
                 android:layout_marginTop="2dp"
                 app:layout_constraintStart_toEndOf="@+id/TextView_kcaldinner"
                 app:layout_constraintTop_toBottomOf="@+id/TextView_dinner"/>
+
+            <Button
+                android:id="@+id/button_finalize_recipes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Finalize Recipes"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rectanglehomewaterImageView" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

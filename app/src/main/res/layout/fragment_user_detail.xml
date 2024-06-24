@@ -316,18 +316,6 @@
                 android:inputType="textPersonName" />
         </com.google.android.material.textfield.TextInputLayout>
 
-
-        <ImageView
-            android:id="@+id/iconeditnameImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:elevation="6dp"
-            android:src="@drawable/edit"
-            app:layout_constraintBottom_toBottomOf="@id/rectanglenameView"
-            app:layout_constraintEnd_toEndOf="@id/rectanglenameView"
-            app:layout_constraintTop_toTopOf="@id/rectanglenameView" />
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/rectangledatebirthView"
             android:layout_width="0dp"

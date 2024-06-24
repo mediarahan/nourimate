@@ -13,8 +13,10 @@ import androidx.lifecycle.viewModelScope
 import com.telyu.nourimate.data.local.models.Detail
 import com.telyu.nourimate.data.local.models.NutritionSum
 import com.telyu.nourimate.data.local.models.Recipe
+import com.telyu.nourimate.data.local.models.RecipeHistory
 import com.telyu.nourimate.data.local.models.SleepSegmentEventEntity
 import com.telyu.nourimate.data.repository.NourimateRepository
+import com.telyu.nourimate.utils.Converters
 import com.telyu.nourimate.utils.GeneralUtil
 import com.telyu.nourimate.utils.GeneralUtil.calculateAKEi
 import com.telyu.nourimate.utils.GeneralUtil.calculateAge
@@ -339,53 +341,50 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
         }
     }
 
-    //Implementasi Sleep API
-    val sleepSegments: LiveData<List<SleepSegmentEventEntity>> = repository.getAllSleepSegments()
-    private val _isSubscribed = MutableLiveData<Boolean>()
-    val isSubscribed: LiveData<Boolean> get() = _isSubscribed
+    //========== Memasukkan resep menjadi mealHistory ==========
+    fun addRecipeToMealHistory() {
+        viewModelScope.launch {
+            val userId = repository.getUserId().first()
+            val selectedRecipeIds = repository.getAllSelectedRecipeIds()
+            val consumedTime = Converters().dateFromTimestamp(GeneralUtil.getYesterdayTimestamp())
+            val consumedDate = Converters().formatDateToString(consumedTime)
 
-//    fun toggleSleepDataSubscription(pendingIntent: PendingIntent) {
-//        if (_isSubscribed.value == true) {
-//            repository.unsubscribeToSleepData(pendingIntent)
-//            Log.d("SleepDataSubscription", "Unsubscribed.")
-//            _isSubscribed.value = false
-//        } else {
-//            repository.subscribeToSleepData(pendingIntent)
-//            Log.d("SleepDataSubscription", "Subscribed.")
-//            _isSubscribed.value = true
-//        }
-//    }
+            val listOfMealHistory = selectedRecipeIds.map { recipeId ->
+                RecipeHistory(0, recipeId, consumedTime, consumedDate, userId)
+            }
+
+            repository.insertMealHistories(listOfMealHistory)
+
+        }
+    }
+
 
     //Untuk nampilin nama dan profpic
-    private val _userId = MutableLiveData<Int?>()
-    val userId: LiveData<Int?> = _userId
+    private val userId = repository.getUserId().asLiveData()
 
-    private val _profilePicture = MutableLiveData<String?>()
-    val profilePicture: LiveData<String?> = _profilePicture
+    private var _username = MutableLiveData<String>()
+    val username: LiveData<String> = _username
 
-    private val _userName = MutableLiveData<String?>()
-    val userName: LiveData<String?> = _userName
-
-    fun getUserIdByEmail(email: String) {
-        viewModelScope.launch {
-            val id = repository.getUserIdByEmail(email)
-            _userId.value = id
-        }
-    }
-
-    fun getProfpicById(id: Int) {
-        viewModelScope.launch {
+    val profpic: LiveData<String> = userId.switchMap { id ->
+        liveData {
             val profpic = repository.getProfpicById(id)
-            _profilePicture.value = profpic
+            if (profpic != null) {
+                emit(profpic)
+            }
         }
     }
 
-    fun getUserNameById(userId: Int) {
+    fun getUsername() {
         viewModelScope.launch {
-            val userName = repository.getUserNameById(userId)
-            _userName.value = userName
+            val username = repository.getUsername().first()
+            _username.value = username
         }
+    }
 
+    fun deselectSelectedRecipes() {
+        viewModelScope.launch {
+            repository.deselectSelectedRecipes()
+        }
     }
 
 

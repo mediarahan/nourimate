@@ -10,31 +10,31 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Insert data for Maintain Weight"
+        android:text="Insert data for Alvin"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="36dp"
-        android:id="@+id/bmw" />
+        android:id="@+id/bial" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Insert data for Loss Weight"
-        app:layout_constraintTop_toBottomOf="@id/bmw"
+        android:text="Insert data for Ratika"
+        app:layout_constraintTop_toBottomOf="@id/bial"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="36dp"
-        android:id="@+id/blw" />
+        android:id="@+id/bira" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Insert data for Gain Weight"
-        app:layout_constraintTop_toBottomOf="@id/blw"
+        android:text="Insert data for Rionov"
+        app:layout_constraintTop_toBottomOf="@id/bira"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="36dp"
-        android:id="@+id/bgw" />
+        android:id="@+id/biri" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

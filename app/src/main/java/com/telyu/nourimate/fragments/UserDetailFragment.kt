@@ -104,6 +104,12 @@ class UserDetailFragment : Fragment() {
 
     private fun mapAllDataToView() {
         //mapping setiap atribut detail ke edittext
+
+        viewModel.getUsername()
+        viewModel.username.observe(viewLifecycleOwner) {name ->
+            binding.editTextName.setText(name)
+        }
+
         viewModel.userDetails.observe(viewLifecycleOwner) { userDetails ->
             userDetails?.let { detail ->
                 val formattedDate = Converters().formatDateToString(detail.dob)
@@ -124,11 +130,6 @@ class UserDetailFragment : Fragment() {
                 binding.editTextDisease.setText(detail.disease)
 
             }
-        }
-
-        //mapping nama dari entity user, terpisah
-        viewModel.userName.observe(viewLifecycleOwner) { userName ->
-            binding.editTextName.setText(userName)
         }
     }
 
@@ -173,11 +174,6 @@ class UserDetailFragment : Fragment() {
     }
 
     private fun bindEditTextButtons() {
-        binding.iconeditnameImageView.setOnClickListener {
-            showNameChangeDialog()
-        }
-
-
         binding.iconeditheightImageView.setOnClickListener {
             val currentWeight = binding.editTextHeight.text.toString().toFloatOrNull() ?: 0f
             showHeightRulerPickerDialog(currentWeight)
@@ -211,7 +207,6 @@ class UserDetailFragment : Fragment() {
     }
 
     private fun updateUserProfile() {
-        val name = binding.editTextName.text.toString()
         val dob =
             binding.editTextBirth.text.toString() // Assuming this is a String representation of the date
         val height = binding.editTextHeight.text.toString().toInt()
@@ -237,8 +232,6 @@ class UserDetailFragment : Fragment() {
                 disease,
                 bmi ?: -999f
             )
-
-            viewModel.updateUserName(name)
             viewModel.updateUserProfileToBackend(dob, height, waistSize,  weight,  gender, allergen, disease)
         }
     }

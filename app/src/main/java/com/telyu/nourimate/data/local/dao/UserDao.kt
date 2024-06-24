@@ -2,6 +2,7 @@ package com.telyu.nourimate.data.local.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -19,11 +20,30 @@ import java.util.Date
 @Dao
 interface UserDao {
 
+    //delete semuamuanya
+
+
+    @Query("DELETE FROM userDetails")
+    suspend fun deleteDetail()
+    @Query("DELETE FROM history")
+    suspend fun deleteHistories()
+
+    @Query("DELETE FROM weight_entries")
+    suspend fun deleteWeightEntries()
+
+    @Query("DELETE FROM weight_tracks")
+    suspend fun deleteWeightTrack()
+
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUser(users: User)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDetail(details: Detail)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertHistories(histories: List<History>)
+
 
     @Query("SELECT * FROM users WHERE name = :name")
     suspend fun getUserByName(name: String): User?
@@ -158,4 +178,5 @@ interface UserDao {
 
     @Query("SELECT COUNT(*) FROM userDetails WHERE userId = :userId")
     suspend fun checkUserDetailExists(userId: Int): Int
+
 }

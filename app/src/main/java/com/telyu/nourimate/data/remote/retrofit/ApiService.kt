@@ -2,6 +2,8 @@ package com.telyu.nourimate.data.remote.retrofit
 
 import com.telyu.nourimate.data.remote.response.GetAllUserProgramResponse
 import com.telyu.nourimate.data.remote.response.GetUserDetailResponse
+import com.telyu.nourimate.data.remote.response.GoogleSigninStep1Response
+import com.telyu.nourimate.data.remote.response.GoogleSigninStep3Response
 import com.telyu.nourimate.data.remote.response.InsertUserDetailResponse
 import com.telyu.nourimate.data.remote.response.SendEmailVerificationResponse
 import com.telyu.nourimate.data.remote.response.SigninResponse
@@ -25,6 +27,20 @@ interface ApiService {
         @Body requestBody: SigninRequest
     ): SigninResponse
 
+    //google sign in step 1
+    @POST("api/auth/token")
+    suspend fun googleSigninToken(
+        @Body requestBody: GoogleSigninTokenRequest
+    ): GoogleSigninStep1Response
+
+    //google sign in step 2
+    //di apiservice sebelah
+
+    //step 3
+    @POST("api/auth/google-verify-token")
+    suspend fun sendGoogleSigninVerification(
+        @Body requestBody: SendGoogleSigninVerificationRequest
+    ): GoogleSigninStep3Response
 
     @POST("api/auth/send-email-verification")
     suspend fun sendEmailVerification(
@@ -85,23 +101,6 @@ interface ApiService {
         @Path("user_id") userId: Int,
         @Body requestBody: UpdateDetailUserRequest
     ): InsertUserDetailResponse
-
-    //google sign in step 1
-    @POST("api/auth/token")
-    suspend fun googleSigninToken(
-        @Body requestBody: GoogleSigninTokenRequest
-    )
-
-    //google sign in step 2
-    @POST("api/auth/signin")
-    suspend fun googleSignin(
-        @Body requestBody: GoogleSigninTokenRequest
-    )
-
-    @POST("api/auth/send-email-verification")
-    suspend fun sendGoogleSigninVerification(
-        @Body requestBody: SendGoogleSigninVerificationRequest
-    )
 
     @GET("api/userprogram")
     suspend fun getAllUserProgram(): GetAllUserProgramResponse

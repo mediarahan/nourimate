@@ -11,7 +11,6 @@ import kotlinx.coroutines.launch
 import com.telyu.nourimate.data.remote.Result
 
 class VerificationViewModel(private val repository: NourimateRepository) : ViewModel() {
-
     fun sendEmailVerification() {
         viewModelScope.launch {
             repository.sendVerifyEmail()

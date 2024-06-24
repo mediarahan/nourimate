@@ -319,7 +319,7 @@ class EditProfileActivity : AppCompatActivity() {
             }
             .setPositiveButton("Done") { dialog, _ ->
                 // Update the EditText with selected items when "Done" is clicked
-                val selectedText = selectedItems.joinToString(", ")
+                val selectedText = selectedItems.joinToString(",")
                 binding.editTextAllergies.setText(selectedText)  // Using ViewBinding to update view
                 dialog.dismiss()
             }
@@ -375,7 +375,7 @@ class EditProfileActivity : AppCompatActivity() {
             }
             .setPositiveButton("Done") { dialog, _ ->
                 // Update the EditText with selected items when "Done" is clicked
-                val selectedText = selectedItems.joinToString(", ")
+                val selectedText = selectedItems.joinToString(",")
                 binding.editTextDisease.setText(selectedText)  // Menggunakan ViewBinding untuk mengupdate view
                 dialog.dismiss()
             }

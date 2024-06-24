@@ -12,28 +12,6 @@ import kotlinx.coroutines.delay
 
 class SignUpViewModel(private val repository: NourimateRepository) : ViewModel() {
 
-    //untuk simulasi State loading kalau registernya udah beneran pake API
-    val uiState = MutableLiveData<Result<Unit>>()
-
-    fun signup(password: String, confirmPassword: String, user: User) {
-        if (password != confirmPassword) {
-            uiState.value = Result.Error("Passwords do not match")
-            return //return disini maksudnya lebih mirip ke break / pass kalau di Python. Untuk flow control, bukan returnnya fungsi
-        }
-
-        viewModelScope.launch {
-            uiState.value = Result.Loading
-            delay(2000)
-
-            try {
-                repository.insertUser(user)
-                uiState.value = Result.Success(Unit)
-            } catch (e: Exception) {
-                uiState.value = Result.Error("Failed to insert user to database.")
-            }
-        }
-    }
-
     //login dengan backend
     fun registerBackend(name: String, phoneNumber: String, email: String, password: String) =
         repository.registerBackend(name, phoneNumber, email, password)

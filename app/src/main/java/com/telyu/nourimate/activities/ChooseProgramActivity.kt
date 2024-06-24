@@ -102,20 +102,19 @@ class ChooseProgramActivity : AppCompatActivity() {
         val today = System.currentTimeMillis()
         val todayDate = Converters().dateFromTimestamp(today)
 
-        Log.d("ChooseProgramActivity", "noT OBESERVERD YET")
         viewModel.userDetails.observe(this) { detail ->
-            Log.d("ChooseProgramActivity", "OBSERVED")
             val weightTrack = WeightTrack(
                 0,
                 selectedProgramInt,
                 startDateParsed,
                 endDateParsed,
-                detail?.weight?.toInt() ?: -999,
-                detail?.weight?.toInt() ?: -999,
+                detail?.weight ?: -999,
+                detail?.weight ?: -999,
                 todayDate,
                 detail?.detailId ?: -999
             )
             viewModel.insertWeightTrack(weightTrack)
+            Log.d("ChooseProgramActivity", "InsertedWeightTrack: $weightTrack")
             setupWeightEntry()
             finish()
         }
@@ -176,6 +175,7 @@ class ChooseProgramActivity : AppCompatActivity() {
     private fun showDateRangePicker() {
         // Build the date range picker
         val builder = MaterialDatePicker.Builder.dateRangePicker()
+            .setTheme(R.style.MaterialCalendarTheme)
 
         // Set up calendar constraints
         val constraintsBuilder = CalendarConstraints.Builder()

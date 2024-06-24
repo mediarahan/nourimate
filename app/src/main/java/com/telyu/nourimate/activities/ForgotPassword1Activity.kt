@@ -75,7 +75,7 @@ class ForgotPassword1Activity : AppCompatActivity() {
         binding.buttonNext.setOnClickListener {
             val email = binding.verifyEmailEditText.text.toString()
             viewModel.sendEmailVerification(email)
-            startActivity(Intent(this, ResetPasswordActivity::class.java))
+            //startActivity(Intent(this, ResetPasswordActivity::class.java))
         }
 
         setupTextWatchers()

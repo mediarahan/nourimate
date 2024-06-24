@@ -25,6 +25,7 @@ import com.telyu.nourimate.databinding.FragmentProgramBinding
 import com.telyu.nourimate.databinding.PopupNotificationProgramkhususBinding
 import com.telyu.nourimate.databinding.PopupSettingProgramkhususBinding
 import com.telyu.nourimate.utils.Converters
+import com.telyu.nourimate.utils.GeneralUtil
 import com.telyu.nourimate.viewmodels.ProgramViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
 import kotlinx.coroutines.launch
@@ -46,9 +47,6 @@ class ProgramFragment : Fragment() {
     ): View {
         binding = FragmentProgramBinding.inflate(inflater, container, false)
         setCurrentFragment(ProgramEmptyFragment())
-
-        //buat dummy
-        //fillDatabaseWithFakeData()
 
         setupSideButtons()
 
@@ -75,6 +73,12 @@ class ProgramFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        checkIfProgramIsOver()
     }
 
     private fun setupSideButtons() {
@@ -209,28 +213,24 @@ class ProgramFragment : Fragment() {
         }
     }
 
-    //===== Buat masukin dummy data =====
-    private fun fillDatabaseWithFakeData() {
-
-        // Untuk isi database dengan fake data
-        val dao = UserDatabase.getInstance(requireContext()).userDao()
-        val fakeFoodData = FakeFoodData()
-
-        val mappedWeightEntries = fakeFoodData.weightEntries.map { weightEntry ->
-            WeightEntry(
-                id = weightEntry.id,
-                weight = weightEntry.weight,
-                date = weightEntry.date,
-                userId = weightEntry.userId,
-            )
-        }
-
-        lifecycleScope.launch {
-            mappedWeightEntries.forEach { weightEntry ->
-                dao.insertWeightEntry(weightEntry)
+    //=========== Check If Program is Over ==========
+    private fun checkIfProgramIsOver() {
+        viewModel.userEndDate.observe(viewLifecycleOwner) { date ->
+            val today  = GeneralUtil.calculateTodayMidnight()
+            Log.d("Today", today.toString())
+            Log.d("Date", date.toString())
+            if (today > date) {
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Program Over")
+                    .setMessage("Your diet program is over. Click OK to check your results.")
+                    .setPositiveButton("OK") { _, _ ->
+                        finalizeProgramResults()
+                        val intent = Intent(context, TransitionProgramActivity::class.java)
+                        startActivity(intent)
+                    }
+                    .show()
             }
         }
-
     }
 }
 
