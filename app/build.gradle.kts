@@ -72,6 +72,8 @@ dependencies {
     implementation("androidx.room:room-runtime:2.5.2")
     ksp("androidx.room:room-compiler:2.5.2")
     implementation("androidx.activity:activity-ktx:1.6.1")
+    implementation ("androidx.work:work-runtime-ktx:2.7.1")
+
 
     //firebase auth
     implementation("com.google.android.gms:play-services-auth:20.6.0")
@@ -83,4 +85,8 @@ dependencies {
 
     //for sleep API
     implementation ("com.google.android.gms:play-services-location:18.0.0")
+
+    //testing dependencies
+    androidTestImplementation("androidx.test:runner:1.5.2")
+    androidTestImplementation("androidx.test:rules:1.5.0")
 }

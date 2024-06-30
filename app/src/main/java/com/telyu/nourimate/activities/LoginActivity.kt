@@ -1,41 +1,45 @@
 package com.telyu.nourimate.activities
 
 import android.app.Activity
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import com.telyu.nourimate.databinding.ActivityLoginBinding
-import android.widget.Toast
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.GradientDrawable
+import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import androidx.activity.result.contract.ActivityResultContracts.*
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.work.Constraints
+import androidx.work.Data
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
 import com.telyu.nourimate.R
 import com.telyu.nourimate.data.remote.Result
+import com.telyu.nourimate.databinding.ActivityLoginBinding
 import com.telyu.nourimate.utils.GeneralUtil
 import com.telyu.nourimate.utils.InputValidator
+import com.telyu.nourimate.utils.MidnightWorkManager
+import com.telyu.nourimate.utils.NotificationWorkManager
 import com.telyu.nourimate.utils.UserModel
 import com.telyu.nourimate.viewmodels.LoginViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.system.exitProcess
+import java.util.concurrent.TimeUnit
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -95,7 +99,7 @@ class LoginActivity : AppCompatActivity() {
             finish()
         }
         binding.TextViewForgotPassword.setOnClickListener {
-            val intent = Intent(this, VerificationCode1Activity::class.java)
+            val intent = Intent(this, ForgotPasswordActivity::class.java)
             startActivity(intent)
             finish()
         }
@@ -114,36 +118,11 @@ class LoginActivity : AppCompatActivity() {
         window.statusBarColor = color
     }
 
-//    private fun login() {
-//        val email = binding.emailEditText.text.toString()
-//        val password = binding.passwordEditText.text.toString()
-//
-//        if (InputValidator.isValidEmail(email) && InputValidator.isValidPassword(password)) {
-//            loginViewModel.uiState.observe(this) { result ->
-//                when (result) {
-//                    is Result.Loading ->
-//                        showLoading(true)
-//
-//                    is Result.Success -> {
-//                        showLoading(false)
-//                        //observeLoginStatus()
-//                    }
-//
-//                    is Result.Error -> {
-//                        showLoading(false)
-//                        Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show()
-//                    }
-//                }
-//            }
-//            loginViewModel.login(email, password)
-//        } else {
-//            Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show()
-//        }
-//    }
-
     private fun loginWithBackend() {
         val email = binding.emailEditText.text.toString()
         val password = binding.passwordEditText.text.toString()
+        scheduleMidnightRecipeUpdate(this)
+        scheduleNotifications(this)
 
         if (email == "admin2@gmail.com" && password == "admin124") {
             showLoading(true)
@@ -157,9 +136,8 @@ class LoginActivity : AppCompatActivity() {
                     is Result.Loading -> showLoading(true)
                     is Result.Success -> {
                         showLoading(false)
-                        Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(this@LoginActivity, EditProfileActivity::class.java))
-                        finish()
+                        observeLoginStatusBackend()
+
                     }
                     is Result.Error -> {
                         showLoading(false)
@@ -172,19 +150,21 @@ class LoginActivity : AppCompatActivity() {
 
     private fun handleSpecialLogin(email: String) {
         val userModel = UserModel(
-            id = 5,
+            id = 1,
             email = email,
             accessToken = "fakeAccessToken",
             refreshToken = "fakeRefreshToken",
             true,
             isDetailFilled = true,
-            isVerified = true
+            isVerified = true,
+            name = "Admin1",
+            phoneNumber = "1231231231"
         )
 
         loginViewModel.saveSession(userModel)
 
         lifecycleScope.launch {
-            delay(5000)
+            delay(1000)
             showLoading(false)
 //            startActivity(Intent(this@LoginActivity, NavigationBarActivity::class.java))
 //            finish()
@@ -194,19 +174,21 @@ class LoginActivity : AppCompatActivity() {
 
     private fun handleSpecialLogin2(email: String) {
         val userModel = UserModel(
-            id = 6,
+            id = 2,
             email = email,
             accessToken = "fakeAccessToken",
             refreshToken = "fakeRefreshToken",
             true,
             isDetailFilled = false,
-            isVerified = true
+            isVerified = true,
+            name = "admin2",
+            phoneNumber = "3213213213"
         )
 
         loginViewModel.saveSession(userModel)
 
         lifecycleScope.launch {
-            delay(5000)
+            delay(1000)
             showLoading(false)
 //            startActivity(Intent(this@LoginActivity, NavigationBarActivity::class.java))
 //            finish()
@@ -216,46 +198,26 @@ class LoginActivity : AppCompatActivity() {
 
     //=============== Login State Observation ===============
 
-    private fun observeLoginStatus() {
-        loginViewModel.userLoginState.observe(this) { state ->
-            when (state) {
-                1 -> {
-                    startActivity(Intent(this, VerificationCode1Activity::class.java))
-                    finish()
-                }
-
-                2 -> showDetailsNeededDialog()
-                3 -> {
-                    startActivity(Intent(this, VerificationCode1Activity::class.java))
-                    finish()
-                }
-
-                else -> {
-                    // Handle initial state or re-enter credentials
-                    Toast.makeText(this, "Please enter your credentials", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
-
     private fun observeLoginStatusBackend() {
         loginViewModel.isUserVerified.observe(this) { isVerified ->
+            Log.d("isVerified", isVerified.toString())
             when (isVerified) {
                 true -> {
                     loginViewModel.isDetailFilled.observe(this) { isDetailFilled ->
+                        Log.d("isDetailFilled", isDetailFilled.toString())
                         when (isDetailFilled) {
                             true -> {
-                                startActivity(Intent(this, NavigationBarActivity::class.java))
+                                loginViewModel.checkUserExists()
+                                Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show()
+                                startActivity(Intent(this@LoginActivity, NavigationBarActivity::class.java))
                                 finish()
                             }
-
                             false -> {
                                 showDetailsNeededDialog()
                             }
                         }
                     }
                 }
-
                 false -> {
                     showVerificationNeededDialog()
                 }
@@ -294,12 +256,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     //=============== Login w/ Google ===============
-    override fun onStart() {
-        super.onStart()
-        // google signin
-        val currentUser = auth.currentUser
-        updateUI(currentUser)
-    }
 
     private fun configureGoogleSignIn() {
         val gso = GoogleSignInOptions
@@ -329,34 +285,27 @@ class LoginActivity : AppCompatActivity() {
         if (result.resultCode == Activity.RESULT_OK) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
             try {
-                //Google Sign In was successful, authenticate with Firebase
+                // Google Sign In was successful, extract necessary info
                 val account = task.getResult(ApiException::class.java)!!
-                firebaseAuthWithGoogle(account.idToken!!)
+                val email = account.email
+                val idToken = account.idToken
+
+                // You can now use the email and ID token to send to your backend
+                sendLoginToBackend(email, idToken)
             } catch (e: ApiException) {
-                // Google Sign In failed, update UI appropriately
+                // Handle Google Sign In failure
             }
         }
     }
 
-    private fun firebaseAuthWithGoogle(idToken: String) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    val user = auth.currentUser
-                    updateUI(user)
-                } else {
-                    // If sign in fails, display a message to the user.
-                    updateUI(null)
-                }
-            }
-    }
+    private fun sendLoginToBackend(email: String?, idToken: String?) {
+        if (email != null && idToken != null) {
+            // Here, implement your API call to the backend with the obtained email and token
+            // Example: yourApi.loginWithGoogle(email, idToken)
 
-    private fun updateUI(currentUser: FirebaseUser?) {
-        if (currentUser != null) {
-            startActivity(Intent(this@LoginActivity, VerificationCode1Activity::class.java))
-            finish()
+            //berarti login with google harus apa aja??
+        } else {
+            // Handle case where email or token is null
         }
     }
 
@@ -424,6 +373,50 @@ class LoginActivity : AppCompatActivity() {
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
+
+    //================ Skejuled Tasks ===============
+    private fun scheduleMidnightRecipeUpdate(context: Context) {
+        val constraints = Constraints.Builder()
+            .setRequiresBatteryNotLow(true)
+            .build()
+
+        val midnightDelay = GeneralUtil.calculateInitialDelayForMidnight()
+
+        val updateRequest = PeriodicWorkRequestBuilder<MidnightWorkManager>(1, TimeUnit.DAYS)
+            .setInitialDelay(midnightDelay, TimeUnit.MILLISECONDS)
+            .setConstraints(constraints)
+            .build()
+
+        WorkManager.getInstance(context).enqueue(updateRequest)
+    }
+
+    //===== Notif Makanan and Stuff
+    private fun scheduleNotifications(context: Context) {
+        val times = listOf(
+            Pair(Pair(7, "Good Morning"), "Time to start your day with a healthy breakfast!"),
+            Pair(Pair(12, "Lunch Time"), "Don't forget to have some nutritious lunch!"),
+            Pair(Pair(18, "Dinner Time"), "Time to wind down with a light dinner.")
+        )
+
+        times.forEach { (timePair, message) ->
+            val (hour, title) = timePair
+
+            val notificationData = Data.Builder()
+                .putString("title", title)
+                .putString("message", message)
+                .build()
+
+            val initialDelay = GeneralUtil.calculateDelayForNotification(hour)
+
+            val dailyWorkRequest = PeriodicWorkRequestBuilder<NotificationWorkManager>(24, TimeUnit.HOURS)
+                .setInitialDelay(initialDelay, TimeUnit.MILLISECONDS)
+                .setInputData(notificationData)
+                .build()
+
+            WorkManager.getInstance(context).enqueue(dailyWorkRequest)
+        }
+    }
+
 
     //================ ViewModel ===============
     private fun obtainViewModel(activity: AppCompatActivity): LoginViewModel {

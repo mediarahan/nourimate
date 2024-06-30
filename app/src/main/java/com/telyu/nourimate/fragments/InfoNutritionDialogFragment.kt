@@ -78,7 +78,15 @@ class InfoNutritionDialogFragment : DialogFragment() {
                     else -> "Carbohydrate intake is within normal limits."
                 }
             }
+            "Water" -> {
+                when (status) {
+                    HomeFragment.UserNutritionStatus.EXCESS -> getString(R.string.excess_water)
+                    HomeFragment.UserNutritionStatus.DEFICIT -> getString(R.string.water_deficiency)
+                    else -> "Water intake is within normal limits."
+                }
+            }
             else -> "Nutrient information is unavailable."
+
         }
         binding.textinfo.text = message
     }

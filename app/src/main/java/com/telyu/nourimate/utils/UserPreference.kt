@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.map
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "session")
 
-class UserPreference private constructor(private val dataStore: DataStore<Preferences>){
+class UserPreference(private val dataStore: DataStore<Preferences>){
 
     //Login State:
     //0: Not Logged In
@@ -30,6 +30,14 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
             preferences[IS_LOGIN_KEY] = user.isLoggedIn
             preferences[IS_VERIFIED_KEY] = user.isVerified
             preferences[IS_DETAIL_FILLED_KEY] = user.isDetailFilled
+            preferences[NAME_KEY] = user.name ?: ""
+            preferences[PHONE_NUMBER_KEY] = user.phoneNumber ?: ""
+        }
+    }
+
+    suspend fun saveUserEmail(email: String) {
+        dataStore.edit { preferences ->
+            preferences[EMAIL_KEY] = email
         }
     }
 
@@ -42,7 +50,9 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
                 preferences[R_TOKEN_KEY] ?: "",
                 preferences[IS_LOGIN_KEY] ?: false,
                 preferences[IS_VERIFIED_KEY] ?: false,
-                preferences[IS_DETAIL_FILLED_KEY] ?: false
+                preferences[IS_DETAIL_FILLED_KEY] ?: false,
+                preferences[NAME_KEY] ?: "",
+                preferences[PHONE_NUMBER_KEY] ?: ""
             )
         }
     }
@@ -77,11 +87,25 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         }
     }
 
+    fun getUsername(): Flow<String> {
+        return dataStore.data.map { preferences ->
+            preferences[NAME_KEY] ?: ""
+        }
+    }
+
+    fun getEmailAndPhoneNumber(): Flow<Pair<String, String>> {
+        return dataStore.data.map { preferences ->
+            Pair(preferences[EMAIL_KEY] ?: "",
+                preferences[PHONE_NUMBER_KEY] ?: "")
+        }
+    }
+
     suspend fun logout() {
         dataStore.edit { preferences ->
             preferences.clear()
         }
     }
+
 
 
 
@@ -97,6 +121,8 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         private val IS_LOGIN_KEY = booleanPreferencesKey("loginState")
         private val IS_VERIFIED_KEY = booleanPreferencesKey("isVerified")
         private val IS_DETAIL_FILLED_KEY = booleanPreferencesKey("isDatabaseFilled")
+        private val NAME_KEY = stringPreferencesKey("name")
+        private val PHONE_NUMBER_KEY = stringPreferencesKey("phoneNumber")
 
         fun getInstance(dataStore: DataStore<Preferences>): UserPreference {
             return INSTANCE ?: synchronized(this) {
@@ -117,4 +143,6 @@ data class UserModel (
     val isLoggedIn: Boolean = false,
     val isVerified: Boolean = false,
     val isDetailFilled: Boolean = false,
+    val name: String? = "username",
+    val phoneNumber: String? = ""
 )

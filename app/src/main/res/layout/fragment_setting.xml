@@ -33,11 +33,9 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/backButton"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="-40dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintStart_toStartOf="@+id/rectanglesetting2ImageView"
         app:icon="@drawable/back"
         android:clickable="true"
         app:iconSize="25dp"
@@ -46,17 +44,18 @@
         app:backgroundTint="@null"
         android:background="@drawable/button_background_profile_with_shadow"
         style="@style/Widget.MaterialComponents.Button.Circle"
-        app:layout_constraintTop_toBottomOf="@+id/wave_profile_shadow"
+        app:layout_constraintBottom_toBottomOf="@+id/wave_profile_shadow"
         app:iconPadding="0dp"
         android:insetTop="0dp"
-        android:elevation="3dp"
-        android:insetBottom="0dp" />
+        android:insetBottom="0dp"
+        android:elevation="10dp" />
 
     <TextView
         android:id="@+id/settingTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Settings"
+        android:layout_marginTop="-10dp"
         android:fontFamily="@font/alatsi"
         android:textColor="#F18300"
         android:textSize="33sp"
@@ -64,24 +63,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/wave_profile_shadow"/>
 
-    <ImageView
-        android:id="@+id/rectanglesettingImageView"
-        android:layout_width="350dp"
-        android:layout_height="70dp"
-        android:background="@drawable/rectangle_settings_with_shadow"
-        android:elevation="7dp"
-        app:layout_constraintWidth_percent="0.85"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/settingTextView"
-        android:layout_marginTop="20dp"/>
 
     <TextView
         android:id="@+id/textViewThemes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@+id/rectanglesettingImageView"
-        app:layout_constraintStart_toStartOf="@+id/rectanglesettingImageView"
+        app:layout_constraintTop_toTopOf="@+id/spinnerThemes"
+        app:layout_constraintStart_toStartOf="@+id/spinnerThemes"
         android:layout_marginTop="10dp"
         android:layout_marginStart="15dp"
         android:text="Themes"
@@ -94,17 +82,23 @@
         android:id="@+id/spinnerThemes"
         android:layout_width="0dp"
         android:layout_height="65dp"
-        android:elevation="7dp"
-        android:textSize="14sp"
-        android:layout_marginTop="5dp"
-        android:textColor="@color/black"
-        android:fontFamily="@font/alatsi"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/rectangle_settings_with_shadow"
+        android:paddingTop="30dp"
+        android:paddingBottom="12dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="12dp"
+        android:elevation="3dp"
+        android:fontFamily="@font/abel"
+        android:textColor="@color/color41"
+        android:textSize="16sp"
         app:layout_constraintWidth_percent="0.85"
-        app:layout_constraintEnd_toEndOf="@+id/rectanglesettingImageView"
-        app:layout_constraintTop_toTopOf="@+id/textViewThemes"
-        app:layout_constraintStart_toStartOf="@+id/textViewThemes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settingTextView"
         android:spinnerMode="dropdown"
         android:popupBackground="@drawable/rectangle_signup1"/>
+
 
     <ImageView
         android:id="@+id/iconthemesImageView"
@@ -120,14 +114,14 @@
 
     <ImageView
         android:id="@+id/rectanglesetting2ImageView"
-        android:layout_width="350dp"
+        android:layout_width="0dp"
         android:layout_height="70dp"
         android:background="@drawable/rectangle_settings_with_shadow"
         android:elevation="7dp"
         app:layout_constraintWidth_percent="0.85"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rectanglesettingImageView"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerThemes"
         android:layout_marginTop="20dp"/>
 
     <TextView
@@ -152,6 +146,40 @@
         app:layout_constraintStart_toStartOf="@+id/textViewNotification"
         android:layout_marginTop="5dp"
         android:elevation="7dp"/>
+
+    <ImageView
+        android:id="@+id/rectanglesetting3ImageView"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:background="@drawable/rectangle_settings_with_shadow"
+        android:elevation="7dp"
+        app:layout_constraintWidth_percent="0.85"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rectanglesetting2ImageView"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/textViewRecipePreferencesRecipeTransition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Transition When Selecting Recipe"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/alatsi"
+        app:layout_constraintTop_toTopOf="@+id/rectanglesetting3ImageView"
+        app:layout_constraintStart_toStartOf="@+id/rectanglesetting2ImageView"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="15dp"
+        android:elevation="7dp"/>
+
+    <Switch
+        android:id="@+id/switchRecipePreferencesRecipeTransition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="7dp"
+        app:layout_constraintStart_toStartOf="@+id/textViewRecipePreferencesRecipeTransition"
+        app:layout_constraintTop_toBottomOf="@+id/textViewRecipePreferencesRecipeTransition" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

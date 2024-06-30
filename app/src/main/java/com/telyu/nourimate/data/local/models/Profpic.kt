@@ -15,4 +15,7 @@ data class Profpic(
     @field:ColumnInfo(name = "picture_url")
     val pictureUrl: String,
 
+    @field:ColumnInfo(name = "user_id")
+    val userId: Int?,
+
 ) : Parcelable

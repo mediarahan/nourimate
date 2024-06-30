@@ -1,7 +1,9 @@
 package com.telyu.nourimate.adapter.recipe
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -11,7 +13,7 @@ import com.telyu.nourimate.data.local.models.Recipe
 import com.telyu.nourimate.data.local.models.Recommendation
 import com.telyu.nourimate.databinding.ItemFoodBinding
 
-class RecipeAdapter2(private val onClickListener: (CombinedRecipe) -> Unit) :
+class RecipeAdapter2(private val onAddClick: (CombinedRecipe, View) -> Unit) :
     ListAdapter<CombinedRecipe, RecipeAdapter2.Recipe2ViewHolder>(Recipe2DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Recipe2ViewHolder {
@@ -23,9 +25,19 @@ class RecipeAdapter2(private val onClickListener: (CombinedRecipe) -> Unit) :
         val recipe = getItem(position)
         holder.bind(recipe)
 
+        val buttonAdd = holder.binding.fabaddmeal
+
+        if(recipe.recommendation.isSelected == 0) {
+            buttonAdd.setImageDrawable(ContextCompat.getDrawable(buttonAdd.context, R.drawable.add))
+        } else {
+            buttonAdd.setImageDrawable(ContextCompat.getDrawable(buttonAdd.context, R.drawable.added))
+        }
+        buttonAdd.setOnClickListener {
+            onAddClick(recipe, it)
+        }
     }
 
-    inner class Recipe2ViewHolder(private val binding: ItemFoodBinding) :
+    inner class Recipe2ViewHolder(val binding: ItemFoodBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: CombinedRecipe) {
             binding.apply {
@@ -35,6 +47,7 @@ class RecipeAdapter2(private val onClickListener: (CombinedRecipe) -> Unit) :
                 tvProtein.text = "Protein: ${item.recipe.protein.toInt()}"
                 tvFat.text = "Fat: ${item.recipe.fat.toInt()}"
                 tvCarbs.text = "Carbs: ${item.recipe.carbs.toInt()}"
+                tvServes.text = "Serving: ${item.recipe.portion}"
                 Glide.with(ivRecipe.context)
                     .load(
                         itemView.context.resources.getIdentifier(
@@ -47,6 +60,7 @@ class RecipeAdapter2(private val onClickListener: (CombinedRecipe) -> Unit) :
                     .into(ivRecipe)
 
                 fabaddmeal.setOnClickListener {
+
                 }
             }
         }

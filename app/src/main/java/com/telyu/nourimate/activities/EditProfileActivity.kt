@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
@@ -48,7 +49,7 @@ class EditProfileActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.statusBarColor = ContextCompat.getColor(this, R.color.color2)
+        setStatusBarColor(resources.getColor(R.color.color2, theme))
 
         binding = ActivityEditProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -59,14 +60,27 @@ class EditProfileActivity : AppCompatActivity() {
         setupSpinner()
     }
 
-    private fun insertUserDetails() {
+    private fun setStatusBarColor(color: Int) {
+        val window = window
+        val insetsController = WindowCompat.getInsetsController(window, window.decorView)
+
+        // Set to 'true' to ensure status bar icons are dark, useful for light status bar backgrounds
+        insetsController.isAppearanceLightStatusBars = true
+        // Set to 'true' to ensure navigation bar icons are dark, useful for light navigation bar backgrounds
+        insetsController.isAppearanceLightNavigationBars = true
+
+        // Set the status bar color
+        window.statusBarColor = color
+    }
+
+    private fun insertUserDetailsToLocalAndBackend() {
         //all input
         val heightString = binding.editTextHeight.text.toString()
         val weightString = binding.editTextWeight.text.toString()
         val waistSizeString = binding.editTextWaist.text.toString()
-        val height = heightString.toFloatOrNull()
-        val weight = weightString.toFloatOrNull()
-        val waistSize = waistSizeString.toFloatOrNull()
+        val height = heightString.toInt()
+        val weight = weightString.toInt()
+        val waistSize = waistSizeString.toInt()
 
         val gender = binding.spinnerGender.selectedItem.toString()
         val allergies = binding.editTextAllergies.text.toString()
@@ -78,8 +92,10 @@ class EditProfileActivity : AppCompatActivity() {
         val date: Date? = dateFormatter.parse(dob)
 
         // Calculate BMI
-        val bmi = calculateBMI(height, weight)?.toInt()
-        viewModel.insertDetail(0, date, height, weight, waistSize, gender, allergies, disease, bmi?.toFloat() ?: -999f)
+        val bmi = calculateBMI(height, weight)
+        viewModel.insertDetailToBackend(dob, height, waistSize, weight , gender, allergies, disease)
+        viewModel.insertDetail(0, date, height, waistSize, weight, gender, allergies, disease, bmi
+            ?: -999f)
 
         val intent = Intent(this, NavigationBarActivity::class.java)
         startActivity(intent)
@@ -98,7 +114,7 @@ class EditProfileActivity : AppCompatActivity() {
         val startDateFormatted = Converters().fromStringToDate(startDate)
         val endDateFormatted = Converters().fromStringToDate(endDate)
         val dateNow = Converters().dateFromTimestamp(System.currentTimeMillis())
-        val nextWeek = Converters().dateFromTimestamp(GeneralUtil.getDateNextWeek())
+        val nextWeek = Converters().dateFromTimestamp(GeneralUtil.calculateOneMinuteLaterTimestamp())
 
         val programCode = when (program) {
             "Maintain Weight" -> 1
@@ -116,12 +132,8 @@ class EditProfileActivity : AppCompatActivity() {
     //API Related
     private fun fetchDataFromMachineLearning() {
         viewModel.recommendationsLiveData.observe(this) { recommendations ->
-            if (recommendations.isNotEmpty()) {
-                Log.d("ML", "Recommendation from ML successfully inserted")
-                viewModel.insertRecommendations(recommendations)
-            } else {
-                Log.d("ML", "No recommendations received or list is empty")
-            }
+            viewModel.insertRecommendations(recommendations)
+            Log.d("Recommendations", recommendations.toString())
         }
     }
 
@@ -199,21 +211,31 @@ class EditProfileActivity : AppCompatActivity() {
         // Set initial selected value
         dialogBinding.weightRulerView.selectedValue = initialSelectedValue
         dialogBinding.textViewNumber2.text = initialSelectedValue.toInt().toString()
+        if (initialSelectedValue.toInt() != 0) {
+            binding.editTextWeight.setText(String.format("%d", initialSelectedValue.toInt()))
+        } else {
+            binding.editTextWeight.setText("")  // Clear EditText or set to a placeholder if zero
+        }
 
-        // Set listener untuk CurvedRulerView
+        // Listener for changes in the ruler view
         dialogBinding.weightRulerView.listener = object : WeightRulerView.OnValueChangeListener {
             override fun onValueChanged(value: Float) {
-                // Update selected value
-                dialogBinding.textViewNumber2.text = value.toInt().toString()
-                // Update EditText in real-time
-                binding.editTextWeight.setText(String.format("%d", value.toInt()))
-                enableSelectButtonIfReady()
+                val intValue = value.toInt()
+                // Update the TextView and check value before updating EditText
+                dialogBinding.textViewNumber2.text = intValue.toString()
+                if (intValue != 0) {
+                    binding.editTextWeight.setText(String.format("%d", intValue))
+                    enableSelectButtonIfReady()
+                } else {
+                    binding.editTextWeight.setText("")  // Avoid displaying zero in EditText
+                }
             }
         }
 
         // Set action for 'Done' button
         dialogBinding.buttonDone.setOnClickListener {
             dialog.dismiss()
+            enableSelectButtonIfReady()
         }
 
         dialog.show()
@@ -236,22 +258,31 @@ class EditProfileActivity : AppCompatActivity() {
         // Set initial selected value
         dialogBinding.straightRulerView.selectedValue = initialSelectedValue
         dialogBinding.textViewNumber.text = initialSelectedValue.toInt().toString()
+        if (initialSelectedValue.toInt() != 0) {
+            binding.editTextHeight.setText(String.format("%d", initialSelectedValue.toInt()))
+        } else {
+            binding.editTextHeight.setText("")  // Clear EditText or set to a placeholder if zero
+        }
 
-        // Set listener untuk CurvedRulerView
-        dialogBinding.straightRulerView.listener =
-            object : StraightRulerView.OnValueChangeListener {
-                override fun onValueChanged(value: Float) {
-                    // Update selected value
-                    dialogBinding.textViewNumber.text = value.toInt().toString()
-                    // Update EditText in real-time
-                    binding.editTextHeight.setText(String.format("%d", value.toInt()))
+        // Listener for changes in the ruler view
+        dialogBinding.straightRulerView.listener = object : StraightRulerView.OnValueChangeListener {
+            override fun onValueChanged(value: Float) {
+                val intValue = value.toInt()
+                // Update the TextView and check value before updating EditText
+                dialogBinding.textViewNumber.text = intValue.toString()
+                if (intValue != 0) {
+                    binding.editTextHeight.setText(String.format("%d", intValue))
                     enableSelectButtonIfReady()
+                } else {
+                    binding.editTextHeight.setText("")  // Avoid displaying zero in EditText
                 }
             }
+        }
 
         // Set action for 'Done' button
         dialogBinding.buttonDone.setOnClickListener {
             dialog.dismiss()
+            enableSelectButtonIfReady()
         }
 
         dialog.show()
@@ -274,35 +305,58 @@ class EditProfileActivity : AppCompatActivity() {
         // Set initial selected value
         dialogBinding.waistRulerView.selectedValue = initialSelectedValue
         dialogBinding.textViewNumber1.text = initialSelectedValue.toInt().toString()
+        if (initialSelectedValue.toInt() != 0) {
+            binding.editTextWaist.setText(String.format("%d", initialSelectedValue.toInt()))
+        } else {
+            binding.editTextWaist.setText("")  // Clear EditText or set to a placeholder if zero
+        }
 
-        // Set listener untuk CurvedRulerView
+        // Listener for changes in the ruler view
         dialogBinding.waistRulerView.listener = object : WaistSizeRulerView.OnValueChangeListener {
             override fun onValueChanged(value: Float) {
-                // Update selected value
-                dialogBinding.textViewNumber1.text = value.toInt().toString()
-                // Update EditText in real-time
-                binding.editTextWaist.setText(String.format("%d", value.toInt()))
-                enableSelectButtonIfReady()
+                val intValue = value.toInt()
+                // Update the TextView and check value before updating EditText
+                dialogBinding.textViewNumber1.text = intValue.toString()
+                if (intValue != 0) {
+                    binding.editTextWaist.setText(String.format("%d", intValue))
+                    enableSelectButtonIfReady()
+                } else {
+                    binding.editTextWaist.setText("")  // Avoid displaying zero in EditText
+                }
             }
         }
 
-        // Set action for 'Done' button
+        // Action for 'Done' button
         dialogBinding.buttonDone.setOnClickListener {
+            // Dismiss the dialog when done
             dialog.dismiss()
+            enableSelectButtonIfReady()
         }
 
         dialog.show()
     }
 
     private fun showAllergiesDialog() {
-        val allergies = arrayOf("Nuts", "Eggs", "Seafood")
-        val checkedItems = booleanArrayOf(false, false, false)
+        val allergies = arrayOf("None", "Nuts", "Eggs", "Seafood")
+        val checkedItems = booleanArrayOf(false, false, false, false)
         val selectedItems = mutableListOf<String>()
 
         val dialogBuilder = AlertDialog.Builder(this, R.style.CustomAlertDialog)
             .setTitle("Select Allergies")
-            .setMultiChoiceItems(allergies, checkedItems) { _, which, isChecked ->
-                if (isChecked) {
+            .setMultiChoiceItems(allergies, checkedItems) { dialog, which, isChecked ->
+                if (which == 0 && isChecked) {  // "None" is at position 0
+                    // Deselect all other checkboxes if "None" is selected
+                    selectedItems.clear()
+                    selectedItems.add(allergies[0])
+                    allergies.indices.forEach { index ->
+                        if (index != 0) {
+                            (dialog as AlertDialog).listView.setItemChecked(index, false)
+                        }
+                    }
+                } else if (isChecked) {
+                    // Remove "None" if any other item is selected
+                    selectedItems.remove(allergies[0])
+                    (dialog as AlertDialog).listView.setItemChecked(0, false)
                     selectedItems.add(allergies[which])
                 } else {
                     selectedItems.remove(allergies[which])
@@ -311,7 +365,7 @@ class EditProfileActivity : AppCompatActivity() {
             .setPositiveButton("Done") { dialog, _ ->
                 // Update the EditText with selected items when "Done" is clicked
                 val selectedText = selectedItems.joinToString(", ")
-                binding.editTextAllergies.setText(selectedText)  // Menggunakan ViewBinding untuk mengupdate view
+                binding.editTextAllergies.setText(selectedText)  // Using ViewBinding to update view
                 dialog.dismiss()
             }
             .setNegativeButton("Cancel", null)
@@ -319,13 +373,13 @@ class EditProfileActivity : AppCompatActivity() {
         val dialog = dialogBuilder.create()
         dialog.show()
 
-        // Mengubah tombol OK dan Cancel agar tidak menggunakan huruf kapital
+// Modify the OK and Cancel buttons to not use all caps
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).isAllCaps = false
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).isAllCaps = false
 
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).apply {
-            setTextColor(Color.BLACK)  // Mengeset warna secara langsung
-            textSize = 16f            // Mengeset ukuran teks
+            setTextColor(Color.BLACK)  // Set color directly
+            textSize = 16f             // Set text size
             typeface =
                 Typeface.create(ResourcesCompat.getFont(context, R.font.abel), Typeface.NORMAL)
         }
@@ -335,22 +389,29 @@ class EditProfileActivity : AppCompatActivity() {
             typeface =
                 Typeface.create(ResourcesCompat.getFont(context, R.font.abel), Typeface.NORMAL)
         }
-
-        // Set dialog width to 85% of the screen width
-        val displayMetrics = resources.displayMetrics
-        val screenWidth = displayMetrics.widthPixels
-        dialog.window?.setLayout((screenWidth * 0.85).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
-    private fun showDiseasesDialog() {
-        val diseases = arrayOf("Diabetes", "Hipertensi", "Kolesterol")
-        val checkedItems = booleanArrayOf(false, false, false)
+        private fun showDiseasesDialog() {
+        val diseases = arrayOf("None","Diabetes", "Hipertensi", "Kolesterol")
+        val checkedItems = booleanArrayOf(false, false, false, false)
         val selectedItems = mutableListOf<String>()
 
         val dialogBuilder = AlertDialog.Builder(this, R.style.CustomAlertDialog)
             .setTitle("Select Diseases")
-            .setMultiChoiceItems(diseases, checkedItems) { _, which, isChecked ->
-                if (isChecked) {
+            .setMultiChoiceItems(diseases, checkedItems) { dialog, which, isChecked ->
+                if (which == 0 && isChecked) {  // "None" is at position 0
+                    // Deselect all other checkboxes if "None" is selected
+                    selectedItems.clear()
+                    selectedItems.add(diseases[0])
+                    diseases.indices.forEach { index ->
+                        if (index != 0) {
+                            (dialog as AlertDialog).listView.setItemChecked(index, false)
+                        }
+                    }
+                } else if (isChecked) {
+                    // Remove "None" if any other item is selected
+                    selectedItems.remove(diseases[0])
+                    (dialog as AlertDialog).listView.setItemChecked(0, false)
                     selectedItems.add(diseases[which])
                 } else {
                     selectedItems.remove(diseases[which])
@@ -388,7 +449,6 @@ class EditProfileActivity : AppCompatActivity() {
         dialog.window?.setLayout((screenWidth * 0.85).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
-
     //=============== Setup Click Listeners ===============
 
     private fun setupClickListeners() {
@@ -396,27 +456,26 @@ class EditProfileActivity : AppCompatActivity() {
             setClickListener(editTextBirth) { showDatePickerDialog() }
             setClickListener(editTextDateOfProgram) { showDateRangePicker() }
             setClickListener(editTextWeight) {
-                showWeightRulerPickerDialog(
-                    binding.editTextWeight.text.toString().toFloatOrNull() ?: 0f
-                )
+                val currentValue = binding.editTextWeight.text.toString().toFloatOrNull() ?: 50f
+                showWeightRulerPickerDialog(currentValue)
             }
             setClickListener(editTextHeight) {
-                showStraightRulerPickerDialog(
-                    binding.editTextHeight.text.toString().toFloatOrNull() ?: 0f
-                )
+                val currentValue = binding.editTextHeight.text.toString().toFloatOrNull() ?: 150f
+                showStraightRulerPickerDialog(currentValue)
             }
             setClickListener(editTextWaist) {
-                showWaistRulerPickerDialog(
-                    binding.editTextWaist.text.toString().toFloatOrNull() ?: 0f
-                )
+                // Get the current value from editTextWaist, if it's not valid, use 70
+                val currentValue = binding.editTextWaist.text.toString().toFloatOrNull() ?: 70f
+                showWaistRulerPickerDialog(currentValue)
             }
+
             setClickListener(editTextAllergies) { showAllergiesDialog() }
             setClickListener(editTextDisease) { showDiseasesDialog() }
 
             // Setup submit data to database button
             buttonNext.setOnClickListener {
                 insertProgram()
-                insertUserDetails()
+                insertUserDetailsToLocalAndBackend()
                 fetchDataFromMachineLearning()
             }
         }

@@ -2,6 +2,7 @@ package com.telyu.nourimate.data.local.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -19,11 +20,28 @@ import java.util.Date
 @Dao
 interface UserDao {
 
+    //delete semuamuanya
+    @Query("DELETE FROM userDetails")
+    suspend fun deleteDetail()
+    @Query("DELETE FROM history")
+    suspend fun deleteHistories()
+
+    @Query("DELETE FROM weight_entries")
+    suspend fun deleteWeightEntries()
+
+    @Query("DELETE FROM weight_tracks")
+    suspend fun deleteWeightTrack()
+
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUser(users: User)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDetail(details: Detail)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertHistories(histories: List<History>)
+
 
     @Query("SELECT * FROM users WHERE name = :name")
     suspend fun getUserByName(name: String): User?
@@ -37,10 +55,13 @@ interface UserDao {
     @Query("SELECT userId FROM users WHERE email = :email")
     suspend fun getUserIdByEmail(email: String): Int?
 
-    @Query("SELECT * FROM userDetails WHERE detailId = :id")
+    @Query("SELECT * FROM userDetails WHERE userId = :id")
     suspend fun getUserDetailsById(id: Int): Detail?
 
-    @Query("SELECT bmi FROM userDetails WHERE detailId = :id")
+    @Query("SELECT picture_url FROM profile_pictures WHERE user_id = :id")
+    suspend fun getProfpicById(id: Int): String?
+
+    @Query("SELECT bmi FROM userDetails WHERE userId = :id")
     suspend fun getBMIById(id: Int?): Float?
 
     @Update
@@ -51,9 +72,6 @@ interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertProfpic(profpic: Profpic)
-
-    @Query("SELECT picture_url FROM profile_pictures WHERE id = :id")
-    suspend fun getProfpicById(id: Int): String?
 
     @Query("DELETE FROM users")
     suspend fun deleteAllRecords()
@@ -84,6 +102,9 @@ interface UserDao {
     //for inserting currentWeight
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWeightEntry(entry: WeightEntry)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertWeightEntries(entries: List<WeightEntry>)
 
     //for deleting a particular user's weight entries. Used in SpecialProgram's Restore Program
     @Query("DELETE FROM weight_entries WHERE userId = :userId")
@@ -124,13 +145,16 @@ interface UserDao {
     suspend fun updateWeight(detailId: Int, weight: Int)
 
     @Query("SELECT * FROM weight_tracks  WHERE userId = :id")
-    suspend fun getWeightTrackById(id: Int): WeightTrack
+    suspend fun getWeightTrackById(id: Int): WeightTrack?
 
     @Query("SELECT name FROM users WHERE userId = :id")
     suspend fun getUserNameById(id: Int): String?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWeightTrack(weightTrack: WeightTrack)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertWeightTracks(weightTracks: List<WeightTrack>)
 
     @Query("DELETE FROM weight_tracks WHERE userId = :userId")
     suspend fun deleteWeightTrackByUserId(userId: Int?)
@@ -149,4 +173,8 @@ interface UserDao {
 
     @Query("SELECT editCurrentWeightDate FROM weight_tracks WHERE userId = :userId")
     suspend fun getEditCurrentWeightDate(userId: Int): Date
+
+    @Query("SELECT COUNT(*) FROM userDetails WHERE userId = :userId")
+    suspend fun checkUserDetailExists(userId: Int): Int
+
 }

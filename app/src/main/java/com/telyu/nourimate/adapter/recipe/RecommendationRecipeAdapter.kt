@@ -15,16 +15,11 @@ import com.telyu.nourimate.databinding.ItemDateBinding
 import com.telyu.nourimate.databinding.ItemFoodWeeklyBinding
 import com.telyu.nourimate.utils.Converters
 
-class RecommendationRecipeAdapter(private val listener: OnAddClickListener) :
-    ListAdapter<RecommendationRecipe, RecommendationRecipeAdapter.BaseViewHolder>(DiffUtilCallback()) {
+class RecommendationRecipeAdapter : ListAdapter<RecommendationRecipe, RecommendationRecipeAdapter.BaseViewHolder>(DiffUtilCallback()) {
 
     override fun getItemViewType(position: Int): Int = when (getItem(position)) {
         is RecommendationRecipe.RecipeItem -> viewTypeChildren
         is RecommendationRecipe.RecommendationItem -> viewTypeParent
-    }
-
-    interface OnAddClickListener {
-        fun onAddClick(recipe: Recipe)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder =
@@ -63,7 +58,7 @@ class RecommendationRecipeAdapter(private val listener: OnAddClickListener) :
     inner class ParentViewHolder(private val binding: ItemDateBinding) : BaseViewHolder(binding) {
         override fun bind(item: RecommendationRecipe) {
             item as RecommendationRecipe.RecommendationItem
-            binding.textViewDate.text = Converters().formatDayDateToString(item.recommendation.date)
+            binding.textViewDate.text = item.recommendation.date
         }
     }
 
@@ -77,6 +72,7 @@ class RecommendationRecipeAdapter(private val listener: OnAddClickListener) :
                 tvProtein.text = "Protein: ${item.recipe.protein.toInt()}"
                 tvFat.text = "Fat: ${item.recipe.fat.toInt()}"
                 tvCarbs.text = "Carbs: ${item.recipe.carbs.toInt()}"
+                tvServes.text = "Serving: ${item.recipe.portion}"
 
                 Glide.with(ivRecipe.context)
                     .load(

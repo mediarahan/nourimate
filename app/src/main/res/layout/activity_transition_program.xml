@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:elevation="3dp"
         android:scaleType="fitXY"
+        android:layout_marginTop="-5dp"
         android:src="@drawable/wave_account"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -100,38 +101,60 @@
         android:paddingTop="10dp"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:gravity="center"
         android:elevation="3dp"
         android:background="@drawable/rectangle_signup1"
         app:layout_constraintWidth_percent="0.85"
+        app:layout_constraintTop_toBottomOf="@+id/protein"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewGreetCongrats" />
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 
     <ImageView
         android:id="@+id/clickimage"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:elevation="18dp"
+        android:elevation="25dp"
         android:src="@drawable/click"
-        android:layout_marginEnd="-23dp"
-        android:layout_marginBottom="-23dp"
+        android:layout_marginEnd="-18dp"
+        android:layout_marginBottom="-18dp"
         app:layout_constraintEnd_toEndOf="@+id/textViewDetailCongrats"
         app:layout_constraintBottom_toBottomOf="@+id/textViewDetailCongrats"/>
 
 
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineCenter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.55" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
+
     <LinearLayout
         android:id="@+id/calories"
-        android:layout_width="160dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="5dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintStart_toStartOf="@+id/textViewDetailCongrats"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDetailCongrats">
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="@id/guidelineCenter"
+        app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
+        app:layout_constraintTop_toBottomOf="@+id/textViewGreetCongrats">
 
         <TextView
             android:layout_width="wrap_content"
@@ -141,8 +164,8 @@
             android:textStyle="bold"
             android:fontFamily="@font/abel"
             android:textColor="@color/black"
-            android:textSize="16sp"
-            android:layout_marginStart="10dp"/>
+            android:layout_marginStart="10dp"
+            android:textSize="16sp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -159,7 +182,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/TotalCaloriesQuantifiers"
-            android:text="kkal"
+            android:text="kcal"
             android:textStyle="bold"
             android:fontFamily="@font/abel"
             android:textColor="@color/black"
@@ -168,13 +191,14 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="160dp"
+        android:id="@+id/protein"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="10dp"
-        android:layout_marginStart="8dp"
         android:padding="5dp"
-        app:layout_constraintStart_toStartOf="@+id/textViewDetailCongrats"
+        app:layout_constraintEnd_toEndOf="@id/guidelineCenter"
+        app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
         app:layout_constraintTop_toBottomOf="@+id/calories">
 
         <TextView
@@ -184,9 +208,9 @@
             android:text="Total Protein :"
             android:fontFamily="@font/abel"
             android:textStyle="bold"
-            android:textColor="@color/black"
             android:textSize="16sp"
-            android:layout_marginStart="10dp"/>
+            android:layout_marginStart="10dp"
+            android:textColor="@color/black"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -213,14 +237,14 @@
 
     <LinearLayout
         android:id="@+id/carbs"
-        android:layout_width="160dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="10dp"
         android:padding="5dp"
-        app:layout_constraintEnd_toEndOf="@+id/textViewDetailCongrats"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDetailCongrats">
+        app:layout_constraintStart_toStartOf="@id/guidelineCenter"
+        app:layout_constraintEnd_toEndOf="@+id/guidelineRight"
+        app:layout_constraintTop_toBottomOf="@+id/textViewGreetCongrats">
 
         <TextView
             android:layout_width="wrap_content"
@@ -257,13 +281,13 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="160dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="8dp"
         android:padding="5dp"
-        app:layout_constraintEnd_toEndOf="@+id/textViewDetailCongrats"
+        app:layout_constraintStart_toStartOf="@id/guidelineCenter"
+        app:layout_constraintEnd_toEndOf="@+id/guidelineRight"
         app:layout_constraintTop_toBottomOf="@+id/carbs">
 
         <TextView

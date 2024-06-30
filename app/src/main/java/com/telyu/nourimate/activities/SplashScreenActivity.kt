@@ -3,15 +3,20 @@ package com.telyu.nourimate.activities
 import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import android.os.Looper
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.telyu.nourimate.R
+import com.telyu.nourimate.data.local.FakeFoodData
+import com.telyu.nourimate.data.local.db.FoodDatabase
 import com.telyu.nourimate.data.local.models.Detail
+import com.telyu.nourimate.data.local.models.Recipe
+import com.telyu.nourimate.data.local.models.Recommendation
 import com.telyu.nourimate.data.local.models.User
 import com.telyu.nourimate.databinding.ActivitySplashScreenBinding
 import com.telyu.nourimate.utils.Converters
@@ -31,7 +36,7 @@ class SplashScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = obtainViewModel(this@SplashScreenActivity)
-        window.statusBarColor = ContextCompat.getColor(this, R.color.color0)
+        setStatusBarColor(resources.getColor(R.color.color19, theme))
 
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -39,6 +44,19 @@ class SplashScreenActivity : AppCompatActivity() {
         userPreference = UserPreference.getInstance(dataStore)
 
         insertAdminAccounts()
+
+        viewModel.recipeCount.observe(this) {
+            if (it == true) insertDummyRecipes() else {
+                //do nothing
+            }
+        }
+
+        viewModel.recommendationCount.observe(this) {
+            if (it == true) insertDummyRecommendation() else {
+                //do nothing
+            }
+        }
+
         createGradientBackground()
 
         // Delay to display the splash screen, after which we check the login status
@@ -76,6 +94,19 @@ class SplashScreenActivity : AppCompatActivity() {
         binding.root.background = gradientDrawable
     }
 
+    private fun setStatusBarColor(color: Int) {
+        val window = window
+        val insetsController = WindowCompat.getInsetsController(window, window.decorView)
+
+        // Set to 'true' to ensure status bar icons are dark, useful for light status bar backgrounds
+        insetsController.isAppearanceLightStatusBars = true
+        // Set to 'true' to ensure navigation bar icons are dark, useful for light navigation bar backgrounds
+        insetsController.isAppearanceLightNavigationBars = true
+
+        // Set the status bar color
+        window.statusBarColor = color
+    }
+
     private fun checkLoginStatus() {
         lifecycleScope.launch {
             val isLoggedIn = userPreference.getUserLoginState().firstOrNull()
@@ -95,18 +126,94 @@ class SplashScreenActivity : AppCompatActivity() {
 
     private fun insertAdminAccounts() {
         val users = listOf(
-            User(5, "Admin1", "admin1@gmail.com", 123, "admin123", true, true),
-            User(6, "Admin2", "admin2@gmail.com", 124, "admin124", true, false)
+            User(100, "Admin1", "admin1@gmail.com", 123, "admin123", true, true),
+            User(101, "Admin2", "admin2@gmail.com", 124, "admin124", true, false)
         )
 
         val details = listOf(
-            Detail(5, Converters().fromTimestamp(1054628979000), 181f, 80f, 81f, "Laki-laki", "Nuts", "Diabetes", 24.4f, 5),
-            Detail(6, Converters().fromTimestamp(1054628979000), 160f, 65f, 71f, "Laki-laki", "Shellfish", "Cholesterol", 95.4f, 6)
+            Detail(
+                100,
+                Converters().fromTimestamp(1054628979000),
+                181,
+                80,
+                81,
+                "Laki-laki",
+                "Nuts",
+                "Diabetes",
+                24.4f,
+                100
+            ),
+            Detail(
+                101,
+                Converters().fromTimestamp(1054628979000),
+                160,
+                80,
+                71,
+                "Laki-laki",
+                "Seafood",
+                "Kolesterol",
+                25.3f,
+                101
+            )
         )
 
         users.forEachIndexed { index, user ->
             viewModel.insertUser(user)
             viewModel.insertDetail(details[index])
+        }
+    }
+
+    private fun insertDummyRecipes() {
+        val dao = FoodDatabase.getInstance(this).foodDao()
+        val fakeFoodData = FakeFoodData()
+
+        val mappedRecipes = fakeFoodData.recipes.map { recipe ->
+            Recipe(
+                recipeId = recipe.recipeId,
+                name = recipe.name,
+                calories = recipe.calories,
+                carbs = recipe.carbs,
+                fat = recipe.fat,
+                protein = recipe.protein,
+                ingredients = recipe.ingredients,
+                cookingSteps = recipe.cookingSteps,
+                recipePictures = recipe.recipePictures,
+                mealType = recipe.mealType,
+                cookTime = recipe.cookTime,
+                prepTime = recipe.prepTime,
+                portion = recipe.portion,
+            )
+        }
+
+        // Insert data into database within coroutine scope
+        lifecycleScope.launch {
+            // Insert each recipe individually
+            mappedRecipes.forEach { recipe ->
+                dao.insertRecipe(recipe)
+            }
+
+        }
+    }
+
+
+    private fun insertDummyRecommendation() {
+        val dao = FoodDatabase.getInstance(this).foodDao()
+        val fakeFoodData = FakeFoodData()
+
+        val mappedRecommendations = fakeFoodData.recommendations.map { recommendation ->
+            Recommendation(
+                recommendationId = recommendation.recommendationId,
+                date = recommendation.date,
+                isSelected = recommendation.isSelected,
+                recipeId = recommendation.recipeId,
+                userId = recommendation.userId,
+            )
+        }
+
+        lifecycleScope.launch {
+            mappedRecommendations.forEach { recommendation ->
+                dao.insertRecommendation(recommendation)
+            }
         }
     }
 

@@ -17,7 +17,6 @@ interface FoodDao {
     @Query("SELECT * FROM recipes WHERE name LIKE '%' || :name || '%'")
     suspend fun getRecipeByName(name: String): List<Recipe>
 
-    // Insert methods for Recipe, Recommendation, and Meal entities
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRecipe(recipe: Recipe)
 
@@ -27,6 +26,11 @@ interface FoodDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRecommendations(recommendations: List<Recommendation>)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertRecipeHistory(recipeHistory: RecipeHistory)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertRecipeHistories(listOfRecipeHistory: List<RecipeHistory>)
 
     //2 Query utama untuk nampilin Resep di RecipeFragment
 
@@ -40,21 +44,23 @@ interface FoodDao {
     WHERE recipes.mealType = :mealId
     """
     )
-    fun getRecipesByDateAndMealType(mealId: Int): LiveData<List<Recipe>>
+    fun getRecipesByMealType(mealId: Int): LiveData<List<Recipe>>
 
-//    @Query(
-//        """
-//    SELECT DISTINCT recipes.* FROM recipes
-//    INNER JOIN recommendations ON recipes.recipeId = recommendations.recipe_id
-//    WHERE recipes.mealType = :mealId
-//    AND recommendations.date BETWEEN :startDate AND :endDate
-//"""
-//    )
-//    fun getRecipesByDateAndMealType(
-//        mealId: Int,
-//        startDate: Long,
-//        endDate: Long
-//    ): LiveData<List<Recipe>>
+    @Query(
+        """
+    SELECT DISTINCT recipes.* FROM recipes
+    WHERE recipes.mealType = :mealId
+    """
+    )
+    fun getAllRecipesByMealType(mealId: Int): LiveData<List<Recipe>>
+
+    @Query(
+        """
+    SELECT DISTINCT recipes.* FROM recipes
+    INNER JOIN recommendations ON recipes.recipeId = recommendations.recipe_id
+    """
+    )
+    fun getAllRecipes(): LiveData<List<Recipe>>
 
     //COBA COBA QUERY BUAT UPDATE RECOMMENDATION
     @Query(
@@ -70,9 +76,9 @@ interface FoodDao {
     @Query("""
         SELECT * FROM recommendations
         INNER JOIN recipes ON recommendations.recipe_id = recipes.recipeId
-        WHERE mealType = :mealId ORDER BY date ASC
+        WHERE mealType = :mealId AND userId = :userId ORDER BY date ASC
     """)
-    fun getRecommendationsByMealIdSortedAscending(mealId: Int): LiveData<List<Recommendation>>
+    fun getRecommendationsByMealIdSortedAscending(mealId: Int, userId: Int): LiveData<List<Recommendation>>
 
     @Query("SELECT * FROM recommendations ORDER BY date ASC")
     fun getAllRecommendationByDate(): LiveData<List<Recommendation>>
@@ -139,9 +145,9 @@ interface FoodDao {
             SELECT SUM(calories) FROM recipes
             INNER JOIN recommendations ON recipes.recipeId = recommendations.recipe_id 
             WHERE mealType = :mealType 
-            AND isSelected = 2"""
+            AND isSelected = 2 AND userId = :userId"""
     )
-    suspend fun getTotalCaloriesByMealType(mealType: Int): Int
+    suspend fun getTotalCaloriesByMealType(mealType: Int, userId: Int): Int
 
     //Query untuk menentukan jumlah rekomendasi yang dipilih berdasarkan meal type (Yang bener)
     //Kalau ada waktu, ubah yang di Dialog2 untuk pakai query ini juga
@@ -149,8 +155,9 @@ interface FoodDao {
         SELECT COUNT(*) FROM recommendations 
         INNER JOIN recipes ON recommendations.recipe_id = recipes.recipeId
         WHERE isSelected = 2 AND mealType = :mealType
+        AND userId = :userId
     """)
-    suspend fun getSelectedRecipeCountUsingMealType(mealType: Int): Int
+    suspend fun getSelectedRecipeCountUsingMealType(mealType: Int, userId: Int): Int
 
     @Query(
         """
@@ -162,9 +169,10 @@ interface FoodDao {
         FROM recipes
         INNER JOIN recommendations ON recipes.recipeId = recommendations.recipe_id
         WHERE recommendations.isSelected = 2
+        AND userId = :userId
         """
     )
-    suspend fun getNutritionSums(): NutritionSum
+    suspend fun getNutritionSums(userId: Int): NutritionSum
 
     @Query(
         """
@@ -207,21 +215,22 @@ interface FoodDao {
     """)
     fun getConsumedRecipesByMealType(mealType: Int): LiveData<List<Recipe>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertRecipeHistory(recipeHistory: RecipeHistory)
+    @Query("SELECT * FROM consumed_recipes WHERE user_id = :userId ORDER BY consumed_time ASC")
+    fun getRecipeHistorySortedAscending(userId: Int): LiveData<List<RecipeHistory>>
 
-    @Query("SELECT * FROM consumed_recipes ORDER BY consumed_date DESC")
-    fun getRecipeHistorySortedAscending(): LiveData<List<RecipeHistory>>
+    @Query("SELECT * FROM consumed_recipes WHERE user_id = :userId")
+    suspend fun getRecipeHistoryById(userId: Int): List<RecipeHistory>
 
     @Query(
         """
-            SELECT SUM(calories) FROM recipes
-            INNER JOIN recommendations ON recipes.recipeId = recommendations.recipe_id 
-            WHERE mealType = :mealType 
-            AND isSelected = 3
-        """
+    SELECT SUM(recipes.calories) FROM recipes
+    INNER JOIN consumed_recipes ON recipes.recipeId = consumed_recipes.recipe_id 
+    WHERE recipes.mealType = :mealType 
+    AND consumed_recipes.user_id = :userId  
+    """
     )
-    suspend fun getTotalCaloriesByMealTypeHistory(mealType: Int): Int
+    suspend fun getTotalCaloriesByMealTypeHistory(mealType: Int, userId: Int): Int
+
 
     @Query(
         """
@@ -253,5 +262,50 @@ interface FoodDao {
 
     @Query("SELECT  * FROM recommendations WHERE isSelected = -1")
     suspend fun getAllInactiveRecommendations(): List<Recommendation>
+
+    @Query("SELECT recipeId FROM recipes WHERE mealType = :mealType")
+    suspend fun getRecipeIdsByMealType(mealType: Int): List<Int>
+
+    @Query("SELECT * FROM recommendations WHERE recommendationId = :recommendationId")
+    suspend fun getRecommendationById(recommendationId: Int): Recommendation?
+
+    @Query("SELECT * FROM recommendations WHERE userId = :userId")
+    fun getRecommendationsByUserId(userId: Int): LiveData<List<Recommendation>>
+
+    @Query("SELECT * FROM recipes WHERE name LIKE '%' || :name || '%' AND mealType = :mealType")
+    suspend fun getRecipesByNameAndMealType(name: String, mealType: Int): List<Recipe>
+
+    @Query("""
+    SELECT recommendations.* FROM recommendations
+    JOIN recipes ON recommendations.recipe_id = recipes.recipeId
+    WHERE recipes.mealType = :mealType
+""")
+    suspend fun getRecommendationsByMealId(mealType: Int): List<Recommendation>
+
+    @Query("""
+        SELECT recipe_id FROM recipes
+        INNER JOIN recommendations ON recipes.recipeId = recommendations.recipe_id
+        WHERE  isSelected = 2
+    """)
+    suspend fun getAllSelectedRecipeIds(): List<Int>
+
+    @Query("""
+    UPDATE recommendations 
+    SET isSelected = 0
+    WHERE isSelected = 2
+""")
+    suspend fun deselectSelectedRecipes()
+
+    @Query("SELECT COUNT(*) FROM Recipes")
+    suspend fun checkIfRecipeDatabaseIsFilled(): Int
+
+    @Query("SELECT COUNT(*) FROM recommendations")
+    suspend fun checkIfRecommendationDatabaseIsFilled(): Int
+
+
+    @Query("DELETE FROM consumed_recipes")
+    suspend fun deleteRecipeHistories()
+
+
 
 }

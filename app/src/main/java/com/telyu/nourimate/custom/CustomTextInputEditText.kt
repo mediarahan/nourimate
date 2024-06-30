@@ -78,6 +78,7 @@ class CustomTextInputEditText : TextInputEditText, View.OnTouchListener {
                 null
             }
         }
+
         if (id == R.id.verifyEditText) {
             error = if (s.isEmpty()){
                 context.getString(R.string.errorEmptyCode)

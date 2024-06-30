@@ -2,11 +2,15 @@ package com.telyu.nourimate.data.local.models
 
 import android.os.Parcelable
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 import java.util.Date
 
-@Entity(tableName = "weight_tracks")
+@Entity(
+    tableName = "weight_tracks",
+    indices = [Index(value = ["userId"], unique = true)]
+)
 @Parcelize
 data class WeightTrack(
     @PrimaryKey(autoGenerate = true)
@@ -18,8 +22,7 @@ data class WeightTrack(
     val endWeight: Int,
     val editCurrentWeightDate: Date,
     val userId: Int = 0,
-
-    ): Parcelable
+): Parcelable
 
 //0 = inactive
 //1 = maintain weight

@@ -9,6 +9,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
+import com.telyu.nourimate.adapter.recipe.CombinedRecipe
 import com.telyu.nourimate.data.local.models.Detail
 import com.telyu.nourimate.data.local.models.NutritionSum
 import com.telyu.nourimate.data.local.models.Recipe
@@ -16,6 +17,9 @@ import com.telyu.nourimate.data.local.models.Recommendation
 import com.telyu.nourimate.data.local.models.RecommendationRecipe
 import com.telyu.nourimate.data.repository.NourimateRepository
 import com.telyu.nourimate.utils.GeneralUtil
+import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
@@ -28,27 +32,29 @@ class RecipeViewModel(private val repository: NourimateRepository) : ViewModel()
      */
 
     //Untuk menampung hasil search
-    private val _searchResult = MutableLiveData<List<Recipe>>()
-    val searchResult: LiveData<List<Recipe>> get() = _searchResult
+    private val _searchResult = MutableLiveData<List<CombinedRecipe>>()
+    val searchResult: LiveData<List<CombinedRecipe>> = _searchResult
 
     //Digunakan untuk menampilkan data - data terkait pengguna
-    private val _userId = MutableLiveData<Int?>()
-    val userId: LiveData<Int?> = _userId
-
-    private val _profilePicture = MutableLiveData<String?>()
-    val profilePicture: LiveData<String?> = _profilePicture
-
-    private val _userName = MutableLiveData<String?>()
-    val userName: LiveData<String?> = _userName
 
     val userEmail: LiveData<String> = repository.getUserEmail().asLiveData()
 
-    //========== Fungsi ==========
+    //========== Fungsi Search ==========
 
-    fun getRecipeByName(name: String) {
+    fun searchRecipes(query: String, mealType: Int) {
         viewModelScope.launch {
-            val searchResult = repository.getRecipeByName(name)
-            _searchResult.value = searchResult
+            val recipes = repository.getRecipesByNameAndMealType(query, mealType)
+            val recommendations = repository.getRecommendationsByMealId(mealType)
+            val combinedRecipes = combineRecipesWithRecommendations(recipes, recommendations)
+            _searchResult.postValue(combinedRecipes)
+        }
+    }
+
+    private fun combineRecipesWithRecommendations(recipes: List<Recipe>, recommendations: List<Recommendation>): List<CombinedRecipe> {
+        return recipes.mapNotNull { recipe ->
+            recommendations.find { it.recipeId == recipe.recipeId }?.let { recommendation ->
+                CombinedRecipe(recipe, recommendation)
+            }
         }
     }
 
@@ -71,59 +77,107 @@ class RecipeViewModel(private val repository: NourimateRepository) : ViewModel()
         _mealTime.value = mealTime
     }
 
-    private fun getRecipesLiveData(mealType: Int): LiveData<List<Recipe>> {
-        return if (mealType != 0) {
-            repository.getRecipesByDateAndMeal(mealType)
-        } else {
-            MutableLiveData(emptyList())
-        }
+    val breakfastRecipes = MediatorLiveData<List<CombinedRecipe>>()
+    val lunchRecipes = MediatorLiveData<List<CombinedRecipe>>()
+    val dinnerRecipes = MediatorLiveData<List<CombinedRecipe>>()
+
+    private fun setupMediatorLiveData(userId: Int) {
+        val liveDataRecipes = repository.getAllRecipes()
+        val liveDataRecommendations = repository.getRecommendationsByUserId(userId)
+
+        setupMealTypeLiveData(liveDataRecipes, liveDataRecommendations, 1, breakfastRecipes)
+        setupMealTypeLiveData(liveDataRecipes, liveDataRecommendations, 2, lunchRecipes)
+        setupMealTypeLiveData(liveDataRecipes, liveDataRecommendations, 3, dinnerRecipes)
     }
 
-    val breakfastRecipes: LiveData<List<Recipe>> = getRecipesLiveData(1)
-    val lunchRecipes: LiveData<List<Recipe>> = getRecipesLiveData(2)
-    val dinnerRecipes: LiveData<List<Recipe>> = getRecipesLiveData(3)
+    private fun setupMealTypeLiveData(
+        liveDataRecipes: LiveData<List<Recipe>>,
+        liveDataRecommendations: LiveData<List<Recommendation>>,
+        mealType: Int,
+        mealLiveData: MediatorLiveData<List<CombinedRecipe>>
+    ) {
+        mealLiveData.addSource(liveDataRecipes) { recipes -> combineData(recipes, liveDataRecommendations.value, mealType) }
+        mealLiveData.addSource(liveDataRecommendations) { recommendations -> combineData(liveDataRecipes.value, recommendations, mealType) }
+    }
+
+    private fun combineData(
+        recipes: List<Recipe>?,
+        recommendations: List<Recommendation>?,
+        mealType: Int
+    ) {
+        if (recipes == null || recommendations == null) {
+            if (recipes == null) { Log.w("HUHAH", "Recipes list is null") }
+            if (recommendations == null) { Log.w("HUHAH", "Recommendations list is null") }
+            return
+        }
+
+        val combinedList = recipes.filter { it.mealType == mealType }
+            .mapNotNull { recipe ->
+                recommendations.find { it.recipeId == recipe.recipeId }?.let {
+                    CombinedRecipe(recipe, it)
+                }
+            }
+
+        when (mealType) {
+            1 -> { breakfastRecipes.value = combinedList }
+            2 -> { lunchRecipes.value = combinedList }
+            3 -> { dinnerRecipes.value = combinedList }
+        }
+    }
 
     private val _recommendationRecipes = MediatorLiveData<List<RecommendationRecipe>>()
     val weeklyRecipes: LiveData<List<RecommendationRecipe>> = _recommendationRecipes
 
     init {
         _recommendationRecipes.addSource(_mealType) { mealTypeId ->
-            Log.d("Debug", "Meal Type Changed: $mealTypeId")
             loadData(mealTypeId)
+        }
+        viewModelScope.launch {
+            repository.getUserId().collect { id ->
+                setupMediatorLiveData(id)
+            }
         }
     }
 
     private fun loadData(mealTypeId: Int) {
-        val startDate: Long = GeneralUtil.getDateToday(0, 0, 0, 0)
-        val endDate: Long = GeneralUtil.getDateNextWeek()
-        Log.d("Debug", "Loading data for Meal Type: $mealTypeId from $startDate to $endDate")
+        viewModelScope.launch {
+            val userId = repository.getUserId().first()
+            val startDate: Long = GeneralUtil.getDateToday(0, 0, 0, 0)
+            val endDate: Long = GeneralUtil.getDateNextWeek()
+            Log.d("Debug", "Loading data for Meal Type: $mealTypeId from $startDate to $endDate")
 
-        val recipesLiveData = repository.getRecipesByDateAndMeal(mealTypeId)
-        val recommendationsLiveData = repository.getRecommendationsByMealIdSortedAscending(mealTypeId)
+            val recipesLiveData = repository.getRecipesByMealType(mealTypeId)
+            val recommendationsLiveData = repository.getRecommendationsByMealIdSortedAscending(mealTypeId, userId)
 
-        _recommendationRecipes.apply {
-            removeSource(recipesLiveData)
-            removeSource(recommendationsLiveData)
-            addSource(recipesLiveData) { recipes ->
-                Log.d("Debug", "Recipes loaded: ${recipes.size}")
-                combineLatestData(recipes, recommendationsLiveData.value)
-            }
-            addSource(recommendationsLiveData) { recommendations ->
-                Log.d("Debug", "Recommendations loaded: ${recommendations.size}")
-                combineLatestData(recipesLiveData.value, recommendations)
+            _recommendationRecipes.apply {
+                removeSource(recipesLiveData)
+                removeSource(recommendationsLiveData)
+                addSource(recipesLiveData) { recipes ->
+                    Log.d("Debug", "Recipes loaded: ${recipes.size}")
+                    combineLatestData(recipes, recommendationsLiveData.value)
+                }
+                addSource(recommendationsLiveData) { recommendations ->
+                    Log.d("Debug", "Recommendations loaded: ${recommendations.size}")
+                    combineLatestData(recipesLiveData.value, recommendations)
+                }
             }
         }
     }
 
 
-
     private fun combineLatestData(recipes: List<Recipe>?, recommendations: List<Recommendation>?) {
         if (recipes == null || recommendations == null) {
-            Log.d("Debug", "One of the lists is null -> Recipes: $recipes, Recommendations: $recommendations")
+            Log.d(
+                "Debug",
+                "One of the lists is null -> Recipes: $recipes, Recommendations: $recommendations"
+            )
             return
         }
 
-        Log.d("Debug", "Combining data: Recipes (${recipes.size}), Recommendations (${recommendations.size})")
+        Log.d(
+            "Debug",
+            "Combining data: Recipes (${recipes.size}), Recommendations (${recommendations.size})"
+        )
         val recommendationRecipes = mutableListOf<RecommendationRecipe>()
         val groupByDate = recipes.groupBy { recipe ->
             recommendations.find { it.recipeId == recipe.recipeId }?.date
@@ -142,9 +196,8 @@ class RecipeViewModel(private val repository: NourimateRepository) : ViewModel()
         Log.d("Debug", "Combined list size: ${recommendationRecipes.size}")
     }
 
-
-    suspend fun getRecommendationByRecipeAndMealId(recipeId: Int, mealId: Int): Recommendation? {
-        return repository.getRecommendationByRecipeAndMealId(recipeId, mealId)
+    suspend fun getRecommendationById(recommendationId: Int): Recommendation? {
+        return repository.getRecommendationById(recommendationId)
     }
 
 
@@ -165,7 +218,7 @@ class RecipeViewModel(private val repository: NourimateRepository) : ViewModel()
         return repository.getRecommendationByRecipeIdAndMealType(recipeId, mealType)
     }
 
-    //Digunakan di com.telyu.nourimate.custom.RecipeDialogMeal dan RecipeDialogMealTutorial
+    //=============== DialogMeal dan DialogPilihResep ===============
     //2 query ini buat dialog
     fun getAllSelectedRecommendationIdsByMealId(mealType: Int): LiveData<List<Int>> {
         return repository.getAllSelectedRecommendationIdsByMealId(mealType)
@@ -230,7 +283,8 @@ class RecipeViewModel(private val repository: NourimateRepository) : ViewModel()
     private val maxNutritionsLiveData: LiveData<List<Int>> = selectedMeal.switchMap { meal ->
         userDetails.switchMap { detail ->
             liveData {
-                val gender = if (detail.gender == "Laki-laki") true else if (detail.gender == "Perempuan") false else null
+                val gender =
+                    if (detail.gender == "Laki-laki") true else if (detail.gender == "Perempuan") false else null
                 val age = GeneralUtil.calculateAge(detail.dob)
 
                 val akei = GeneralUtil.calculateAKEi(detail.height?.toInt() ?: 9999, gender!!, age)
@@ -250,7 +304,14 @@ class RecipeViewModel(private val repository: NourimateRepository) : ViewModel()
                     val fatNeedsOnMealTime = (it.fat).toInt()
                     val carbsNeedsOnMealTime = (it.carbohydrates).toInt()
 
-                    emit(listOf(calorieNeedsOnMealTime, proteinNeedsOnMealTime, fatNeedsOnMealTime, carbsNeedsOnMealTime))
+                    emit(
+                        listOf(
+                            calorieNeedsOnMealTime,
+                            proteinNeedsOnMealTime,
+                            fatNeedsOnMealTime,
+                            carbsNeedsOnMealTime
+                        )
+                    )
                 } ?: emit(listOf(0, 0, 0, 0))
             }
         }
@@ -275,7 +336,10 @@ class RecipeViewModel(private val repository: NourimateRepository) : ViewModel()
 
     private fun performCheck(nutritionSum: NutritionSum, maxNutritions: List<Int>): Boolean {
         Log.d("NutritionCheck", "Checking nutritional sums against max values")
-        Log.d("NutritionCheck", "Calories: ${nutritionSum.totalCalories} / Max: ${maxNutritions[0]}")
+        Log.d(
+            "NutritionCheck",
+            "Calories: ${nutritionSum.totalCalories} / Max: ${maxNutritions[0]}"
+        )
         Log.d("NutritionCheck", "Protein: ${nutritionSum.totalProtein} / Max: ${maxNutritions[1]}")
         Log.d("NutritionCheck", "Fat: ${nutritionSum.totalFat} / Max: ${maxNutritions[2]}")
         Log.d("NutritionCheck", "Carbs: ${nutritionSum.totalCarbs} / Max: ${maxNutritions[3]}")
@@ -304,24 +368,38 @@ class RecipeViewModel(private val repository: NourimateRepository) : ViewModel()
     //=============== Untuk di Dialog ===============
 
     //Digunakan di RecipeFragment. Semua fungsi dibawah user-related
-    fun getUserIdByEmail(email: String) {
-        viewModelScope.launch {
-            val id = repository.getUserIdByEmail(email)
-            _userId.value = id
-        }
-    }
 
-    fun getUserNameByEmail(email: String) {
-        viewModelScope.launch {
-            val name = repository.getUserNameByEmail(email)
-            _userName.value = name
-        }
-    }
+    private val userId = repository.getUserId().asLiveData()
 
-    fun getProfpicById(id: Int) {
-        viewModelScope.launch {
+    private var _username = MutableLiveData<String>()
+    val username: LiveData<String> = _username
+
+    val profpic: LiveData<String> = userId.switchMap { id ->
+        liveData {
             val profpic = repository.getProfpicById(id)
-            _profilePicture.value = profpic
+            if (profpic != null) {
+                emit(profpic)
+            }
         }
     }
+
+    fun getUsername() {
+        viewModelScope.launch {
+            val username = repository.getUsername().first()
+            _username.value = username
+        }
+    }
+
+
+
+    private val _recipeTransitionPreference = MutableLiveData<Boolean>()
+    val recipeTransitionPreference = _recipeTransitionPreference
+
+    fun getRecipeTransitionPreference() {
+        viewModelScope.launch {
+            val preference = repository.getRecipeTransitionPreference().first()
+            _recipeTransitionPreference.value = preference
+        }
+    }
+
 }

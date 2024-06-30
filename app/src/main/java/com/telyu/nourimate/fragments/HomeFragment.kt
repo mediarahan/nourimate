@@ -3,10 +3,14 @@ package com.telyu.nourimate.fragments
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.ScaleAnimation
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -23,6 +27,7 @@ import java.util.Calendar
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
+    private var continueAnimating = true
 
     private val viewModel by activityViewModels<HomeViewModel> {
         ViewModelFactory.getInstance(
@@ -37,8 +42,18 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         setupGlassUI()
         subscribeGlassUI()
+
+        val selectedMeal = arguments?.getInt("selectedMeal", -1) ?: -1
+        if (selectedMeal != -1) {
+            binding.scrollhome.post {
+                scrollToView(selectedMeal)
+                simulateButtonClickAnimation(selectedMeal)
+            }
+        }
         return binding.root
+
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -115,12 +130,12 @@ class HomeFragment : Fragment() {
     private fun bindIdealWeightAndSize() {
         viewModel.currentValues.observe(viewLifecycleOwner) {values ->
             binding.weightCurrentTextView.text = "Current Weight\n" + values.first.toString() + "kg"
-            binding.waistCurrentTextView.text = "Current Size\n" + values.second.toString() + "cm"
+            binding.waistCurrentTextView.text = "Current Waist\n" + values.second.toString() + "cm"
         }
 
         viewModel.idealValues.observe(viewLifecycleOwner) { values ->
             binding.weightIdealTextView.text = "Ideal Weight\n" + values.first.toString() + "kg"
-            binding.waistIdealTextView.text = "Waist Size\n"+ values.second.toString() + "cm"
+            binding.waistIdealTextView.text = "Max Waist\n"+ values.second.toString() + "cm"
 
         }
     }
@@ -230,7 +245,11 @@ class HomeFragment : Fragment() {
 
     //========== Dialog Informasi Nutrisi ==========
     enum class UserNutritionStatus {
-        EXCESS, DEFICIT, NORMAL
+        EXCESS, DEFICIT
+    }
+
+    enum class WaterIntakeStatus {
+        DEFICIT, EXCESS
     }
 
     private fun getCurrentMealTime(): String {
@@ -245,11 +264,15 @@ class HomeFragment : Fragment() {
 
     private fun checkNutrientStatus(currentNutrientValue: Int, requiredNutrientValue: Int): UserNutritionStatus {
         return when {
-            currentNutrientValue < requiredNutrientValue * 0.8 -> UserNutritionStatus.DEFICIT
-            currentNutrientValue <= requiredNutrientValue -> UserNutritionStatus.NORMAL
+            currentNutrientValue < requiredNutrientValue -> UserNutritionStatus.DEFICIT
             else -> UserNutritionStatus.EXCESS
         }
     }
+
+    private fun checkWaterIntakeStatus(consumedWater: Int): WaterIntakeStatus {
+        return if (consumedWater < 1500) WaterIntakeStatus.DEFICIT else WaterIntakeStatus.EXCESS
+    }
+
 
     private var nutrientStatusMap = mutableMapOf<String, UserNutritionStatus>()
 
@@ -263,8 +286,8 @@ class HomeFragment : Fragment() {
         val drawableResId = when {
             status == UserNutritionStatus.DEFICIT && isCriticalTime -> R.drawable.infored
             status == UserNutritionStatus.EXCESS -> R.drawable.infored
-            status == UserNutritionStatus.NORMAL -> R.drawable.infogreen
-            else -> R.drawable.info
+            status == UserNutritionStatus.DEFICIT -> R.drawable.info
+            else -> R.drawable.infogreen
         }
 
         imageView.setImageResource(drawableResId)
@@ -285,6 +308,9 @@ class HomeFragment : Fragment() {
             imageInfoCarbs.setOnClickListener {
                 showNutritionDialog("Carbs")
             }
+            infowaterImageView.setOnClickListener {
+                showNutritionDialog("Water")
+            }
         }
     }
 
@@ -296,6 +322,15 @@ class HomeFragment : Fragment() {
                 updateButton(imageInfoFat, "Fat", nutritionSum.totalFat.toInt(), maxNutritions[2])
                 updateButton(imageInfoCarbs, "Carbs", nutritionSum.totalCarbs.toInt(), maxNutritions[3])
             }
+        }
+
+        viewModel.waterIntake.observe(viewLifecycleOwner) { waterIntake ->
+            val waterStatus = checkWaterIntakeStatus(waterIntake)
+            binding.infowaterImageView.setImageResource(
+                when (waterStatus) {
+                    WaterIntakeStatus.DEFICIT -> R.drawable.infored
+                    WaterIntakeStatus.EXCESS -> R.drawable.info
+                } )
         }
     }
 
@@ -392,34 +427,31 @@ class HomeFragment : Fragment() {
 
     //Untuk nampilin nama dan profpic
     private fun displayProfpic() {
-        viewModel.userEmail.observe(viewLifecycleOwner) { userEmail ->
-            userEmail.let {
-                viewModel.getUserIdByEmail(it)
+
+        viewModel.getUsername()
+        viewModel.username.observe(viewLifecycleOwner) { name ->
+            name?.let {
+                val truncatedUserName = truncateUserName(it, wordLimit = 1, maxChars = 8)
+                binding.usernameTextView.text = truncatedUserName
             }
         }
 
-        viewModel.userId.observe(viewLifecycleOwner) { userId ->
-            if (userId != null) {
-                viewModel.getProfpicById(userId)
-                viewModel.getUserNameById(userId)
-            }
-        }
-
-        viewModel.profilePicture.observe(viewLifecycleOwner) { uriString ->
+        viewModel.profpic.observe(viewLifecycleOwner) { uriString ->
             uriString?.let { uriStr ->
                 val uri = Uri.parse(uriStr)
                 binding.profileImageView.setImageURI(uri)
             }
-
-            viewModel.userName.observe(viewLifecycleOwner) { userName ->
-                binding.usernameTextView.text = userName + "!"
-            }
-
-            viewModel.userOngoingProgramAndMessage.observe(viewLifecycleOwner) { programMessages ->
-                binding.programMessageTextView.text = programMessages.first
-                binding.weightMessageTextView.text = programMessages.second
-            }
         }
+
+        viewModel.userOngoingProgramAndMessage.observe(viewLifecycleOwner) { programMessages ->
+            binding.programMessageTextView.text = programMessages.first
+            binding.weightMessageTextView.text = programMessages.second
+        }
+    }
+
+    private fun truncateUserName(userName: String, wordLimit: Int = 1, maxChars: Int = 8): String {
+        val words = userName.split(" ").take(wordLimit).joinToString(" ")
+        return if (words.length > maxChars) words.substring(0, maxChars) else words
     }
 
     private fun setStatusBarColor(color: Int) {
@@ -432,5 +464,49 @@ class HomeFragment : Fragment() {
             true // Set true or false depending on the navigation bar icons' color
 
         window.statusBarColor = color
+    }
+
+    private fun scrollToView(selectedMeal: Int) {
+        val targetView = when (selectedMeal) {
+            1 -> binding.rectanglehomemealbreakfast
+            2 -> binding.rectanglehomemeallunch
+            3 -> binding.rectanglehomemealdinner
+            else -> binding.rectanglehomemealbreakfast
+        }
+        binding.scrollhome.smoothScrollTo(0, targetView.top)
+    }
+
+    fun simulateButtonClickAnimation(selectedMeal: Int) {
+        val button = when (selectedMeal) {
+            1 -> binding.rectanglehomemealbreakfast
+            2 -> binding.rectanglehomemeallunch
+            3 -> binding.rectanglehomemealdinner
+            else -> binding.rectanglehomemealbreakfast
+        }
+
+        val scaleAnimation = ScaleAnimation(
+            1.0f, 0.9f, 1.0f, 0.9f,
+            Animation.RELATIVE_TO_SELF, 0.5f,
+            Animation.RELATIVE_TO_SELF, 0.5f
+        ).apply {
+            duration = 100
+            repeatMode = Animation.REVERSE
+            repeatCount = 1
+        }
+
+        scaleAnimation.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {}
+            override fun onAnimationEnd(animation: Animation?) {
+                if (continueAnimating) {
+                    // Post the next animation after a delay
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        button.startAnimation(scaleAnimation)
+                    }, 200)  // Adjust delay as needed
+                }
+            }
+            override fun onAnimationRepeat(animation: Animation?) {}
+        })
+
+        button.startAnimation(scaleAnimation)
     }
 }

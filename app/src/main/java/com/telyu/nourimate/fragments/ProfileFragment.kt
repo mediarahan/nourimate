@@ -1,12 +1,20 @@
 package com.telyu.nourimate.fragments
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.ScaleAnimation
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.telyu.nourimate.databinding.FragmentProfileBinding
@@ -14,11 +22,16 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.telyu.nourimate.R
+import com.telyu.nourimate.activities.ChooseProgramActivity
 import com.telyu.nourimate.activities.EditProfpicActivity
 import com.telyu.nourimate.activities.LoginActivity
+import com.telyu.nourimate.activities.SettingActivity
+import com.telyu.nourimate.databinding.CustomLogoutDialogBinding
+import com.telyu.nourimate.databinding.DialogWaistSizePickerBinding
 import com.telyu.nourimate.viewmodels.ProfileViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
 
@@ -26,6 +39,7 @@ import com.telyu.nourimate.viewmodels.ViewModelFactory
 class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
+    private var continueAnimating = true
 
     private val viewModel by viewModels<ProfileViewModel> {
         ViewModelFactory.getInstance(
@@ -44,18 +58,25 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
+
+
+        // Check if arguments indicate we should simulate a button click
+        arguments?.getBoolean("simulateButtonClick", false)?.let {
+            if (it) simulateButtonClickAnimation()
+        }
+
         return binding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setStatusBarColor(ContextCompat.getColor(requireContext(), R.color.color46))
+        setStatusBarColor(ContextCompat.getColor(requireContext(), R.color.color52))
 
-        displayImage()
         setupButtons()
-        getBMIAndName()
         mapBMIAndName()
+        displayImage()
 
         binding.cardViewAddAvatar.setOnClickListener {
             showImageSourceDialog()
@@ -88,14 +109,16 @@ class ProfileFragment : Fragment() {
     private fun launchCamera() {
         ImagePicker.with(this)
             .cameraOnly()
-            .crop()
+            .crop(1f, 1f)  // Set crop aspect ratio to 1:1
+            .maxResultSize(1080, 1080)
             .start(REQUEST_IMAGE_CAPTURE)
     }
 
     private fun launchGallery() {
         ImagePicker.with(this)
             .galleryOnly()
-            .crop()
+            .crop(1f, 1f)  // Set crop aspect ratio to 1:1
+            .maxResultSize(1080, 1080)
             .start(REQUEST_PICK_IMAGE)
     }
 
@@ -107,6 +130,12 @@ class ProfileFragment : Fragment() {
             when (requestCode) {
                 REQUEST_IMAGE_CAPTURE, REQUEST_PICK_IMAGE -> {
                     data?.data?.let { uri ->
+                        // Gunakan Glide untuk memuat gambar dengan crop pusat
+                        Glide.with(this)
+                            .load(uri)
+                            .centerCrop()  // Memastikan gambar mengisi CircleImageView sepenuhnya
+                            .into(binding.imageViewAvatar)
+
                         openEditProfpicActivity(uri)
                     }
                 }
@@ -135,44 +164,9 @@ class ProfileFragment : Fragment() {
         startActivityForResult(intent, EDIT_PROFILE_PIC_REQUEST)
     }
 
-    private fun refreshProfilePicture() {
-        viewModel.profilePicture.observe(viewLifecycleOwner) { uriString ->
-            uriString?.let { uriStr ->
-                val uri = Uri.parse(uriStr)
-                binding.imageViewAvatar.setImageURI(uri)
-            }
-        }
-    }
-
     private fun showLogoutConfirmationDialog() {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Logout")
-            .setMessage("Are you sure you want to logout?")
-            .setPositiveButton("Logout") { _, _ ->
-                // Perform logout action, for example navigate to LoginActivity
-                viewModel.onSignOutButtonClick()
-                viewModel.logout()
-                startActivity(Intent(requireContext(), LoginActivity::class.java))
-                requireActivity().finish() // Finish current activity to prevent user from going back
-            }
-            .setNegativeButton("Cancel") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .create()
-            .show()
-    }
-
-    private fun getBMIAndName() {
-        viewModel.userEmail.observe(viewLifecycleOwner) {userEmail ->
-            userEmail?.let {
-                viewModel.getUserIdByEmail(it)
-                viewModel.getUserNameByEmail(it)
-            }
-        }
-
-        viewModel.userId.observe(viewLifecycleOwner) {userId ->
-            viewModel.getBMIById(userId)
-        }
+        val dialogFragment = LogoutDialogFragment()
+        dialogFragment.show(parentFragmentManager, "logoutDialog")
     }
 
     private fun getBmiBackgroundResource(bmi: Int): Int {
@@ -186,20 +180,25 @@ class ProfileFragment : Fragment() {
 
     private fun mapBMIAndName() {
         viewModel.BMI.observe(viewLifecycleOwner) { userBMI ->
-            userBMI?.let {
-                val formattedBMI = it.toInt()
-                binding.bmiResultTextView.text = "Body Mass Index: $formattedBMI"
-                val bmiBackground = getBmiBackgroundResource(formattedBMI)
+            val formattedBMI = String.format("%.2f", userBMI)
+            binding.bmiResultTextView.text = "Body Mass Index: $formattedBMI"
+
+            val bmiBackground = userBMI?.toInt()?.let { getBmiBackgroundResource(it) }
+            if (bmiBackground != null) {
                 binding.bmiResultTextView.setBackgroundResource(bmiBackground)
             }
         }
-        viewModel.userName.observe(viewLifecycleOwner) { userName ->
-            userName?.let {
+
+        viewModel.getUsername()
+        viewModel.username.observe(viewLifecycleOwner) { name ->
+            Log.d("ProfileFragment", "Username: $name")
+            name?.let {
                 val truncatedUserName = truncateUserName(it, wordLimit = 1, maxChars = 8)
                 binding.nameTextView.text = truncatedUserName
             }
         }
     }
+
 
     private fun truncateUserName(userName: String, wordLimit: Int = 1, maxChars: Int = 8): String {
         val words = userName.split(" ").take(wordLimit).joinToString(" ")
@@ -207,13 +206,8 @@ class ProfileFragment : Fragment() {
     }
 
     private fun displayImage() {
-        viewModel.userId.observe(viewLifecycleOwner) {userId ->
-            if (userId != null) {
-                viewModel.getProfpicById(userId)
-            }
-        }
-
-        viewModel.profilePicture.observe(viewLifecycleOwner) { uriString ->
+        viewModel.profpic.observe(viewLifecycleOwner) { uriString ->
+            Log.d("ProfileFragment", "Image URI: $uriString")
             uriString?.let { uriStr ->
                 val uri = Uri.parse(uriStr)
                 binding.imageViewAvatar.setImageURI(uri)
@@ -224,12 +218,7 @@ class ProfileFragment : Fragment() {
     private fun setupButtons() {
         // Handle click on settings icon
         binding.settingsIcon.setOnClickListener {
-            val settingFragment = SettingFragment()
-            requireActivity().supportFragmentManager.beginTransaction().apply {
-                replace(R.id.fragmentContainer, settingFragment)
-                addToBackStack(null)
-                commit()
-            }
+            startActivity(Intent(requireContext(), SettingActivity::class.java))
         }
 
         // Handle click on logout icon
@@ -238,6 +227,15 @@ class ProfileFragment : Fragment() {
         }
 
         // Implementasi event click untuk tombol Profile
+        binding.profileButton.setOnClickListener {
+            // Kode untuk menuju ke EditProfileFragment
+            val editProfileFragment = UserDetailFragment()
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fragmentContainer, editProfileFragment)
+                addToBackStack(null)
+                commit()
+            }
+        }
         binding.profileIcon.setOnClickListener {
             // Kode untuk menuju ke EditProfileFragment
             val editProfileFragment = UserDetailFragment()
@@ -249,6 +247,15 @@ class ProfileFragment : Fragment() {
         }
 
         // Implementasi event click untuk tombol Account
+        binding.accountButton.setOnClickListener {
+            // Kode untuk menuju ke AccountFragment
+            val accountFragment = AccountFragment()
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fragmentContainer, accountFragment)
+                addToBackStack(null)
+                commit()
+            }
+        }
         binding.accountIcon.setOnClickListener {
             // Kode untuk menuju ke AccountFragment
             val accountFragment = AccountFragment()
@@ -260,6 +267,16 @@ class ProfileFragment : Fragment() {
         }
 
         // Implementasi event click untuk tombol History
+        binding.historyButton.setOnClickListener {
+            // Kode untuk menuju ke AccountFragment
+            continueAnimating = false
+            val historyFragment = HistoryFragment()
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fragmentContainer, historyFragment)
+                addToBackStack(null)
+                commit()
+            }
+        }
         binding.historyIcon.setOnClickListener {
             // Kode untuk menuju ke AccountFragment
             val historyFragment = HistoryFragment()
@@ -271,6 +288,15 @@ class ProfileFragment : Fragment() {
         }
 
         // Implementasi event click untuk tombol Community
+        binding.communityButton.setOnClickListener {
+            // Kode untuk menuju ke CommunityFragment
+            val communityFragment = CommunityFragment()
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fragmentContainer, communityFragment)
+                addToBackStack(null)
+                commit()
+            }
+        }
         binding.communityIcon.setOnClickListener {
             // Kode untuk menuju ke CommunityFragment
             val communityFragment = CommunityFragment()
@@ -282,6 +308,15 @@ class ProfileFragment : Fragment() {
         }
 
         // Implementasi event click untuk tombol FAQ
+        binding.faqButton.setOnClickListener {
+            // Kode untuk menuju ke FaqFragment
+            val faqFragment = FaqFragment()
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fragmentContainer, faqFragment)
+                addToBackStack(null)
+                commit()
+            }
+        }
         binding.faqIcon.setOnClickListener {
             // Kode untuk menuju ke FaqFragment
             val faqFragment = FaqFragment()
@@ -292,5 +327,35 @@ class ProfileFragment : Fragment() {
             }
         }
 
+
+    }
+
+    fun simulateButtonClickAnimation() {
+        val button = binding.historyButton ?: return
+
+        val scaleAnimation = ScaleAnimation(
+            1.0f, 0.9f, 1.0f, 0.9f,
+            Animation.RELATIVE_TO_SELF, 0.5f,
+            Animation.RELATIVE_TO_SELF, 0.5f
+        ).apply {
+            duration = 100
+            repeatMode = Animation.REVERSE
+            repeatCount = 1
+        }
+
+        scaleAnimation.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {}
+            override fun onAnimationEnd(animation: Animation?) {
+                if (continueAnimating) {
+                    // Post the next animation after a delay
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        button.startAnimation(scaleAnimation)
+                    }, 200)  // Adjust delay as needed
+                }
+            }
+            override fun onAnimationRepeat(animation: Animation?) {}
+        })
+
+        button.startAnimation(scaleAnimation)
     }
 }

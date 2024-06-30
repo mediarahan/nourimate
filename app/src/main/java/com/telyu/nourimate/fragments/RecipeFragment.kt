@@ -1,5 +1,6 @@
 package com.telyu.nourimate.fragments
 
+import android.animation.Animator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.net.Uri
@@ -9,14 +10,22 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
+import android.animation.ObjectAnimator
+import android.animation.AnimatorListenerAdapter
+import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.telyu.nourimate.R
+import com.telyu.nourimate.adapter.recipe.CombinedRecipe
 import com.telyu.nourimate.adapter.recipe.RecipeAdapter
+import com.telyu.nourimate.adapter.recipe.RecipeAdapter2
 import com.telyu.nourimate.adapter.recipe.RecommendationRecipeAdapter
+import com.telyu.nourimate.custom.BottomMarginItemDecoration
 import com.telyu.nourimate.data.local.FakeFoodData
 import com.telyu.nourimate.data.local.db.FoodDatabase
 import com.telyu.nourimate.data.local.models.Recipe
@@ -31,11 +40,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 //this code needs lots of fixes, but it'll have to do for now.
-class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, RecommendationRecipeAdapter.OnAddClickListener {
+class RecipeFragment : Fragment() {
 
     private lateinit var binding: FragmentRecipeBinding
-    private val recipeAdapter = RecipeAdapter(this)
-    private val weeklyRecipeAdapter = RecommendationRecipeAdapter(this)
+    private val weeklyRecipeAdapter = RecommendationRecipeAdapter()
+    private lateinit var breakfastRecipeAdapter: RecipeAdapter2
+    private lateinit var lunchRecipeAdapter: RecipeAdapter2
+    private lateinit var dinnerRecipeAdapter: RecipeAdapter2
+
 
     private val viewModel by viewModels<RecipeViewModel> {
         ViewModelFactory.getInstance(
@@ -54,12 +66,14 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        fillDatabaseWithFakeData()
+
+        setStatusBarColor(ContextCompat.getColor(requireContext(), R.color.color16))
 
         //supaya ilang dulu
         binding.radioGroupMealtype.visibility = View.GONE
         binding.searchBar.visibility = View.GONE
 
+        setupRecyclerViewAdapter()
         setupRecyclerView()
         displayUserNameAndProfpic()
         setupSearchBarAndSearchView()
@@ -68,65 +82,166 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
         selectMealType()
         selectMealTime()
 
-        viewModel.weeklyRecipes.observe(viewLifecycleOwner) { recipes ->
-            weeklyRecipeAdapter.submitList(recipes)
-            Log.d("Debug", "RecyclerView data submitted: ${recipes.size}")
+        //setup choose the food message and selected meal button
+        binding.chooseFoodTextView.visibility = View.GONE
+        binding.noteTextView.visibility = View.GONE
+        binding.selected.visibility = View.GONE
+
+        viewModel.weeklyRecipes.observe(viewLifecycleOwner) {weeklyRecipes ->
+            setupFoodMessageVisibility()
+            weeklyRecipeAdapter.submitList(weeklyRecipes)
         }
 
-        viewModel.searchResult.observe(viewLifecycleOwner) { recipes ->
-            recipeAdapter.submitList(recipes)
+        viewModel.searchResult.observe(viewLifecycleOwner) { combinedRecipes ->
+            when (viewModel.mealType.value) {
+                1 -> breakfastRecipeAdapter.submitList(combinedRecipes)
+                2 -> lunchRecipeAdapter.submitList(combinedRecipes)
+                3 -> dinnerRecipeAdapter.submitList(combinedRecipes)
+                else -> {  }
+            }
         }
+
+        binding.selected.setOnClickListener {
+            showPopupMenu()
+        }
+
+        val bottomMargin = resources.getDimensionPixelSize(R.dimen.recycler_view_bottom_margin)
+        binding.breakfastRecyclerView.addItemDecoration(BottomMarginItemDecoration(bottomMargin))
+        binding.lunchRecyclerView.addItemDecoration(BottomMarginItemDecoration(bottomMargin))
+        binding.dinnerRecyclerView.addItemDecoration(BottomMarginItemDecoration(bottomMargin))
     }
 
-    override fun onAddClick(recipe: Recipe) {
-        CoroutineScope(Dispatchers.Main).launch {
-            val mealType = viewModel.mealType.value
-            val recommendation =
-                viewModel.getRecommendationByRecipeAndMealId(recipe.recipeId, mealType!!)
+    private fun setupFoodMessageVisibility() {
+        binding.chooseFoodTextView.visibility = View.VISIBLE
+        binding.noteTextView.visibility = View.VISIBLE
+    }
 
-            recommendation?.let { rec ->
-                rec.isSelected = 1
-                viewModel.selectRecommendation(rec)
-                Toast.makeText(requireContext(), "Recommendation updated", Toast.LENGTH_SHORT)
-                    .show()
+    private fun animateAddToCart(view: View, photo: String) {
+        val cartLocation = IntArray(2)
+        binding.selected.getLocationOnScreen(cartLocation)
+
+        val drawableResId = view.context.resources.getIdentifier(photo, "drawable", view.context.packageName)
+
+        val flyView = ImageView(context).apply {
+            setImageResource(drawableResId) // Ganti dengan drawable item Anda
+            layoutParams = ViewGroup.LayoutParams(view.width, view.height)
+        }
+        (activity?.window?.decorView as ViewGroup).addView(flyView)
+
+        val startPos = IntArray(2)
+        view.getLocationOnScreen(startPos)
+        flyView.x = startPos[0].toFloat()
+        flyView.y = startPos[1].toFloat()
+
+        val endX = cartLocation[0].toFloat() + binding.selected.width / 2 - view.width / 2
+        val endY = cartLocation[1].toFloat() + binding.selected.height / 2 - view.height / 2
+
+        ObjectAnimator.ofFloat(flyView, "x", endX).apply {
+            duration = 700
+        }.start()
+
+        ObjectAnimator.ofFloat(flyView, "y", endY).apply {
+            duration = 700
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    (activity?.window?.decorView as ViewGroup).removeView(flyView)
+                }
+            })
+        }.start()
+    }
+
+
+    private fun setStatusBarColor(color: Int) {
+        val window = requireActivity().window
+        val insetsController = WindowInsetsControllerCompat(window, window.decorView)
+
+        insetsController.isAppearanceLightStatusBars =
+            true // Set true or false depending on the status bar icons' color
+        insetsController.isAppearanceLightNavigationBars =
+            true // Set true or false depending on the navigation bar icons' color
+
+        window.statusBarColor = color
+    }
+
+    private fun setupRecyclerViewAdapter() {
+        breakfastRecipeAdapter = RecipeAdapter2 { combinedRecipe, view ->
+            toggleSelection(combinedRecipe)
+            if(combinedRecipe.recommendation.isSelected == 0){
+                animateAddToCart(view, combinedRecipe.recipe.recipePictures)
+            }
+        }
+        lunchRecipeAdapter = RecipeAdapter2 { combinedRecipe, view ->
+            toggleSelection(combinedRecipe)
+            if(combinedRecipe.recommendation.isSelected == 0){
+                animateAddToCart(view, combinedRecipe.recipe.recipePictures)
+            }
+        }
+        dinnerRecipeAdapter = RecipeAdapter2 { combinedRecipe, view ->
+            toggleSelection(combinedRecipe)
+            if(combinedRecipe.recommendation.isSelected == 0){
+                animateAddToCart(view, combinedRecipe.recipe.recipePictures)
             }
         }
     }
 
+    private fun toggleSelection(combinedRecipe: CombinedRecipe) {
+        CoroutineScope(Dispatchers.Main).launch {
+            val recommendation = viewModel.getRecommendationById(combinedRecipe.recommendation.recommendationId)
+            recommendation?.let { rec ->
+                rec.isSelected = if (combinedRecipe.recommendation.isSelected == 0) 1 else 0
+                viewModel.selectRecommendation(rec)
+            }
+
+        }
+    }
+
     private fun setupRecyclerView() {
-        binding.recommendationRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.weeklyRecommendationRecyclerView.layoutManager =
-            LinearLayoutManager(requireContext())
-        binding.recommendationRecyclerView.adapter = recipeAdapter
+        binding.breakfastRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.lunchRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.dinnerRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.weeklyRecommendationRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        binding.breakfastRecyclerView.adapter = breakfastRecipeAdapter
+        binding.lunchRecyclerView.adapter = lunchRecipeAdapter
+        binding.dinnerRecyclerView.adapter = dinnerRecipeAdapter
         binding.weeklyRecommendationRecyclerView.adapter = weeklyRecipeAdapter
     }
 
     private fun selectMealType() {
         binding.radioGroupMealtype.setOnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
+            hideAllDailyRecyclerViews()
+            setupFoodMessageVisibility()
+            val mealId = when (checkedId) {
                 R.id.button_breakfast -> {
-                    viewModel.breakfastRecipes.observe(viewLifecycleOwner) { recipes ->
-                        recipeAdapter.submitList(recipes)
+                    if (!binding.buttonWeekly.isChecked) {
+                        viewModel.breakfastRecipes.observe(viewLifecycleOwner) {
+                            breakfastRecipeAdapter.submitList(it)
+                        }
+                        binding.breakfastRecyclerView.visibility = View.VISIBLE
                     }
+                    1
                 }
                 R.id.button_lunch -> {
-                    viewModel.lunchRecipes.observe(viewLifecycleOwner) { recipes ->
-                        recipeAdapter.submitList(recipes)
+                    if (!binding.buttonWeekly.isChecked) {
+                        viewModel.lunchRecipes.observe(viewLifecycleOwner) {
+                            lunchRecipeAdapter.submitList(it)
+                        }
+                        binding.lunchRecyclerView.visibility = View.VISIBLE
                     }
+                    2
                 }
                 R.id.button_dinner -> {
-                    viewModel.dinnerRecipes.observe(viewLifecycleOwner) { recipes ->
-                        recipeAdapter.submitList(recipes)
+                    if (!binding.buttonWeekly.isChecked) {
+                        viewModel.dinnerRecipes.observe(viewLifecycleOwner) {
+                            dinnerRecipeAdapter.submitList(it)
+                        }
+                        binding.dinnerRecyclerView.visibility = View.VISIBLE
                     }
+                    3
                 }
-                else -> recipeAdapter.submitList(emptyList())
+                else -> 0
             }
-
-            if(binding.buttonWeekly.isChecked) {
-                binding.searchBar.visibility = View.GONE
-            } else {
-                binding.searchBar.visibility = View.VISIBLE
-            }
+            viewModel.setSelectedMealType(mealId)
         }
     }
 
@@ -138,30 +253,35 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
                 else -> "Invalid"
             }
             viewModel.setSelectedMealTime(mealTime)
-
             binding.radioGroupMealtype.visibility = View.VISIBLE
-
-            when (checkedId) {
-                R.id.button_daily -> {
-                    showDailyRecyclerView()
-                    binding.searchBar.visibility = View.GONE
-                }
-                R.id.button_weekly -> {
-                    showWeeklyRecyclerView()
-                    binding.searchBar.visibility = View.GONE
-                }
-            }
+            updateRecyclerViewVisibility(mealTime)
         }
     }
 
-    private fun showDailyRecyclerView() {
-        binding.recommendationRecyclerView.visibility = View.VISIBLE
-        binding.weeklyRecommendationRecyclerView.visibility = View.GONE
+    private fun updateRecyclerViewVisibility(mealTime: String) {
+        if (mealTime == "Daily") {
+            showDailyRecyclerViewsBasedOnMealType()
+            binding.weeklyRecommendationRecyclerView.visibility = View.GONE
+            binding.searchBar.visibility = View.VISIBLE
+            binding.selected.visibility = View.VISIBLE
+        } else {
+            hideAllDailyRecyclerViews()
+            binding.weeklyRecommendationRecyclerView.visibility = View.VISIBLE
+            binding.searchBar.visibility = View.GONE
+            binding.selected.visibility = View.GONE
+        }
+    }
+    private fun showDailyRecyclerViewsBasedOnMealType() {
+        val checkedId = binding.radioGroupMealtype.checkedRadioButtonId
+        binding.breakfastRecyclerView.visibility = if (checkedId == R.id.button_breakfast) View.VISIBLE else View.GONE
+        binding.lunchRecyclerView.visibility = if (checkedId == R.id.button_lunch) View.VISIBLE else View.GONE
+        binding.dinnerRecyclerView.visibility = if (checkedId == R.id.button_dinner) View.VISIBLE else View.GONE
     }
 
-    private fun showWeeklyRecyclerView() {
-        binding.recommendationRecyclerView.visibility = View.GONE
-        binding.weeklyRecommendationRecyclerView.visibility = View.VISIBLE
+    private fun hideAllDailyRecyclerViews() {
+        binding.breakfastRecyclerView.visibility = View.GONE
+        binding.lunchRecyclerView.visibility = View.GONE
+        binding.dinnerRecyclerView.visibility = View.GONE
     }
 
     //popup. Mulai untuk profile feature branch
@@ -182,19 +302,9 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
                 searchView.hide()
 
                 val query = searchBar.text.toString()
-                viewModel.getRecipeByName(query)
+                val mealType = viewModel.mealType.value ?: 0
+                viewModel.searchRecipes(query, mealType)
                 true // Return true to indicate that the action has been handled
-            }
-            searchBar.inflateMenu(R.menu.selected_meal_menu)
-            searchBar.setOnMenuItemClickListener { menuItem ->
-                when (menuItem.itemId) {
-                    R.id.btn_selected_meal -> {
-                        showPopupMenu()
-                        true
-                    }
-
-                    else -> false
-                }
             }
         }
     }
@@ -236,91 +346,27 @@ class RecipeFragment : Fragment(), RecipeAdapter.OnAddClickListener, Recommendat
     }
 
     private fun displayUserNameAndProfpic() {
-        viewModel.userEmail.observe(viewLifecycleOwner) { userEmail ->
-            userEmail.let {
-                viewModel.getUserIdByEmail(it)
-                viewModel.getUserNameByEmail(it)
+        viewModel.getUsername()
+        viewModel.username.observe(viewLifecycleOwner) { name ->
+            name?.let {
+                val truncatedUserName = truncateUserName(it, wordLimit = 1, maxChars = 8)
+                binding.usernameTextView.text = truncatedUserName
             }
         }
+        displayImage()
+    }
 
-        viewModel.userName.observe(viewLifecycleOwner) { userName ->
-            //dari username, ambil kata paling depan
-            binding.usernameTextView.text = userName
+    private fun truncateUserName(userName: String, wordLimit: Int = 1, maxChars: Int = 8): String {
+        val words = userName.split(" ").take(wordLimit).joinToString(" ")
+        return if (words.length > maxChars) words.substring(0, maxChars) else words
+    }
 
-        }
-
-        viewModel.userId.observe(viewLifecycleOwner) { userId ->
-            if (userId != null) {
-                viewModel.getProfpicById(userId)
-            }
-        }
-
-        viewModel.profilePicture.observe(viewLifecycleOwner) { uriString ->
+    private fun displayImage() {
+        viewModel.profpic.observe(viewLifecycleOwner) { uriString ->
             uriString?.let { uriStr ->
                 val uri = Uri.parse(uriStr)
                 binding.recipeProfileImageView.setImageURI(uri)
             }
-
-        }
-
-    }
-
-    private fun fillDatabaseWithFakeData() {
-        val prefs = requireActivity().getSharedPreferences("AppPrefs", Activity.MODE_PRIVATE)
-        val isDataFilled = prefs.getBoolean("isDataFilled", false)
-
-        if (!isDataFilled) {
-            val dao = FoodDatabase.getInstance(requireContext()).foodDao()
-            val fakeFoodData = FakeFoodData()
-
-            val mappedRecipes = fakeFoodData.recipes.map { recipe ->
-                Recipe(
-                    recipeId = recipe.recipeId,
-                    name = recipe.name,
-                    calories = recipe.calories,
-                    carbs = recipe.carbs,
-                    fat = recipe.fat,
-                    protein = recipe.protein,
-                    ingredients = recipe.ingredients,
-                    cookingSteps = recipe.cookingSteps,
-                    recipePictures = recipe.recipePictures,
-                    mealType = recipe.mealType
-                )
-            }
-
-            val mappedRecommendations = fakeFoodData.recommendations.map { recommendation ->
-                Recommendation(
-                    recommendationId = recommendation.recommendationId,
-                    date = recommendation.date,
-                    isSelected = recommendation.isSelected,
-                    recipeId = recommendation.recipeId,
-                    userId = recommendation.userId,
-                )
-            }
-
-            val mappedRecipeHistory = fakeFoodData.recipeHistory.map { recipeHistory ->
-                RecipeHistory(
-                    id = recipeHistory.id,
-                    recipeId = recipeHistory.recipeId,
-                    consumedDate = recipeHistory.consumedDate,
-                    userId = recipeHistory.userId,
-                )
-            }
-
-            // Insert data into database within coroutine scope
-            lifecycleScope.launch {
-                // Insert each recipe individually
-                mappedRecipes.forEach { recipe ->
-                    dao.insertRecipe(recipe)
-                }
-                mappedRecommendations.forEach { recommendation ->
-                    dao.insertRecommendation(recommendation)
-                }
-                mappedRecipeHistory.forEach { recipeHistory ->
-                    dao.insertRecipeHistory(recipeHistory)
-                }
-            }
-            prefs.edit().putBoolean("isDataFilled", true).apply()
         }
     }
 }

@@ -2,16 +2,17 @@ package com.telyu.nourimate.fragments
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
+import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.telyu.nourimate.R
@@ -42,10 +43,24 @@ class ProgramFilledFragment : Fragment() {
         return binding.root
     }
 
+    private fun setStatusBarColor(color: Int) {
+        val window = requireActivity().window
+        val insetsController = WindowInsetsControllerCompat(window, window.decorView)
+
+        insetsController.isAppearanceLightStatusBars =
+            true // Set true or false depending on the status bar icons' color
+        insetsController.isAppearanceLightNavigationBars =
+            true // Set true or false depending on the navigation bar icons' color
+
+        window.statusBarColor = color
+    }
+
     //========== Untuk setting tampilan history makanan ==========
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setStatusBarColor(ContextCompat.getColor(requireContext(), R.color.color55))
         viewModel.fetchCooldownTime()
         setupWeeklyWeightInput()
 
@@ -56,6 +71,17 @@ class ProgramFilledFragment : Fragment() {
 
         setupWeightEntryObservation()
         setupInputCurrentWeightButton()
+
+        setupMealHistoryObservationForBackend(requireContext())
+    }
+
+    private fun setupMealHistoryObservationForBackend(context: Context) {
+        viewModel.userMealHistory.observe(viewLifecycleOwner) { recipeHistories ->
+            Log.d("ProgramFilledFragment", "setupMealHistoryObservationForBackend: $recipeHistories")
+            for (recipeHistory in recipeHistories) {
+                viewModel.scheduleMealHistoryUpdate(recipeHistory.recipeId, recipeHistory.consumedDate, context)
+            }
+        }
     }
 
     private fun setupMealHistory() {
@@ -104,10 +130,6 @@ class ProgramFilledFragment : Fragment() {
     private fun setupCurrentAndStartWeight() {
         setupStartingWeight()
 
-//        viewModel.latestWeightEntry.observe(viewLifecycleOwner) { latestWeightEntryWeight ->
-//            binding.textViewCurrentWeightMW.text = latestWeightEntryWeight.toString()
-//        }
-
         viewModel.userId.observe(viewLifecycleOwner) { id ->
             viewModel.setLatestWeightEntryWeight(id)
         }
@@ -123,18 +145,6 @@ class ProgramFilledFragment : Fragment() {
         }
     }
 
-//    private fun setupCurrentAndStartWeight() {
-//        viewModel.latestWeightEntry.observe(viewLifecycleOwner) { latestWeightEntry ->
-//            latestWeightEntry?.let { weightEntry ->
-//                binding.textViewCurrentWeightMW.text = weightEntry.weight.toString()
-//                if (!isStartingWeightSet) {
-//                    binding.textViewStartingWeightMW.text = weightEntry.weight.toString()
-//                    isStartingWeightSet = true
-//                }
-//            }
-//        }
-//    }
-
     private fun setupInputCurrentWeight() {
         binding.iconeditweightMWImageView.setOnClickListener {
             showWeightRulerPickerDialog(0f)
@@ -147,8 +157,8 @@ class ProgramFilledFragment : Fragment() {
             val weight = weightText.toInt()
 
             //date next week
-               val midnightNextWeek = Converters().dateFromTimestamp(GeneralUtil.calculateNextWeekMidnight())
-//            val midnightNextWeek = Converters().dateFromTimestamp(GeneralUtil.calculateOneMinuteLaterTimestamp())
+//               val midnightNextWeek = Converters().dateFromTimestamp(GeneralUtil.calculateNextWeekMidnight())
+            val midnightNextWeek = Converters().dateFromTimestamp(GeneralUtil.calculateOneMinuteLaterTimestamp())
             val today = Converters().dateFromTimestamp(System.currentTimeMillis())
 
             val builder = AlertDialog.Builder(requireContext())
@@ -165,6 +175,33 @@ class ProgramFilledFragment : Fragment() {
                             it.startWeight, weight, midnightNextWeek, it.userId
                         )
                         viewModel.insertWeightTrack(weightTrack)
+                        Log.d("Step 1", "WeightTrack: $weightTrack")
+                        //TODO: insert to detail (update weight)
+                        viewModel.userDetails.observe(viewLifecycleOwner) { detail ->
+                            viewModel.insertDetail(
+                                detail.dob,
+                                detail.height,
+                                weightTrack.endWeight, //new endweight
+                                detail.waistSize,
+                                detail.gender,
+                                detail.allergen,
+                                detail.disease,
+                                detail.bmi,
+                            )
+
+                            //TODO: insert to backend detail
+                            viewModel.insertDetailBackend(
+                                Converters().formatDateToString(detail.dob),
+                                detail.height,
+                                weightTrack.endWeight,
+                                detail.waistSize,
+                                detail.gender,
+                                detail.allergen,
+                                detail.disease,
+                            )
+                        }
+
+
 
                         //insert to weight entry for graph view
                         val weightEntry = WeightEntry(0, weight, today, it.userId)
@@ -201,7 +238,7 @@ class ProgramFilledFragment : Fragment() {
 
             weightEntries.forEach { entry ->
                 weightList.add(entry.weight)
-                dateList.add(Converters().formatDateToString(entry.date))
+                dateList.add(Converters().formatDateToStringShort(entry.date))
             }
             binding.weightChart.setWeights(weightList)
             binding.weightChart.setDates(dateList)
@@ -210,6 +247,7 @@ class ProgramFilledFragment : Fragment() {
 
     //=============== Setup Input Weight 1 minggu sekali ===============
     private fun setupWeeklyWeightInput() {
+
         viewModel.remainingTime.observe(viewLifecycleOwner) { remaining ->
             if (remaining > 0) {
                 startCountdown(remaining)
@@ -217,7 +255,7 @@ class ProgramFilledFragment : Fragment() {
                 binding.apply {
                     buttonInputWeight.isEnabled = true
                     buttonInputWeight.alpha = 1f
-                    timerRemainingInputCurrentWeight.text = "Your weekly weight input is available."
+                    timerRemainingInputCurrentWeight.text = "*Your weekly weight input is available."
                 }
             }
         }
@@ -229,13 +267,13 @@ class ProgramFilledFragment : Fragment() {
                 override fun onTick(millisUntilFinished: Long) {
                     buttonInputWeight.isEnabled = false
                     buttonInputWeight.alpha = 0.3f
-                    timerRemainingInputCurrentWeight.text = "Next weight input happens in: ${GeneralUtil.formatTime(millisUntilFinished)}"
+                    timerRemainingInputCurrentWeight.text = "*Next weight input happens in: ${GeneralUtil.formatTime(millisUntilFinished)}"
                 }
 
                 override fun onFinish() {
                     buttonInputWeight.isEnabled = true
                     buttonInputWeight.alpha = 1f
-                    timerRemainingInputCurrentWeight.text = "Your weekly weight input is available."
+                    timerRemainingInputCurrentWeight.text = "*Your weekly weight input is available."
                 }
             }
             timer.start()

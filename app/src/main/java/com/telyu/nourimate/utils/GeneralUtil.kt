@@ -95,42 +95,28 @@ object GeneralUtil {
     //Step 1: Menghitung BB Ideal + faktor usia
     fun calculateAKEi(
         userHeight: Int,
-        userGender: Boolean?,
+        userGender: Boolean?, // True for male, False for female
         userAge: Int
     ): Int {
         val idealWeight = (userHeight - 100) - (0.1 * (userHeight - 100))
-
-        val AKEi = when {
-            userAge in 20..29 -> if (userGender == true) ((15.3 * idealWeight + 679) * 1.78).toInt()
-            else ((14.7 * idealWeight + 496) * 1.64).toInt()
-
-            userAge in 30..59 -> if (userGender == true) ((11.6 * idealWeight + 879) * 1.78).toInt()
-            else ((8.7 * idealWeight + 829) * 1.64).toInt()
-
-            userAge >= 60 -> if (userGender == true) ((13.5 * idealWeight + 487) * 1.78).toInt()
-            else ((13.5 * idealWeight + 596) * 1.64).toInt()
-
-            else -> -999
-        }
-
-        return (AKEi)
+        val baseCalorie = if (userGender == true) 5 else -161
+        val AKEi = (10 * idealWeight + 6.25 * userHeight - 5 * userAge + baseCalorie).toInt()
+        return AKEi
     }
 
     private fun calculateMealNutrition(akei: Int, conditionCode: Int, mealProportion: Double): Nutrition {
         val dailyCalories = mealProportion * akei
         val (carbMultiplier, protMultiplier, fatMultiplier) = multipliers[conditionCode] ?: Triple(0.55, 0.125, 0.2)
-        val nutritionCalculator = if (conditionCode == K) {
-            // Special handling for Cholesterol
-            { multiplier: Double -> multiplier * akei }
-        } else {
-            { multiplier: Double -> multiplier * dailyCalories }
-        }
+        val calories = dailyCalories
+        val carbohydrates = calories * carbMultiplier / 4
+        val protein = calories * protMultiplier / 4
+        val fat = calories * fatMultiplier / 9
 
         return Nutrition(
-            calories = dailyCalories,
-            carbohydrates = nutritionCalculator(carbMultiplier) / 4, 
-            protein = nutritionCalculator(protMultiplier) / 4,
-            fat = nutritionCalculator(fatMultiplier) / 9
+            calories = calories,
+            carbohydrates = carbohydrates,
+            protein = protein,
+            fat = fat
         )
     }
 
@@ -156,9 +142,9 @@ object GeneralUtil {
             "Hypertension" -> H
             "Cholesterol" -> K
             "Hypertension, Cholesterol" -> HK
-            "Diabetes, Cholesterol" -> DK
-            "Diabetes, Hypertension" -> DH
-            "Diabetes, Hypertension, Cholesterol" -> DHK
+            "Diabetes,Kolesterol" -> DK
+            "Diabetes,Hypertension" -> DH
+            "Diabetes,Hypertension,Cholesterol" -> DHK
             else -> -1
         }
     }
@@ -211,25 +197,25 @@ object GeneralUtil {
     fun calculateOneMinuteLaterTimestamp(): Long {
         val calendar = Calendar.getInstance() // Get the current date and time
 
-        calendar.add(Calendar.MINUTE, 1)
+        calendar.add(Calendar.SECOND, 7)
 
         return calendar.timeInMillis
     }
 
-    fun calculateBMI(height: Float?, weight: Float?): Float? {
-        if (height == null || weight == null || height == 0f) {
+    fun calculateBMI(height: Int?, weight: Int?): Float? {
+        if (height == null || weight == null || height == 0) {
             return null
         }
 
         // Convert height from cm to meters
-        val heightInMeters = height / 100
+        val heightInMeters = height / 100f
 
         // Calculate BMI
         return weight / (heightInMeters * heightInMeters)
     }
 
-    fun calculateIdealWeight(userHeight: Float?): Float? {
-        val idealWeight = (userHeight?.minus(100))?.minus((0.1 * (userHeight - 100)))?.toFloat()
+    fun calculateIdealWeight(userHeight: Int?): Int? {
+        val idealWeight = (userHeight?.minus(100))?.minus((0.1 * (userHeight - 100)))?.toInt()
         return idealWeight
     }
 
@@ -255,20 +241,68 @@ object GeneralUtil {
     fun calculateDaysBetweenDates(startDateStr: String, endDateStr: String): Int {
         val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
 
-        // Parse the dates
         val startDate = dateFormat.parse(startDateStr)
         val endDate = dateFormat.parse(endDateStr)
 
-        // Check if parsing was successful
         if (startDate == null || endDate == null) {
             throw IllegalArgumentException("Invalid date format. Use 'YYYY/MM/DD'.")
         }
 
-        // Calculate the difference in milliseconds
         val diff = endDate.time - startDate.time
 
-        // Convert milliseconds to days
         return (diff / (1000 * 60 * 60 * 24)).toInt()
+    }
+
+    fun getYesterdayTimestamp(): Long {
+        val cal = Calendar.getInstance()
+        cal.add(Calendar.DAY_OF_YEAR, -1)
+        return cal.timeInMillis
+    }
+
+    fun calculateInitialDelayForMidnight(): Long {
+        val calendar = Calendar.getInstance()
+        val now = calendar.timeInMillis
+        calendar.add(Calendar.DAY_OF_YEAR, 1)
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+        val midnight = calendar.timeInMillis
+        return midnight - now
+    }
+
+    fun calculateInitialDelayForOneMinute(): Long {
+        val calendar = Calendar.getInstance()
+        val now = calendar.timeInMillis
+        calendar.add(Calendar.MINUTE, 1)  // Add one minute to the current time
+        val oneMinuteLater = calendar.timeInMillis
+        return oneMinuteLater - now
+    }
+
+    fun calculateDelayForNotification(targetHour: Int): Long {
+        val calendarNow = Calendar.getInstance()
+        val calendarNext = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, targetHour)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+            if (before(calendarNow)) {
+                add(Calendar.DAY_OF_YEAR, 1)
+            }
+        }
+        return calendarNext.timeInMillis - calendarNow.timeInMillis
+    }
+
+    fun calculateTodayMidnight(): Long {
+        val calendar = Calendar.getInstance()
+
+        // Set the time to the beginning of the day
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+
+        return calendar.timeInMillis
     }
 
 }

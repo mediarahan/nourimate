@@ -74,11 +74,23 @@ class RecipeDialog : DialogFragment() {
             selectedMeal = 1
             showSecondDialog(selectedMeal)
         }
+        binding.breakfastImageView.setOnClickListener {
+            selectedMeal = 1
+            showSecondDialog(selectedMeal)
+        }
         binding.lunchTextView.setOnClickListener {
             selectedMeal = 2
             showSecondDialog(selectedMeal)
         }
+        binding.lunchImageView.setOnClickListener {
+            selectedMeal = 2
+            showSecondDialog(selectedMeal)
+        }
         binding.dinnerTextView.setOnClickListener {
+            selectedMeal = 3
+            showSecondDialog(selectedMeal)
+        }
+        binding.dinnerImageView.setOnClickListener {
             selectedMeal = 3
             showSecondDialog(selectedMeal)
         }

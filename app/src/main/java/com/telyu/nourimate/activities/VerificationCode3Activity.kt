@@ -6,9 +6,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.telyu.nourimate.databinding.ActivityVerificationCode3Binding
 import android.app.Activity
 import android.graphics.drawable.GradientDrawable
+import android.view.View
+import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
 import com.telyu.nourimate.R
+import com.telyu.nourimate.data.remote.Result
 import com.telyu.nourimate.viewmodels.VerificationViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
 
@@ -21,11 +25,12 @@ class VerificationCode3Activity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityVerificationCode3Binding.inflate(layoutInflater)
-        window.statusBarColor = ContextCompat.getColor(this, R.color.color25)
+        setStatusBarColor(resources.getColor(R.color.color25, theme))
         val view = binding.root
         setContentView(view)
 
         viewModel = obtainViewModel(this@VerificationCode3Activity)
+        viewModel.sendPhoneVerification()
 
         val gradientColors = intArrayOf(
             getColor(R.color.color25),
@@ -53,14 +58,35 @@ class VerificationCode3Activity : AppCompatActivity() {
 
         binding.buttonVerify.setOnClickListener {
             val verificationCode = binding.verifyEditText.text.toString()
-
-            when (verificationCode) {
-                "1" -> navigateToProfile()
-                "2" -> navigateToNavBar()
-                "3" -> navigateToPasswordPopupPage()
-                else -> setResult(Activity.RESULT_OK)
+            viewModel.verifyPhone(verificationCode).observe(this) {result ->
+                when (result) {
+                    is Result.Loading -> showLoading(true)
+                    is Result.Success -> {
+                        showLoading(false)
+                        Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this@VerificationCode3Activity, EditProfileActivity::class.java))
+                        finish()
+                    }
+                    is Result.Error -> {
+                        showLoading(false)
+                        Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
+    }
+
+    private fun setStatusBarColor(color: Int) {
+        val window = window
+        val insetsController = WindowCompat.getInsetsController(window, window.decorView)
+
+        // Set to 'true' to ensure status bar icons are dark, useful for light status bar backgrounds
+        insetsController.isAppearanceLightStatusBars = true
+        // Set to 'true' to ensure navigation bar icons are dark, useful for light navigation bar backgrounds
+        insetsController.isAppearanceLightNavigationBars = true
+
+        // Set the status bar color
+        window.statusBarColor = color
     }
 
     private fun navigateToProfile() {
@@ -85,6 +111,10 @@ class VerificationCode3Activity : AppCompatActivity() {
         // Buat Intent untuk membuka VerificationActivity
         val intent = Intent(this, PasswordPopupActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     private fun obtainViewModel(activity: AppCompatActivity): VerificationViewModel {

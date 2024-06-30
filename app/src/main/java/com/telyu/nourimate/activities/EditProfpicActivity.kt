@@ -41,7 +41,7 @@ class EditProfpicActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityEditProfpicBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setStatusBarColor(resources.getColor(R.color.color46, theme))
+        setStatusBarColor(resources.getColor(R.color.color55, theme))
 
         viewModel = obtainViewModel(this@EditProfpicActivity)
 
@@ -72,14 +72,16 @@ class EditProfpicActivity : AppCompatActivity() {
     }
 
     private fun saveCroppedImage() {
+        binding.imageToCrop.isDrawingCacheEnabled = true
         binding.imageToCrop.buildDrawingCache()
         val croppedBitmap = Bitmap.createBitmap(binding.imageToCrop.drawingCache)
+        binding.imageToCrop.isDrawingCacheEnabled = false
 
         try {
             // Save to storage
-            val file = File(getExternalFilesDir(null), "cropped_image.jpg")
+            val file = File(getExternalFilesDir(null), "cropped_image.png")
             val fOut = FileOutputStream(file)
-            croppedBitmap.compress(Bitmap.CompressFormat.JPEG, 85, fOut)
+            croppedBitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut)
             fOut.flush()
             fOut.close()
 
@@ -91,7 +93,7 @@ class EditProfpicActivity : AppCompatActivity() {
 
             Toast.makeText(this, "Image Saved Successfully", Toast.LENGTH_SHORT).show()
 
-            // Navigate back to ProfileFragment
+            // Navigate back to ProfileFragment with result
             navigateBackWithResult()
 
         } catch (e: Exception) {
@@ -128,13 +130,7 @@ class EditProfpicActivity : AppCompatActivity() {
 
     private fun insertProfpic() {
         currentImageUri?.let { uri ->
-            viewModel.userEmail.observe(this) { userEmail ->
-                viewModel.getUserIdByEmail(userEmail)
-            }
-            viewModel.userId.observe(this) { userId ->
-                val profpic = Profpic(userId, uri.toString())
-                viewModel.insertProfpic(profpic)
-            }
+            viewModel.insertProfpic(uri.toString())
         } ?: Log.e("EditProfpicActivity", "No image selected")
     }
 

@@ -6,20 +6,31 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.ViewModelProvider
 import com.telyu.nourimate.R
 import com.telyu.nourimate.databinding.ActivityForgotPassword1Binding
 import com.telyu.nourimate.fragments.ChangePasswordDialogFragment
+import com.telyu.nourimate.viewmodels.ForgotPasswordViewModel
+import com.telyu.nourimate.viewmodels.VerificationViewModel
+import com.telyu.nourimate.viewmodels.ViewModelFactory
 
 class ForgotPassword1Activity : AppCompatActivity() {
     private lateinit var binding: ActivityForgotPassword1Binding
+    private lateinit var viewModel: ForgotPasswordViewModel
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityForgotPassword1Binding.inflate(layoutInflater)
         setStatusBarColor(resources.getColor(R.color.color25, theme))
         val view = binding.root
         setContentView(view)
+
+        viewModel = obtainViewModel(this@ForgotPassword1Activity)
 
         val gradientColors = intArrayOf(
             getColor(R.color.color25),
@@ -64,9 +75,19 @@ class ForgotPassword1Activity : AppCompatActivity() {
             openForgotPasswordPage()
         }
         binding.buttonNext.setOnClickListener {
-            openChangePasswordPage()
+            val email = binding.verifyEmailEditText.text.toString()
+            viewModel.sendEmailVerification(email)
+            val builder = AlertDialog.Builder(this)
+                .setTitle("Forgot Password Email Sent")
+                .setMessage("Please check your email to reset your password.")
+                .setPositiveButton("OK") { dialog, _ ->
+                    viewModel.saveUserEmail(email)
+                    dialog.dismiss()
+                    finish()
+                }
+                .setCancelable(false)
+            builder.show()
         }
-
         setupTextWatchers()
     }
 
@@ -89,22 +110,31 @@ class ForgotPassword1Activity : AppCompatActivity() {
     private fun checkAllInputsValid() {
         val phoneNumber = binding.verifyEmailEditText.text.toString()
         val isValid = (phoneNumber.isNotEmpty()) && binding.verifyEmailEditText.error == null
-        if (isValid){
+        if (isValid) {
             enableNextButton()
-        } else{
+        } else {
             disableNextButton()
         }
     }
 
     private fun disableNextButton() {
         binding.buttonNext.isEnabled = false
-        binding.buttonNext.background = ContextCompat.getDrawable(this, R.drawable.buttonlogin_background_disable)
-        binding.buttonNext.setTextColor(ContextCompat.getColor(this, R.color.color26))// Set to gray color
+        binding.buttonNext.background =
+            ContextCompat.getDrawable(this, R.drawable.buttonlogin_background_disable)
+        binding.buttonNext.setTextColor(
+            ContextCompat.getColor(
+                this,
+                R.color.color26
+            )
+        )// Set to gray color
     }
 
     private fun enableNextButton() {
         binding.buttonNext.isEnabled = true
-        binding.buttonNext.background = ContextCompat.getDrawable(this, R.drawable.buttonlogin_background)  // Restore to primary color
+        binding.buttonNext.background = ContextCompat.getDrawable(
+            this,
+            R.drawable.buttonlogin_background
+        )  // Restore to primary color
         binding.buttonNext.setTextColor(ContextCompat.getColor(this, R.color.color23))
     }
 
@@ -118,4 +148,10 @@ class ForgotPassword1Activity : AppCompatActivity() {
         val dialogFragment = ChangePasswordDialogFragment.newInstance()
         dialogFragment.show(supportFragmentManager, "changePasswordDialog")
     }
+
+    private fun obtainViewModel(activity: AppCompatActivity): ForgotPasswordViewModel {
+        val factory = ViewModelFactory.getInstance(activity.application)
+        return ViewModelProvider(activity, factory)[ForgotPasswordViewModel::class.java]
+    }
+
 }

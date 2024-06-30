@@ -12,7 +12,6 @@ import kotlinx.parcelize.Parcelize
 data class Recipe (
     @PrimaryKey(autoGenerate = true)
     val recipeId: Int,
-
     val name: String,
     val calories: Double,
     val carbs: Double,
@@ -22,5 +21,8 @@ data class Recipe (
     val cookingSteps: String,
     val recipePictures: String,
     val mealType: Int,
+    val cookTime: String,
+    val prepTime: String,
+    val portion: Int,
 
 ) : Parcelable

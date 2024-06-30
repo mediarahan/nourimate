@@ -12,22 +12,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
+import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.telyu.nourimate.R
 import com.telyu.nourimate.activities.TransitionProgramActivity
-import com.telyu.nourimate.data.local.FakeFoodData
-import com.telyu.nourimate.data.local.db.UserDatabase
+import com.telyu.nourimate.data.local.models.Detail
 import com.telyu.nourimate.data.local.models.History
-import com.telyu.nourimate.data.local.models.WeightEntry
 import com.telyu.nourimate.databinding.FragmentProgramBinding
 import com.telyu.nourimate.databinding.PopupNotificationProgramkhususBinding
 import com.telyu.nourimate.databinding.PopupSettingProgramkhususBinding
 import com.telyu.nourimate.utils.Converters
+import com.telyu.nourimate.utils.GeneralUtil
 import com.telyu.nourimate.viewmodels.ProgramViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
-import kotlinx.coroutines.launch
 
 
 class ProgramFragment : Fragment() {
@@ -46,6 +45,8 @@ class ProgramFragment : Fragment() {
     ): View {
         binding = FragmentProgramBinding.inflate(inflater, container, false)
         setCurrentFragment(ProgramEmptyFragment())
+
+        setStatusBarColor(ContextCompat.getColor(requireContext(), R.color.color55))
 
         //buat dummy
         //fillDatabaseWithFakeData()
@@ -75,6 +76,25 @@ class ProgramFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        checkIfProgramIsOver()
+    }
+
+
+    private fun setStatusBarColor(color: Int) {
+        val window = requireActivity().window
+        val insetsController = WindowInsetsControllerCompat(window, window.decorView)
+
+        insetsController.isAppearanceLightStatusBars =
+            true // Set true or false depending on the status bar icons' color
+        insetsController.isAppearanceLightNavigationBars =
+            true // Set true or false depending on the navigation bar icons' color
+
+        window.statusBarColor = color
     }
 
     private fun setupSideButtons() {
@@ -120,7 +140,7 @@ class ProgramFragment : Fragment() {
     }
 
     //For inputting final results of the program, and deleting relevant weight entries and track
-    private fun finalizeProgramResults( ) {
+    private fun finalizeProgramResults() {
         viewModel.userWeightTrack.observe(viewLifecycleOwner) { weightTrack ->
             val programName = when (weightTrack.ongoingProgram) {
                 1 -> "Maintain Weight"
@@ -130,7 +150,9 @@ class ProgramFragment : Fragment() {
             }
 
             val startDate = Converters().formatDateToString(weightTrack.startDate)
-            val endDate = Converters().formatDateToString(weightTrack.endDate)
+            // val endDate = Converters().formatDateToString(weightTrack.endDate)
+            val todayDate = Converters().dateFromTimestamp(System.currentTimeMillis())
+            val todayDateString = Converters().formatDateToString(todayDate)
 
             viewModel.getNutritionSumsForHistory()
             viewModel.historyNutritionSum.observe(viewLifecycleOwner) { sum ->
@@ -140,28 +162,60 @@ class ProgramFragment : Fragment() {
                     val protein = sum.totalProtein.toInt()
                     val carbs = sum.totalCarbs.toInt()
 
-                    viewModel.userId.observe(viewLifecycleOwner) { id ->
-                        val history = History(
-                            id = 0,
-                            programName = programName,
-                            startDate = startDate,
-                            endDate = endDate,
-                            calories = calories,
-                            protein = protein,
-                            fat = fat,
-                            carbs = carbs,
-                            startWeight = weightTrack.startWeight,
-                            endWeight = weightTrack.endWeight,
-                            userId = id,
-                            createdAt = System.currentTimeMillis()
-                        )
-                        viewModel.insertHistory(history)
-                        viewModel.deleteWeightTrackByUserId()
-                        viewModel.deleteWeightEntriesById()
-                    }
+                    //insert history to local
+                    viewModel.insertHistory(
+                        programName,
+                        startDate,
+                        todayDateString,
+                        calories,
+                        fat,
+                        protein,
+                        carbs,
+                        weightTrack.startWeight,
+                        weightTrack.endWeight,
+                    )
+
+                    //TODO: insert history to backend
+                    viewModel.createNewHistory(
+                        programName,
+                        startDate,
+                        todayDateString,
+                        calories,
+                        fat,
+                        protein,
+                        carbs,
+                        weightTrack.startWeight,
+                        weightTrack.endWeight
+                    )
                 }
             }
+            //TODO: insert to detail (update weight)
+            viewModel.userDetails.observe(viewLifecycleOwner) { detail ->
+                viewModel.insertDetail(
+                    detail.dob,
+                    detail.height,
+                    weightTrack.endWeight, //new endweight
+                    detail.waistSize,
+                    detail.gender,
+                    detail.allergen,
+                    detail.disease,
+                    detail.bmi,
+                )
+
+                //TODO: insert to backend detail
+                viewModel.insertDetailBackend(
+                    Converters().formatDateToString(detail.dob),
+                    detail.height,
+                    weightTrack.endWeight,
+                    detail.waistSize,
+                    detail.gender,
+                    detail.allergen,
+                    detail.disease,
+                )
+            }
         }
+        viewModel.deleteWeightTrackByUserId()
+        viewModel.deleteWeightEntriesById()
     }
 
     //===== Setting UI =====
@@ -207,28 +261,24 @@ class ProgramFragment : Fragment() {
         }
     }
 
-    //===== Buat masukin dummy data =====
-    private fun fillDatabaseWithFakeData() {
-
-        // Untuk isi database dengan fake data
-        val dao = UserDatabase.getInstance(requireContext()).userDao()
-        val fakeFoodData = FakeFoodData()
-
-        val mappedWeightEntries = fakeFoodData.weightEntries.map { weightEntry ->
-            WeightEntry(
-                id = weightEntry.id,
-                weight = weightEntry.weight,
-                date = weightEntry.date,
-                userId = weightEntry.userId,
-            )
-        }
-
-        lifecycleScope.launch {
-            mappedWeightEntries.forEach { weightEntry ->
-                dao.insertWeightEntry(weightEntry)
+    //=========== Check If Program is Over ==========
+    private fun checkIfProgramIsOver() {
+        viewModel.userEndDate.observe(viewLifecycleOwner) { date ->
+            val today = GeneralUtil.calculateTodayMidnight()
+            Log.d("Today", today.toString())
+            Log.d("Date", date.toString())
+            if (today > date) {
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Program Over")
+                    .setMessage("Your diet program is over. Click OK to check your results.")
+                    .setPositiveButton("OK") { _, _ ->
+                        finalizeProgramResults()
+                        val intent = Intent(context, TransitionProgramActivity::class.java)
+                        startActivity(intent)
+                    }
+                    .show()
             }
         }
-
     }
 }
 

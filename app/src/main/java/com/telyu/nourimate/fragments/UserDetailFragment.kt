@@ -1,42 +1,43 @@
 package com.telyu.nourimate.fragments
 
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.ContentValues.TAG
+import android.graphics.Color
+import android.graphics.Typeface
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.SeekBar
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.telyu.nourimate.R
-import com.telyu.nourimate.data.local.models.Detail
-import com.telyu.nourimate.databinding.FragmentUserDetailBinding
-import com.telyu.nourimate.utils.Converters
-import com.telyu.nourimate.viewmodels.UserDetailViewModel
-import com.telyu.nourimate.viewmodels.ViewModelFactory
-import com.telyu.nourimate.databinding.DialogWeightPickerBinding
-import com.telyu.nourimate.databinding.DialogHeightPickerBinding
-import com.telyu.nourimate.databinding.DialogWaistSizePickerBinding
-import com.telyu.nourimate.databinding.DialogNameChangeBinding
-import com.telyu.nourimate.custom.WeightRulerView
+import com.telyu.nourimate.adapter.date.HintArrayAdapter
+import com.telyu.nourimate.custom.CustomDatePickerFragment
 import com.telyu.nourimate.custom.StraightRulerView
 import com.telyu.nourimate.custom.WaistSizeRulerView
+import com.telyu.nourimate.custom.WeightRulerView
+import com.telyu.nourimate.databinding.DialogHeightPickerBinding
+import com.telyu.nourimate.databinding.DialogNameChangeBinding
+import com.telyu.nourimate.databinding.DialogWaistSizePickerBinding
+import com.telyu.nourimate.databinding.DialogWeightPickerBinding
+import com.telyu.nourimate.databinding.FragmentUserDetailBinding
+import com.telyu.nourimate.utils.Converters
+import com.telyu.nourimate.utils.GeneralUtil
+import com.telyu.nourimate.viewmodels.UserDetailViewModel
+import com.telyu.nourimate.viewmodels.ViewModelFactory
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import kotlin.math.max
 import kotlin.math.min
-import android.app.Dialog
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.app.AlertDialog
-import android.graphics.Typeface
-import androidx.core.content.res.ResourcesCompat
-import com.telyu.nourimate.adapter.date.HintArrayAdapter
-import com.telyu.nourimate.custom.CustomDatePickerFragment
 
 
 class UserDetailFragment : Fragment() {
@@ -59,19 +60,31 @@ class UserDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setStatusBarColor(ContextCompat.getColor(requireContext(), R.color.color53))
+
         binding.backButton.setOnClickListener {
             // Navigasi kembali ke ProfileFragment
             requireActivity().supportFragmentManager.popBackStack()
         }
 
-        getAllData()
         mapAllDataToView()
         setupBMISeekbarAndText()
         bindEditTextButtons()
 
         binding.buttonSaveEditProfile.setOnClickListener {
-            updateUserProfile()
-            requireActivity().supportFragmentManager.popBackStack()
+            AlertDialog.Builder(requireContext())
+                .setTitle("Save Changes")
+                .setMessage("Are you sure you want to update your profile? This will refresh your recipe recommendations based on the new details.")
+                .setPositiveButton("Yes") { dialog, _ ->
+                    updateUserProfile()
+                    fetchDataFromMachineLearning()
+                    requireActivity().supportFragmentManager.popBackStack()
+                    dialog.dismiss()
+                }
+                .setNegativeButton("No") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
         }
 
         // Inisialisasi genderSpinner menggunakan View Binding
@@ -83,37 +96,42 @@ class UserDetailFragment : Fragment() {
             HintArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, genderOptions)
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerGender.adapter = genderAdapter
-
     }
 
-    private fun getAllData() {
-        //dapatkan value email dari user preference
-        //gunakan email untuk mendapatkan id pengguna di database
-        //gunakan email untuk mendapatkan nama pengguna di database
-        //, dipisah karena entity nya pun terpisan
-        viewModel.userEmail.observe(viewLifecycleOwner) { userEmail ->
-            userEmail?.let {
-                viewModel.getUserIdByEmail(it)
-                viewModel.getUserNameByEmail(it)
-            }
+    private fun fetchDataFromMachineLearning() {
+        viewModel.recommendationsLiveData.observe(requireActivity()) { recommendations ->
+            viewModel.insertRecommendations(recommendations)
+            Log.d("Recommendations", recommendations.toString())
         }
+    }
 
-        //gunakan id pengguna untuk mendapatkan detail pengguna dari database
-        viewModel.userId.observe(viewLifecycleOwner) { userId ->
-            if (userId != null)
-                viewModel.getUserDetailsById(userId)
-        }
+    private fun setStatusBarColor(color: Int) {
+        val window = requireActivity().window
+        val insetsController = WindowInsetsControllerCompat(window, window.decorView)
+
+        insetsController.isAppearanceLightStatusBars =
+            true // Set true or false depending on the status bar icons' color
+        insetsController.isAppearanceLightNavigationBars =
+            true // Set true or false depending on the navigation bar icons' color
+
+        window.statusBarColor = color
     }
 
     private fun mapAllDataToView() {
         //mapping setiap atribut detail ke edittext
+
+        viewModel.getUsername()
+        viewModel.username.observe(viewLifecycleOwner) { name ->
+            binding.editTextName.setText(name)
+        }
+
         viewModel.userDetails.observe(viewLifecycleOwner) { userDetails ->
             userDetails?.let { detail ->
                 val formattedDate = Converters().formatDateToString(detail.dob)
                 binding.editTextBirth.setText(formattedDate)
-                binding.editTextHeight.setText(detail.height?.toInt().toString())
-                binding.editTextWeight.setText(detail.weight?.toInt().toString())
-                binding.editTextWaist.setText(detail.waistSize?.toInt().toString())
+                binding.editTextHeight.setText(detail.height.toString())
+                binding.editTextWeight.setText(detail.waistSize.toString())
+                binding.editTextWaist.setText(detail.weight.toString())
 
                 // Jika genderAdapter telah diinisialisasi, lakukan seleksi
                 if (::genderAdapter.isInitialized) {
@@ -122,16 +140,10 @@ class UserDetailFragment : Fragment() {
                         binding.spinnerGender.setSelection(position)
                     }
                 }
-
                 binding.editTextAllergy.setText(detail.allergen)
                 binding.editTextDisease.setText(detail.disease)
 
             }
-        }
-
-        //mapping nama dari entity user, terpisah
-        viewModel.userName.observe(viewLifecycleOwner) { userName ->
-            binding.editTextName.setText(userName)
         }
     }
 
@@ -142,22 +154,22 @@ class UserDetailFragment : Fragment() {
         val maxValue = 40
         seekBar.max = maxValue - minValue
 
-        viewModel.userDetails.observe(viewLifecycleOwner) { userDetails ->
-            userDetails?.let { detail ->
-                val bmi = detail.bmi
-                val bmiStatus = when {
-                    bmi in 0.0..18.4 -> "Underweight"  // Adjusted the upper boundary to 18.4
-                    bmi in 18.5..24.9 -> "Normal"
-                    bmi in 25.0..29.9 -> "Overweight"
-                    bmi >= 30.0 -> "Obese"
-                    else -> "Invalid BMI"
-                }
-                binding.textViewBmiCategory.text = bmiStatus
-                binding.textViewBmi.text = bmi.toString()
-                val progress = max(0, min((maxValue - minValue), ((bmi?.toInt() ?: -999) - minValue)))
-                seekBar.progress = progress
+        viewModel.userBMI.observe(viewLifecycleOwner) { bmi ->
+            val bmiStatus = when {
+                bmi in 0.0..18.4 -> "Underweight"  // Adjusted the upper boundary to 18.4
+                bmi in 18.5..24.9 -> "Normal"
+                bmi in 25.0..29.9 -> "Overweight"
+                bmi >= 30.0 -> "Obese"
+                else -> "Invalid BMI"
             }
+
+            binding.textViewBmiCategory.text = bmiStatus
+            binding.textViewBmi.text = bmi.toString()
+            val progress =
+                max(0, min((maxValue - minValue), (bmi.toInt() - minValue)))
+            seekBar.progress = progress
         }
+
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                 val currentBmi = minValue + p1
@@ -172,12 +184,13 @@ class UserDetailFragment : Fragment() {
                 //empty implementation
             }
         })
+        binding.seekBar.isEnabled = false
     }
 
     private fun bindEditTextButtons() {
-        binding.iconeditnameImageView.setOnClickListener {
-            showNameChangeDialog()
-        }
+//        binding.iconeditnameImageView.setOnClickListener {
+//            showNameChangeDialog()
+//        }
 
 
         binding.iconeditheightImageView.setOnClickListener {
@@ -186,6 +199,21 @@ class UserDetailFragment : Fragment() {
         }
 
         binding.iconeditweightImageView.setOnClickListener {
+            //observe pengguna sedang menjalani program atau tidak
+            viewModel.userProgramStatus.observe(viewLifecycleOwner) { isProgramRunning ->
+                if (isProgramRunning) {
+                    AlertDialog.Builder(requireContext())
+                        .setTitle("Change Weight Disabled")
+                        .setMessage("You are not allowed to edit your weight as you are currently ongoing a program.")
+                        .setPositiveButton("Ok") { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        .show()
+                } else {
+                    val currentWeight = binding.editTextWeight.text.toString().toFloatOrNull() ?: 0f
+                    showWeightRulerPickerDialog(currentWeight)
+                }
+            }
             val currentWeight = binding.editTextWeight.text.toString().toFloatOrNull() ?: 0f
             showWeightRulerPickerDialog(currentWeight)
         }
@@ -212,50 +240,43 @@ class UserDetailFragment : Fragment() {
 
     }
 
-    private fun requestFocusOnEditText(editText: EditText) {
-        editText.requestFocus()
-    }
-
     private fun updateUserProfile() {
-        val name = binding.editTextName.text.toString()
-        val dob = binding.editTextBirth.text.toString() // Assuming this is a String representation of the date
-        val height = binding.editTextHeight.text.toString().toFloatOrNull()
-        val weight = binding.editTextWeight.text.toString().toFloatOrNull()
-        val waistSize = binding.editTextWaist.text.toString().toFloatOrNull()
+        val dob =
+            binding.editTextBirth.text.toString() // Assuming this is a String representation of the date
+        val height = binding.editTextHeight.text.toString().toInt()
+        val weight = binding.editTextWeight.text.toString().toInt()
+        val waistSize = binding.editTextWaist.text.toString().toInt()
         val gender = binding.spinnerGender.selectedItem.toString()
         val allergen = binding.editTextAllergy.text.toString()
         val disease = binding.editTextDisease.text.toString()
 
-        val id = viewModel.userId.value
-        Log.d("UserDetailFragment", "User ID: $id")
         val formattedDob = Converters().fromStringToDate(dob)
-        val heightInMeters = height?.div(100)
-        val bmi = weight?.div((heightInMeters?.times(heightInMeters)!!))
+        val bmi = GeneralUtil.calculateBMI(height, weight)
+        Log.d(TAG, "updateUserProfile: $bmi")
 
         viewModel.userDetails.observe(viewLifecycleOwner) { userDetails ->
-            if (id != null) {
-                val detail = Detail(
-                    detailId = userDetails?.detailId ?: -999,
-                    dob = formattedDob,
-                    height = height,
-                    weight = weight,
-                    waistSize = waistSize,
-                    gender = gender,
-                    allergen = allergen,
-                    disease = disease,
-                    bmi = bmi ?: 0f,
-                    userId = id
-                )
-                viewModel.userId.observe(viewLifecycleOwner) { userId ->
-                    userId?.let {
-                        viewModel.updateUserName(it, name)
-                        viewModel.updateUserProfile(detail)
-                    }
-                }
-            }
+            viewModel.updateUserProfile(
+                userDetails.detailId,
+                formattedDob,
+                height,
+                weight,
+                waistSize,
+                gender,
+                allergen,
+                disease,
+                bmi ?: -999f
+            )
+            viewModel.insertDetailToBackend(
+                dob,
+                height,
+                waistSize,
+                weight,
+                gender,
+                allergen,
+                disease
+            )
         }
     }
-
 
     //retrieve date of birth
     private fun showDatePickerDialog() {
@@ -292,20 +313,31 @@ class UserDetailFragment : Fragment() {
         // Set initial selected value
         dialogBinding.weightRulerView.selectedValue = initialSelectedValue
         dialogBinding.textViewNumber2.text = initialSelectedValue.toInt().toString()
+        if (initialSelectedValue.toInt() != 0) {
+            binding.editTextWeight.setText(String.format("%d", initialSelectedValue.toInt()))
+        } else {
+            binding.editTextWeight.setText("")  // Clear EditText or set to a placeholder if zero
+        }
 
-        // Set listener untuk CurvedRulerView
+        // Listener for changes in the ruler view
         dialogBinding.weightRulerView.listener = object : WeightRulerView.OnValueChangeListener {
             override fun onValueChanged(value: Float) {
-                // Update selected value
-                dialogBinding.textViewNumber2.text = value.toInt().toString()
-                // Update EditText in real-time
-                binding.editTextWeight.setText(String.format("%d", value.toInt()))
+                val intValue = value.toInt()
+                // Update the TextView and check value before updating EditText
+                dialogBinding.textViewNumber2.text = intValue.toString()
+                if (intValue != 0) {
+                    binding.editTextWeight.setText(String.format("%d", intValue))
+                    enableSelectButtonIfReady()
+                } else {
+                    binding.editTextWeight.setText("")  // Avoid displaying zero in EditText
+                }
             }
         }
 
         // Set action for 'Done' button
         dialogBinding.buttonDone.setOnClickListener {
             dialog.dismiss()
+            enableSelectButtonIfReady()
         }
 
         dialog.show()
@@ -329,21 +361,32 @@ class UserDetailFragment : Fragment() {
         // Set initial selected value
         dialogBinding.straightRulerView.selectedValue = initialSelectedValue
         dialogBinding.textViewNumber.text = initialSelectedValue.toInt().toString()
+        if (initialSelectedValue.toInt() != 0) {
+            binding.editTextHeight.setText(String.format("%d", initialSelectedValue.toInt()))
+        } else {
+            binding.editTextHeight.setText("")  // Clear EditText or set to a placeholder if zero
+        }
 
-        // Set listener untuk CurvedRulerView
+        // Listener for changes in the ruler view
         dialogBinding.straightRulerView.listener =
             object : StraightRulerView.OnValueChangeListener {
                 override fun onValueChanged(value: Float) {
-                    // Update selected value
-                    dialogBinding.textViewNumber.text = value.toInt().toString()
-                    // Update EditText in real-time
-                    binding.editTextHeight.setText(String.format("%d", value.toInt()))
+                    val intValue = value.toInt()
+                    // Update the TextView and check value before updating EditText
+                    dialogBinding.textViewNumber.text = intValue.toString()
+                    if (intValue != 0) {
+                        binding.editTextHeight.setText(String.format("%d", intValue))
+                        enableSelectButtonIfReady()
+                    } else {
+                        binding.editTextHeight.setText("")  // Avoid displaying zero in EditText
+                    }
                 }
             }
 
         // Set action for 'Done' button
         dialogBinding.buttonDone.setOnClickListener {
             dialog.dismiss()
+            enableSelectButtonIfReady()
         }
 
         dialog.show()
@@ -367,34 +410,58 @@ class UserDetailFragment : Fragment() {
         // Set initial selected value
         dialogBinding.waistRulerView.selectedValue = initialSelectedValue
         dialogBinding.textViewNumber1.text = initialSelectedValue.toInt().toString()
+        if (initialSelectedValue.toInt() != 0) {
+            binding.editTextWaist.setText(String.format("%d", initialSelectedValue.toInt()))
+        } else {
+            binding.editTextWaist.setText("")  // Clear EditText or set to a placeholder if zero
+        }
 
-        // Set listener untuk CurvedRulerView
+        // Listener for changes in the ruler view
         dialogBinding.waistRulerView.listener = object : WaistSizeRulerView.OnValueChangeListener {
             override fun onValueChanged(value: Float) {
-                // Update selected value
-                dialogBinding.textViewNumber1.text = value.toInt().toString()
-                // Update EditText in real-time
-                binding.editTextWaist.setText(String.format("%d", value.toInt()))
+                val intValue = value.toInt()
+                // Update the TextView and check value before updating EditText
+                dialogBinding.textViewNumber1.text = intValue.toString()
+                if (intValue != 0) {
+                    binding.editTextWaist.setText(String.format("%d", intValue))
+                    enableSelectButtonIfReady()
+                } else {
+                    binding.editTextWaist.setText("")  // Avoid displaying zero in EditText
+                }
             }
         }
 
-        // Set action for 'Done' button
+        // Action for 'Done' button
         dialogBinding.buttonDone.setOnClickListener {
+            // Dismiss the dialog when done
             dialog.dismiss()
+            enableSelectButtonIfReady()
         }
 
         dialog.show()
     }
 
     private fun showAllergiesDialog() {
-        val allergies = arrayOf("Kacang, Gluten")
-        val checkedItems = booleanArrayOf(false, false)
+        val allergies = arrayOf("None", "Nuts", "Eggs", "Seafood")
+        val checkedItems = booleanArrayOf(false, false, false, false)
         val selectedItems = mutableListOf<String>()
 
         val dialogBuilder = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog)
             .setTitle("Select Allergies")
-            .setMultiChoiceItems(allergies, checkedItems) { _, which, isChecked ->
-                if (isChecked) {
+            .setMultiChoiceItems(allergies, checkedItems) { dialog, which, isChecked ->
+                if (which == 0 && isChecked) {  // "None" is at position 0
+                    // Deselect all other checkboxes if "None" is selected
+                    selectedItems.clear()
+                    selectedItems.add(allergies[0])
+                    allergies.indices.forEach { index ->
+                        if (index != 0) {
+                            (dialog as AlertDialog).listView.setItemChecked(index, false)
+                        }
+                    }
+                } else if (isChecked) {
+                    // Remove "None" if any other item is selected
+                    selectedItems.remove(allergies[0])
+                    (dialog as AlertDialog).listView.setItemChecked(0, false)
                     selectedItems.add(allergies[which])
                 } else {
                     selectedItems.remove(allergies[which])
@@ -436,14 +503,24 @@ class UserDetailFragment : Fragment() {
     }
 
     private fun showDiseasesDialog() {
-        val diseases = arrayOf("Diabetes", "Kolesterol", "Hipertensi")
-        val checkedItems = booleanArrayOf(false, false, false)
+        val diseases = arrayOf("None", "Diabetes", "Hipertensi", "Kolesterol")
+        val checkedItems = booleanArrayOf(false, false, false, false)
         val selectedItems = mutableListOf<String>()
 
         val dialogBuilder = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog)
             .setTitle("Select Diseases")
-            .setMultiChoiceItems(diseases, checkedItems) { _, which, isChecked ->
-                if (isChecked) {
+            .setMultiChoiceItems(diseases, checkedItems) { dialog, which, isChecked ->
+                if (which == 0 && isChecked) {
+                    selectedItems.clear()
+                    selectedItems.add(diseases[0])
+                    diseases.indices.forEach { index ->
+                        if (index != 0) {
+                            (dialog as AlertDialog).listView.setItemChecked(index, false)
+                        }
+                    }
+                } else if (isChecked) {
+                    selectedItems.remove(diseases[0])
+                    (dialog as AlertDialog).listView.setItemChecked(0, false)
                     selectedItems.add(diseases[which])
                 } else {
                     selectedItems.remove(diseases[which])
@@ -485,31 +562,62 @@ class UserDetailFragment : Fragment() {
     }
 
     private fun showNameChangeDialog() {
-        val dialog = Dialog(requireContext())
         val dialogBinding = DialogNameChangeBinding.inflate(layoutInflater)
-        dialog.setContentView(dialogBinding.root)
 
-        // Setting initial value
-        dialogBinding.editTextNameChange.setText(binding.editTextName.text.toString())
+        // Membuat dialog dengan custom view
+        val alertDialog = AlertDialog.Builder(requireContext())
+            .setView(dialogBinding.root)
+            .create()
 
-        // Configure the dialog width
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        // Tambahkan listener ke tombol saveChanges dalam layout custom
+        dialogBinding.buttonSave.setOnClickListener {
+            val newName = dialogBinding.editTextFullName.text.toString()
+            binding.editTextName.setText(newName)  // Anggap editTextName ada di binding utama fragment/activity Anda
+            alertDialog.dismiss()  // Tutup dialog setelah menyimpan
+        }
+
+        alertDialog.show()
+
+        // Configure the dialog width to be consistent with the other dialogs
         val displayMetrics = requireContext().resources.displayMetrics
         val screenWidth = displayMetrics.widthPixels
-        val dialogWidth = (screenWidth * 0.85).toInt()
-        dialog.window?.setLayout(dialogWidth, ViewGroup.LayoutParams.WRAP_CONTENT)
-
-        // Set actions for "Done" and "Cancel" buttons
-        dialogBinding.buttonDone.setOnClickListener {
-            val newName = dialogBinding.editTextNameChange.text.toString()
-            binding.editTextName.setText(newName)
-            dialog.dismiss()
-        }
-
-        dialogBinding.buttonCancel.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        dialog.show()
+        alertDialog.window?.setLayout(
+            (screenWidth * 0.85).toInt(),
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
     }
+
+    private fun enableSelectButtonIfReady() {
+        val weight = binding.editTextWeight.text.toString()
+        val height = binding.editTextHeight.text.toString()
+        val waist = binding.editTextWaist.text.toString()
+
+        binding.buttonSaveEditProfile.isEnabled =
+            weight.isNotEmpty() && height.isNotEmpty() && waist.isNotEmpty()
+        if (binding.buttonSaveEditProfile.isEnabled) {
+            binding.buttonSaveEditProfile.background =
+                ContextCompat.getDrawable(requireContext(), R.drawable.button_change_password)
+            binding.buttonSaveEditProfile.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.white
+                )
+            )
+        } else {
+            binding.buttonSaveEditProfile.background = ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.button_change_password_disable
+            )
+            binding.buttonSaveEditProfile.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.white
+                )
+            )
+        }
+    }
+
 
 }

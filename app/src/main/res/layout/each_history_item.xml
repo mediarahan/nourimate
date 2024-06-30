@@ -28,38 +28,39 @@
                 android:layout_height="wrap_content"
                 android:text="Program"
                 android:fontFamily="@font/alatsi"
-                android:textColor="@color/color39"
-                android:textSize="20sp"
+                android:textColor="#F18300"
+                android:textSize="23sp"
                 android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/arro_imageview"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginEnd="20dp"
-                android:src="@drawable/arrow_drop"
-                app:layout_constraintBottom_toBottomOf="@+id/itemTv"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/itemTv" />
+<!--            <ImageView-->
+<!--                android:id="@+id/arro_imageview"-->
+<!--                android:layout_width="30dp"-->
+<!--                android:layout_height="30dp"-->
+<!--                android:layout_marginEnd="20dp"-->
+<!--                android:src="@drawable/arrow_drop"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/itemTv"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/itemTv" />-->
 
             <TextView
                 android:id="@+id/startDateTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="..."
+                android:layout_marginTop="10dp"
                 android:fontFamily="@font/abel"
+                android:text="..."
                 android:textColor="@color/black"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginBottom="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/toTv"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/itemTv"
-                app:layout_constraintBottom_toBottomOf="@+id/nestedprogram"
-                app:layout_constraintEnd_toStartOf="@id/toTv" />
+                app:layout_constraintTop_toBottomOf="@id/itemTv" />
 
             <TextView
                 android:id="@+id/toTv"
@@ -70,7 +71,7 @@
                 android:textColor="@color/black"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginBottom="15dp"
                 app:layout_constraintStart_toEndOf="@id/startDateTv"
                 app:layout_constraintEnd_toStartOf="@id/endDateTv"
@@ -86,14 +87,28 @@
                 android:textColor="@color/black"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                android:layout_marginTop="8dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginBottom="15dp"
                 app:layout_constraintStart_toEndOf="@id/toTv"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/itemTv"
                 app:layout_constraintBottom_toBottomOf="@+id/nestedprogram"/>
 
+            <ImageView
+                android:id="@+id/line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:elevation="1dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/nestedprogram"
+                android:background="@color/color41"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -104,7 +119,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="5dp">
 
                     <TextView
                         android:layout_width="wrap_content"

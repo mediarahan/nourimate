@@ -241,7 +241,6 @@
         android:elevation="4dp"
         android:rotation="-8"
         android:src="@drawable/login"
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/wavelogin" />
 

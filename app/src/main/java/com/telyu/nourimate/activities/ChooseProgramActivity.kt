@@ -1,7 +1,6 @@
 package com.telyu.nourimate.activities
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -35,7 +34,7 @@ class ChooseProgramActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStatusBarColor(resources.getColor(R.color.color2, theme))
+        setStatusBarColor(resources.getColor(R.color.color55, theme))
 
         viewModel = obtainViewModel(this@ChooseProgramActivity)
 
@@ -49,6 +48,10 @@ class ChooseProgramActivity : AppCompatActivity() {
         binding.buttonSelectProgram.setOnClickListener {
             Log.d("ChooseProgramActivity", "Click!")
             insertProgramDetails()
+        }
+
+        binding.backButton.setOnClickListener {
+            finish()
         }
     }
 
@@ -68,13 +71,8 @@ class ChooseProgramActivity : AppCompatActivity() {
     //setup untuk masukkin weight entry untuk tampilan grafik
     private fun setupWeightEntry() {
         val today = Converters().dateFromTimestamp(System.currentTimeMillis())
-        viewModel.userDetails.observe(this) {detail ->
-            val weightEntry =
-                detail?.let { WeightEntry(0, detail?.weight?.toInt() ?: -999, today, it.detailId ) }
-            if (weightEntry != null) {
-                viewModel.insertWeightEntry(weightEntry)
-            }
-            Log.d("ProgramFilledFragment", "InsertedWeightEntry: $weightEntry")
+        viewModel.userDetails.observe(this) { detail ->
+            viewModel.insertWeightEntry(detail.weight, today)
         }
     }
 
@@ -93,48 +91,66 @@ class ChooseProgramActivity : AppCompatActivity() {
         val endDateString = dates[1]
         val startDateParsed = Converters().fromStringToDate(startDateString)
         val endDateParsed = Converters().fromStringToDate(endDateString)
-        val dateFormatter = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
         val today = System.currentTimeMillis()
         val todayDate = Converters().dateFromTimestamp(today)
+        val todayDateString = Converters().formatDateToString(todayDate)
 
-        Log.d("ChooseProgramActivity", "noT OBESERVERD YET")
         viewModel.userDetails.observe(this) { detail ->
-            Log.d("ChooseProgramActivity", "OBSERVED")
-            val weightTrack = WeightTrack(
-                0,
+            //insert program details to local
+            viewModel.insertWeightTrack(
                 selectedProgramInt,
                 startDateParsed,
                 endDateParsed,
-                detail?.weight?.toInt() ?: -999,
-                detail?.weight?.toInt() ?: -999,
-                todayDate,
-                detail?.detailId ?: -999
+                detail?.weight ?: -999,
+                detail?.weight ?: -999,
+                todayDate
             )
-            viewModel.insertWeightTrack(weightTrack)
+            //insert program details to backend
+            viewModel.createNewProgram(
+                selectedProgramInt,
+                startDateString,
+                endDateString,
+                detail?.weight ?: -999,
+                detail?.weight ?: -999,
+                todayDateString
+            )
             setupWeightEntry()
             finish()
         }
     }
 
     private fun setupSpinner() {
-        val programOptions = arrayOf("-- Select Your Program --","Maintain Weight", "Lose Weight", "Gain Weight")
-        val programAdapter = HintArrayAdapter(this, android.R.layout.simple_spinner_item, programOptions)
+        val programOptions =
+            arrayOf("-- Select Your Program --", "Maintain Weight", "Lose Weight", "Gain Weight")
+        val programAdapter =
+            HintArrayAdapter(this, android.R.layout.simple_spinner_item, programOptions)
         programAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerProgram.adapter = programAdapter
 
-        binding.spinnerProgram.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                enableSelectButtonIfReady()
-            }
+        binding.spinnerProgram.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View,
+                    position: Int,
+                    id: Long
+                ) {
+                    enableSelectButtonIfReady()
+                }
 
-            override fun onNothingSelected(parent: AdapterView<*>) {}
-        }
+                override fun onNothingSelected(parent: AdapterView<*>) {}
+            }
     }
 
     @SuppressLint("ResourceAsColor")
     private fun disableSelectButton() {
         binding.buttonSelectProgram.isEnabled = false
-        binding.buttonSelectProgram.setBackgroundColor(R.color.color26)  // Menggunakan background untuk enabled
+        binding.buttonSelectProgram.setBackground(
+            ContextCompat.getDrawable(
+                this,
+                R.drawable.button_change_password_disable
+            )
+        )  // Menggunakan background untuk enabled
         binding.buttonSelectProgram.setTextColor(ContextCompat.getColor(this, R.color.white))
     }
 
@@ -142,13 +158,23 @@ class ChooseProgramActivity : AppCompatActivity() {
     private fun enableSelectButtonIfReady() {
         val program = binding.spinnerProgram.selectedItem.toString()
         val dateRange = binding.editTextDateOfProgram.text.toString()
-        binding.buttonSelectProgram.isEnabled = program != "-- Select Your Program --" && dateRange.isNotEmpty()
+        binding.buttonSelectProgram.isEnabled =
+            program != "-- Select Your Program --" && dateRange.isNotEmpty()
         if (binding.buttonSelectProgram.isEnabled) {
-            val colorInt = Color.parseColor("#FFBA38")
-            binding.buttonSelectProgram.setBackgroundColor(colorInt)
+            binding.buttonSelectProgram.setBackground(
+                ContextCompat.getDrawable(
+                    this,
+                    R.drawable.button_change_password
+                )
+            )  // Menggunakan background untuk enabled
             binding.buttonSelectProgram.setTextColor(ContextCompat.getColor(this, R.color.white))
         } else {
-            binding.buttonSelectProgram.setBackgroundColor(R.color.color26)
+            binding.buttonSelectProgram.setBackground(
+                ContextCompat.getDrawable(
+                    this,
+                    R.drawable.button_change_password_disable
+                )
+            )  // Menggunakan background untuk enabled
             binding.buttonSelectProgram.setTextColor(ContextCompat.getColor(this, R.color.white))
         }
     }
@@ -162,14 +188,22 @@ class ChooseProgramActivity : AppCompatActivity() {
     private fun showDateRangePicker() {
         // Build the date range picker
         val builder = MaterialDatePicker.Builder.dateRangePicker()
+            .setTheme(R.style.MaterialCalendarTheme)
 
         // Set up calendar constraints
         val constraintsBuilder = CalendarConstraints.Builder()
-        val today = Calendar.getInstance()
+        val calendar = Calendar.getInstance()
+
+// Get today's date in milliseconds
+        val today = calendar.timeInMillis
+
+// Get yesterday's date in milliseconds
+        calendar.add(Calendar.DATE, -1)
+        val yesterday = calendar.timeInMillis
 
         // Set the minimum date to today to prevent past dates from being selectable
-        constraintsBuilder.setStart(today.timeInMillis)
-        constraintsBuilder.setValidator(DateValidatorPointForward.from(today.timeInMillis))
+        constraintsBuilder.setStart(yesterday)
+        constraintsBuilder.setValidator(DateValidatorPointForward.from(today))
 
         builder.setCalendarConstraints(constraintsBuilder.build())
         builder.setTitleText("Select Dates (min 28 days range)")
@@ -188,7 +222,11 @@ class ChooseProgramActivity : AppCompatActivity() {
                 binding.editTextDateOfProgram.setText(rangeString)
                 enableSelectButtonIfReady()
             } else {
-                Toast.makeText(this, "The selected date range is not valid. The end date must be at least 28 days after the start date.", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this,
+                    "The selected date range is not valid. The end date must be at least 28 days after the start date.",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
 
@@ -199,6 +237,7 @@ class ChooseProgramActivity : AppCompatActivity() {
         val format = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
         return format.format(date)
     }
+
     private fun obtainViewModel(activity: AppCompatActivity): ChooseProgramViewModel {
         val factory = ViewModelFactory.getInstance(activity.application)
         return ViewModelProvider(activity, factory)[ChooseProgramViewModel::class.java]

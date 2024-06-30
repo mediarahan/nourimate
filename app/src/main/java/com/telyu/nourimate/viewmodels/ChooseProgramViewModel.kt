@@ -10,7 +10,9 @@ import com.telyu.nourimate.data.local.models.Detail
 import com.telyu.nourimate.data.local.models.WeightEntry
 import com.telyu.nourimate.data.local.models.WeightTrack
 import com.telyu.nourimate.data.repository.NourimateRepository
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.util.Date
 
 class ChooseProgramViewModel(private val repository: NourimateRepository) : ViewModel() {
 
@@ -25,15 +27,55 @@ class ChooseProgramViewModel(private val repository: NourimateRepository) : View
         }
     }
 
-    fun insertWeightTrack(weightTrack: WeightTrack) {
+    fun insertWeightTrack(
+        selectedProgramInt: Int,
+        startDate: Date?,
+        endDate: Date?,
+        startWeight: Int,
+        endWeight: Int,
+        editCurrentWeightDate: Date
+    ) {
         viewModelScope.launch {
+            val userId = repository.getUserId().first()
+            val weightTrack = WeightTrack(
+                0,
+                selectedProgramInt,
+                startDate,
+                endDate,
+                startWeight,
+                endWeight,
+                editCurrentWeightDate,
+                userId
+            )
             repository.insertWeightTrack(weightTrack)
         }
     }
 
-    fun insertWeightEntry(weightEntry: WeightEntry) {
+    fun insertWeightEntry(weight: Int, date: Date) {
         viewModelScope.launch {
+            val userId = repository.getUserId().first()
+            val weightEntry = WeightEntry(0, weight, date, userId)
             repository.insertWeightEntry(weightEntry)
+        }
+    }
+
+    fun createNewProgram(
+        ongoingProgram: Int,
+        startDate: String,
+        endDate: String,
+        startWeight: Int,
+        endWeight: Int,
+        editCurrentWeightDate: String
+    ) {
+        viewModelScope.launch {
+            repository.createNewProgram(
+                ongoingProgram,
+                startDate,
+                endDate,
+                startWeight,
+                endWeight,
+                editCurrentWeightDate
+            )
         }
     }
 }

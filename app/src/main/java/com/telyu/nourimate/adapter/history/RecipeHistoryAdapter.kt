@@ -56,7 +56,7 @@ class RecipeHistoryAdapter : ListAdapter<RecipeHistoryData, RecipeHistoryAdapter
     inner class ParentViewHolder(private val binding: ItemDateBinding) : BaseViewHolder(binding) {
         override fun bind(item: RecipeHistoryData) {
             item as RecipeHistoryData.RecipeHistoryItem
-            binding.textViewDate.text = Converters().formatDayDateToString(item.recipeHistory.consumedDate)
+            binding.textViewDate.text = Converters().formatDayDateToString(item.recipeHistory.consumedTime)
         }
     }
 

@@ -8,12 +8,27 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import com.telyu.nourimate.databinding.FragmentSettingBinding
 import android.widget.AdapterView
+import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import androidx.fragment.app.viewModels
+import com.telyu.nourimate.R
+import com.telyu.nourimate.adapter.date.HintArrayAdapter
+import com.telyu.nourimate.utils.SettingsModel
+import com.telyu.nourimate.viewmodels.AccountViewModel
+import com.telyu.nourimate.viewmodels.SettingViewModel
+import com.telyu.nourimate.viewmodels.ViewModelFactory
 
 
 class SettingFragment : Fragment() {
     private var _binding: FragmentSettingBinding? = null
     private val binding get() = _binding!!
+    private lateinit var themesAdapter: HintArrayAdapter
 
+    private val viewModel by viewModels<SettingViewModel> {
+        ViewModelFactory.getInstance(
+            requireContext().applicationContext
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,33 +41,43 @@ class SettingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setStatusBarColor(ContextCompat.getColor(requireContext(), R.color.color2))
+
         binding.backButton.setOnClickListener {
             // Navigasi kembali ke ProfileFragment
+            saveSettingsPreferences()
             requireActivity().supportFragmentManager.popBackStack()
         }
 
-        val themesOptions = arrayOf("Bright", "Dark")
-        val themeAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, themesOptions)
+        val themesOptions = arrayOf("Themes", "Bright", "Dark")
+        themesAdapter = HintArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, themesOptions)
+        themesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerThemes.adapter = themesAdapter
+    }
 
-        themeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinnerThemes.adapter = themeAdapter
-
-        binding.spinnerThemes.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val selectedTheme = parent?.getItemAtPosition(position).toString()
-                // Di sini Anda dapat melakukan sesuatu dengan tema yang dipilih
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
+    private fun saveSettingsPreferences() {
+        val themePreference = binding.spinnerThemes.selectedItem.toString()
+        val booleanThemePreference = when (themePreference) {
+            "Bright" -> true
+            "Dark" -> false
+            else -> true
         }
+        val notificationPreference = binding.switchNotification.isChecked
+        val recipePreference = binding.switchRecipePreferencesRecipeTransition.isChecked
+        val settingsModel = SettingsModel(booleanThemePreference, notificationPreference, recipePreference)
+        viewModel.saveSettingsPreferences(settingsModel)
+    }
 
-        binding.switchNotification.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                // Proses untuk menyalakan notifikasi
-            } else {
-                // Proses untuk mematikan notifikasi
-            }
-        }
+    private fun setStatusBarColor(color: Int) {
+        val window = requireActivity().window
+        val insetsController = WindowInsetsControllerCompat(window, window.decorView)
+
+        insetsController.isAppearanceLightStatusBars =
+            true // Set true or false depending on the status bar icons' color
+        insetsController.isAppearanceLightNavigationBars =
+            true // Set true or false depending on the navigation bar icons' color
+
+        window.statusBarColor = color
     }
 
     override fun onDestroyView() {
