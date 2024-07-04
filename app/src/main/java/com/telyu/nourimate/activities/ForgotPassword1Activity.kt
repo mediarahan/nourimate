@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
@@ -71,22 +73,27 @@ class ForgotPassword1Activity : AppCompatActivity() {
     }
 
     private fun setupButton() {
+
         binding.TextViewOtherMethod.setOnClickListener {
-            openForgotPasswordPage()
+            val email = binding.verifyEmailEditText.text.toString()
+            viewModel.sendEmailVerification(email)
+            Toast.makeText(this, "Verification email has been sent", Toast.LENGTH_SHORT).show()
         }
+
         binding.buttonNext.setOnClickListener {
             val email = binding.verifyEmailEditText.text.toString()
             viewModel.sendEmailVerification(email)
-            val builder = AlertDialog.Builder(this)
-                .setTitle("Forgot Password Email Sent")
-                .setMessage("Please check your email to reset your password.")
-                .setPositiveButton("OK") { dialog, _ ->
-                    viewModel.saveUserEmail(email)
-                    dialog.dismiss()
-                    finish()
-                }
-                .setCancelable(false)
-            builder.show()
+            Toast.makeText(this, "Verification email has been sent", Toast.LENGTH_SHORT).show()
+
+//            val builder = AlertDialog.Builder(this)
+//                .setTitle("Forgot Password Email Sent")
+//                .setMessage("Please check your email to reset your password.")
+//                .setPositiveButton("OK") { dialog, _ ->
+//                    viewModel.saveUserEmail(email)
+//                    dialog.dismiss()
+//                }
+//                .setCancelable(false)
+//            builder.show()
         }
         setupTextWatchers()
     }

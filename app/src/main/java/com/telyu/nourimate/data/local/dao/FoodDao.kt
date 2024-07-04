@@ -42,9 +42,10 @@ interface FoodDao {
     SELECT DISTINCT recipes.* FROM recipes
     INNER JOIN recommendations ON recipes.recipeId = recommendations.recipe_id
     WHERE recipes.mealType = :mealId
+    AND userId = :userId
     """
     )
-    fun getRecipesByMealType(mealId: Int): LiveData<List<Recipe>>
+    fun getRecipesByMealType(mealId: Int, userId: Int): LiveData<List<Recipe>>
 
     @Query(
         """
@@ -240,11 +241,11 @@ interface FoodDao {
             SUM(recipes.fat) AS totalFat, 
             SUM(recipes.protein) AS totalProtein
         FROM recipes
-        INNER JOIN recommendations ON recipes.recipeId = recommendations.recipe_id
-        WHERE recommendations.isSelected = 3
+        INNER JOIN consumed_recipes ON recipes.recipeId = consumed_recipes.recipe_id
+        WHERE user_id = :userId
         """
     )
-    suspend fun getNutritionSumsForHistory(): NutritionSum
+    suspend fun getNutritionSumsForHistory(userId: Int): NutritionSum
 
     @Query("""
         SELECT * FROM recipes
@@ -306,6 +307,11 @@ interface FoodDao {
     @Query("DELETE FROM consumed_recipes")
     suspend fun deleteRecipeHistories()
 
+    @Query("DELETE FROM recommendations WHERE userId = :userId")
+    suspend fun deleteCurrentRecommendations(userId: Int)
+
+    @Query("DELETE FROM consumed_recipes WHERE user_id = :userId")
+    suspend fun deleteMealHistoriesById(userId: Int)
 
 
 }

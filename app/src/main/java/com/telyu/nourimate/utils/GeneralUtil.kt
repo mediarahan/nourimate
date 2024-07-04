@@ -104,10 +104,16 @@ object GeneralUtil {
         return AKEi
     }
 
-    private fun calculateMealNutrition(akei: Int, conditionCode: Int, mealProportion: Double): Nutrition {
+    private fun calculateMealNutrition(akei: Int, conditionCode: Int, mealProportion: Double, program: Int): Nutrition {
         val dailyCalories = mealProportion * akei
+
         val (carbMultiplier, protMultiplier, fatMultiplier) = multipliers[conditionCode] ?: Triple(0.55, 0.125, 0.2)
-        val calories = dailyCalories
+        val calories = when (program) {
+            1 -> dailyCalories
+            2 -> dailyCalories - (500 * mealProportion)
+            3 -> dailyCalories + (500 * mealProportion)
+            else -> dailyCalories
+        }
         val carbohydrates = calories * carbMultiplier / 4
         val protein = calories * protMultiplier / 4
         val fat = calories * fatMultiplier / 9
@@ -120,14 +126,14 @@ object GeneralUtil {
         )
     }
 
-    fun calculateBreakfastNutrition(akei: Int, conditionCode: Int) =
-        calculateMealNutrition(akei = akei, conditionCode, 0.25)
+    fun calculateBreakfastNutrition(akei: Int, conditionCode: Int,program: Int) =
+        calculateMealNutrition(akei = akei, conditionCode, 0.25,program)
 
-    fun calculateLunchNutrition(akei: Int, conditionCode: Int) =
-        calculateMealNutrition(akei = akei, conditionCode, 0.40)
+    fun calculateLunchNutrition(akei: Int, conditionCode: Int,program: Int) =
+        calculateMealNutrition(akei = akei, conditionCode, 0.40,program)
 
-    fun calculateDinnerNutrition(akei: Int, conditionCode: Int) =
-        calculateMealNutrition(akei = akei, conditionCode, 0.35)
+    fun calculateDinnerNutrition(akei: Int, conditionCode: Int,program: Int) =
+        calculateMealNutrition(akei = akei, conditionCode, 0.35,program)
 
     data class Nutrition(
         val calories: Double,

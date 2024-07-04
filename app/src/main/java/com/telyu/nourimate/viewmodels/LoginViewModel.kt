@@ -1,15 +1,12 @@
 package com.telyu.nourimate.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.telyu.nourimate.data.remote.Result
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.telyu.nourimate.data.repository.NourimateRepository
 import com.telyu.nourimate.utils.UserModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -30,9 +27,48 @@ class LoginViewModel(private val repository: NourimateRepository) : ViewModel() 
         }
     }
 
+    fun checkWeightTrackExists() {
+        viewModelScope.launch {
+            val userId = repository.getUserId().first()
+            val isDetailExists = repository.checkUserWeightTrackExists(userId)
+            if (!isDetailExists) {
+                repository.fetchAllUserProgram()
+            }
+        }
+    }
+
+    fun checkMealHistoryExists() {
+        viewModelScope.launch {
+            val userId = repository.getUserId().first()
+            val isDetailExists = repository.checkUserMealHistoryExists(userId)
+            if (!isDetailExists) {
+                repository.fetchAllUserMealHistory()
+            }
+        }
+    }
+
+    fun checkHistoryExists() {
+        viewModelScope.launch {
+            val userId = repository.getUserId().first()
+            val isDetailExists = repository.checkUserHistoryExists(userId)
+            if (!isDetailExists) {
+                repository.fetchAllUserHistory()
+            }
+        }
+    }
+
     fun saveSession(userModel: UserModel) {
         viewModelScope.launch {
             repository.saveSession(userModel)
         }
     }
+
+    fun googleSignIn(email: String) = repository.performGoogleSignIn(email)
+    fun logout() {
+        viewModelScope.launch {
+            repository.logout()
+        }
+    }
+
+
 }

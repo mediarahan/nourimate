@@ -36,7 +36,7 @@ class SplashScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = obtainViewModel(this@SplashScreenActivity)
-        setStatusBarColor(resources.getColor(R.color.color19, theme))
+        setStatusBarColor(resources.getColor(R.color.color0, theme))
 
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -114,9 +114,11 @@ class SplashScreenActivity : AppCompatActivity() {
             val isVerified = userPreference.getUserVerificationState().firstOrNull()
             Log.d("SplashScreenActivity", "isVerified: $isVerified")
 
+
             if (isLoggedIn == true && isVerified == true) {
                 startActivity(Intent(this@SplashScreenActivity, NavigationBarActivity::class.java))
             } else {
+                viewModel.logout()
                 Log.d("SplashScreenActivity", "Not logged in, going to the LoginActivity...")
                 startActivity(Intent(this@SplashScreenActivity, LoginActivity::class.java))
             }

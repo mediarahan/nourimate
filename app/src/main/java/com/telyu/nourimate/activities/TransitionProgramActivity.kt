@@ -2,20 +2,16 @@ package com.telyu.nourimate.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
 import com.telyu.nourimate.R
 import com.telyu.nourimate.databinding.ActivityTransitionProgramBinding
-import com.telyu.nourimate.fragments.HistoryFragment
-import com.telyu.nourimate.fragments.ProfileFragment
-import com.telyu.nourimate.viewmodels.TransitionProgramViewModel
-import com.telyu.nourimate.viewmodels.ViewModelFactory
 import com.telyu.nourimate.utils.Converters
 import com.telyu.nourimate.utils.GeneralUtil
+import com.telyu.nourimate.viewmodels.TransitionProgramViewModel
+import com.telyu.nourimate.viewmodels.ViewModelFactory
 import kotlin.math.abs
 
 class TransitionProgramActivity : AppCompatActivity() {

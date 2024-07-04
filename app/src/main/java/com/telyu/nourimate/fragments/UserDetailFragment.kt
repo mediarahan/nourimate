@@ -18,6 +18,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.telyu.nourimate.R
 import com.telyu.nourimate.adapter.date.HintArrayAdapter
 import com.telyu.nourimate.custom.CustomDatePickerFragment
@@ -33,6 +34,9 @@ import com.telyu.nourimate.utils.Converters
 import com.telyu.nourimate.utils.GeneralUtil
 import com.telyu.nourimate.viewmodels.UserDetailViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -72,19 +76,20 @@ class UserDetailFragment : Fragment() {
         bindEditTextButtons()
 
         binding.buttonSaveEditProfile.setOnClickListener {
-            AlertDialog.Builder(requireContext())
-                .setTitle("Save Changes")
-                .setMessage("Are you sure you want to update your profile? This will refresh your recipe recommendations based on the new details.")
-                .setPositiveButton("Yes") { dialog, _ ->
-                    updateUserProfile()
-                    fetchDataFromMachineLearning()
-                    requireActivity().supportFragmentManager.popBackStack()
-                    dialog.dismiss()
-                }
-                .setNegativeButton("No") { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .show()
+            updateUserProfile()
+            fetchDataFromMachineLearning()
+//            AlertDialog.Builder(requireContext())
+//                .setTitle("Save Changes")
+//                .setMessage("Are you sure you want to update your profile? This will refresh your recipe recommendations based on the new details.")
+//                .setPositiveButton("Yes") { dialog, _ ->
+//
+//                    requireActivity().supportFragmentManager.popBackStack()
+//                    dialog.dismiss()
+//                }
+//                .setNegativeButton("No") { dialog, _ ->
+//                    dialog.dismiss()
+//                }
+//                .show()
         }
 
         // Inisialisasi genderSpinner menggunakan View Binding
@@ -99,11 +104,15 @@ class UserDetailFragment : Fragment() {
     }
 
     private fun fetchDataFromMachineLearning() {
-        viewModel.recommendationsLiveData.observe(requireActivity()) { recommendations ->
+        viewModel.recommendationsLiveData.observe(viewLifecycleOwner) { recommendations ->
+            Log.d(TAG, "fetchDataFromMachineLearning: $recommendations")
+            //viewModel.deleteCurrentRecommendations()
             viewModel.insertRecommendations(recommendations)
-            Log.d("Recommendations", recommendations.toString())
+            requireActivity().supportFragmentManager.popBackStack()
+
         }
     }
+
 
     private fun setStatusBarColor(color: Int) {
         val window = requireActivity().window
@@ -130,8 +139,8 @@ class UserDetailFragment : Fragment() {
                 val formattedDate = Converters().formatDateToString(detail.dob)
                 binding.editTextBirth.setText(formattedDate)
                 binding.editTextHeight.setText(detail.height.toString())
-                binding.editTextWeight.setText(detail.waistSize.toString())
-                binding.editTextWaist.setText(detail.weight.toString())
+                binding.editTextWeight.setText(detail.weight.toString())
+                binding.editTextWaist.setText(detail.waistSize.toString())
 
                 // Jika genderAdapter telah diinisialisasi, lakukan seleksi
                 if (::genderAdapter.isInitialized) {
@@ -259,8 +268,8 @@ class UserDetailFragment : Fragment() {
                 userDetails.detailId,
                 formattedDob,
                 height,
-                weight,
                 waistSize,
+                weight,
                 gender,
                 allergen,
                 disease,
@@ -468,7 +477,7 @@ class UserDetailFragment : Fragment() {
                 }
             }
             .setPositiveButton("Done") { dialog, _ ->
-                val selectedText = selectedItems.joinToString(", ")
+                val selectedText = selectedItems.joinToString(",")
                 binding.editTextAllergy.setText(selectedText)  // Menggunakan ViewBinding untuk mengupdate view
                 dialog.dismiss()
             }
@@ -527,7 +536,7 @@ class UserDetailFragment : Fragment() {
                 }
             }
             .setPositiveButton("Done") { dialog, _ ->
-                val selectedText = selectedItems.joinToString(", ")
+                val selectedText = selectedItems.joinToString(",")
                 binding.editTextDisease.setText(selectedText)
                 dialog.dismiss()
             }

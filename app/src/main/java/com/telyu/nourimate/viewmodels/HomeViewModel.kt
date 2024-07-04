@@ -203,8 +203,8 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
     private val userDetails: LiveData<Detail> = usersId.switchMap { id ->
         liveData {
             val detail = repository.getUserDetailsById(id)
-            Log.d("Debug", "User id fetched: $id")
-            Log.d("Debug", "User details fetched: $detail")
+            Log.d("Penting", "User id fetched: $id")
+            Log.d("Penting", "User details fetched: $detail")
             if (detail != null) {
                 emit(detail)
             }
@@ -233,12 +233,16 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
             val akei = calculateAKEi(detail.height, gender, age)
             val conditionCode = convertConditionToCode(detail.disease)
 
-            val breakfastNutrition = calculateBreakfastNutrition(akei, conditionCode)
-            val lunchNutrition = calculateLunchNutrition(akei, conditionCode)
-            val dinnerNutrition = calculateDinnerNutrition(akei, conditionCode)
+            val program = repository.getUserProgram().first()
+            Log.d("ProgramInHome", "Program: $program")
+
+            val breakfastNutrition = calculateBreakfastNutrition(akei, conditionCode,program)
+            val lunchNutrition = calculateLunchNutrition(akei, conditionCode, program)
+            val dinnerNutrition = calculateDinnerNutrition(akei, conditionCode, program)
 
             val totalCalorieNeeds =
                 (breakfastNutrition.calories + lunchNutrition.calories + dinnerNutrition.calories).toInt()
+
             val totalProteinNeeds =
                 (breakfastNutrition.protein + lunchNutrition.protein + dinnerNutrition.protein).toInt()
             val totalFatNeeds =
@@ -265,9 +269,11 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
             val akei = calculateAKEi(detail.height, gender, age)
             val conditionCode = convertConditionToCode(detail.disease)
 
-            val breakfastNutrition = calculateBreakfastNutrition(akei, conditionCode)
-            val lunchNutrition = calculateLunchNutrition(akei, conditionCode)
-            val dinnerNutrition = calculateDinnerNutrition(akei, conditionCode)
+            val program = repository.getUserProgram().first()
+
+            val breakfastNutrition = calculateBreakfastNutrition(akei, conditionCode, program)
+            val lunchNutrition = calculateLunchNutrition(akei, conditionCode, program)
+            val dinnerNutrition = calculateDinnerNutrition(akei, conditionCode, program)
 
             val breakfastCalorieNeeds = (breakfastNutrition.calories).toInt()
             val lunchCalorieNeeds = (lunchNutrition.calories).toInt()
@@ -344,6 +350,7 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
         viewModelScope.launch {
             val userId = repository.getUserId().first()
             val selectedRecipeIds = repository.getAllSelectedRecipeIds()
+            Log.d("SelectedRecipeIds", "Selected Recipe IDs: $selectedRecipeIds")
             val consumedTime = Converters().dateFromTimestamp(GeneralUtil.getYesterdayTimestamp())
             val consumedDate = Converters().formatDateToString(consumedTime)
 

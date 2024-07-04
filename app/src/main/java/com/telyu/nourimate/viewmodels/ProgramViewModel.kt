@@ -415,6 +415,19 @@ class ProgramViewModel(private val repository: NourimateRepository) : ViewModel(
         }
     }
 
+    fun deleteMealHistoriesById() {
+        viewModelScope.launch {
+            val userId = repository.getUserId().firstOrNull() ?: -1
+            repository.deleteMealHistoriesById(userId)
+        }
+    }
+
+    fun saveUserProgram(program: Int) {
+        viewModelScope.launch {
+            repository.saveUserProgram(program)
+        }
+    }
+
 
 }
 

@@ -25,6 +25,12 @@ class SplashScreenViewModel(private val repository: NourimateRepository): ViewMo
         }
     }
 
+    fun logout() {
+        viewModelScope.launch {
+            repository.logout()
+        }
+    }
+
     val recipeCount: LiveData<Boolean> = liveData {
         val rCount = repository.checkIfRecipeDatabaseIsFilled()
         if (rCount == 0) {

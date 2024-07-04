@@ -14,7 +14,7 @@ import java.util.Date
 @Parcelize
 @TypeConverters(Converters::class)
 data class Recommendation(
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey(autoGenerate = true)
     val recommendationId: Int,
     val date: String,
     var isSelected: Int = 0,

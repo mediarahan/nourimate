@@ -53,7 +53,8 @@ class VerificationCode2Activity : AppCompatActivity() {
         binding.root.background = gradientDrawable
 
         binding.TextViewReceiveCode.setOnClickListener {
-            openVerification1Page()
+            viewModel.sendEmailVerification()
+            Toast.makeText(this, "A new code has been sent to your email", Toast.LENGTH_SHORT).show()
         }
 
         binding.buttonVerify.setOnClickListener {

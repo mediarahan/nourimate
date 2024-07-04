@@ -105,6 +105,7 @@ class ChooseProgramActivity : AppCompatActivity() {
                 detail?.weight ?: -999,
                 todayDate
             )
+            Log.d("WADUH", "insertWeightTrack")
             //insert program details to backend
             viewModel.createNewProgram(
                 selectedProgramInt,
@@ -114,7 +115,9 @@ class ChooseProgramActivity : AppCompatActivity() {
                 detail?.weight ?: -999,
                 todayDateString
             )
+            Log.d("WADUH", "insertWeightTrackbACKEND")
             setupWeightEntry()
+            viewModel.saveUserProgram(selectedProgramInt)
             finish()
         }
     }
@@ -190,24 +193,19 @@ class ChooseProgramActivity : AppCompatActivity() {
         val builder = MaterialDatePicker.Builder.dateRangePicker()
             .setTheme(R.style.MaterialCalendarTheme)
 
+        val yesterdayCalendar = Calendar.getInstance()
+        yesterdayCalendar.add(Calendar.DAY_OF_YEAR, -1)
+
         // Set up calendar constraints
         val constraintsBuilder = CalendarConstraints.Builder()
-        val calendar = Calendar.getInstance()
-
-// Get today's date in milliseconds
-        val today = calendar.timeInMillis
-
-// Get yesterday's date in milliseconds
-        calendar.add(Calendar.DATE, -1)
-        val yesterday = calendar.timeInMillis
+        val today = Calendar.getInstance()
 
         // Set the minimum date to today to prevent past dates from being selectable
-        constraintsBuilder.setStart(yesterday)
-        constraintsBuilder.setValidator(DateValidatorPointForward.from(today))
+        constraintsBuilder.setStart(today.timeInMillis)
+        constraintsBuilder.setValidator(DateValidatorPointForward.from(yesterdayCalendar.timeInMillis))
 
         builder.setCalendarConstraints(constraintsBuilder.build())
         builder.setTitleText("Select Dates (min 28 days range)")
-
 
         val dateRangePicker = builder.build()
         dateRangePicker.addOnPositiveButtonClickListener { dateRange ->
@@ -222,11 +220,7 @@ class ChooseProgramActivity : AppCompatActivity() {
                 binding.editTextDateOfProgram.setText(rangeString)
                 enableSelectButtonIfReady()
             } else {
-                Toast.makeText(
-                    this,
-                    "The selected date range is not valid. The end date must be at least 28 days after the start date.",
-                    Toast.LENGTH_LONG
-                ).show()
+                Toast.makeText(this, "The selected date range is not valid. The end date must be at least 28 days after the start date.", Toast.LENGTH_LONG).show()
             }
         }
 

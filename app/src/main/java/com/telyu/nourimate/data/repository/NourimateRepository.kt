@@ -60,6 +60,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withContext
 import java.util.Date
 
 class NourimateRepository(
@@ -176,46 +177,48 @@ class NourimateRepository(
     }
 
     // login part 3
-    fun loginWithGoogle(
-        email: String,
-        idToken: String
-    ): LiveData<Result<GoogleSigninStep3Response>> = liveData {
-        emit(Result.Loading)
-        try {
-            val requestBody = SendGoogleSigninVerificationRequest(idToken)
-            val response = apiService.sendGoogleSigninVerification(requestBody)
-            Log.d("LoginProcess", "Response: $response")
-            val id = response.user.userId
-            val isVerified = response.user.isVerified
-            val isVerifiedBoolean = isVerified == 1
-            val isDetailFilled = response.user.isDetailFilled
-            val isDetailFilledBoolean = isDetailFilled == 1
-            val accessToken = response.accessToken
-            val refreshToken = response.refreshToken
-            val name = "Nourimate User" //response.user.name
-            val phoneNumber = response.user.phoneNumber
+//    fun loginWithGoogle(
+//        email: String,
+//        idToken: String
+//    ): LiveData<Result<GoogleSigninStep3Response>> = liveData {
+//        emit(Result.Loading)
+//        try {
+//            val requestBody = SendGoogleSigninVerificationRequest(idToken)
+//            val response = apiService.sendGoogleSigninVerification(requestBody)
+//            Log.d("LoginProcess", "Response: $response")
+//            val id = response.user.userId
+//            val isVerified = response.user.isVerified
+//            val isVerifiedBoolean = isVerified == 1
+//            val isDetailFilled = response.user.isDetailFilled
+//            val isDetailFilledBoolean = isDetailFilled == 1
+//            val accessToken = response.accessToken
+//            val refreshToken = response.refreshToken
+//            val name = "Nourimate User" //response.user.name
+//            val phoneNumber = response.user.phoneNumber
+//
+//            val userModel = UserModel(
+//                id,
+//                email,
+//                accessToken,
+//                refreshToken,
+//                true,
+//                isVerifiedBoolean,
+//                isDetailFilledBoolean,
+//                name,
+//                phoneNumber,
+//            )
+//            userPreference.saveSession(userModel)
+//            Log.d("LoginProcess", "UserModel: $userModel")
+//
+//            delay(2000)
+//            emit(Result.Success(response))
+//        } catch (e: Exception) {
+//            emit(Result.Error(e.message.toString()))
+//        }
+//    }
 
-            val userModel = UserModel(
-                id,
-                email,
-                accessToken,
-                refreshToken,
-                true,
-                isVerifiedBoolean,
-                isDetailFilledBoolean,
-                name,
-                phoneNumber,
-            )
-            userPreference.saveSession(userModel)
-            Log.d("LoginProcess", "UserModel: $userModel")
 
-            delay(2000)
-            emit(Result.Success(response))
-        } catch (e: Exception) {
-            emit(Result.Error(e.message.toString()))
-        }
-    }
-
+    //d riil google signin
     fun performGoogleSignIn(token: String): LiveData<Result<GoogleSigninStep3Response>> = liveData(
         Dispatchers.IO
     ) {
@@ -253,7 +256,7 @@ class NourimateRepository(
                     true,
                     response.user.isVerified == 1,
                     response.user.isDetailFilled == 1,
-                    "Nourimate User",  // or response.user.name if available
+                    response.user.name,  // or response.user.name if available
                     response.user.phoneNumber
                 )
 
@@ -420,16 +423,18 @@ class NourimateRepository(
                 0,
                 formattedDate,
                 response.height,
-                response.waistSize,
-                response.weight,
+                waistSize = response.waistSize,  // Fixed the mix-up here
+                weight = response.weight,        // And here
                 response.gender,
                 response.allergen,
                 response.disease,
                 bmi,
                 response.userId
             )
-            insertDetail(detail)
-            Log.d("UserRepository", "Detail: $detail")
+            withContext(Dispatchers.Default) {
+                val insertionResult = async { insertDetail(detail) }
+                insertionResult.await()
+            }
             response
         } catch (e: Exception) {
             Log.e("UserRepository", "Error fetching user details: ${e.message}")
@@ -437,41 +442,61 @@ class NourimateRepository(
         }
     }
 
+
     //========== Program ==========
-    suspend fun fetchAllUserProgram(): GetAllUserProgramResponse {
+    suspend fun fetchAllUserProgram(): List<GetAllUserProgramResponse> {
         return try {
-            val response = apiService.getAllUserProgram()
-            Log.d("UserRepository", "All user program fetched successfully")
-            response
+            val responseList = apiService.getAllUserProgram()
+            responseList.forEach { response ->
+                Log.d("UserRepository", response.message)
+                response.programs.forEach { program ->
+
+                    val weightTrack = WeightTrack(
+                        id = 0,
+                        ongoingProgram = program.ongoingProgram,
+                        startDate = Converters().fromStringToDateISO(program.startDate),
+                        endDate = Converters().fromStringToDateISO(program.endDate),
+                        startWeight = program.startWeight,
+                        endWeight = program.endWeight,
+                        editCurrentWeightDate = Converters().stringToDateISO(program.editCurrentWeightDate),
+                        userId = program.user_id
+                    )
+                    insertWeightTrack(weightTrack)
+
+                    val weightEntry = WeightEntry(id = 0, weight = program.startWeight, date = Converters().stringToDateISO(program.startDate), userId = program.user_id)
+                    insertWeightEntry(weightEntry)
+                }
+            }
+            responseList
         } catch (e: Exception) {
             Log.e("UserRepository", "Error fetching all user program: ${e.message}")
             throw e
         }
     }
 
-    fun createNewProgram(
+
+
+    suspend fun createNewProgram(
         ongoingProgram: Int,
         startDate: String,
         endDate: String,
         startWeight: Int,
         endWeight: Int,
         editCurrentWeightDate: String
-    ): LiveData<Result<SendEmailVerificationResponse>> = liveData {
-        emit(Result.Loading)
+    ) {
         try {
+            Log.d("WADUH", "Posting Program")
             val userId = getUserId().first()
             val requestBody = CreateNewProgramRequest(
                 ongoingProgram,
-                startDate,
-                endDate,
+                Converters().convertDateFormat(startDate),
+                Converters().convertDateFormat(endDate),
                 startWeight,
                 endWeight,
-                editCurrentWeightDate,
+                Converters().convertDateFormat(editCurrentWeightDate),
                 userId
             )
             val response = apiService.createNewProgram(requestBody)
-            delay(2000)
-            emit(Result.Success(response))
         } catch (e: Exception) {
             Log.d("UserRepository", "Error in create new program: ${e.message}")
         }
@@ -482,6 +507,17 @@ class NourimateRepository(
         return try {
             val response = apiService.getAllUserMealHistory()
             Log.d("UserRepository", "All user meal history fetched successfully")
+
+            response.mealHistories.forEach { mealHistory ->
+                val mealHistory = RecipeHistory(
+                    0,
+                    mealHistory.recipeId,
+                    Converters().stringToDateISO(mealHistory.consumedTime),
+                    mealHistory.consumedDate,
+                    mealHistory.userId
+                )
+                insertMealHistory(mealHistory)
+            }
             response
         } catch (e: Exception) {
             Log.e("UserRepository", "Error fetching all user meal history: ${e.message}")
@@ -489,33 +525,28 @@ class NourimateRepository(
         }
     }
 
-//    fun createNewMealHistory(
-//        recipeId: Int,
-//        consumedTime: String,
-//        consumedDate: String,
-//    ): LiveData<Result<SendEmailVerificationResponse>> = liveData {
-//        emit(Result.Loading)
-//        try {
-//            val userId = getUserId().first()
-//            val requestBody = CreateNewMealHistoryRequest(
-//                recipeId,
-//                consumedTime,
-//                consumedDate,
-//                userId
-//            )
-//            val response = apiService.createNewMealHistory(requestBody)
-//            delay(2000)
-//            emit(Result.Success(response))
-//        } catch (e: Exception) {
-//            Log.d("UserRepository", "Error in create new program: ${e.message}")
-//        }
-//    }
-
     //========== History ==========
     suspend fun fetchAllUserHistory(): GetAllHistoryResponse {
         return try {
             val response = apiService.getAllUserHistory()
             Log.d("UserRepository", "All user history fetched successfully")
+            response.histories.forEach { historiesItem ->
+                val history = History(
+                    0,
+                    historiesItem.programName,
+                    historiesItem.startDate,
+                    historiesItem.endDate,
+                    historiesItem.calories,
+                    historiesItem.protein,
+                    historiesItem.fat,
+                    historiesItem.carbs,
+                    historiesItem.startWeight,
+                    historiesItem.endWeight,
+                    historiesItem.userId,
+                    historiesItem.createdAt,
+                )
+                insertHistory(history)
+            }
             response
         } catch (e: Exception) {
             Log.e("UserRepository", "Error fetching all user history: ${e.message}")
@@ -523,7 +554,7 @@ class NourimateRepository(
         }
     }
 
-    fun createNewHistory(
+    suspend fun createNewHistory(
         programName: String,
         startDate: String,
         endDate: String,
@@ -534,8 +565,7 @@ class NourimateRepository(
         startWeight: Int,
         endWeight: Int,
         createdAt: Long
-    ): LiveData<Result<SendEmailVerificationResponse>> = liveData {
-        emit(Result.Loading)
+    ) {
         try {
             val userId = getUserId().first()
             val requestBody = CreateNewHistoryRequest(
@@ -552,8 +582,6 @@ class NourimateRepository(
                 createdAt
             )
             val response = apiService.createNewHistory(requestBody)
-            delay(2000)
-            emit(Result.Success(response))
         } catch (e: Exception) {
             Log.d("UserRepository", "Error in create new program: ${e.message}")
         }
@@ -823,6 +851,7 @@ class NourimateRepository(
     }
 
     suspend fun insertWeightTrack(weightTrack: WeightTrack) {
+        Log.d("WADUH", "WeightTrack insert")
         userDao.insertWeightTrack(weightTrack)
     }
 
@@ -838,7 +867,7 @@ class NourimateRepository(
         return foodDao.getRecipeHistorySortedAscending(userId)
     }
 
-    suspend fun getRecipeHistoryById(userId: Int):List<RecipeHistory> {
+    suspend fun getRecipeHistoryById(userId: Int): List<RecipeHistory> {
         return foodDao.getRecipeHistoryById(userId)
     }
 
@@ -851,7 +880,8 @@ class NourimateRepository(
     }
 
     suspend fun getNutritionSumsForHistory(): NutritionSum {
-        return foodDao.getNutritionSumsForHistory()
+        val userId = getUserId().first()
+        return foodDao.getNutritionSumsForHistory(userId)
     }
 
     suspend fun insertHistory(history: History) {
@@ -907,6 +937,18 @@ class NourimateRepository(
         return userDao.checkUserDetailExists(userId) > 0
     }
 
+    suspend fun checkUserWeightTrackExists(userId: Int): Boolean {
+        return userDao.checkUserWeightTrackExists(userId) > 0
+    }
+
+    suspend fun checkUserMealHistoryExists(userId: Int): Boolean {
+        return userDao.checkUserMealHistoryExists(userId) > 0
+    }
+
+    suspend fun checkUserHistoryExists(userId: Int): Boolean {
+        return userDao.checkUserHistoryExists(userId) > 0
+    }
+
     suspend fun getRecipesByNameAndMealType(query: String, mealType: Int): List<Recipe> {
         return foodDao.getRecipesByNameAndMealType(query, mealType)
     }
@@ -921,6 +963,10 @@ class NourimateRepository(
 
     suspend fun insertMealHistories(histories: List<RecipeHistory>) {
         return foodDao.insertRecipeHistories(histories)
+    }
+
+    suspend fun insertMealHistory(history: RecipeHistory) {
+        return foodDao.insertRecipeHistory(history)
     }
 
     suspend fun deselectSelectedRecipes() {
@@ -947,8 +993,8 @@ class NourimateRepository(
     }
 
     //Weekly
-    fun getRecipesByMealType(mealId: Int): LiveData<List<Recipe>> {
-        return foodDao.getRecipesByMealType(mealId)
+    fun getRecipesByMealType(mealId: Int, userId: Int): LiveData<List<Recipe>> {
+        return foodDao.getRecipesByMealType(mealId, userId)
     }
 
     fun getRecommendationsByMealIdSortedAscending(
@@ -980,6 +1026,23 @@ class NourimateRepository(
     suspend fun saveUserEmail(email: String) {
         userPreference.saveUserEmail(email)
     }
+
+    suspend fun deleteCurrentRecommendations(userId: Int) {
+        foodDao.deleteCurrentRecommendations(userId)
+    }
+
+    suspend fun deleteMealHistoriesById(userId: Int) {
+        foodDao.deleteMealHistoriesById(userId)
+    }
+
+    fun getUserProgram(): Flow<Int> {
+        return userPreference.getUserProgram()
+    }
+
+    suspend fun saveUserProgram(program: Int) {
+        userPreference.saveUserProgram(program)
+    }
+
 
     companion object {
         @Volatile

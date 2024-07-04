@@ -78,4 +78,10 @@ class ChooseProgramViewModel(private val repository: NourimateRepository) : View
             )
         }
     }
+
+    fun saveUserProgram(program: Int) {
+        viewModelScope.launch {
+            repository.saveUserProgram(program)
+        }
+    }
 }

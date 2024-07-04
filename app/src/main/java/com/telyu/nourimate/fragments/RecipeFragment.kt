@@ -1,8 +1,9 @@
 package com.telyu.nourimate.fragments
 
 import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -11,30 +12,20 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Toast
-import android.animation.ObjectAnimator
-import android.animation.AnimatorListenerAdapter
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.telyu.nourimate.R
 import com.telyu.nourimate.adapter.recipe.CombinedRecipe
-import com.telyu.nourimate.adapter.recipe.RecipeAdapter
 import com.telyu.nourimate.adapter.recipe.RecipeAdapter2
 import com.telyu.nourimate.adapter.recipe.RecommendationRecipeAdapter
 import com.telyu.nourimate.custom.BottomMarginItemDecoration
-import com.telyu.nourimate.data.local.FakeFoodData
-import com.telyu.nourimate.data.local.db.FoodDatabase
-import com.telyu.nourimate.data.local.models.Recipe
+import com.telyu.nourimate.custom.RecipeDialog
 import com.telyu.nourimate.databinding.FragmentRecipeBinding
 import com.telyu.nourimate.viewmodels.RecipeViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
-import com.telyu.nourimate.custom.RecipeDialog
-import com.telyu.nourimate.data.local.models.RecipeHistory
-import com.telyu.nourimate.data.local.models.Recommendation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -48,6 +39,7 @@ class RecipeFragment : Fragment() {
     private lateinit var lunchRecipeAdapter: RecipeAdapter2
     private lateinit var dinnerRecipeAdapter: RecipeAdapter2
 
+    private var isRecipesForSearchInserted = false
 
     private val viewModel by viewModels<RecipeViewModel> {
         ViewModelFactory.getInstance(
@@ -68,6 +60,7 @@ class RecipeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setStatusBarColor(ContextCompat.getColor(requireContext(), R.color.color16))
+        createRecommendationsForAllRecipes()
 
         //supaya ilang dulu
         binding.radioGroupMealtype.visibility = View.GONE
@@ -260,11 +253,11 @@ class RecipeFragment : Fragment() {
 
     private fun updateRecyclerViewVisibility(mealTime: String) {
         if (mealTime == "Daily") {
-            showDailyRecyclerViewsBasedOnMealType()
             binding.weeklyRecommendationRecyclerView.visibility = View.GONE
+            showDailyRecyclerViewsBasedOnMealType()
             binding.searchBar.visibility = View.VISIBLE
             binding.selected.visibility = View.VISIBLE
-        } else {
+        } else if (mealTime == "Weekly")  {
             hideAllDailyRecyclerViews()
             binding.weeklyRecommendationRecyclerView.visibility = View.VISIBLE
             binding.searchBar.visibility = View.GONE
@@ -272,10 +265,13 @@ class RecipeFragment : Fragment() {
         }
     }
     private fun showDailyRecyclerViewsBasedOnMealType() {
+        hideAllDailyRecyclerViews()  // Ensure all are hidden
         val checkedId = binding.radioGroupMealtype.checkedRadioButtonId
-        binding.breakfastRecyclerView.visibility = if (checkedId == R.id.button_breakfast) View.VISIBLE else View.GONE
-        binding.lunchRecyclerView.visibility = if (checkedId == R.id.button_lunch) View.VISIBLE else View.GONE
-        binding.dinnerRecyclerView.visibility = if (checkedId == R.id.button_dinner) View.VISIBLE else View.GONE
+        when (checkedId) {
+            R.id.button_breakfast -> binding.breakfastRecyclerView.visibility = View.VISIBLE
+            R.id.button_lunch -> binding.lunchRecyclerView.visibility = View.VISIBLE
+            R.id.button_dinner -> binding.dinnerRecyclerView.visibility = View.VISIBLE
+        }
     }
 
     private fun hideAllDailyRecyclerViews() {
@@ -369,4 +365,13 @@ class RecipeFragment : Fragment() {
             }
         }
     }
+
+
+    //buat search
+    private fun createRecommendationsForAllRecipes() {
+        Log.d("WADUH", "createRecommendationsForAllRecipes: ")
+        viewModel.createRecommendationsForAllRecipes()
+        isRecipesForSearchInserted = true
+    }
+
 }

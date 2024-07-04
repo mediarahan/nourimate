@@ -57,9 +57,9 @@ class ForgotPasswordActivity : AppCompatActivity() {
         binding.buttonVerifEmail.setOnClickListener {
             openForgotPassword1Page()
         }
-        binding.buttonVerifNumber.setOnClickListener {
-            openForgotPassword2Page()
-        }
+//        binding.buttonVerifNumber.setOnClickListener {
+//            openForgotPassword2Page()
+//        }
     }
 
     private fun openForgotPassword1Page() {

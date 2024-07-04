@@ -32,11 +32,16 @@ import com.telyu.nourimate.data.remote.Result
 import com.telyu.nourimate.databinding.ActivityLoginBinding
 import com.telyu.nourimate.utils.GeneralUtil
 import com.telyu.nourimate.utils.InputValidator
+import com.telyu.nourimate.utils.MealHistoryWorkManager
 import com.telyu.nourimate.utils.MidnightWorkManager
 import com.telyu.nourimate.utils.NotificationWorkManager
 import com.telyu.nourimate.utils.UserModel
 import com.telyu.nourimate.viewmodels.LoginViewModel
 import com.telyu.nourimate.viewmodels.ViewModelFactory
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
@@ -150,7 +155,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun handleSpecialLogin(email: String) {
         val userModel = UserModel(
-            id = 1,
+            id = 100,
             email = email,
             accessToken = "fakeAccessToken",
             refreshToken = "fakeRefreshToken",
@@ -174,7 +179,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun handleSpecialLogin2(email: String) {
         val userModel = UserModel(
-            id = 2,
+            id = 101,
             email = email,
             accessToken = "fakeAccessToken",
             refreshToken = "fakeRefreshToken",
@@ -207,10 +212,32 @@ class LoginActivity : AppCompatActivity() {
                         Log.d("isDetailFilled", isDetailFilled.toString())
                         when (isDetailFilled) {
                             true -> {
-                                loginViewModel.checkUserExists()
-                                Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show()
-                                startActivity(Intent(this@LoginActivity, NavigationBarActivity::class.java))
-                                finish()
+                                lifecycleScope.launch {
+                                    try {
+                                        // Perform all checks and wait for all to complete before moving to the next activity.
+                                        coroutineScope {
+                                            // Fetch and insert necessary data, and wait for completion
+                                            val userDetails = async { loginViewModel.checkUserExists() }
+                                            val userPrograms = async { loginViewModel.checkWeightTrackExists() }
+                                            val userMealHistory = async { loginViewModel.checkMealHistoryExists() }
+                                            val userHistory = async { loginViewModel.checkHistoryExists() }
+
+                                            // Await all async operations
+                                            userDetails.await()
+                                            userPrograms.await()
+                                            userMealHistory.await()
+                                            userHistory.await()
+                                        }
+
+                                        // Proceed to the next activity only after all operations are complete
+                                        navigateToNextActivity()
+
+                                    } catch (e: Exception) {
+                                        // Handle errors if any of the fetch operations fail
+                                        Log.e("LoginActivity", "Error during login sequence: ${e.message}")
+                                        Toast.makeText(this@LoginActivity, "Error during login sequence", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
                             }
                             false -> {
                                 showDetailsNeededDialog()
@@ -225,12 +252,20 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    private fun navigateToNextActivity() {
+        Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show()
+        startActivity(Intent(this@LoginActivity, NavigationBarActivity::class.java))
+        finish()
+    }
+
+
     private fun showDetailsNeededDialog() {
         GeneralUtil.showDialog(
             context = this,
             title = "Account Details Empty",
             message = "Would you like to fill out your account details?",
             onYes = {
+                loginViewModel.logout()
                 startActivity(Intent(this, EditProfileActivity::class.java))
                 finish()
             },
@@ -246,6 +281,7 @@ class LoginActivity : AppCompatActivity() {
             title = "Account Not Verified",
             message = "Would you like to verify your account?",
             onYes = {
+                loginViewModel.logout()
                 startActivity(Intent(this, VerificationCode1Activity::class.java))
                 finish()
             },
@@ -300,12 +336,45 @@ class LoginActivity : AppCompatActivity() {
 
     private fun sendLoginToBackend(email: String?, idToken: String?) {
         if (email != null && idToken != null) {
-            // Here, implement your API call to the backend with the obtained email and token
-            // Example: yourApi.loginWithGoogle(email, idToken)
+            loginViewModel.googleSignIn(email).observe(this) { result ->
+                when (result) {
+                    is Result.Loading -> showLoading(true)
+                    is Result.Success -> {
+                        lifecycleScope.launch {
+                            try {
+                                // Initiate and wait for all checks to complete before proceeding.
+                                coroutineScope {
+                                    // Launch all check functions concurrently
+                                    val userExists = async { loginViewModel.checkUserExists() }
+                                    val weightTrackExists = async { loginViewModel.checkWeightTrackExists() }
+                                    val mealHistoryExists = async { loginViewModel.checkMealHistoryExists() }
+                                    val historyExists = async { loginViewModel.checkHistoryExists() }
 
-            //berarti login with google harus apa aja??
+                                    // Await all operations to complete
+                                    userExists.await()
+                                    weightTrackExists.await()
+                                    mealHistoryExists.await()
+                                    historyExists.await()
+                                }
+
+                                // Navigate to the next activity only after all operations complete
+                                navigateToNextActivity()
+
+                            } catch (e: Exception) {
+                                // Handle errors if any of the check operations fail
+                                showLoading(false)
+                                Toast.makeText(this@LoginActivity, "Login sequence error: ${e.message}", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                    is Result.Error -> {
+                        showLoading(false)
+                        Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
         } else {
-            // Handle case where email or token is null
+            Toast.makeText(this, "Email or token is missing", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -387,8 +456,16 @@ class LoginActivity : AppCompatActivity() {
             .setConstraints(constraints)
             .build()
 
+        val updateRequest2 = PeriodicWorkRequestBuilder<MealHistoryWorkManager>(1, TimeUnit.DAYS)
+            .setInitialDelay(midnightDelay, TimeUnit.MILLISECONDS)
+            .setConstraints(constraints)
+            .build()
+
         WorkManager.getInstance(context).enqueue(updateRequest)
+        WorkManager.getInstance(context).enqueue(updateRequest2)
     }
+
+
 
     //===== Notif Makanan and Stuff
     private fun scheduleNotifications(context: Context) {

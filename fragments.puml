@@ -1,0 +1,367 @@
+@startuml
+class com.telyu.nourimate.fragments.ProgramFragment {
+- FragmentProgramBinding binding
+-  viewModel
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
++ void onViewCreated(View,Bundle?)
+- void setStatusBarColor(Int)
+- void setupSideButtons()
+- void setCurrentFragment(Fragment)
+- void restoreProgramState(PopupWindow)
+- void showNotificationSidebar()
+- void finalizeProgramResults()
+- void setupSettingPopup()
+- void setupNotificationPopup()
+- void checkIfProgramIsOver()
+}
+
+
+class com.telyu.nourimate.fragments.ChangePasswordDialogFragment$Companion {
++ ChangePasswordDialogFragment newInstance()
+}
+
+class com.telyu.nourimate.fragments.ChangePasswordDialogFragment {
+- FragmentChangePasswordDialogBinding? _binding
+-  binding
++ View onCreateView(LayoutInflater,ViewGroup?,Bundle?)
++ void onStart()
+- void setWidthPercent(Int)
++ void onDestroyView()
+}
+
+
+class com.telyu.nourimate.fragments.ProgramFilledFragment {
+- FragmentProgramFilledBinding binding
+-  viewModel
++ View onCreateView(LayoutInflater,ViewGroup?,Bundle?)
+- void setStatusBarColor(Int)
++ void onViewCreated(View,Bundle?)
+- void setupMealHistoryObservationForBackend(Context)
+- void setupMealHistory()
+- void setMealClickListener(View,Int)
+- void displayMealHistoryFragment()
+- void setupMealtimeCalories()
+- void setupCurrentAndStartWeight()
+- void setupStartingWeight()
+- void setupInputCurrentWeight()
+- void setupInputCurrentWeightButton()
+- void showWeightLimitDialog()
+- void setupWeightEntryObservation()
+- void setupWeeklyWeightInput()
+- void startCountdown(Long)
+- void showWeightRulerPickerDialog(Float)
+}
+
+
+class com.telyu.nourimate.fragments.RecipeFragment {
+- FragmentRecipeBinding binding
+-  weeklyRecipeAdapter
+- RecipeAdapter2 breakfastRecipeAdapter
+- RecipeAdapter2 lunchRecipeAdapter
+- RecipeAdapter2 dinnerRecipeAdapter
+-  isRecipesForSearchInserted
+-  viewModel
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
++ void onViewCreated(View,Bundle?)
+- void setupFoodMessageVisibility()
+- void animateAddToCart(View,String)
+- void setStatusBarColor(Int)
+- void setupRecyclerViewAdapter()
+- void toggleSelection(CombinedRecipe)
+- void setupRecyclerView()
+- void selectMealType()
+- void selectMealTime()
+- void updateRecyclerViewVisibility(String)
+- void showDailyRecyclerViewsBasedOnMealType()
+- void hideAllDailyRecyclerViews()
+- void showPopupMenu()
+- void setupSearchBarAndSearchView()
+- void setupDraggableSelectedItem()
+- void displayUserNameAndProfpic()
+- String truncateUserName(String,Int,Int)
+- void displayImage()
+- void createRecommendationsForAllRecipes()
+}
+
+
+class com.telyu.nourimate.fragments.HistoryFragment {
+- FragmentHistoryBinding binding
+-  adapter
+-  viewModel
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
++ void onViewCreated(View,Bundle?)
+- void setStatusBarColor(Int)
+- void setupRecyclerView()
+}
+
+
+class com.telyu.nourimate.fragments.ChangeNumberProfileFragment$Companion {
++ ChangeNumberProfileFragment newInstance()
+}
+
+class com.telyu.nourimate.fragments.ChangeNumberProfileFragment {
+- FragmentChangeNumberProfileBinding? _binding
+-  binding
+-  viewModel
++ View onCreateView(LayoutInflater,ViewGroup?,Bundle?)
+- void changePhoneNumber()
++ void onStart()
+- void setWidthPercent(Int)
++ void onDestroyView()
+- void showLoading(Boolean)
+}
+
+
+class com.telyu.nourimate.fragments.FaqFragment {
+- FragmentFaqBinding? _binding
+-  binding
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
++ void onViewCreated(View,Bundle?)
+- void setStatusBarColor(Int)
++ void onDestroyView()
+}
+
+
+class com.telyu.nourimate.fragments.ProfileFragment$Companion {
+-  REQUEST_IMAGE_CAPTURE
+-  REQUEST_PICK_IMAGE
++  EDIT_PROFILE_PIC_REQUEST
+}
+
+class com.telyu.nourimate.fragments.ProfileFragment {
+- FragmentProfileBinding binding
+-  continueAnimating
+-  viewModel
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
++ void onViewCreated(View,Bundle?)
+- void setStatusBarColor(Int)
+- void showImageSourceDialog()
+- void launchCamera()
+- void launchGallery()
++ void onActivityResult(Int,Int,Intent?)
+- void openEditProfpicActivity(Uri)
+- void showLogoutConfirmationDialog()
+- Int getBmiBackgroundResource(Int)
+- void mapBMIAndName()
+- String truncateUserName(String,Int,Int)
+- void displayImage()
+- void setupButtons()
++ void simulateButtonClickAnimation()
+}
+
+
+class com.telyu.nourimate.fragments.InfoNutritionDialogFragment$Companion {
++ InfoNutritionDialogFragment newInstance(String,HomeFragment.UserNutritionStatus)
+}
+
+class com.telyu.nourimate.fragments.InfoNutritionDialogFragment {
+- FragmentInfoNutritionDialogBinding? _binding
+-  binding
++ View onCreateView(LayoutInflater,ViewGroup?,Bundle?)
++ void onStart()
+- void displayNutrientMessages(String?,HomeFragment.UserNutritionStatus?)
+- void setWidthPercent(Int)
++ void onDestroyView()
+}
+
+
+class com.telyu.nourimate.fragments.SettingFragment {
+- FragmentSettingBinding? _binding
+-  binding
+- HintArrayAdapter themesAdapter
+-  viewModel
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
++ void onViewCreated(View,Bundle?)
+- void saveSettingsPreferences()
+- void setStatusBarColor(Int)
++ void onDestroyView()
+}
+
+
+class com.telyu.nourimate.fragments.CommunityFragment {
+- FragmentCommunityBinding? _binding
+-  binding
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
++ void onViewCreated(View,Bundle?)
+- void setStatusBarColor(Int)
++ void onDestroyView()
+}
+
+
+class com.telyu.nourimate.fragments.HomeMealHistoryFragment {
+- LayoutRecipeHistoryHomeBinding binding
+-  adapter
+-  viewModel
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
++ void onViewCreated(View,Bundle?)
+- void setStatusBarColor(Int)
+- void setupRecyclerView()
+}
+
+
+class com.telyu.nourimate.fragments.UserDetailFragment {
+- FragmentUserDetailBinding binding
+- HintArrayAdapter genderAdapter
+-  viewModel
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
++ void onViewCreated(View,Bundle?)
+- void fetchDataFromMachineLearning()
+- void setStatusBarColor(Int)
+- void mapAllDataToView()
+- void setupBMISeekbarAndText()
+- void bindEditTextButtons()
+- void updateUserProfile()
+- void showDatePickerDialog()
+- void showWeightRulerPickerDialog(Float)
+- void showHeightRulerPickerDialog(Float)
+- void showWaistRulerPickerDialog(Float)
+- void showAllergiesDialog()
+- void showDiseasesDialog()
+- void showNameChangeDialog()
+- void enableSelectButtonIfReady()
+}
+
+
+class com.telyu.nourimate.fragments.LogoutDialogFragment {
+- FragmentLogoutDialogBinding? _binding
+-  binding
+-  viewModel
++ Dialog onCreateDialog(Bundle?)
++ void onStart()
+- void setWidthPercent(Int)
++ void onDestroyView()
+}
+
+
+class com.telyu.nourimate.fragments.AccountFragment {
+- FragmentAccountBinding? _binding
+-  binding
+-  viewModel
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
++ void onViewCreated(View,Bundle?)
+- void setDataToEditText()
+- void setStatusBarColor(Int)
+- void onChangePhoneNumberClicked()
+- void onChangePasswordClicked(View)
++ void onDestroyView()
+}
+
+
+class com.telyu.nourimate.fragments.ChangePasswordProfileFragment$Companion {
++ ChangePasswordProfileFragment newInstance()
+}
+
+class com.telyu.nourimate.fragments.ChangePasswordProfileFragment {
+- FragmentChangePasswordProfileBinding? _binding
+-  binding
+-  viewModel
++ View onCreateView(LayoutInflater,ViewGroup?,Bundle?)
+- void changePhoneNumber()
++ void onStart()
+- void setWidthPercent(Int)
++ void onDestroyView()
+- void showLoading(Boolean)
+}
+
+
+enum com.telyu.nourimate.fragments.HomeFragment$UserNutritionStatus {
+}
+enum com.telyu.nourimate.fragments.HomeFragment$WaterIntakeStatus {
+}
+class com.telyu.nourimate.fragments.HomeFragment {
+- FragmentHomeBinding binding
+-  continueAnimating
+-  viewModel
+-  nutrientStatusMap
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
++ void onViewCreated(View,Bundle?)
+- void insertSelectedRecipesToMealHistory()
+- void bindBMI()
+- void bindIdealWeightAndSize()
+- void setupBMIListener()
+- void observeMealCalories()
+- void setupMealCalories()
+- void setupMealCount()
+- void setupNutritionNeeds()
+- void updateNutritionDisplay(NutritionSum)
+- String getCurrentMealTime()
+- UserNutritionStatus checkNutrientStatus(Int,Int)
+- WaterIntakeStatus checkWaterIntakeStatus(Int)
+- void updateButton(ImageView,String,Int,Int)
+- void setupInfoButtonListeners()
+- void setupInfoButtonState(NutritionSum)
+- void showNutritionDialog(String)
+- void setupMealHistory()
+- void setMealClickListener(View,Int)
+- void displayMealHistoryFragment()
+- void setupGlassUI()
+- void subscribeGlassUI()
+- void updateGlassesUI(Int)
+- void displayProfpic()
+- String truncateUserName(String,Int,Int)
+- void setStatusBarColor(Int)
+- void scrollToView(Int)
++ void simulateButtonClickAnimation(Int)
+}
+
+
+class com.telyu.nourimate.fragments.ProgramEmptyFragment {
+- FragmentProgramEmptyBinding binding
++ View onCreateView(LayoutInflater,ViewGroup?,Bundle?)
++ void onViewCreated(View,Bundle?)
+- void setStatusBarColor(Int)
+}
+
+
+class com.telyu.nourimate.fragments.MealHistoryFragment {
+- FragmentMealHistoryBinding binding
+-  adapter
+-  viewModel
++ View onCreateView(LayoutInflater,ViewGroup?,Bundle?)
++ void onViewCreated(View,Bundle?)
+- void setStatusBarColor(Int)
+- void setupRecyclerView()
+- void setupProgramNameAndDate()
+}
+
+
+
+
+androidx.fragment.app.Fragment <|-- com.telyu.nourimate.fragments.ProgramFragment
+com.telyu.nourimate.fragments.ChangePasswordDialogFragment +.. com.telyu.nourimate.fragments.ChangePasswordDialogFragment$Companion
+androidx.fragment.app.DialogFragment <|-- com.telyu.nourimate.fragments.ChangePasswordDialogFragment
+androidx.fragment.app.Fragment <|-- com.telyu.nourimate.fragments.ProgramFilledFragment
+androidx.fragment.app.Fragment <|-- com.telyu.nourimate.fragments.RecipeFragment
+androidx.fragment.app.Fragment <|-- com.telyu.nourimate.fragments.HistoryFragment
+com.telyu.nourimate.fragments.ChangeNumberProfileFragment +.. com.telyu.nourimate.fragments.ChangeNumberProfileFragment$Companion
+androidx.fragment.app.DialogFragment <|-- com.telyu.nourimate.fragments.ChangeNumberProfileFragment
+androidx.fragment.app.Fragment <|-- com.telyu.nourimate.fragments.FaqFragment
+com.telyu.nourimate.fragments.ProfileFragment +.. com.telyu.nourimate.fragments.ProfileFragment$Companion
+androidx.fragment.app.Fragment <|-- com.telyu.nourimate.fragments.ProfileFragment
+com.telyu.nourimate.fragments.InfoNutritionDialogFragment +.. com.telyu.nourimate.fragments.InfoNutritionDialogFragment$Companion
+androidx.fragment.app.DialogFragment <|-- com.telyu.nourimate.fragments.InfoNutritionDialogFragment
+androidx.fragment.app.Fragment <|-- com.telyu.nourimate.fragments.SettingFragment
+androidx.fragment.app.Fragment <|-- com.telyu.nourimate.fragments.CommunityFragment
+androidx.fragment.app.Fragment <|-- com.telyu.nourimate.fragments.HomeMealHistoryFragment
+androidx.fragment.app.Fragment <|-- com.telyu.nourimate.fragments.UserDetailFragment
+androidx.fragment.app.DialogFragment <|-- com.telyu.nourimate.fragments.LogoutDialogFragment
+androidx.fragment.app.Fragment <|-- com.telyu.nourimate.fragments.AccountFragment
+com.telyu.nourimate.fragments.ChangePasswordProfileFragment +.. com.telyu.nourimate.fragments.ChangePasswordProfileFragment$Companion
+androidx.fragment.app.DialogFragment <|-- com.telyu.nourimate.fragments.ChangePasswordProfileFragment
+com.telyu.nourimate.fragments.HomeFragment +.. com.telyu.nourimate.fragments.HomeFragment$UserNutritionStatus
+com.telyu.nourimate.fragments.HomeFragment +.. com.telyu.nourimate.fragments.HomeFragment$WaterIntakeStatus
+androidx.fragment.app.Fragment <|-- com.telyu.nourimate.fragments.HomeFragment
+androidx.fragment.app.Fragment <|-- com.telyu.nourimate.fragments.ProgramEmptyFragment
+androidx.fragment.app.Fragment <|-- com.telyu.nourimate.fragments.MealHistoryFragment
+@enduml

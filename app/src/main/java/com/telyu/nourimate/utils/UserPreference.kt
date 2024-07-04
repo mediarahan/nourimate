@@ -32,6 +32,7 @@ class UserPreference(private val dataStore: DataStore<Preferences>){
             preferences[IS_DETAIL_FILLED_KEY] = user.isDetailFilled
             preferences[NAME_KEY] = user.name ?: ""
             preferences[PHONE_NUMBER_KEY] = user.phoneNumber ?: ""
+            preferences[PROGRAM_KEY] = user.program ?: 0
         }
     }
 
@@ -106,7 +107,17 @@ class UserPreference(private val dataStore: DataStore<Preferences>){
         }
     }
 
+    fun getUserProgram(): Flow<Int> {
+        return dataStore.data.map { preferences ->
+            preferences[PROGRAM_KEY] ?: 0
+        }
+    }
 
+    suspend fun saveUserProgram(program: Int) {
+        dataStore.edit { preferences ->
+            preferences[PROGRAM_KEY] = program
+        }
+    }
 
 
     companion object {
@@ -123,6 +134,7 @@ class UserPreference(private val dataStore: DataStore<Preferences>){
         private val IS_DETAIL_FILLED_KEY = booleanPreferencesKey("isDatabaseFilled")
         private val NAME_KEY = stringPreferencesKey("name")
         private val PHONE_NUMBER_KEY = stringPreferencesKey("phoneNumber")
+        private val PROGRAM_KEY = intPreferencesKey("program")
 
         fun getInstance(dataStore: DataStore<Preferences>): UserPreference {
             return INSTANCE ?: synchronized(this) {
@@ -144,5 +156,6 @@ data class UserModel (
     val isVerified: Boolean = false,
     val isDetailFilled: Boolean = false,
     val name: String? = "username",
-    val phoneNumber: String? = ""
+    val phoneNumber: String? = "",
+    val program: Int? = 0
 )

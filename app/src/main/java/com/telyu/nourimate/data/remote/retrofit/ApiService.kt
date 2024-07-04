@@ -108,7 +108,7 @@ interface ApiService {
     ): SendEmailVerificationResponse
 
     @GET("api/userprogram")
-    suspend fun getAllUserProgram(): GetAllUserProgramResponse
+    suspend fun getAllUserProgram(): List<GetAllUserProgramResponse>
 
     //POST and GET MealHistory
     @POST("api/mealhistory")
@@ -194,7 +194,7 @@ data class GoogleSigninTokenRequest(
 )
 
 data class SendGoogleSigninVerificationRequest(
-    val idToken: String
+    @SerializedName("id_token") val idToken: String
 )
 
 data class ChangePhoneNumberRequest(
@@ -210,7 +210,7 @@ data class CreateNewProgramRequest(
     val startWeight: Int,
     val endWeight: Int,
     val editCurrentWeightDate: String,
-    val userId: Int,
+    @SerializedName("user_id") val userId: Int,
 )
 
 data class CreateNewMealHistoryRequest(

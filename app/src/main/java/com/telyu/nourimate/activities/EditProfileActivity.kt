@@ -157,14 +157,18 @@ class EditProfileActivity : AppCompatActivity() {
     private fun showDateRangePicker() {
         // Build the date range picker
         val builder = MaterialDatePicker.Builder.dateRangePicker()
+            .setTheme(R.style.MaterialCalendarTheme)
 
         // Set up calendar constraints
         val constraintsBuilder = CalendarConstraints.Builder()
         val today = Calendar.getInstance()
 
+        val yesterdayCalendar = Calendar.getInstance()
+        yesterdayCalendar.add(Calendar.DAY_OF_YEAR, -1)
+
         // Set the minimum date to today to prevent past dates from being selectable
         constraintsBuilder.setStart(today.timeInMillis)
-        constraintsBuilder.setValidator(DateValidatorPointForward.from(today.timeInMillis))
+        constraintsBuilder.setValidator(DateValidatorPointForward.from(yesterdayCalendar.timeInMillis))
 
         builder.setCalendarConstraints(constraintsBuilder.build())
         builder.setTitleText("Select Dates (min 28 days range)")
@@ -364,7 +368,7 @@ class EditProfileActivity : AppCompatActivity() {
             }
             .setPositiveButton("Done") { dialog, _ ->
                 // Update the EditText with selected items when "Done" is clicked
-                val selectedText = selectedItems.joinToString(", ")
+                val selectedText = selectedItems.joinToString(",")
                 binding.editTextAllergies.setText(selectedText)  // Using ViewBinding to update view
                 dialog.dismiss()
             }
@@ -392,7 +396,7 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
         private fun showDiseasesDialog() {
-        val diseases = arrayOf("None","Diabetes", "Hipertensi", "Kolesterol")
+        val diseases = arrayOf("None","Diabetes","Hipertensi","Kolesterol")
         val checkedItems = booleanArrayOf(false, false, false, false)
         val selectedItems = mutableListOf<String>()
 
@@ -419,7 +423,7 @@ class EditProfileActivity : AppCompatActivity() {
             }
             .setPositiveButton("Done") { dialog, _ ->
                 // Update the EditText with selected items when "Done" is clicked
-                val selectedText = selectedItems.joinToString(", ")
+                val selectedText = selectedItems.joinToString(",")
                 binding.editTextDisease.setText(selectedText)  // Menggunakan ViewBinding untuk mengupdate view
                 dialog.dismiss()
             }

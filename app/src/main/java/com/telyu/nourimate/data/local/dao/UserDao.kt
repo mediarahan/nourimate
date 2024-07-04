@@ -177,4 +177,14 @@ interface UserDao {
     @Query("SELECT COUNT(*) FROM userDetails WHERE userId = :userId")
     suspend fun checkUserDetailExists(userId: Int): Int
 
+    @Query("SELECT COUNT(*) FROM userDetails WHERE userId = :userId")
+    suspend fun checkUserWeightTrackExists(userId: Int): Int
+
+    @Query("SELECT COUNT(*) FROM userDetails WHERE userId = :userId")
+    suspend fun checkUserMealHistoryExists(userId: Int): Int
+
+    @Query("SELECT COUNT(*) FROM userDetails WHERE userId = :userId")
+    suspend fun checkUserHistoryExists(userId: Int): Int
+
+
 }

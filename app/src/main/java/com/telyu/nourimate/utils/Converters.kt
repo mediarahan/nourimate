@@ -39,6 +39,7 @@ class Converters {
         return date?.let { dateFormatProgram.format(it) } ?: ""
     }
 
+    @TypeConverter
     fun dateFromTimestamp(value: Long): Date {
         return Date(value)
     }
@@ -64,6 +65,7 @@ class Converters {
         timeZone = TimeZone.getTimeZone("UTC")
     }
 
+    @TypeConverter
     fun fromStringToDateISO(isoDate: String): Date? {
         return try {
             iso8601Format.parse(isoDate)
@@ -73,10 +75,27 @@ class Converters {
         }
     }
 
+    @TypeConverter
+    fun stringToDateISO(isoDate: String): Date {
+        val today = Converters().dateFromTimestamp(System.currentTimeMillis())
+        return try {
+            iso8601Format.parse(isoDate) ?: today
+        } catch (e: ParseException) {
+            Log.e("Converters", "Error parsing date: ${e.message}")
+            today
+        }
+    }
+
     fun fromStringToDayDate(value: String?): Date? {
         return value?.let { dayAndDateFormat.parse(it) }
     }
 
-
+    fun convertDateFormat(dateStr: String): String {
+        val parts = dateStr.split("/")
+        if (parts.size == 3) {
+            return "${parts[0]}-${parts[1]}-${parts[2]}"
+        }
+        throw IllegalArgumentException("Invalid date format: $dateStr. Expected format: yyyy/mm/dd")
+    }
 
 }

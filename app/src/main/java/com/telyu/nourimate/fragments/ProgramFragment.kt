@@ -100,9 +100,9 @@ class ProgramFragment : Fragment() {
     private fun setupSideButtons() {
         setupSettingPopup()
 
-        binding.notificationIcon.setOnClickListener {
-            showNotificationSidebar()
-        }
+//        binding.notificationIcon.setOnClickListener {
+//            showNotificationSidebar()
+//        }
     }
 
     private fun setCurrentFragment(fragment: Fragment) {
@@ -214,8 +214,10 @@ class ProgramFragment : Fragment() {
                 )
             }
         }
+        viewModel.saveUserProgram(0)
         viewModel.deleteWeightTrackByUserId()
         viewModel.deleteWeightEntriesById()
+        viewModel.deleteMealHistoriesById()
     }
 
     //===== Setting UI =====
@@ -256,9 +258,9 @@ class ProgramFragment : Fragment() {
             setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }
 
-        binding.notificationIcon.setOnClickListener {
-            notifPopup.showAtLocation(binding.root, Gravity.END, 0, 0)
-        }
+//        binding.notificationIcon.setOnClickListener {
+//            notifPopup.showAtLocation(binding.root, Gravity.END, 0, 0)
+//        }
     }
 
     //=========== Check If Program is Over ==========

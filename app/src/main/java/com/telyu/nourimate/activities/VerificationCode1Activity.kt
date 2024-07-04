@@ -68,9 +68,9 @@ class VerificationCode1Activity : AppCompatActivity() {
         binding.buttonVerifEmail.setOnClickListener {
             openVerification2Page()
         }
-        binding.buttonVerifNumber.setOnClickListener {
-            openVerification3Page()
-        }
+//        binding.buttonVerifNumber.setOnClickListener {
+//            openVerification3Page()
+//        }
     }
 
     private fun openVerification2Page() {

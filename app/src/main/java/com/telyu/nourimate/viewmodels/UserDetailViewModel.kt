@@ -121,31 +121,40 @@ class UserDetailViewModel(private val repository: NourimateRepository) : ViewMod
         }
     }
 
-    private val recommendationData: LiveData<Result<NourimateRepository.ListOfIds>> =
+    private val recommendationData: LiveData<List<Recommendation>> =
         userDetails.switchMap { detail ->
-            val age = GeneralUtil.calculateAge(detail.dob)
-
-            val recommendationRequest = RecommendationRequest(
-                tinggi_badan = detail.height,
-                berat_badan = detail.weight,
-                jenis_kelamin = detail.gender,
-                umur = age,
-                penyakit = detail.disease,
-                alergi = detail.allergen
-            )
-            Log.d("Debug", "Sending recommendation request: $recommendationRequest")
             liveData {
+                val age = GeneralUtil.calculateAge(detail.dob)
+                val recommendationRequest = RecommendationRequest(
+                    tinggi_badan = detail.height,
+                    berat_badan = detail.weight,
+                    jenis_kelamin = detail.gender,
+                    umur = age,
+                    penyakit = detail.disease,
+                    alergi = detail.allergen
+                )
+                Log.d("Debug", "Sending recommendation request: $recommendationRequest")
                 try {
-                    val response =
-                        repository.fetchRecommendationData(recommendationRequest) //API call from repository
+                    val response = repository.fetchRecommendationData(recommendationRequest) //API call
                     Log.d("Debug", "Recommendation response received: $response")
-                    emit(Result.Success(response))
+                    val userId = repository.getUserId().firstOrNull() ?: -1
+                    val recommendations = mapFetchedIdsToRecommendationEntity(
+                        response.recipeIdsSarapan,
+                        response.recipeIdsMakanSiang,
+                        response.recipeIdsMakanMalam,
+                        userId
+                    )
+                    Log.d("Debug", "Mapped recommendations: $recommendations")
+                    emit(recommendations)
                 } catch (e: Exception) {
                     Log.e("Debug", "Error fetching recommendation data: ${e.message}")
-                    emit(Result.Error(e.message.toString()))
+                    emit(listOf())
                 }
             }
         }
+
+    val recommendationsLiveData: LiveData<List<Recommendation>> = recommendationData
+
 
     private fun mapFetchedIdsToRecommendationEntity(
         idSarapan: List<Int>,
@@ -156,99 +165,104 @@ class UserDetailViewModel(private val repository: NourimateRepository) : ViewMod
         val recommendations = mutableListOf<Recommendation>()
         val startDate = Date()
 
-        val numDays = maxOf(
-            idSarapan.size,
-            idMakanSiang.size,
-            idMakanMalam.size
-        ) / 3  // Assuming each list has 3 times the IDs needed per day
+        // Calculate the maximum number of days based on the longest list
+        val numDays = maxOf(idSarapan.size, idMakanSiang.size, idMakanMalam.size) / 3
 
         for (i in 0 until numDays) {
             val date = Date(startDate.time + i * 86400000)
             val dateFormat = SimpleDateFormat("yyyy/MM/dd")
             val dateString = dateFormat.format(date)
 
-            // Assigning three breakfast recommendations
-            for (j in 0 until 3) {
-                val index = i * 3 + j
-                if (index < idSarapan.size) {
-                    recommendations.add(
-                        Recommendation(
-                            recommendationId = recommendations.size + 1,
-                            date = dateString,
-                            isSelected = 0,
-                            recipeId = idSarapan[index],
-                            userId = userId
-                        )
-                    )
-                }
-            }
-
-            // Assigning three lunch recommendations
-            for (j in 0 until 3) {
-                val index = i * 3 + j
-                if (index < idMakanSiang.size) {
-                    recommendations.add(
-                        Recommendation(
-                            recommendationId = recommendations.size + 1,
-                            date = dateString,
-                            isSelected = 0,
-                            recipeId = idMakanSiang[index],
-                            userId = userId
-                        )
-                    )
-                }
-            }
-
-            // Assigning three dinner recommendations
-            for (j in 0 until 3) {
-                val index = i * 3 + j
-                if (index < idMakanMalam.size) {
-                    recommendations.add(
-                        Recommendation(
-                            recommendationId = recommendations.size + 1,
-                            date = dateString,
-                            isSelected = 0,
-                            recipeId = idMakanMalam[index],
-                            userId = userId
-                        )
-                    )
-                }
-            }
-        }
-        return recommendations
-    }
-
-
-    val recommendationsLiveData: LiveData<List<Recommendation>> =
-        recommendationData.switchMap { result ->
-            liveData {
-                val userId = repository.getUserId().firstOrNull() ?: -1  // Fetch the user ID here
-                emit(
-                    when (result) {
-                        is Result.Success -> {
-                            val recommendations = mapFetchedIdsToRecommendationEntity(
-                                result.data.recipeIdsSarapan,
-                                result.data.recipeIdsMakanSiang,
-                                result.data.recipeIdsMakanMalam,
-                                userId
+            // Function to add recommendations
+            fun addRecommendations(ids: List<Int>, startIdx: Int) {
+                for (j in 0 until 3) {
+                    val index = startIdx * 3 + j
+                    if (index < ids.size) {
+                        recommendations.add(
+                            Recommendation(
+                                recommendationId = recommendations.size + 1,
+                                date = dateString,
+                                isSelected = 0,
+                                recipeId = ids[index],
+                                userId = userId
                             )
-                            Log.d("Debug", "Mapped recommendations: $recommendations")
-                            recommendations
-                        }
-
-                        is Result.Loading -> listOf()
-                        is Result.Error -> {
-                            Log.e("Error", "Error in recommendation result.")
-                            listOf()
-                        }
+                        )
                     }
+                }
+            }
+
+            // Assign breakfast, lunch, and dinner recommendations
+            addRecommendations(idSarapan, i)
+            addRecommendations(idMakanSiang, i)
+            addRecommendations(idMakanMalam, i)
+        }
+
+        // Handle any remaining recipes that didn't fit into full days
+        val maxDaysHandled = numDays * 3
+        fun handleLeftovers(ids: List<Int>, mealType: String) {
+            for (index in maxDaysHandled until ids.size) {
+                val date =
+                    Date(startDate.time + (numDays * 86400000)) // Additional days beyond numDays
+                val dateString = SimpleDateFormat("yyyy/MM/dd").format(date)
+                recommendations.add(
+                    Recommendation(
+                        recommendationId = recommendations.size + 1,
+                        date = dateString,
+                        isSelected = 0,
+                        recipeId = ids[index],
+                        userId = userId
+                    )
                 )
             }
         }
 
+        handleLeftovers(idSarapan, "Breakfast")
+        handleLeftovers(idMakanSiang, "Lunch")
+        handleLeftovers(idMakanMalam, "Dinner")
+
+        return recommendations
+    }
+
+
+//    val recommendationsLiveData: LiveData<List<Recommendation>> =
+//        recommendationData.switchMap { result ->
+//            liveData {
+//                Log.d("Debug", "recommendationData changed: $result")
+//                val userId = repository.getUserId().firstOrNull() ?: -1  // Fetch the user ID here
+//                emit(
+//                    when (result) {
+//                        is Result.Success -> {
+//                            Log.d("Debug", "Result.Success received")
+//                            val recommendations = mapFetchedIdsToRecommendationEntity(
+//                                result.data.recipeIdsSarapan,
+//                                result.data.recipeIdsMakanSiang,
+//                                result.data.recipeIdsMakanMalam,
+//                                userId
+//                            )
+//                            Log.d("Debug", "Mapped recommendations: $recommendations")
+//                            recommendations
+//                        }
+//
+//                        is Result.Loading -> listOf()
+//                        is Result.Error -> {
+//                            Log.e("Error", "Error in recommendation result.")
+//                            listOf()
+//                        }
+//                    }
+//                )
+//            }
+//        }
+
     fun insertRecommendations(recommendations: List<Recommendation>) {
         viewModelScope.launch {
             repository.insertRecommendations(recommendations)
+        }
+    }
+
+    fun deleteCurrentRecommendations() {
+        viewModelScope.launch {
+            val userId = repository.getUserId().first()
+            repository.deleteCurrentRecommendations(userId)
         }
     }
 }

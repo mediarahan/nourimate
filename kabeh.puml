@@ -1,0 +1,1974 @@
+@startuml
+class com.telyu.nourimate.data.remote.response.SignupResponse {
+}
+class com.telyu.nourimate.utils.MealHistoryWorkManager {
+}
+class com.telyu.nourimate.fragments.ChangePasswordDialogFragment$Companion {
++ ChangePasswordDialogFragment newInstance()
+}
+
+class com.telyu.nourimate.fragments.ChangePasswordDialogFragment {
+- FragmentChangePasswordDialogBinding? _binding
+-  binding
++ View onCreateView(LayoutInflater,ViewGroup?,Bundle?)
++ void onStart()
+- void setWidthPercent(Int)
++ void onDestroyView()
+}
+
+
+class com.telyu.nourimate.data.local.db.UserDatabase$Companion {
+- UserDatabase? INSTANCE
++ UserDatabase getInstance(Context)
+}
+
+
+abstract class com.telyu.nourimate.data.local.db.UserDatabase {
++ UserDao userDao()
+}
+
+class com.telyu.nourimate.utils.NotificationWorkManager {
+}
+class com.telyu.nourimate.data.remote.response.GoogleSigninStep2Response {
+}
+class com.telyu.nourimate.viewmodels.EditProfileViewModel {
+- LiveData<Int> userId
+- LiveData<Detail> userDetails
+- LiveData<Result<NourimateRepository.ListOfIds>> recommendationData
++ LiveData<List<Recommendation>> recommendationsLiveData
++ void null()
+- void mapFetchedIdsToRecommendationEntity(void,List<Int>,void,List<Int>,void,List<Int>,void,Int)
++ void null()
++ void null()
++ void insertDetail(void,Int,void,Date?,void,Int,void,Int,void,Int,void,String,void,String,void,String,void,Float)
++ void null()
++ void insertRecommendations(List<Recommendation>)
++ void insertWeightTrack(void,Int,void,Int,void,Date?,void,Date?,void,Int,void,Int,void,Date)
++ void null()
++ void insertInitialWeightEntry(Int,Date)
++ void insertDetailToBackend(void,String,void,Int,void,Int,void,Int,void,String,void,String,void,String)
++ void null()
+}
+
+
+interface com.telyu.nourimate.custom.WaistSizeRulerView$OnValueChangeListener {
++ void onValueChanged(Float)
+}
+
+class com.telyu.nourimate.custom.WaistSizeRulerView {
++  selectedValue
++ OnValueChangeListener? listener
+-  paint
+-  textPaint
+-  indicatorPaint
+-  maxRulerValue
+-  rulerOffset
+-  lastX
+-  gapBetweenNumbers
+-  lengthOfMainTick
+-  lengthOfSmallTick
++ void null()
+- void updateRulerOffsetFromSelectedValue()
++ void onDraw(Canvas)
++ Boolean onTouchEvent(MotionEvent)
+- void updateSelectedValueFromOffset()
+}
+
+
+class com.telyu.nourimate.fragments.InfoNutritionDialogFragment$Companion {
++ InfoNutritionDialogFragment newInstance(String,HomeFragment.UserNutritionStatus)
+}
+
+class com.telyu.nourimate.fragments.InfoNutritionDialogFragment {
+- FragmentInfoNutritionDialogBinding? _binding
+-  binding
++ View onCreateView(LayoutInflater,ViewGroup?,Bundle?)
++ void onStart()
+- void displayNutrientMessages(String?,HomeFragment.UserNutritionStatus?)
+- void setWidthPercent(Int)
++ void onDestroyView()
+}
+
+
+class com.telyu.nourimate.utils.InputValidator$Companion {
++ Boolean isValidEmail(String)
++ Boolean isValidPassword(String)
+}
+
+class com.telyu.nourimate.utils.InputValidator {
+}
+class com.telyu.nourimate.custom.MonthViewFragment {
+- ((Int) -> Unit)? listener
+- FragmentMonthViewBinding? _binding
+-  binding
++ void setOnMonthSelectedListener((Int) -> Unit)
++ void onStart()
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
++ void onViewCreated(View,Bundle?)
++ void onDestroyView()
+}
+
+
+class com.telyu.nourimate.custom.CustomTextInputEditText$Companion {
++ Boolean validateDate(String,Boolean)
++ Boolean validateDateRange(String)
+}
+
+class com.telyu.nourimate.custom.CustomTextInputEditText {
+- Drawable clearButtonImage
++ void null()
+- void init()
+- void handleValidation(CharSequence)
+- void showClearButton()
+- void hideClearButton()
+- void setButtonDrawables(void,Drawable?,void,Drawable?,void,Drawable?,void,Drawable?)
++ void null()
++ Boolean onTouch(View?,MotionEvent)
+}
+
+
+class com.telyu.nourimate.viewmodels.VerificationViewModel {
++ void sendEmailVerification()
++ void sendPhoneVerification()
++ void verifyEmail(String)
++ void verifyPhone(String)
+}
+
+class com.telyu.nourimate.data.local.models.NutritionSum {
+}
+class com.telyu.nourimate.fragments.ProgramEmptyFragment {
+- FragmentProgramEmptyBinding binding
++ View onCreateView(LayoutInflater,ViewGroup?,Bundle?)
++ void onViewCreated(View,Bundle?)
+- void setStatusBarColor(Int)
+}
+
+
+class com.telyu.nourimate.viewmodels.ProfileViewModel {
+-  userId
+-  _username
++ LiveData<String> username
++ LiveData<Float> BMI
++ LiveData<String> profpic
++ void getUsername()
++ void onSignOutButtonClick()
++ void logout()
+}
+
+
+class com.telyu.nourimate.activities.RecipeDetailActivity {
+- LayoutRecipeHomeBinding binding
+- RecipeDetailViewModel viewModel
++ void onCreate(Bundle?)
+- void initializeUI()
+- void setStatusBarColor(Int)
+- void fetchRecipeDetails(Int)
+- RecipeDetailViewModel obtainViewModel(AppCompatActivity)
+}
+
+
+class com.telyu.nourimate.adapter.recipe.RecipeAdapter2 {
+}
+class com.telyu.nourimate.adapter.recipe.Recipe2ViewHolder {
+}
+class com.telyu.nourimate.adapter.recipe.Recipe2DiffCallback {
++ Boolean areItemsTheSame(CombinedRecipe,CombinedRecipe)
++ Boolean areContentsTheSame(CombinedRecipe,CombinedRecipe)
+}
+
+class com.telyu.nourimate.adapter.recipe.CombinedRecipe {
+}
+class com.telyu.nourimate.viewmodels.HomeViewModel {
+-  _greetingMessage
++ LiveData<String> greetingMessage
+-  _ongoingProgram
++ LiveData<String> ongoingProgram
++  sleepTime
++  wakeUpTime
+-  _waterIntake
++ LiveData<Int> waterIntake
+-  _currentGlass
++ LiveData<Int> currentGlass
+-  usersId
++ LiveData<Pair<String, String>> userOngoingProgramAndMessage
++ LiveData<Float> userBMI
++ LiveData<Pair<Int?, Int?>> currentValues
++ LiveData<Pair<Int?, Int?>> idealValues
+-  _selectedMealTime
++ LiveData<Int> selectedMealTime
+-  _breakfastCalories
++ LiveData<Int> breakfastCalories
+-  _lunchCalories
++ LiveData<Int> lunchCalories
+-  _dinnerCalories
++ LiveData<Int> dinnerCalories
+- LiveData<Detail> userDetails
+-  _nutritionSums
++ LiveData<NutritionSum> nutritionSums
++ LiveData<List<Int>> maxNutritionLiveData
++ LiveData<List<Int>> caloriesPerMealtime
++  nutritionPercentage
+-  _breakfastCount
++ LiveData<Int> breakfastCount
+-  _lunchCount
++ LiveData<Int> lunchCount
+-  _dinnerCount
++ LiveData<Int> dinnerCount
+-  userId
+-  _username
++ LiveData<String> username
++ LiveData<String> profpic
++ void addWater(Int)
++ void setCurrentGlass(Int)
+- void updateGreetingMessage()
++ void selectMealTime(Int)
++ LiveData<List<Recipe>> getSelectedRecipesByMealType(Int)
++ void getCaloriesByMealType(Int)
++ void getNutritionSums()
++ void getSelectedRecipeCountUsingMealType(Int)
++ void addRecipeToMealHistory()
++ void getUsername()
++ void deselectSelectedRecipes()
+}
+
+
+abstract class com.telyu.nourimate.adapter.history.RecipeHistoryAdapter$BaseViewHolder {
+}
+class com.telyu.nourimate.adapter.history.RecipeHistoryAdapter$ParentViewHolder {
++ void bind(RecipeHistoryData)
+}
+
+class com.telyu.nourimate.adapter.history.RecipeHistoryAdapter$ChildViewHolder {
++ void bind(RecipeHistoryData)
+}
+
+class com.telyu.nourimate.adapter.history.RecipeHistoryAdapter$Companion {
+-  viewTypeParent
+-  viewTypeChildren
+}
+
+class com.telyu.nourimate.adapter.history.RecipeHistoryAdapter {
++ Int getItemViewType(Int)
++ BaseViewHolder onCreateViewHolder(ViewGroup,Int)
++ void null()
++ void onBindViewHolder(BaseViewHolder,Int)
++ void null()
+}
+
+class com.telyu.nourimate.adapter.history.DiffUtilCallback {
++ void areItemsTheSame(void,RecipeHistoryData,void,RecipeHistoryData)
++ void null()
++ void areContentsTheSame(void,RecipeHistoryData,void,RecipeHistoryData)
+}
+
+class com.telyu.nourimate.fragments.RecipeFragment {
+- FragmentRecipeBinding binding
+-  weeklyRecipeAdapter
+- RecipeAdapter2 breakfastRecipeAdapter
+- RecipeAdapter2 lunchRecipeAdapter
+- RecipeAdapter2 dinnerRecipeAdapter
+-  isRecipesForSearchInserted
+-  viewModel
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
++ void onViewCreated(View,Bundle?)
+- void setupFoodMessageVisibility()
+- void animateAddToCart(View,String)
+- void setStatusBarColor(Int)
+- void setupRecyclerViewAdapter()
+- void toggleSelection(CombinedRecipe)
+- void setupRecyclerView()
+- void selectMealType()
+- void selectMealTime()
+- void updateRecyclerViewVisibility(String)
+- void showDailyRecyclerViewsBasedOnMealType()
+- void hideAllDailyRecyclerViews()
+- void showPopupMenu()
+- void setupSearchBarAndSearchView()
+- void setupDraggableSelectedItem()
+- void displayUserNameAndProfpic()
+- String truncateUserName(String,Int,Int)
+- void displayImage()
+- void createRecommendationsForAllRecipes()
+}
+
+
+class com.telyu.nourimate.custom.CustomRunningGraphView {
+-  linePaint
+-  speedData
++ void setData(List<Int>)
++ void onDraw(Canvas)
+}
+
+
+interface com.telyu.nourimate.data.local.dao.FoodDao {
++ List<Recipe> getRecipeByName(String)
++ void insertRecipe(Recipe)
++ void insertRecommendation(Recommendation)
++ void insertRecommendations(List<Recommendation>)
++ void insertRecipeHistory(RecipeHistory)
++ void insertRecipeHistories(List<RecipeHistory>)
++ LiveData<List<Recipe>> getRecipesByMealType(Int,Int)
++ LiveData<List<Recipe>> getAllRecipesByMealType(Int)
++ LiveData<List<Recipe>> getAllRecipes()
++ Recommendation? getRecommendationByRecipeAndMealId(Int,Int)
++ LiveData<List<Recommendation>> getRecommendationsByMealIdSortedAscending(Int,Int)
++ LiveData<List<Recommendation>> getAllRecommendationByDate()
++ LiveData<List<Int>> getAllSelectedRecommendationIdsByMealId(Int)
++ LiveData<List<Int>> getAllConfirmedRecommendationIdsByMealId(Int)
++ LiveData<List<Recipe>> getRecipesByRecommendationIds(List<Int>)
++ void updateRecommendation(Recommendation)
++ void getRecommendationByRecipeIdAndMealType(void,Int,void,Int)
++ LiveData<Int> getSelectedRecipeCount()
++ LiveData<Int> getSelectedRecipeCountByMealType(Int)
++ LiveData<List<String>> getAllRecipeNames()
++ Int? getRecipeIdByName(String)
++ Int getTotalCaloriesByMealType(Int,Int)
++ Int getSelectedRecipeCountUsingMealType(Int,Int)
++ NutritionSum getNutritionSums(Int)
++ NutritionSum getNutritionSumsInBasketAndHomePerMealType(Int)
++ void updateSelectedRecommendationsPerMealType(Int)
++ void changeRecommendationFromConsumedToExpired()
++ LiveData<List<Recipe>> getConsumedRecipesByMealType(Int)
++ LiveData<List<RecipeHistory>> getRecipeHistorySortedAscending(Int)
++ List<RecipeHistory> getRecipeHistoryById(Int)
++ Int getTotalCaloriesByMealTypeHistory(Int,Int)
++ NutritionSum getNutritionSumsForHistory(Int)
++ LiveData<List<Recipe>> getSelectedRecipesByMealType(Int)
++ Recipe getRecipeDetailByRecipeId(Int)
++ List<Recipe> getAllRecipe()
++ List<Recommendation> getAllInactiveRecommendations()
++ List<Int> getRecipeIdsByMealType(Int)
++ Recommendation? getRecommendationById(Int)
++ LiveData<List<Recommendation>> getRecommendationsByUserId(Int)
++ List<Recipe> getRecipesByNameAndMealType(String,Int)
++ List<Recommendation> getRecommendationsByMealId(Int)
++ List<Int> getAllSelectedRecipeIds()
++ void deselectSelectedRecipes()
++ Int checkIfRecipeDatabaseIsFilled()
++ Int checkIfRecommendationDatabaseIsFilled()
++ void deleteRecipeHistories()
++ void deleteCurrentRecommendations(Int)
++ void deleteMealHistoriesById(Int)
+}
+
+class com.telyu.nourimate.data.remote.response.GetUserDetailResponse {
+}
+class DialogUtils {
++ void setWidthPercent(Int)
++ void setFullScreen()
+}
+
+class com.telyu.nourimate.fragments.LogoutDialogFragment {
+- FragmentLogoutDialogBinding? _binding
+-  binding
+-  viewModel
++ Dialog onCreateDialog(Bundle?)
++ void onStart()
+- void setWidthPercent(Int)
++ void onDestroyView()
+}
+
+
+class com.telyu.nourimate.utils.GeneralUtil$Nutrition {
+}
+class com.telyu.nourimate.utils.GeneralUtil {
+-  D
+-  H
+-  K
+-  HK
+-  DK
+-  DH
+-  DHK
+-  multipliers
++ Long getDateToday(Int,Int,Int,Int)
++ Long getDateNextWeek()
++ Int calculateAge(Date?)
++ void showDialog(Context,String,String,() -> Unit,() -> Unit)
++ void showConfirmationDialog(Context)
++ void calculateAKEi(void,Int,void,Boolean?,Int)
++ void null()
+- Nutrition calculateMealNutrition(Int,Int,Double,Int)
++ void calculateBreakfastNutrition(Int,Int,Int)
++ void calculateLunchNutrition(Int,Int,Int)
++ void calculateDinnerNutrition(Int,Int,Int)
++ Int convertConditionToCode(String)
++ String calculateDuration(Long,Long)
++ Long calculateNextWeekMidnight()
++ Long calculateOneMinuteLaterTimestamp()
++ Float? calculateBMI(Int?,Int?)
++ Int? calculateIdealWeight(Int?)
++ String formatTime(Long)
++ Int calculateDaysBetweenDates(String,String)
++ Long getYesterdayTimestamp()
++ Long calculateInitialDelayForMidnight()
++ Long calculateInitialDelayForOneMinute()
++ Long calculateDelayForNotification(Int)
++ Long calculateTodayMidnight()
+}
+
+
+class com.telyu.nourimate.custom.RecipeDialogMeal {
+- PopupLayoutMealBinding binding
+-  recipeAdapter
++ Int selectedMeal
+-  viewModel
++ void onCreateView(void,LayoutInflater,void,ViewGroup?,void,Bundle?)
++ void null()
++ void onActivityCreated(Bundle?)
++ void onViewCreated(View,Bundle?)
++ void dialogOnAddClick(Recipe)
+- void getRecipeCountByMealType(Int)
+- void setMealType(Int)
+- void showThirdDialog(Int)
+- void observeIfNutritionExceeds()
+- void showMealSelectConfirmationDialog()
+- void showNutritionExceededDialog(Context)
+}
+
+
+class com.telyu.nourimate.data.local.models.Profpic {
+}
+class com.telyu.nourimate.fragments.MealHistoryFragment {
+- FragmentMealHistoryBinding binding
+-  adapter
+-  viewModel
++ View onCreateView(LayoutInflater,ViewGroup?,Bundle?)
++ void onViewCreated(View,Bundle?)
+- void setStatusBarColor(Int)
+- void setupRecyclerView()
+- void setupProgramNameAndDate()
+}
+
+
+class com.telyu.nourimate.activities.ForgotPassword1Activity {
+- ActivityForgotPassword1Binding binding
+- ForgotPasswordViewModel viewModel
++ void onCreate(Bundle?)
+- void setStatusBarColor(Int)
+- void setupButton()
+- void setupTextWatchers()
+- void checkAllInputsValid()
+- void disableNextButton()
+- void enableNextButton()
+- void openForgotPasswordPage()
+- void openChangePasswordPage()
+- ForgotPasswordViewModel obtainViewModel(AppCompatActivity)
+}
+
+
+class com.telyu.nourimate.custom.RecipeDialog {
+- PopupLayoutBinding binding
+-  viewModel
++ void onCreateView(void,LayoutInflater,void,ViewGroup?,void,Bundle?)
++ void null()
++ void onViewCreated(View,Bundle?)
++ void onActivityCreated(Bundle?)
+- void getRecipeCount()
+- void setupMealButtons()
+- void showSecondDialog(Int)
+}
+
+
+class com.telyu.nourimate.custom.WeightChartView {
+-  linePaint
+-  strokePaint
+-  fillPaint
+-  textPaint
+-  datePaint
+-  lineBluePaint
+-  textBackgroundPaint
+-  path
+-  horizontalPadding
+-  verticalPadding
+-  weights
+-  dates
++ void setWeights(List<Int>)
++ void setDates(List<String>)
++ void onDraw(Canvas)
+- void prepareAndDrawPath(Canvas)
+- void drawInteractiveElements(Canvas)
+}
+
+
+class com.telyu.nourimate.viewmodels.AccountViewModel {
++ LiveData<Pair<String, String>> emailAndPhoneNumber
+}
+
+class com.telyu.nourimate.data.local.models.Recipe {
+}
+class com.telyu.nourimate.adapter.date.DateAdapter {
+}
+class com.telyu.nourimate.adapter.date.ViewHolder {
++ View root
+}
+
+interface com.telyu.nourimate.custom.CustomDatePickerFragment$DatePickerDialogListener {
++ void onDateSet(Int,Int,Int)
+}
+
+class com.telyu.nourimate.custom.CustomDatePickerFragment {
+- FragmentCustomDatePickerBinding? _binding
+-  binding
+- DatePickerDialogListener? listener
+-  monthsArray
+- Int displayedMonth
+- Int displayedYear
+- Int selectedYear
+- Int selectedMonth
+- Int selectedDayOfMonth
+-  dates
++ void setDatePickerDialogListener(DatePickerDialogListener)
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
++ void onStart()
++ void onResume()
+- void setInitialDateTo20YearsAgo()
+- void updateCalendar(Int,Int)
+- void setDateTo20YearsAgo()
+- Int calculateAge(Date)
+- void navigateMonth(Int)
+- void changeYear(Int)
++ List<DateItem> generateDatesForMonth(Int,Int)
++ void onDestroyView()
+}
+
+
+interface com.telyu.nourimate.data.remote.retrofit.ApiService {
++ void signup(void)
++ void signin(void)
++ void googleSigninToken(void)
++ void sendGoogleSigninVerification(void)
++ void sendEmailVerification(void)
++ void verifyEmail(void)
++ void sendPhoneVerification(void)
++ void verifyPhone(void)
++ void sendForgotPassword(void)
++ void resetPassword(void)
++ void changePassword(void)
++ void changePhoneNumber(void)
++ GetUserDetailResponse getDetailUser(Int)
++ void insertDetailUser(void)
++ void createNewProgram(void)
++ List<GetAllUserProgramResponse> getAllUserProgram()
++ void createNewMealHistory(void)
++ GetAllUserMealHistoryResponse getAllUserMealHistory()
++ void createNewHistory(void)
++ GetAllHistoryResponse getAllUserHistory()
+}
+
+class com.telyu.nourimate.data.remote.retrofit.SignupRequest {
+}
+class com.telyu.nourimate.data.remote.retrofit.SigninRequest {
+}
+class com.telyu.nourimate.data.remote.retrofit.SendEmailVerificationRequest {
+}
+class com.telyu.nourimate.data.remote.retrofit.EmailVerificationRequest {
+}
+class com.telyu.nourimate.data.remote.retrofit.SendPhoneVerificationRequest {
+}
+class com.telyu.nourimate.data.remote.retrofit.PhoneVerificationRequest {
+}
+class com.telyu.nourimate.data.remote.retrofit.InsertDetailUserRequest {
+}
+class com.telyu.nourimate.data.remote.retrofit.SendForgotPasswordRequest {
+}
+class com.telyu.nourimate.data.remote.retrofit.ResetPasswordRequest {
+}
+class com.telyu.nourimate.data.remote.retrofit.ChangePasswordRequest {
+}
+class com.telyu.nourimate.data.remote.retrofit.GoogleSigninTokenRequest {
+}
+class com.telyu.nourimate.data.remote.retrofit.SendGoogleSigninVerificationRequest {
+}
+class com.telyu.nourimate.data.remote.retrofit.ChangePhoneNumberRequest {
+}
+class com.telyu.nourimate.data.remote.retrofit.CreateNewProgramRequest {
+}
+class com.telyu.nourimate.data.remote.retrofit.CreateNewMealHistoryRequest {
+}
+class com.telyu.nourimate.data.remote.retrofit.CreateNewHistoryRequest {
+}
+class com.telyu.nourimate.viewmodels.LoginViewModel {
++ LiveData<Boolean> isUserVerified
++ LiveData<Boolean> isDetailFilled
++ void loginBackend(String,String)
++ void checkUserExists()
++ void checkWeightTrackExists()
++ void checkMealHistoryExists()
++ void checkHistoryExists()
++ void saveSession(UserModel)
++ void googleSignIn(String)
++ void logout()
+}
+
+
+interface com.telyu.nourimate.custom.WeightRulerView$OnValueChangeListener {
++ void onValueChanged(Float)
+}
+
+class com.telyu.nourimate.custom.WeightRulerView {
++  selectedValue
++ OnValueChangeListener? listener
+-  paint
+-  textPaint
+-  indicatorPaint
+-  maxRulerValue
+-  rulerOffset
+-  lastX
+-  gapBetweenNumbers
+-  lengthOfMainTick
+-  lengthOfSmallTick
++ void null()
+- void updateRulerOffsetFromSelectedValue()
++ void onDraw(Canvas)
++ Boolean onTouchEvent(MotionEvent)
+- void updateSelectedValueFromOffset()
+}
+
+
+interface com.telyu.nourimate.custom.CustomDateStartProgramFragment$DateStartProgramDialogListener {
++ void onDateSet(Int,Int,Int)
+}
+
+class com.telyu.nourimate.custom.CustomDateStartProgramFragment {
+- FragmentCustomDateStartProgramBinding? _binding
+-  binding
+- DateStartProgramDialogListener? listener
+-  monthsArray
+- Int displayedMonth
+- Int displayedYear
+- Int selectedYear
+- Int selectedMonth
+- Int selectedDayOfMonth
+-  dates
++ void setDateStartProgramDialogListener(DateStartProgramDialogListener)
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
++ void onStart()
++ void onResume()
+- void updateCalendar(Int,Int)
+- void navigateMonth(Int)
+- void changeYear(Int)
++ void onDateSelected(Int,Int,Int)
++ List<DateItem> generateDatesForMonth(Int,Int)
++ void onDestroyView()
+}
+
+
+class com.telyu.nourimate.data.local.models.RecommendationRecipe$RecipeItem {
+}
+class com.telyu.nourimate.data.local.models.RecommendationRecipe$RecommendationItem {
+}
+class com.telyu.nourimate.data.local.models.RecommendationRecipe {
+}
+class com.telyu.nourimate.data.remote.response.InsertUserDetailResponse {
+}
+class com.telyu.nourimate.utils.Converters {
+-  dateFormat
+-  shortDateFormat
+-  dateFormatProgram
+-  dayAndDateFormat
+-  iso8601Format
++ Date? fromTimestamp(Long?)
++ Long? dateToTimestamp(Date?)
++ Long toTimestamp(Date)
++ String longToString(Long)
++ String formatDate(Date?)
++ Date dateFromTimestamp(Long)
++ String formatDateToStringShort(Date?)
++ String formatDateToString(Date?)
++ String formatDayDateToString(Date?)
++ Date? fromStringToDate(String?)
++ Date? fromStringToDateISO(String)
++ Date stringToDateISO(String)
++ Date? fromStringToDayDate(String?)
++ String convertDateFormat(String)
+}
+
+
+class com.telyu.nourimate.fragments.ChangePasswordProfileFragment$Companion {
++ ChangePasswordProfileFragment newInstance()
+}
+
+class com.telyu.nourimate.fragments.ChangePasswordProfileFragment {
+- FragmentChangePasswordProfileBinding? _binding
+-  binding
+-  viewModel
++ View onCreateView(LayoutInflater,ViewGroup?,Bundle?)
+- void changePhoneNumber()
++ void onStart()
+- void setWidthPercent(Int)
++ void onDestroyView()
+- void showLoading(Boolean)
+}
+
+
+class com.telyu.nourimate.custom.DateItem {
+}
+class com.telyu.nourimate.activities.DebugActivity {
+-  detailAlvin
+-  detailRatika
+-  detailRionov
+-  mealHistoryAlvin
+-  mealHistoryRatika
+-  mealHistoryRionov
+-  historyAlvin
+-  historyRatika
+-  historyRionov
+-  programAlvin
+-  programRatika
+-  programRionov
+-  grafikAlvin
+-  grafikRatika
+-  grafikRionov
++ void onCreate(Bundle?)
+}
+
+
+class com.telyu.nourimate.activities.EditProfileActivity {
+- ActivityEditProfileBinding binding
+- EditProfileViewModel viewModel
++ void onCreate(Bundle?)
+- void setStatusBarColor(Int)
+- void insertUserDetailsToLocalAndBackend()
+- void insertProgram()
+- void fetchDataFromMachineLearning()
+- void showDatePickerDialog()
+- void showDateRangePicker()
+- String formatDate(Date)
+- void showWeightRulerPickerDialog(Float)
+- void showStraightRulerPickerDialog(Float)
+- void showWaistRulerPickerDialog(Float)
+- void showAllergiesDialog()
+- void showDiseasesDialog()
+- void setupClickListeners()
+- void setClickListener(EditText,() -> Unit)
+- void setupSpinner()
+- void enableSelectButtonIfReady()
+- EditProfileViewModel obtainViewModel(AppCompatActivity)
+}
+
+
+class com.telyu.nourimate.data.remote.response.GoogleSigninStep1Response {
+}
+class com.telyu.nourimate.data.local.models.SleepSegmentEventEntity {
+}
+class com.telyu.nourimate.activities.VerificationCode2Activity {
+- ActivityVerificationCode2Binding binding
+- VerificationViewModel viewModel
++ void onCreate(Bundle?)
+- void setStatusBarColor(Int)
+- void navigateToProfile()
+- void navigateToNavBar()
+- void openVerification1Page()
+- void navigateToPasswordPopupPage()
+- void showLoading(Boolean)
+- VerificationViewModel obtainViewModel(AppCompatActivity)
+}
+
+
+class com.telyu.nourimate.fragments.ProgramFilledFragment {
+- FragmentProgramFilledBinding binding
+-  viewModel
++ View onCreateView(LayoutInflater,ViewGroup?,Bundle?)
+- void setStatusBarColor(Int)
++ void onViewCreated(View,Bundle?)
+- void setupMealHistoryObservationForBackend(Context)
+- void setupMealHistory()
+- void setMealClickListener(View,Int)
+- void displayMealHistoryFragment()
+- void setupMealtimeCalories()
+- void setupCurrentAndStartWeight()
+- void setupStartingWeight()
+- void setupInputCurrentWeight()
+- void setupInputCurrentWeightButton()
+- void showWeightLimitDialog()
+- void setupWeightEntryObservation()
+- void setupWeeklyWeightInput()
+- void startCountdown(Long)
+- void showWeightRulerPickerDialog(Float)
+}
+
+
+class com.telyu.nourimate.viewmodels.SettingViewModel {
++ void saveSettingsPreferences(SettingsModel)
++ Flow<SettingsModel> getSettingsPreferences()
+}
+
+class com.telyu.nourimate.fragments.HistoryFragment {
+- FragmentHistoryBinding binding
+-  adapter
+-  viewModel
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
++ void onViewCreated(View,Bundle?)
+- void setStatusBarColor(Int)
+- void setupRecyclerView()
+}
+
+
+class com.telyu.nourimate.utils.DailyReminder {
++ void onReceive(Context,Intent)
++ void setReminder(Context,Int,Int)
+- void showNotification(Context)
++ void cancelReminder(Context)
+}
+
+class com.telyu.nourimate.fragments.FaqFragment {
+- FragmentFaqBinding? _binding
+-  binding
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
++ void onViewCreated(View,Bundle?)
+- void setStatusBarColor(Int)
++ void onDestroyView()
+}
+
+
+class com.telyu.nourimate.data.local.models.RecipeHistory {
+}
+class com.telyu.nourimate.fragments.ProfileFragment$Companion {
+-  REQUEST_IMAGE_CAPTURE
+-  REQUEST_PICK_IMAGE
++  EDIT_PROFILE_PIC_REQUEST
+}
+
+class com.telyu.nourimate.fragments.ProfileFragment {
+- FragmentProfileBinding binding
+-  continueAnimating
+-  viewModel
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
++ void onViewCreated(View,Bundle?)
+- void setStatusBarColor(Int)
+- void showImageSourceDialog()
+- void launchCamera()
+- void launchGallery()
++ void onActivityResult(Int,Int,Intent?)
+- void openEditProfpicActivity(Uri)
+- void showLogoutConfirmationDialog()
+- Int getBmiBackgroundResource(Int)
+- void mapBMIAndName()
+- String truncateUserName(String,Int,Int)
+- void displayImage()
+- void setupButtons()
++ void simulateButtonClickAnimation()
+}
+
+
+class com.telyu.nourimate.data.remote.response.RecommendationResponse {
+}
+class com.telyu.nourimate.data.remote.response.MakanMalamItem {
+}
+class com.telyu.nourimate.data.remote.response.MakanSiangItem {
+}
+class com.telyu.nourimate.data.remote.response.SarapanItem {
+}
+abstract class com.telyu.nourimate.adapter.recipe.RecommendationRecipeAdapter$BaseViewHolder {
+}
+class com.telyu.nourimate.adapter.recipe.RecommendationRecipeAdapter$ParentViewHolder {
++ void bind(RecommendationRecipe)
+}
+
+class com.telyu.nourimate.adapter.recipe.RecommendationRecipeAdapter$ChildViewHolder {
++ void bind(RecommendationRecipe)
+}
+
+class com.telyu.nourimate.adapter.recipe.RecommendationRecipeAdapter$Companion {
+-  viewTypeParent
+-  viewTypeChildren
+}
+
+class com.telyu.nourimate.adapter.recipe.RecommendationRecipeAdapter {
++ Int getItemViewType(Int)
++ BaseViewHolder onCreateViewHolder(ViewGroup,Int)
++ void null()
++ void onBindViewHolder(BaseViewHolder,Int)
++ void null()
+}
+
+class com.telyu.nourimate.adapter.recipe.DiffUtilCallback {
++ void areItemsTheSame(void,RecommendationRecipe,void,RecommendationRecipe)
++ void null()
++ void areContentsTheSame(void,RecommendationRecipe,void,RecommendationRecipe)
+}
+
+class com.telyu.nourimate.activities.ForgotPassword2Activity {
+- ActivityForgotPassword2Binding binding
++ void onCreate(Bundle?)
+- void setStatusBarColor(Int)
+- void setupButton()
+- void setupTextWatchers()
+- void checkAllInputsValid()
+- void disableNextButton()
+- void enableNextButton()
+- void openForgotPasswordPage()
+- void openChangePasswordPage()
+}
+
+
+class com.telyu.nourimate.fragments.CommunityFragment {
+- FragmentCommunityBinding? _binding
+-  binding
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
++ void onViewCreated(View,Bundle?)
+- void setStatusBarColor(Int)
++ void onDestroyView()
+}
+
+
+class com.telyu.nourimate.utils.UserPreference$Companion {
+- UserPreference? INSTANCE
+-  USER_ID_KEY
+-  A_TOKEN_KEY
+-  R_TOKEN_KEY
+-  EMAIL_KEY
+-  IS_LOGIN_KEY
+-  IS_VERIFIED_KEY
+-  IS_DETAIL_FILLED_KEY
+-  NAME_KEY
+-  PHONE_NUMBER_KEY
+-  PROGRAM_KEY
++ UserPreference getInstance(DataStore<Preferences>)
+}
+
+
+class com.telyu.nourimate.utils.UserPreference {
++ void saveSession(UserModel)
++ void saveUserEmail(String)
++ Flow<UserModel> getSession()
++ Flow<String> getUserEmail()
++ Flow<Int> getUserId()
++ Flow<Boolean> getUserLoginState()
++ Flow<Boolean> getUserVerificationState()
++ Flow<Boolean> getUserDetailFilled()
++ Flow<String> getUsername()
++ Flow<Pair<String, String>> getEmailAndPhoneNumber()
++ void logout()
++ Flow<Int> getUserProgram()
++ void saveUserProgram(Int)
+}
+
+class com.telyu.nourimate.utils.UserModel {
+}
+class com.telyu.nourimate.fragments.HomeMealHistoryFragment {
+- LayoutRecipeHistoryHomeBinding binding
+-  adapter
+-  viewModel
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
++ void onViewCreated(View,Bundle?)
+- void setStatusBarColor(Int)
+- void setupRecyclerView()
+}
+
+
+class com.telyu.nourimate.activities.TransitionProgramActivity {
+- ActivityTransitionProgramBinding binding
+- TransitionProgramViewModel viewModel
++ void onCreate(Bundle?)
+- void setupHistoryData()
+- void setStatusBarColor(Int)
+- TransitionProgramViewModel obtainViewModel(AppCompatActivity)
+}
+
+
+class com.telyu.nourimate.data.remote.response.SendEmailVerificationResponse {
+}
+class com.telyu.nourimate.activities.VerificationCode3Activity {
+- ActivityVerificationCode3Binding binding
+- VerificationViewModel viewModel
++ void onCreate(Bundle?)
+- void setStatusBarColor(Int)
+- void navigateToProfile()
+- void navigateToNavBar()
+- void openVerification1Page()
+- void navigateToPasswordPopupPage()
+- void showLoading(Boolean)
+- VerificationViewModel obtainViewModel(AppCompatActivity)
+}
+
+
+enum com.telyu.nourimate.fragments.HomeFragment$UserNutritionStatus {
+}
+enum com.telyu.nourimate.fragments.HomeFragment$WaterIntakeStatus {
+}
+class com.telyu.nourimate.fragments.HomeFragment {
+- FragmentHomeBinding binding
+-  continueAnimating
+-  viewModel
+-  nutrientStatusMap
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
++ void onViewCreated(View,Bundle?)
+- void insertSelectedRecipesToMealHistory()
+- void bindBMI()
+- void bindIdealWeightAndSize()
+- void setupBMIListener()
+- void observeMealCalories()
+- void setupMealCalories()
+- void setupMealCount()
+- void setupNutritionNeeds()
+- void updateNutritionDisplay(NutritionSum)
+- String getCurrentMealTime()
+- UserNutritionStatus checkNutrientStatus(Int,Int)
+- WaterIntakeStatus checkWaterIntakeStatus(Int)
+- void updateButton(ImageView,String,Int,Int)
+- void setupInfoButtonListeners()
+- void setupInfoButtonState(NutritionSum)
+- void showNutritionDialog(String)
+- void setupMealHistory()
+- void setMealClickListener(View,Int)
+- void displayMealHistoryFragment()
+- void setupGlassUI()
+- void subscribeGlassUI()
+- void updateGlassesUI(Int)
+- void displayProfpic()
+- String truncateUserName(String,Int,Int)
+- void setStatusBarColor(Int)
+- void scrollToView(Int)
++ void simulateButtonClickAnimation(Int)
+}
+
+
+class com.telyu.nourimate.data.local.models.Recommendation {
+}
+class com.telyu.nourimate.data.remote.response.GoogleSigninStep3Response {
+}
+class com.telyu.nourimate.data.remote.response.Userr {
+}
+class com.telyu.nourimate.utils.SettingsPreference$Companion {
+- SettingsPreference? INSTANCE
+-  NIGHT_MODE_KEY
+-  NOTIFICATIONS_ENABLED_KEY
+-  RECIPE_TRANSITION_KEY
+-  WATER_INTAKE_KEY
++ SettingsPreference getInstance(DataStore<Preferences>)
+}
+
+
+class com.telyu.nourimate.utils.SettingsPreference {
++ void saveSettings(SettingsModel)
++ Flow<SettingsModel> getSettings()
++ void clearSettings()
++ void saveWaterIntake(Int)
++ Flow<Int> getWaterIntake()
++ void clearWaterIntake()
++ void setRecipeTransitionPreference(Boolean)
++ Flow<Boolean> getRecipeTransitionPreference()
+}
+
+class com.telyu.nourimate.utils.SettingsModel {
+}
+class com.telyu.nourimate.data.remote.retrofit.ApiConfig$Companion {
++ ApiService getApiService(Context)
+}
+
+class com.telyu.nourimate.data.remote.retrofit.ApiConfig {
+}
+class com.telyu.nourimate.data.remote.retrofit.ApiConfig2$Companion {
++ ApiService2 getApiService()
+}
+
+class com.telyu.nourimate.data.remote.retrofit.ApiConfig2 {
+}
+class com.telyu.nourimate.data.local.FakeFoodData$Recipe {
+}
+class com.telyu.nourimate.data.local.FakeFoodData$Recommendation {
+}
+class com.telyu.nourimate.data.local.FakeFoodData {
++  recipes
++  weightEntries
++  recommendations
+}
+
+class com.telyu.nourimate.data.remote.Result$Success {
+}
+class com.telyu.nourimate.data.remote.Result$Error {
+}
+class com.telyu.nourimate.data.remote.Result$Loading {
+}
+class com.telyu.nourimate.data.remote.Result {
+}
+class com.telyu.nourimate.data.local.db.null {
+}
+class com.telyu.nourimate.data.local.db.null {
+}
+class com.telyu.nourimate.data.local.db.null {
+}
+class com.telyu.nourimate.data.local.db.FoodDatabase$Companion {
+- FoodDatabase? INSTANCE
++ FoodDatabase getInstance(Context)
+}
+
+
+abstract class com.telyu.nourimate.data.local.db.FoodDatabase {
++ FoodDao foodDao()
+}
+
+interface com.telyu.nourimate.data.remote.retrofit.GoogleApiService {
++ void signInWithCustomToken(void)
+}
+
+class com.telyu.nourimate.data.remote.retrofit.CustomTokenRequest {
+}
+class com.telyu.nourimate.adapter.recipe.DialogRecipeTutorialAdapter {
+}
+class com.telyu.nourimate.adapter.recipe.DialogTutorialRecipeViewHolder {
++ void bind(Recipe)
+}
+
+class com.telyu.nourimate.adapter.recipe.null {
++  DIFF_CALLBACK
+}
+
+class com.telyu.nourimate.fragments.ProgramFragment {
+- FragmentProgramBinding binding
+-  viewModel
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
++ void onViewCreated(View,Bundle?)
+- void setStatusBarColor(Int)
+- void setupSideButtons()
+- void setCurrentFragment(Fragment)
+- void restoreProgramState(PopupWindow)
+- void showNotificationSidebar()
+- void finalizeProgramResults()
+- void setupSettingPopup()
+- void setupNotificationPopup()
+- void checkIfProgramIsOver()
+}
+
+
+class com.telyu.nourimate.viewmodels.TransitionRecipeViewModel {
++ void setRecipeTransitionPreference(Boolean)
+}
+
+class com.telyu.nourimate.fragments.ChangeNumberProfileFragment$Companion {
++ ChangeNumberProfileFragment newInstance()
+}
+
+class com.telyu.nourimate.fragments.ChangeNumberProfileFragment {
+- FragmentChangeNumberProfileBinding? _binding
+-  binding
+-  viewModel
++ View onCreateView(LayoutInflater,ViewGroup?,Bundle?)
+- void changePhoneNumber()
++ void onStart()
+- void setWidthPercent(Int)
++ void onDestroyView()
+- void showLoading(Boolean)
+}
+
+
+class com.telyu.nourimate.viewmodels.EditProfpicViewModel {
+-  _userId
++ LiveData<Int?> userId
++ LiveData<String> userEmail
++ void getUserIdByEmail(String)
++ void insertProfpic(String)
+}
+
+
+class com.telyu.nourimate.viewmodels.DetailChangeViewModel {
++ void changePhoneNumber(String,String)
++ void changePassword(String,String,String)
+}
+
+class com.telyu.nourimate.activities.ChooseProgramActivity {
+- ActivityChooseProgramBinding binding
+- ChooseProgramViewModel viewModel
++ void onCreate(Bundle?)
+- void setStatusBarColor(Int)
+- void setupWeightEntry()
+- void insertProgramDetails()
+- void setupSpinner()
+- void disableSelectButton()
+- void enableSelectButtonIfReady()
+- void setupDateEditText()
+- void showDateRangePicker()
+- String formatDate(Date)
+- ChooseProgramViewModel obtainViewModel(AppCompatActivity)
+}
+
+
+class com.telyu.nourimate.activities.TransitionSelectRecipeActivity {
+- ActivityTransitionSelectRecipeBinding binding
+- TransitionRecipeViewModel viewModel
++ void onCreate(Bundle?)
+- void checkTransitionPreference()
+- void setStatusBarColor(Int)
+- TransitionRecipeViewModel obtainViewModel(AppCompatActivity)
+}
+
+
+class com.telyu.nourimate.fragments.UserDetailFragment {
+- FragmentUserDetailBinding binding
+- HintArrayAdapter genderAdapter
+-  viewModel
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
++ void onViewCreated(View,Bundle?)
+- void fetchDataFromMachineLearning()
+- void setStatusBarColor(Int)
+- void mapAllDataToView()
+- void setupBMISeekbarAndText()
+- void bindEditTextButtons()
+- void updateUserProfile()
+- void showDatePickerDialog()
+- void showWeightRulerPickerDialog(Float)
+- void showHeightRulerPickerDialog(Float)
+- void showWaistRulerPickerDialog(Float)
+- void showAllergiesDialog()
+- void showDiseasesDialog()
+- void showNameChangeDialog()
+- void enableSelectButtonIfReady()
+}
+
+
+class com.telyu.nourimate.utils.MidnightWorkManager {
+}
+class com.telyu.nourimate.fragments.AccountFragment {
+- FragmentAccountBinding? _binding
+-  binding
+-  viewModel
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
++ void onViewCreated(View,Bundle?)
+- void setDataToEditText()
+- void setStatusBarColor(Int)
+- void onChangePhoneNumberClicked()
+- void onChangePasswordClicked(View)
++ void onDestroyView()
+}
+
+
+class com.telyu.nourimate.activities.ResetPasswordActivity {
+- ActivityResetPasswordBinding binding
+- ForgotPasswordViewModel viewModel
++ void onCreate(Bundle?)
+- void setStatusBarColor(Int)
+- void showLoading(Boolean)
+- ForgotPasswordViewModel obtainViewModel(AppCompatActivity)
+}
+
+
+class com.telyu.nourimate.viewmodels.RecipeViewModel {
+-  _searchResult
++ LiveData<List<CombinedRecipe>> searchResult
++ LiveData<String> userEmail
+-  _mealType
++ LiveData<Int> mealType
+-  _mealTime
++ LiveData<String> mealTime
++  breakfastRecipes
++  lunchRecipes
++  dinnerRecipes
+-  _recommendationRecipes
++ LiveData<List<RecommendationRecipe>> weeklyRecipes
+- LiveData<Detail> userDetails
+-  _nutritionSumsInBasket
+-  _selectedMeal
++ LiveData<Int> selectedMeal
+- LiveData<List<Int>> maxNutritionsLiveData
++  isNutritionSumWithinNeeds
+-  successMessage
+-  errorMessage
+-  userId
+-  _username
++ LiveData<String> username
++ LiveData<String> profpic
+-  _recipeTransitionPreference
++  recipeTransitionPreference
++ void searchRecipes(String,Int)
+- void combineRecipesWithRecommendations(void,List<Recipe>,void,List<Recommendation>)
++ void null()
++ void setSelectedMealType(Int)
++ void setSelectedMealTime(String)
+- void setupMediatorLiveData(Int)
+- void setupMealTypeLiveData(void,LiveData<List<Recipe>>,void,LiveData<List<Recommendation>>,void,Int,void,MediatorLiveData<List<CombinedRecipe>>)
++ void null()
+- void combineData(void,List<Recipe>?,void,List<Recommendation>?,void,Int)
++ void null()
+- void loadData(Int)
+- void combineLatestData(List<Recipe>?,List<Recommendation>?)
++ Recommendation? getRecommendationById(Int)
++ void selectRecommendation(Recommendation)
++ void getRecommendationByRecipeIdAndMealType(void,Int,void,Int)
++ void null()
++ LiveData<List<Int>> getAllSelectedRecommendationIdsByMealId(Int)
++ LiveData<List<Int>> getAllConfirmedRecommendationIdsByMealId(Int)
++ LiveData<List<Recipe>> getSelectedRecipesByRecommendationIds(List<Int>)
++ LiveData<Int> getSelectedRecipeCount()
++ LiveData<Int> getSelectedRecipeCountByMealType(Int)
++ void getNutritionSumsInBasketAndHomePerMealType(Int)
++ void setSelectedMeal(Int)
+- Boolean performCheck(NutritionSum,List<Int>)
++ void updateSelectedRecommendationsPerMealType(Int)
++ void getUsername()
++ void getRecipeTransitionPreference()
++ void createRecommendationsForAllRecipes()
+}
+
+
+class com.telyu.nourimate.viewmodels.ViewModelFactory$Companion {
+- ViewModelFactory? INSTANCE
++ ViewModelFactory getInstance(Context)
+}
+
+
+class com.telyu.nourimate.viewmodels.ViewModelFactory {
++ T create(Class<T>)
+}
+
+class com.telyu.nourimate.activities.VerificationCode1Activity {
+- ActivityVerificationCode1Binding binding
+- VerificationViewModel viewModel
++ void onCreate(Bundle?)
+- void setStatusBarColor(Int)
+- void initVerificationCode1()
+- void openVerification2Page()
+- void openVerification3Page()
+- VerificationViewModel obtainViewModel(AppCompatActivity)
+}
+
+
+class com.telyu.nourimate.data.local.models.WeightTrack {
+}
+class com.telyu.nourimate.custom.SemiCircleProgressView {
+}
+class com.telyu.nourimate.custom.RecipeDialogMealTutorial {
+- PopupLayoutMealTutorialBinding binding
+-  viewModel
++ void onCreateView(void,LayoutInflater,void,ViewGroup?,void,Bundle?)
++ void null()
++ void onViewCreated(View,Bundle?)
++ void onActivityCreated(Bundle?)
+- void setupRecyclerView(Int)
+- void getRecipeCountByMealType(Int)
+- void setMealType(Int)
+}
+
+
+class com.telyu.nourimate.adapter.recipe.RecipeAdapter {
+}
+interface com.telyu.nourimate.adapter.recipe.OnAddClickListener {
++ void onAddClick(Recipe)
+}
+
+class com.telyu.nourimate.adapter.recipe.RecipeViewHolder {
+}
+class com.telyu.nourimate.adapter.recipe.null {
++  DIFF_CALLBACK
+}
+
+class com.telyu.nourimate.viewmodels.ProgramViewModel {
++  userId
++ LiveData<WeightTrack> userWeightTrack
++ LiveData<Long> userEndDate
++ LiveData<Detail> userDetails
++ LiveData<List<RecipeHistory>> userMealHistory
+-  _historyNutritionSum
++ LiveData<NutritionSum> historyNutritionSum
+-  _recipeHistoryData
++ LiveData<List<RecipeHistoryData>> recipeHistoryData
+-  _selectedMealTime
++ LiveData<Int> selectedMealTime
+-  _breakfastCalories
++ LiveData<Int> breakfastCalories
+-  _lunchCalories
++ LiveData<Int> lunchCalories
+-  _dinnerCalories
++ LiveData<Int> dinnerCalories
++ LiveData<List<WeightEntry>> weightEntries
+- MutableLiveData<Int> _latestWeightEntryWeight
++ LiveData<Int> latestWeightEntryWeight
++ LiveData<Int> userWeightDetail
+-  _remainingTime
++ LiveData<Long> remainingTime
++ void deleteWeightTrackByUserId()
++ void getNutritionSumsForHistory()
++ void insertHistory(void,String,void,String,void,String,void,Int,void,Int,void,Int,void,Int,void,Int,void,Int,void)
++ void insertDetail(void,Date?,void,Int,void,Int,void,Int,void,String,void,String,void,String,void,Float,void)
++ void createNewHistory(void,String,void,String,void,String,void,Int,void,Int,void,Int,void,Int,void,Int,void,Int)
++ void null()
++ void insertDetailBackend(void,String,void,Int,void,Int,void,Int,void,String,void,String,void,String)
++ void null()
++ void scheduleMealHistoryUpdate(Int,String,Context)
++ void selectMealTime(Int)
+- void fetchRecipeAndHistoryLiveData(Int)
+- void combineLatestData(List<Recipe>?,List<RecipeHistory>?)
++ void getTotalCaloriesByMealTypeHistory(Int)
++ void insertWeightEntry(WeightEntry)
++ void changeRecommendationFromConsumedToExpired()
++ void setLatestWeightEntryWeight(Int)
++ void insertWeightTrack(WeightTrack)
++ void fetchCooldownTime()
++ void deleteWeightEntriesById()
++ void deleteMealHistoriesById()
++ void saveUserProgram(Int)
+}
+
+
+class com.telyu.nourimate.data.local.models.WeightEntry {
+}
+class com.telyu.nourimate.adapter.recipe.DialogRecipeAdapter {
+}
+interface com.telyu.nourimate.adapter.recipe.DialogOnAddClickListener {
++ void dialogOnAddClick(Recipe)
+}
+
+class com.telyu.nourimate.adapter.recipe.DialogRecipeViewHolder {
++ void bind(Recipe)
+}
+
+class com.telyu.nourimate.adapter.recipe.null {
++  DIFF_CALLBACK
+}
+
+class com.telyu.nourimate.data.remote.retrofit.GoogleApiConfig$Companion {
++ GoogleApiService getApiService()
+}
+
+class com.telyu.nourimate.data.remote.retrofit.GoogleApiConfig {
+}
+class com.telyu.nourimate.viewmodels.UserDetailViewModel {
+-  userId
++ LiveData<Detail> userDetails
++ LiveData<Float> userBMI
+-  _username
++ LiveData<String> username
++ LiveData<Boolean> userProgramStatus
+- LiveData<List<Recommendation>> recommendationData
++ LiveData<List<Recommendation>> recommendationsLiveData
++ void getUsername()
++ void updateUserProfile(void,Int,void,Date?,void,Int,void,Int,void,Int,void,String,void,String,void,String,void,Float)
++ void null()
++ void insertDetailToBackend(void,String,void,Int,void,Int,void,Int,void,String,void,String,void,String,void)
++ void null()
+- void mapFetchedIdsToRecommendationEntity(void,List<Int>,void,List<Int>,void,List<Int>,void,Int)
++ void null()
++ void insertRecommendations(List<Recommendation>)
++ void deleteCurrentRecommendations()
+}
+
+
+class com.telyu.nourimate.fragments.SettingFragment {
+- FragmentSettingBinding? _binding
+-  binding
+- HintArrayAdapter themesAdapter
+-  viewModel
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
++ void onViewCreated(View,Bundle?)
+- void saveSettingsPreferences()
+- void setStatusBarColor(Int)
++ void onDestroyView()
+}
+
+
+class com.telyu.nourimate.viewmodels.SplashScreenViewModel {
++ LiveData<Boolean> recipeCount
++ LiveData<Boolean> recommendationCount
++ void insertUser(User)
++ void insertDetail(Detail)
++ void logout()
+}
+
+
+class com.telyu.nourimate.data.local.models.Detail {
+}
+class com.telyu.nourimate.viewmodels.TransitionProgramViewModel {
+- MutableLiveData<History> _history
++ LiveData<History> history
++ void getLatestHistory()
+}
+
+
+class com.telyu.nourimate.data.remote.response.GetAllUserProgramResponse {
+}
+class com.telyu.nourimate.data.remote.response.UserProgram {
+}
+interface com.telyu.nourimate.data.remote.retrofit.ApiService2 {
++ void getRecommendedRecipes(void)
+}
+
+class com.telyu.nourimate.data.remote.retrofit.RecommendationRequest {
+}
+class com.telyu.nourimate.viewmodels.HistoryViewModel {
++  userId
++ LiveData<List<History>> userHistories
+}
+
+class com.telyu.nourimate.data.local.models.RecipeHistoryData$RecipeItem {
+}
+class com.telyu.nourimate.data.local.models.RecipeHistoryData$RecipeHistoryItem {
+}
+class com.telyu.nourimate.data.local.models.RecipeHistoryData {
+}
+class com.telyu.nourimate.viewmodels.ChooseProgramViewModel {
+-  userId
++ LiveData<Detail> userDetails
++ void insertWeightTrack(void,Int,void,Date?,void,Date?,void,Int,void,Int,void,Date)
++ void null()
++ void insertWeightEntry(Int,Date)
++ void createNewProgram(void,Int,void,String,void,String,void,Int,void,Int,void,String)
++ void null()
++ void saveUserProgram(Int)
+}
+
+
+class com.telyu.nourimate.data.remote.response.SigninResponse {
+}
+class com.telyu.nourimate.data.remote.response.User {
+}
+class com.telyu.nourimate.activities.NavigationBarActivity {
+- ActivityNavigationBarBinding binding
++ void onCreate(Bundle?)
+- void loadProfileFragment()
+- void loadHomeMealFragment(Int)
+- void loadHomeFragment()
+- void setupBottomNavigationView()
+- void displayMealHistoryFragment(Int)
+- void setCurrentFragment(Fragment)
++ void onBackPressed()
+- void showLogoutConfirmationDialog()
+}
+
+
+class com.telyu.nourimate.activities.PasswordPopupActivity {
+-  VERIFY_REQUEST_CODE
++ void onCreate(Bundle?)
++ void onActivityResult(Int,Int,Intent?)
+- void showChangePasswordDialog()
+}
+
+
+class com.telyu.nourimate.adapter.history.HistoryItemAdapter$HistoryItemViewHolder {
++ void bind(History)
+}
+
+class com.telyu.nourimate.adapter.history.HistoryItemAdapter$DiffCallback {
++ Boolean areItemsTheSame(History,History)
++ Boolean areContentsTheSame(History,History)
+}
+
+class com.telyu.nourimate.adapter.history.HistoryItemAdapter {
++ HistoryItemViewHolder onCreateViewHolder(ViewGroup,Int)
++ void onBindViewHolder(HistoryItemViewHolder,Int)
+}
+
+class com.telyu.nourimate.custom.DecadeViewFragment {
+- ((Int) -> Unit)? listener
+- FragmentDecadeViewBinding? _binding
+-  binding
++ void setOnYearSelectedListener((Int) -> Unit)
++ void onStart()
++ void onCreateView(void,LayoutInflater,ViewGroup?,void,Bundle?)
++ void null()
++ void onDestroyView()
+}
+
+
+class com.telyu.nourimate.viewmodels.SignUpViewModel {
++  uiState
++ void signup(String,String,User)
++ void registerBackend(String,String,String,String)
+}
+
+
+class com.telyu.nourimate.activities.ForgotPasswordActivity {
+- ActivityForgotPasswordBinding binding
++ void onCreate(Bundle?)
+- void setStatusBarColor(Int)
+- void setupButton()
+- void openForgotPassword1Page()
+- void openForgotPassword2Page()
++ void onBackPressed()
+}
+
+
+class com.telyu.nourimate.custom.BottomMarginItemDecoration {
++ void getItemOffsets(Rect,View,RecyclerView,RecyclerView.State)
+}
+
+class com.telyu.nourimate.activities.EditProfpicActivity {
+- ActivityEditProfpicBinding binding
+- EditProfpicViewModel viewModel
+- Uri? currentImageUri
+-  launcherGallery
++ void null()
++ void onCreate(Bundle?)
+- void setStatusBarColor(Int)
+- void saveCroppedImage()
+- void navigateBackWithResult()
+- Uri copyImageToInternalStorage(Uri)
+- File createCustomTempFile()
+- void insertProfpic()
+- EditProfpicViewModel obtainViewModel(AppCompatActivity)
+}
+
+
+class com.telyu.nourimate.data.local.models.User {
+}
+class com.telyu.nourimate.data.repository.NourimateRepository {
+}
+class com.telyu.nourimate.data.repository.ListOfIds {
+}
+class com.telyu.nourimate.data.repository.null {
+- NourimateRepository? instance
++ void getInstance(void,ApiService,void,ApiService2,void,GoogleApiService,void,UserPreference,void,SettingsPreference,void,UserDao,void,FoodDao,void,Context)
++ void null()
++ void null()
+}
+
+
+class com.telyu.nourimate.activities.SplashScreenActivity {
+- ActivitySplashScreenBinding binding
+- UserPreference userPreference
+- SplashScreenViewModel viewModel
++ void onCreate(Bundle?)
+- void createGradientBackground()
+- void setStatusBarColor(Int)
+- void checkLoginStatus()
+- void insertAdminAccounts()
+- void insertDummyRecipes()
+- void insertDummyRecommendation()
+- SplashScreenViewModel obtainViewModel(AppCompatActivity)
+}
+
+
+class com.telyu.nourimate.activities.SettingActivity {
+- ActivitySettingBinding binding
+- HintArrayAdapter themesAdapter
+- SettingViewModel viewModel
++ void onCreate(Bundle?)
+- void mapPreferencesToUI()
+- void saveSettingsPreferences()
+- void setStatusBarColor(Int)
++ void onBackPressed()
+- SettingViewModel obtainViewModel(AppCompatActivity)
+}
+
+
+class com.telyu.nourimate.activities.SignUpActivity {
+- ActivitySignUpBinding binding
+- SignUpViewModel signUpViewModel
++ void onCreate(Bundle?)
+- void setupButtons()
+- void setStatusBarColor(Int)
+- void signup()
+- void registerWithBackend()
+- void showLoading(Boolean)
+- SignUpViewModel obtainViewModel(AppCompatActivity)
+- void setupTextWatchers()
+- void checkAllInputsValid()
+- void disableRegisterButton()
+- void enableRegisterButton()
+}
+
+
+interface com.telyu.nourimate.custom.StraightRulerView$OnValueChangeListener {
++ void onValueChanged(Float)
+}
+
+class com.telyu.nourimate.custom.StraightRulerView {
++  selectedValue
++ OnValueChangeListener? listener
+-  paint
+-  textPaint
+-  indicatorPaint
+-  maxRulerValue
+-  rulerOffset
+-  lastX
+-  gapBetweenNumbers
+-  lengthOfMainTick
+-  lengthOfSmallTick
++ void null()
+- void updateRulerOffsetFromSelectedValue()
++ void onDraw(Canvas)
++ Boolean onTouchEvent(MotionEvent)
+- void updateSelectedValueFromOffset()
+}
+
+
+class com.telyu.nourimate.data.local.models.History {
+}
+class com.telyu.nourimate.data.remote.response.GetAllUserMealHistoryResponse {
+}
+class com.telyu.nourimate.data.remote.response.MealHistoriesItem {
+}
+class com.telyu.nourimate.viewmodels.RecipeDetailViewModel {
+-  _recipe
++ LiveData<Recipe> recipe
++ void getRecipeDetailByRecipeId(Int)
+}
+
+
+interface com.telyu.nourimate.data.local.dao.UserDao {
++ void deleteDetail()
++ void deleteHistories()
++ void deleteWeightEntries()
++ void deleteWeightTrack()
++ void insertUser(User)
++ void insertDetail(Detail)
++ void insertHistories(List<History>)
++ User? getUserByName(String)
++ User? getUserByEmail(String)
++ String? getUserNameByEmail(String)
++ Int? getUserIdByEmail(String)
++ Detail? getUserDetailsById(Int)
++ String? getProfpicById(Int)
++ Float? getBMIById(Int?)
++ void updateUserProfile(Detail)
++ void updateUserName(Int,String)
++ void insertProfpic(Profpic)
++ void deleteAllRecords()
++ Detail getUserDetailsByEmail(String)
++ void insertSleepSegment(SleepSegmentEventEntity)
++ LiveData<List<SleepSegmentEventEntity>> getAllSleepSegments()
++ void insertWeightEntry(WeightEntry)
++ void insertWeightEntries(List<WeightEntry>)
++ void deleteWeightEntriesById(Int)
++ LiveData<List<WeightEntry>> getWeightEntriesByUserIdAsc(Int)
++ WeightEntry getLatestWeightEntryByUserId(Int)
++ LiveData<WeightEntry> getLatestWeightEntryByUserId2(Int)
++ Date getLatestWeightEntryDateByUserId(Int)
++ Date getEarliestWeightEntryDateByUserId(Int)
++ void updateWeight(Int,Int)
++ WeightTrack? getWeightTrackById(Int)
++ String? getUserNameById(Int)
++ void insertWeightTrack(WeightTrack)
++ void insertWeightTracks(List<WeightTrack>)
++ void deleteWeightTrackByUserId(Int?)
++ void insertHistory(History)
++ List<History> getHistory(Int)
++ LiveData<List<WeightEntry>> getWeightEntriesLiveData()
++ History getLatestHistory(Int)
++ Date getEditCurrentWeightDate(Int)
++ Int checkUserDetailExists(Int)
++ Int checkUserWeightTrackExists(Int)
++ Int checkUserMealHistoryExists(Int)
++ Int checkUserHistoryExists(Int)
+}
+
+class com.telyu.nourimate.viewmodels.ForgotPasswordViewModel {
++ void sendEmailVerification(String)
++ void forgotPassword(String,String,String)
++ void saveUserEmail(String)
++ void deleteUserEmail()
+}
+
+class com.telyu.nourimate.activities.LoginActivity {
+- ActivityLoginBinding binding
+- LoginViewModel loginViewModel
+- GoogleSignInClient googleSignInClient
+- FirebaseAuth auth
+-  resultLauncher
++ void onCreate(Bundle?)
+- void createGradientBackground()
+- void setupListeners()
+- void setStatusBarColor(Int)
+- void loginWithBackend()
+- void handleSpecialLogin(String)
+- void handleSpecialLogin2(String)
+- void observeLoginStatusBackend()
+- void navigateToNextActivity()
+- void showDetailsNeededDialog()
+- void showVerificationNeededDialog()
+- void configureGoogleSignIn()
+- void signIn()
++ void null()
+- void sendLoginToBackend(String?,String?)
+- void validateInputs()
++ void onBackPressed()
+- void showLoading(Boolean)
+- void scheduleMidnightRecipeUpdate(Context)
+- void scheduleNotifications(Context)
+- LoginViewModel obtainViewModel(AppCompatActivity)
+}
+
+
+class com.telyu.nourimate.utils.Injection {
++ NourimateRepository provideRepository(Context)
+- UserDao provideUserDao(Context)
+- FoodDao provideFoodDao(Context)
+}
+
+class com.telyu.nourimate.adapter.date.DateStartProgramAdapter$ViewHolder {
++ View root
+}
+
+class com.telyu.nourimate.adapter.date.DateStartProgramAdapter {
++ Int getCount()
++ Any getItem(Int)
++ Long getItemId(Int)
++ View getView(Int,View?,ViewGroup?)
++ void setSelectedPosition(Int)
+}
+
+class com.telyu.nourimate.adapter.date.HintArrayAdapter {
+-  hintResource
++ Boolean isEnabled(Int)
++ View getView(Int,View?,ViewGroup)
++ View getDropDownView(Int,View?,ViewGroup)
+}
+
+
+class com.telyu.nourimate.data.remote.response.GetAllHistoryResponse {
+}
+class com.telyu.nourimate.data.remote.response.HistoriesItem {
+}
+
+
+com.telyu.nourimate.fragments.ChangePasswordDialogFragment +.. com.telyu.nourimate.fragments.ChangePasswordDialogFragment$Companion
+androidx.fragment.app.DialogFragment <|-- com.telyu.nourimate.fragments.ChangePasswordDialogFragment
+com.telyu.nourimate.data.local.db.UserDatabase +.. com.telyu.nourimate.data.local.db.UserDatabase$Companion
+androidx.room.RoomDatabase <|-- com.telyu.nourimate.data.local.db.UserDatabase
+androidx.lifecycle.ViewModel <|-- com.telyu.nourimate.viewmodels.EditProfileViewModel
+com.telyu.nourimate.custom.WaistSizeRulerView +.. com.telyu.nourimate.custom.WaistSizeRulerView$OnValueChangeListener
+android.view.View <|-- com.telyu.nourimate.custom.WaistSizeRulerView
+com.telyu.nourimate.fragments.InfoNutritionDialogFragment +.. com.telyu.nourimate.fragments.InfoNutritionDialogFragment$Companion
+androidx.fragment.app.DialogFragment <|-- com.telyu.nourimate.fragments.InfoNutritionDialogFragment
+com.telyu.nourimate.utils.InputValidator +.. com.telyu.nourimate.utils.InputValidator$Companion
+androidx.fragment.app.DialogFragment <|-- com.telyu.nourimate.custom.MonthViewFragment
+com.telyu.nourimate.custom.CustomTextInputEditText +.. com.telyu.nourimate.custom.CustomTextInputEditText$Companion
+com.google.android.material.textfield.TextInputEditText <|.. com.telyu.nourimate.custom.CustomTextInputEditText
+com.telyu.nourimate.custom.OnTouchListener <|.. com.telyu.nourimate.custom.CustomTextInputEditText
+androidx.lifecycle.ViewModel <|-- com.telyu.nourimate.viewmodels.VerificationViewModel
+androidx.fragment.app.Fragment <|-- com.telyu.nourimate.fragments.ProgramEmptyFragment
+androidx.lifecycle.ViewModel <|-- com.telyu.nourimate.viewmodels.ProfileViewModel
+androidx.appcompat.app.AppCompatActivity <|-- com.telyu.nourimate.activities.RecipeDetailActivity
+com.telyu.nourimate.adapter.recipe.ItemCallback <|-- com.telyu.nourimate.adapter.recipe.Recipe2DiffCallback
+androidx.lifecycle.ViewModel <|-- com.telyu.nourimate.viewmodels.HomeViewModel
+com.telyu.nourimate.adapter.history.RecipeHistoryAdapter +.. com.telyu.nourimate.adapter.history.RecipeHistoryAdapter$BaseViewHolder
+com.telyu.nourimate.adapter.history.RecipeHistoryAdapter +.. com.telyu.nourimate.adapter.history.RecipeHistoryAdapter$ParentViewHolder
+com.telyu.nourimate.adapter.history.BaseViewHolder <|-- com.telyu.nourimate.adapter.history.RecipeHistoryAdapter$ParentViewHolder
+com.telyu.nourimate.adapter.history.RecipeHistoryAdapter +.. com.telyu.nourimate.adapter.history.RecipeHistoryAdapter$ChildViewHolder
+com.telyu.nourimate.adapter.history.BaseViewHolder <|-- com.telyu.nourimate.adapter.history.RecipeHistoryAdapter$ChildViewHolder
+com.telyu.nourimate.adapter.history.RecipeHistoryAdapter +.. com.telyu.nourimate.adapter.history.RecipeHistoryAdapter$Companion
+androidx.recyclerview.widget.ListAdapter <|-- com.telyu.nourimate.adapter.history.RecipeHistoryAdapter
+com.telyu.nourimate.adapter.history.ItemCallback <|-- com.telyu.nourimate.adapter.history.DiffUtilCallback
+androidx.fragment.app.Fragment <|-- com.telyu.nourimate.fragments.RecipeFragment
+android.view.View <|-- com.telyu.nourimate.custom.CustomRunningGraphView
+androidx.fragment.app.DialogFragment <|-- com.telyu.nourimate.fragments.LogoutDialogFragment
+com.telyu.nourimate.utils.GeneralUtil +.. com.telyu.nourimate.utils.GeneralUtil$Nutrition
+androidx.fragment.app.DialogFragment <|-- com.telyu.nourimate.custom.RecipeDialogMeal
+com.telyu.nourimate.custom.DialogOnAddClickListener <|.. com.telyu.nourimate.custom.RecipeDialogMeal
+androidx.fragment.app.Fragment <|-- com.telyu.nourimate.fragments.MealHistoryFragment
+androidx.appcompat.app.AppCompatActivity <|-- com.telyu.nourimate.activities.ForgotPassword1Activity
+androidx.fragment.app.DialogFragment <|-- com.telyu.nourimate.custom.RecipeDialog
+android.view.View <|-- com.telyu.nourimate.custom.WeightChartView
+androidx.lifecycle.ViewModel <|-- com.telyu.nourimate.viewmodels.AccountViewModel
+com.telyu.nourimate.custom.CustomDatePickerFragment +.. com.telyu.nourimate.custom.CustomDatePickerFragment$DatePickerDialogListener
+androidx.fragment.app.DialogFragment <|-- com.telyu.nourimate.custom.CustomDatePickerFragment
+androidx.lifecycle.ViewModel <|-- com.telyu.nourimate.viewmodels.LoginViewModel
+com.telyu.nourimate.custom.WeightRulerView +.. com.telyu.nourimate.custom.WeightRulerView$OnValueChangeListener
+android.view.View <|-- com.telyu.nourimate.custom.WeightRulerView
+com.telyu.nourimate.custom.CustomDateStartProgramFragment +.. com.telyu.nourimate.custom.CustomDateStartProgramFragment$DateStartProgramDialogListener
+androidx.fragment.app.DialogFragment <|-- com.telyu.nourimate.custom.CustomDateStartProgramFragment
+com.telyu.nourimate.data.local.models.RecommendationRecipe +.. com.telyu.nourimate.data.local.models.RecommendationRecipe$RecipeItem
+com.telyu.nourimate.data.local.models.RecommendationRecipe <|-- com.telyu.nourimate.data.local.models.RecommendationRecipe$RecipeItem
+com.telyu.nourimate.data.local.models.RecommendationRecipe +.. com.telyu.nourimate.data.local.models.RecommendationRecipe$RecommendationItem
+com.telyu.nourimate.data.local.models.RecommendationRecipe <|-- com.telyu.nourimate.data.local.models.RecommendationRecipe$RecommendationItem
+com.telyu.nourimate.fragments.ChangePasswordProfileFragment +.. com.telyu.nourimate.fragments.ChangePasswordProfileFragment$Companion
+androidx.fragment.app.DialogFragment <|-- com.telyu.nourimate.fragments.ChangePasswordProfileFragment
+androidx.appcompat.app.AppCompatActivity <|-- com.telyu.nourimate.activities.DebugActivity
+androidx.appcompat.app.AppCompatActivity <|-- com.telyu.nourimate.activities.EditProfileActivity
+androidx.appcompat.app.AppCompatActivity <|-- com.telyu.nourimate.activities.VerificationCode2Activity
+androidx.fragment.app.Fragment <|-- com.telyu.nourimate.fragments.ProgramFilledFragment
+androidx.lifecycle.ViewModel <|-- com.telyu.nourimate.viewmodels.SettingViewModel
+androidx.fragment.app.Fragment <|-- com.telyu.nourimate.fragments.HistoryFragment
+android.content.BroadcastReceiver <|-- com.telyu.nourimate.utils.DailyReminder
+androidx.fragment.app.Fragment <|-- com.telyu.nourimate.fragments.FaqFragment
+com.telyu.nourimate.fragments.ProfileFragment +.. com.telyu.nourimate.fragments.ProfileFragment$Companion
+androidx.fragment.app.Fragment <|-- com.telyu.nourimate.fragments.ProfileFragment
+com.telyu.nourimate.adapter.recipe.RecommendationRecipeAdapter +.. com.telyu.nourimate.adapter.recipe.RecommendationRecipeAdapter$BaseViewHolder
+com.telyu.nourimate.adapter.recipe.RecommendationRecipeAdapter +.. com.telyu.nourimate.adapter.recipe.RecommendationRecipeAdapter$ParentViewHolder
+com.telyu.nourimate.adapter.recipe.BaseViewHolder <|-- com.telyu.nourimate.adapter.recipe.RecommendationRecipeAdapter$ParentViewHolder
+com.telyu.nourimate.adapter.recipe.RecommendationRecipeAdapter +.. com.telyu.nourimate.adapter.recipe.RecommendationRecipeAdapter$ChildViewHolder
+com.telyu.nourimate.adapter.recipe.BaseViewHolder <|-- com.telyu.nourimate.adapter.recipe.RecommendationRecipeAdapter$ChildViewHolder
+com.telyu.nourimate.adapter.recipe.RecommendationRecipeAdapter +.. com.telyu.nourimate.adapter.recipe.RecommendationRecipeAdapter$Companion
+androidx.recyclerview.widget.ListAdapter <|-- com.telyu.nourimate.adapter.recipe.RecommendationRecipeAdapter
+com.telyu.nourimate.adapter.recipe.ItemCallback <|-- com.telyu.nourimate.adapter.recipe.DiffUtilCallback
+androidx.appcompat.app.AppCompatActivity <|-- com.telyu.nourimate.activities.ForgotPassword2Activity
+androidx.fragment.app.Fragment <|-- com.telyu.nourimate.fragments.CommunityFragment
+com.telyu.nourimate.utils.UserPreference +.. com.telyu.nourimate.utils.UserPreference$Companion
+androidx.fragment.app.Fragment <|-- com.telyu.nourimate.fragments.HomeMealHistoryFragment
+androidx.appcompat.app.AppCompatActivity <|-- com.telyu.nourimate.activities.TransitionProgramActivity
+androidx.appcompat.app.AppCompatActivity <|-- com.telyu.nourimate.activities.VerificationCode3Activity
+com.telyu.nourimate.fragments.HomeFragment +.. com.telyu.nourimate.fragments.HomeFragment$UserNutritionStatus
+com.telyu.nourimate.fragments.HomeFragment +.. com.telyu.nourimate.fragments.HomeFragment$WaterIntakeStatus
+androidx.fragment.app.Fragment <|-- com.telyu.nourimate.fragments.HomeFragment
+com.telyu.nourimate.utils.SettingsPreference +.. com.telyu.nourimate.utils.SettingsPreference$Companion
+com.telyu.nourimate.data.remote.retrofit.ApiConfig +.. com.telyu.nourimate.data.remote.retrofit.ApiConfig$Companion
+com.telyu.nourimate.data.remote.retrofit.ApiConfig2 +.. com.telyu.nourimate.data.remote.retrofit.ApiConfig2$Companion
+com.telyu.nourimate.data.local.FakeFoodData +.. com.telyu.nourimate.data.local.FakeFoodData$Recipe
+com.telyu.nourimate.data.local.FakeFoodData +.. com.telyu.nourimate.data.local.FakeFoodData$Recommendation
+com.telyu.nourimate.data.remote.Result +.. com.telyu.nourimate.data.remote.Result$Success
+com.telyu.nourimate.data.remote.Result <|-- com.telyu.nourimate.data.remote.Result$Success
+com.telyu.nourimate.data.remote.Result +.. com.telyu.nourimate.data.remote.Result$Error
+com.telyu.nourimate.data.remote.Result <|-- com.telyu.nourimate.data.remote.Result$Error
+com.telyu.nourimate.data.remote.Result +.. com.telyu.nourimate.data.remote.Result$Loading
+com.telyu.nourimate.data.remote.Result <|-- com.telyu.nourimate.data.remote.Result$Loading
+com.telyu.nourimate.data.local.db.FoodDatabase +.. com.telyu.nourimate.data.local.db.FoodDatabase$Companion
+androidx.room.RoomDatabase <|-- com.telyu.nourimate.data.local.db.FoodDatabase
+androidx.recyclerview.widget.ListAdapter <|-- com.telyu.nourimate.adapter.recipe.DialogRecipeTutorialAdapter
+com.telyu.nourimate.adapter.recipe.ViewHolder <|-- com.telyu.nourimate.adapter.recipe.DialogTutorialRecipeViewHolder
+androidx.fragment.app.Fragment <|-- com.telyu.nourimate.fragments.ProgramFragment
+androidx.lifecycle.ViewModel <|-- com.telyu.nourimate.viewmodels.TransitionRecipeViewModel
+com.telyu.nourimate.fragments.ChangeNumberProfileFragment +.. com.telyu.nourimate.fragments.ChangeNumberProfileFragment$Companion
+androidx.fragment.app.DialogFragment <|-- com.telyu.nourimate.fragments.ChangeNumberProfileFragment
+androidx.lifecycle.ViewModel <|-- com.telyu.nourimate.viewmodels.EditProfpicViewModel
+androidx.lifecycle.ViewModel <|-- com.telyu.nourimate.viewmodels.DetailChangeViewModel
+androidx.appcompat.app.AppCompatActivity <|-- com.telyu.nourimate.activities.ChooseProgramActivity
+androidx.appcompat.app.AppCompatActivity <|-- com.telyu.nourimate.activities.TransitionSelectRecipeActivity
+androidx.fragment.app.Fragment <|-- com.telyu.nourimate.fragments.UserDetailFragment
+androidx.fragment.app.Fragment <|-- com.telyu.nourimate.fragments.AccountFragment
+androidx.appcompat.app.AppCompatActivity <|-- com.telyu.nourimate.activities.ResetPasswordActivity
+androidx.lifecycle.ViewModel <|-- com.telyu.nourimate.viewmodels.RecipeViewModel
+com.telyu.nourimate.viewmodels.ViewModelFactory +.. com.telyu.nourimate.viewmodels.ViewModelFactory$Companion
+com.telyu.nourimate.viewmodels.Factory <|.. com.telyu.nourimate.viewmodels.ViewModelFactory
+androidx.appcompat.app.AppCompatActivity <|-- com.telyu.nourimate.activities.VerificationCode1Activity
+androidx.fragment.app.DialogFragment <|-- com.telyu.nourimate.custom.RecipeDialogMealTutorial
+androidx.lifecycle.ViewModel <|-- com.telyu.nourimate.viewmodels.ProgramViewModel
+androidx.recyclerview.widget.ListAdapter <|-- com.telyu.nourimate.adapter.recipe.DialogRecipeAdapter
+com.telyu.nourimate.adapter.recipe.ViewHolder <|-- com.telyu.nourimate.adapter.recipe.DialogRecipeViewHolder
+com.telyu.nourimate.data.remote.retrofit.GoogleApiConfig +.. com.telyu.nourimate.data.remote.retrofit.GoogleApiConfig$Companion
+androidx.lifecycle.ViewModel <|-- com.telyu.nourimate.viewmodels.UserDetailViewModel
+androidx.fragment.app.Fragment <|-- com.telyu.nourimate.fragments.SettingFragment
+androidx.lifecycle.ViewModel <|-- com.telyu.nourimate.viewmodels.SplashScreenViewModel
+androidx.lifecycle.ViewModel <|-- com.telyu.nourimate.viewmodels.TransitionProgramViewModel
+androidx.lifecycle.ViewModel <|-- com.telyu.nourimate.viewmodels.HistoryViewModel
+com.telyu.nourimate.data.local.models.RecipeHistoryData +.. com.telyu.nourimate.data.local.models.RecipeHistoryData$RecipeItem
+com.telyu.nourimate.data.local.models.RecipeHistoryData <|-- com.telyu.nourimate.data.local.models.RecipeHistoryData$RecipeItem
+com.telyu.nourimate.data.local.models.RecipeHistoryData +.. com.telyu.nourimate.data.local.models.RecipeHistoryData$RecipeHistoryItem
+com.telyu.nourimate.data.local.models.RecipeHistoryData <|-- com.telyu.nourimate.data.local.models.RecipeHistoryData$RecipeHistoryItem
+androidx.lifecycle.ViewModel <|-- com.telyu.nourimate.viewmodels.ChooseProgramViewModel
+androidx.appcompat.app.AppCompatActivity <|-- com.telyu.nourimate.activities.NavigationBarActivity
+androidx.appcompat.app.AppCompatActivity <|-- com.telyu.nourimate.activities.PasswordPopupActivity
+com.telyu.nourimate.adapter.history.HistoryItemAdapter +.. com.telyu.nourimate.adapter.history.HistoryItemAdapter$HistoryItemViewHolder
+com.telyu.nourimate.adapter.history.ViewHolder <|-- com.telyu.nourimate.adapter.history.HistoryItemAdapter$HistoryItemViewHolder
+com.telyu.nourimate.adapter.history.HistoryItemAdapter +.. com.telyu.nourimate.adapter.history.HistoryItemAdapter$DiffCallback
+com.telyu.nourimate.adapter.history.ItemCallback <|-- com.telyu.nourimate.adapter.history.HistoryItemAdapter$DiffCallback
+androidx.recyclerview.widget.ListAdapter <|-- com.telyu.nourimate.adapter.history.HistoryItemAdapter
+androidx.fragment.app.DialogFragment <|-- com.telyu.nourimate.custom.DecadeViewFragment
+androidx.lifecycle.ViewModel <|-- com.telyu.nourimate.viewmodels.SignUpViewModel
+androidx.appcompat.app.AppCompatActivity <|-- com.telyu.nourimate.activities.ForgotPasswordActivity
+com.telyu.nourimate.custom.ItemDecoration <|-- com.telyu.nourimate.custom.BottomMarginItemDecoration
+androidx.appcompat.app.AppCompatActivity <|-- com.telyu.nourimate.activities.EditProfpicActivity
+androidx.appcompat.app.AppCompatActivity <|-- com.telyu.nourimate.activities.SplashScreenActivity
+androidx.appcompat.app.AppCompatActivity <|-- com.telyu.nourimate.activities.SettingActivity
+androidx.appcompat.app.AppCompatActivity <|-- com.telyu.nourimate.activities.SignUpActivity
+com.telyu.nourimate.custom.StraightRulerView +.. com.telyu.nourimate.custom.StraightRulerView$OnValueChangeListener
+android.view.View <|-- com.telyu.nourimate.custom.StraightRulerView
+androidx.lifecycle.ViewModel <|-- com.telyu.nourimate.viewmodels.RecipeDetailViewModel
+androidx.lifecycle.ViewModel <|-- com.telyu.nourimate.viewmodels.ForgotPasswordViewModel
+androidx.appcompat.app.AppCompatActivity <|-- com.telyu.nourimate.activities.LoginActivity
+com.telyu.nourimate.adapter.date.DateStartProgramAdapter +.. com.telyu.nourimate.adapter.date.DateStartProgramAdapter$ViewHolder
+android.widget.BaseAdapter <|-- com.telyu.nourimate.adapter.date.DateStartProgramAdapter
+android.widget.ArrayAdapter <|-- com.telyu.nourimate.adapter.date.HintArrayAdapter
+@enduml
