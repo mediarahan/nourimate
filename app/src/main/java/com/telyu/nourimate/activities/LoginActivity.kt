@@ -205,18 +205,19 @@ class LoginActivity : AppCompatActivity() {
                         Log.d("isDetailFilled", isDetailFilled.toString())
                         when (isDetailFilled) {
                             true -> {
-                                loginViewModel.checkUserExists()
-                                loginViewModel.detailExists.observe(this) {isDetailExist ->
-                                    Log.d("isDetailExist", isDetailExist.toString())
-                                    if (isDetailExist) {
-                                        Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show()
-                                        startActivity(Intent(this@LoginActivity, NavigationBarActivity::class.java))
-                                        finish()
-                                    } else {
-                                        Log.d("isDetailExist", isDetailExist.toString())
-                                        Toast.makeText(this, "Fetching details...", Toast.LENGTH_SHORT).show()
-                                    }
-                                }
+                                Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show()
+                                startActivity(Intent(this@LoginActivity, NavigationBarActivity::class.java))
+                                finish()
+//                                loginViewModel.checkUserExists()
+//                                loginViewModel.detailExists.observe(this) {isDetailExist ->
+//                                    Log.d("isDetailExist", isDetailExist.toString())
+//                                    if (isDetailExist) {
+//
+//                                    } else {
+//                                        Log.d("isDetailExist", isDetailExist.toString())
+//                                        Toast.makeText(this, "Fetching details...", Toast.LENGTH_SHORT).show()
+//                                    }
+//                                }
                             }
                             false -> {
                                 showDetailsNeededDialog()

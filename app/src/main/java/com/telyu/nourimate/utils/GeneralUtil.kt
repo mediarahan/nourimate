@@ -3,6 +3,8 @@ package com.telyu.nourimate.utils
 import android.app.AlertDialog
 import android.content.Context
 import android.util.Log
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -127,25 +129,8 @@ object GeneralUtil {
         return AKEi
     }
 
-//    private fun calculateMealNutrition(akei: Int, conditionCode: Int, mealProportion: Double): Nutrition {
-//        val dailyCalories = mealProportion * akei
-//        val (carbMultiplier, protMultiplier, fatMultiplier) = multipliers[conditionCode] ?: Triple(0.55, 0.125, 0.2)
-//        val nutritionCalculator = if (conditionCode == K) {
-//            // Special handling for Cholesterol
-//            { multiplier: Double -> multiplier * akei }
-//        } else {
-//            { multiplier: Double -> multiplier * dailyCalories }
-//        }
-//
-//        return Nutrition(
-//            calories = dailyCalories,
-//            carbohydrates = nutritionCalculator(carbMultiplier) / 4,
-//            protein = nutritionCalculator(protMultiplier) / 4,
-//            fat = nutritionCalculator(fatMultiplier) / 9
-//        )
-//    }
+    private fun calculateMealNutrition(akei: Int, conditionCode: Int, mealProportion: Double, program: Int): Nutrition {
 
-    private fun calculateMealNutrition(akei: Int, conditionCode: Int, mealProportion: Double): Nutrition {
         val dailyCalories = mealProportion * akei
         val (carbMultiplier, protMultiplier, fatMultiplier) = multipliers[conditionCode] ?: Triple(0.55, 0.125, 0.2)
         val calories = dailyCalories
@@ -161,14 +146,14 @@ object GeneralUtil {
         )
     }
 
-    fun calculateBreakfastNutrition(akei: Int, conditionCode: Int) =
-        calculateMealNutrition(akei = akei, conditionCode, 0.25)
+    fun calculateBreakfastNutrition(akei: Int, conditionCode: Int, program: Int) =
+        calculateMealNutrition(akei = akei, conditionCode, 0.25, program)
 
-    fun calculateLunchNutrition(akei: Int, conditionCode: Int) =
-        calculateMealNutrition(akei = akei, conditionCode, 0.40)
+    fun calculateLunchNutrition(akei: Int, conditionCode: Int, program: Int) =
+        calculateMealNutrition(akei = akei, conditionCode, 0.40, program)
 
-    fun calculateDinnerNutrition(akei: Int, conditionCode: Int) =
-        calculateMealNutrition(akei = akei, conditionCode, 0.35)
+    fun calculateDinnerNutrition(akei: Int, conditionCode: Int, program: Int) =
+        calculateMealNutrition(akei = akei, conditionCode, 0.35, program)
 
     data class Nutrition(
         val calories: Double,

@@ -287,13 +287,17 @@ class RecipeViewModel(private val repository: NourimateRepository) : ViewModel()
                     if (detail.gender == "Laki-laki") true else if (detail.gender == "Perempuan") false else null
                 val age = GeneralUtil.calculateAge(detail.dob)
 
-                val akei = GeneralUtil.calculateAKEi(detail.height?.toInt() ?: 9999, gender!!, age)
+                val akei = GeneralUtil.calculateAKEi(detail.height, gender!!, age)
                 val conditionCode = GeneralUtil.convertConditionToCode(detail.disease)
 
+                val id = repository.getUserId().first()
+                val weightTrack = repository.getWeightTrackById(id)
+                val program = weightTrack?.ongoingProgram ?: 1  // Default to 1 if null
+
                 val nutrition = when (meal) {
-                    1 -> akei.let { GeneralUtil.calculateBreakfastNutrition(it, conditionCode) }
-                    2 -> akei.let { GeneralUtil.calculateLunchNutrition(it, conditionCode) }
-                    3 -> akei.let { GeneralUtil.calculateDinnerNutrition(it, conditionCode) }
+                    1 -> akei.let { GeneralUtil.calculateBreakfastNutrition(it, conditionCode, program) }
+                    2 -> akei.let { GeneralUtil.calculateLunchNutrition(it, conditionCode, program) }
+                    3 -> akei.let { GeneralUtil.calculateDinnerNutrition(it, conditionCode, program) }
                     else -> null  // Handle invalid meal selection
                 }
 

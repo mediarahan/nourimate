@@ -228,16 +228,25 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
     //Step 3: Extract user's health details
     val maxNutritionLiveData: LiveData<List<Int>> = userDetails.switchMap { detail ->
         liveData {
-            val gender =
-                if (detail.gender == "Laki-laki") true else if (detail.gender == "Perempuan") false else null
+            val gender = when (detail.gender) {
+                "Laki-laki" -> true
+                "Perempuan" -> false
+                else -> null
+            }
             val age = calculateAge(detail.dob)
 
             val akei = calculateAKEi(detail.height, gender, age)
             val conditionCode = convertConditionToCode(detail.disease)
 
-            val breakfastNutrition = calculateBreakfastNutrition(akei, conditionCode)
-            val lunchNutrition = calculateLunchNutrition(akei, conditionCode)
-            val dinnerNutrition = calculateDinnerNutrition(akei, conditionCode)
+            val id = repository.getUserId().first()
+            val weightTrack = repository.getWeightTrackByIds(id)  // Make sure the function name is correct
+
+            // Use a default value for the ongoing program if weightTrack is null or ongoingProgram is null
+            val program = weightTrack?.ongoingProgram ?: 1
+
+            val breakfastNutrition = calculateBreakfastNutrition(akei, conditionCode, program)
+            val lunchNutrition = calculateLunchNutrition(akei, conditionCode, program)
+            val dinnerNutrition = calculateDinnerNutrition(akei, conditionCode, program)
 
             val totalCalorieNeeds =
                 (breakfastNutrition.calories + lunchNutrition.calories + dinnerNutrition.calories).toInt()
@@ -253,9 +262,9 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
                 "Calorie: $totalCalorieNeeds, Protein: $totalProteinNeeds, Fat: $totalFatNeeds, Carb: $totalCarbNeeds"
             )
             emit(listOf(totalCalorieNeeds, totalProteinNeeds, totalFatNeeds, totalCarbNeeds))
-
         }
     }
+
 
     //daftar kalori per meal time untuk di expose ke view
     val caloriesPerMealtime: LiveData<List<Int>> = userDetails.switchMap { detail ->
@@ -264,12 +273,16 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
                 if (detail.gender == "Laki-laki") true else if (detail.gender == "Perempuan") false else null
             val age = calculateAge(detail.dob)
 
-            val akei = calculateAKEi(detail.height?.toInt() ?: 9999, gender, age)
+            val akei = calculateAKEi(detail.height, gender, age)
             val conditionCode = convertConditionToCode(detail.disease)
 
-            val breakfastNutrition = calculateBreakfastNutrition(akei, conditionCode)
-            val lunchNutrition = calculateLunchNutrition(akei, conditionCode)
-            val dinnerNutrition = calculateDinnerNutrition(akei, conditionCode)
+            val id = repository.getUserId().first()
+            val weightTrack = repository.getWeightTrackById(id)
+            val program = weightTrack?.ongoingProgram ?: 1  // Default to 1 if null
+
+            val breakfastNutrition = calculateBreakfastNutrition(akei, conditionCode, program)
+            val lunchNutrition = calculateLunchNutrition(akei, conditionCode, program)
+            val dinnerNutrition = calculateDinnerNutrition(akei, conditionCode, program)
 
             val breakfastCalorieNeeds = (breakfastNutrition.calories).toInt()
             val lunchCalorieNeeds = (lunchNutrition.calories).toInt()
@@ -358,6 +371,11 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
         }
     }
 
+    fun deselectSelectedRecipes() {
+        viewModelScope.launch {
+            repository.deselectSelectedRecipes()
+        }
+    }
 
     //Untuk nampilin nama dan profpic
     private val userId = repository.getUserId().asLiveData()
@@ -378,12 +396,6 @@ class HomeViewModel(private val repository: NourimateRepository) : ViewModel() {
         viewModelScope.launch {
             val username = repository.getUsername().first()
             _username.value = username
-        }
-    }
-
-    fun deselectSelectedRecipes() {
-        viewModelScope.launch {
-            repository.deselectSelectedRecipes()
         }
     }
 

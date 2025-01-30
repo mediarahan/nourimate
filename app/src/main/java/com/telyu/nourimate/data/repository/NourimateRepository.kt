@@ -27,7 +27,7 @@ import com.telyu.nourimate.data.remote.response.SigninResponse
 import com.telyu.nourimate.data.remote.retrofit.ApiService
 import com.telyu.nourimate.data.remote.retrofit.ApiService2
 import com.telyu.nourimate.data.remote.retrofit.ChangePasswordRequest
-import com.telyu.nourimate.data.remote.retrofit.ChangePhoneRequest
+import com.telyu.nourimate.data.remote.retrofit.ChangePhoneNumberRequest
 import com.telyu.nourimate.data.remote.retrofit.CreateNewProgramRequest
 import com.telyu.nourimate.data.remote.retrofit.CustomTokenRequest
 import com.telyu.nourimate.data.remote.retrofit.EmailVerificationRequest
@@ -223,7 +223,7 @@ class NourimateRepository(
                 val customToken = step1Response.customToken
 
                 // Second API call
-                val apiKey = "apikey"//"AIzaSyBzel3r3JpwL4ghphSEVZr35Nm2Ok_z7qc"
+                val apiKey = "AIzaSyBzel3r3JpwL4ghphSEVZr35Nm2Ok_z7qc"
                 val step2Response = async {
                     googleApiService.signInWithCustomToken(
                         apiKey,
@@ -368,7 +368,7 @@ class NourimateRepository(
         emit(Result.Loading)
         try {
             val userId = getUserId().first()
-            val requestBody = ChangePhoneRequest(userId, phoneNumber, confirmPhoneNumber)
+            val requestBody = ChangePhoneNumberRequest(userId, phoneNumber, confirmPhoneNumber)
             val response = apiService.changePhoneNumber(requestBody)
             delay(2000)
             emit(Result.Success(response))
@@ -755,6 +755,10 @@ class NourimateRepository(
 
     suspend fun getWeightTrackById(id: Int): WeightTrack? {
         return userDao.getWeightTrackById(id)
+    }
+
+    suspend fun getWeightTrackByIds(id: Int): WeightTrack {
+        return userDao.getWeightTrackByIds(id)
     }
 
     suspend fun getUserNameById(id: Int): String? {

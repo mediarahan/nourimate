@@ -149,6 +149,9 @@ interface UserDao {
     @Query("SELECT * FROM weight_tracks  WHERE userId = :id")
     suspend fun getWeightTrackById(id: Int): WeightTrack?
 
+    @Query("SELECT * FROM weight_tracks  WHERE userId = :id")
+    suspend fun getWeightTrackByIds(id: Int): WeightTrack
+
     @Query("SELECT name FROM users WHERE userId = :id")
     suspend fun getUserNameById(id: Int): String?
 

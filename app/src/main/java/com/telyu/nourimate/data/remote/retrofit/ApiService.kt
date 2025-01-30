@@ -1,5 +1,6 @@
 package com.telyu.nourimate.data.remote.retrofit
 
+import com.google.gson.annotations.SerializedName
 import com.telyu.nourimate.data.remote.response.GetAllUserProgramResponse
 import com.telyu.nourimate.data.remote.response.GetUserDetailResponse
 import com.telyu.nourimate.data.remote.response.GoogleSigninStep1Response
@@ -84,7 +85,7 @@ interface ApiService {
     //ganti nomor telepon di profile
     @POST("api/auth/change-phone-number")
     suspend fun changePhoneNumber(
-        @Body requestBody: ChangePhoneRequest
+        @Body requestBody: ChangePhoneNumberRequest
     ): SendEmailVerificationResponse
 
     @GET("api/users/{user_id}/details")
@@ -168,10 +169,10 @@ data class ResetPasswordRequest(
 )
 
 data class ChangePasswordRequest(
-    val userId: Int,
-    val oldPassword: String,
-    val password: String,
-    val currentPassword: String,
+    @SerializedName("user_id") val userId: Int,
+    @SerializedName("old_password") val oldPassword: String,
+    @SerializedName("password") val password: String,
+    @SerializedName("confirm_password") val confirmPassword: String
 )
 
 data class GoogleSigninTokenRequest(
@@ -192,10 +193,10 @@ data class UpdateDetailUserRequest(
     val disease: String,
 )
 
-data class ChangePhoneRequest(
-    val userId: Int,
-    val phoneNumber: String,
-    val confirmPhoneNumber: String,
+data class ChangePhoneNumberRequest(
+    @SerializedName("user_id") val userId: Int,
+    @SerializedName("phone_number") val phoneNumber: String,
+    @SerializedName("confim_phone_number") val confirmPhoneNumber: String
 )
 
 data class CreateNewProgramRequest(

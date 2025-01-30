@@ -48,12 +48,12 @@ class ChangeNumberProfileFragment : DialogFragment() {
                 is Result.Loading -> showLoading(true)
                 is Result.Success -> {
                     showLoading(false)
-                    Toast.makeText(requireContext(), "Login Success", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Change Phone Number Success", Toast.LENGTH_SHORT).show()
                     dismiss()
                 }
                 is Result.Error -> {
                     showLoading(false)
-                    Toast.makeText(requireContext(), "Login Failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Change Phone Number Failed", Toast.LENGTH_SHORT).show()
                 }
             }
         }

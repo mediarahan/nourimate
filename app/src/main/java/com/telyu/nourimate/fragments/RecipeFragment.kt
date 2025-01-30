@@ -77,7 +77,10 @@ class RecipeFragment : Fragment() {
         }
     }
 
+
+
     private fun setupRecyclerViewAdapter() {
+
         breakfastRecipeAdapter = RecipeAdapter2 { combinedRecipe ->
             toggleSelection(combinedRecipe)
         }

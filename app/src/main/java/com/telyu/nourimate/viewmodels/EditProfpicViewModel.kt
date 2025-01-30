@@ -15,15 +15,6 @@ class EditProfpicViewModel(private val repository: NourimateRepository): ViewMod
     private val _userId = MutableLiveData<Int?>()
     val userId: LiveData<Int?> = _userId
 
-    val userEmail: LiveData<String> = repository.getUserEmail().asLiveData()
-
-    fun getUserIdByEmail(email: String) {
-        viewModelScope.launch {
-            val id = repository.getUserIdByEmail(email)
-            _userId.value = id
-        }
-    }
-
     fun insertProfpic (uri: String) {
         viewModelScope.launch {
             val userId = repository.getUserId().first()

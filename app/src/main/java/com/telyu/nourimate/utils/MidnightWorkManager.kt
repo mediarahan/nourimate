@@ -17,8 +17,9 @@ class MidnightWorkManager(appContext: Context, workerParams: WorkerParameters) :
         val foodDao = db.foodDao()
 
         val userPreference = UserPreference(applicationContext.dataStore)
-        val userId = userPreference.getUserId().first()
 
+        //=============== AddRecipeToMealHistory ===============
+        val userId = userPreference.getUserId().first()
         val selectedRecipeIds = foodDao.getAllSelectedRecipeIds()
         val consumedTime = Converters().dateFromTimestamp(GeneralUtil.getYesterdayTimestamp())
         val consumedDate = Converters().formatDateToString(consumedTime)
@@ -28,6 +29,9 @@ class MidnightWorkManager(appContext: Context, workerParams: WorkerParameters) :
         }
 
         foodDao.insertRecipeHistories(listOfMealHistory)
+
+        //=============== DeselectRecipes ===============
+        foodDao.deselectSelectedRecipes()
 
         return Result.success()
     }

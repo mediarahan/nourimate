@@ -20,9 +20,6 @@ class ProfileViewModel(private val repository: NourimateRepository) : ViewModel(
     private var _username = MutableLiveData<String>()
     val username: LiveData<String> = _username
 
-    private val _profilePicture = MutableLiveData<String?>()
-    val profilePicture: LiveData<String?> = _profilePicture
-
     val BMI: LiveData<Int> = userId.switchMap { id ->
         liveData {
             val detail = repository.getUserDetailsById(id)
